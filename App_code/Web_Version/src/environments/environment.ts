@@ -13,8 +13,8 @@
 
 export const environment = {
   production: false,
-  baseURL: 'YOUR_BASE_URL/',
-  mediaURL: 'YOUR_BASE_URL/uploads/',
+  baseURL: 'https://api.tinda.dev/',
+  mediaURL: 'https://api.tinda.dev/uploads/',
   onesignal: {
     appId: 'YOUR_APP_ID',
     googleProjectNumber: 'YOUR_PROJECT_ID',
