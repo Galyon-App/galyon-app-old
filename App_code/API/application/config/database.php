@@ -87,9 +87,9 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 
 	// debug
-	'username' => 'root',
-	'password' => 'root',
-	'database' => 'groceryee',
+	'username' => 'admin',
+	'password' => 'admin',
+	'database' => 'tindaapp',
 
 	// prod
 	// 'username' => 'initappz_grocery',
