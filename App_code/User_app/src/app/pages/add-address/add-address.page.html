@@ -1,0 +1,70 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Add New Address')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div_map" #map></div>
+  <div class="informations">
+    <ion-item>
+      <ion-label position="stacked"> {{util.getString('LOCATIONS')}} </ion-label>
+      <ion-input [(ngModel)]="address"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked"> {{util.getString('HOUSE / FLAT NO')}} </ion-label>
+      <ion-input [(ngModel)]="house"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked"> {{util.getString('LANDMARK')}} </ion-label>
+      <ion-input [(ngModel)]="landmark"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked"> {{util.getString('Pincode')}} </ion-label>
+      <ion-input type="number" [(ngModel)]="pincode"></ion-input>
+    </ion-item>
+    <ion-radio-group [(ngModel)]="title">
+      <ion-label class="title">
+        {{util.getString('SAVE AS')}}
+      </ion-label>
+      <ion-item style="margin-top: 20px;">
+        <ion-icon name="home-outline" slot="start"></ion-icon>
+        <ion-label> {{util.getString('HOME')}} </ion-label>
+        <ion-radio value="home"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+        <ion-label> {{util.getString('WORK')}} </ion-label>
+        <ion-radio value="work"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="navigate-outline" slot="start"></ion-icon>
+        <ion-label> {{util.getString('OTHER')}} </ion-label>
+        <ion-radio value="other"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    <ion-button *ngIf="from ==='new'" (click)="addAddress()" expand="block">
+      {{util.getString('Add')}}
+    </ion-button>
+
+    <ion-button *ngIf="from ==='edit'" (click)="updateAddress()" expand="block">
+      {{util.getString('Update')}}
+    </ion-button>
+  </div>
+</ion-content>

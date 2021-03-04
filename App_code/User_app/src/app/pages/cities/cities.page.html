@@ -1,0 +1,39 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-title> {{util.getString('Select City')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+<app-closed *ngIf="util.appClosed"></app-closed>
+<ion-content class="ion-padding" *ngIf="!util.appClosed">
+  <p *ngIf="!dummy?.length && !cities?.length" class="ion-text-center"> {{util.getString('No Cities Found')}} </p>
+  <ion-item *ngFor="let item of dummy">
+    <ion-label>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    </ion-label>
+  </ion-item>
+
+  <ion-list>
+    <ion-radio-group [(ngModel)]="id">
+      <ion-item *ngFor="let item of cities">
+        <ion-label>{{item.name}}</ion-label>
+        <ion-radio [value]="item.id" mode="md"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="cities.length && id">
+    <ion-fab-button (click)="selected()">
+      <ion-icon name="checkmark" *ngIf="!clicked"></ion-icon>
+      <ion-spinner name="circles" *ngIf="clicked"></ion-spinner>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,127 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+@import "../../../variables.scss";
+label {
+  display: block;
+  margin: 0;
+}
+
+.container {
+  .title_lbl {
+    font-size: 26px;
+    font-weight: bold;
+    color: $theme-color;
+    margin-bottom: 15px;
+  }
+
+  .simple_lbl {
+    font-size: 14px;
+    color: grey;
+    margin-bottom: 40px;
+  }
+
+  .head_lbl {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .white_box {
+    background: white;
+    border-radius: 5px;
+    padding: 16px;
+
+    .flex_div {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      .name_lbl {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+      }
+
+      .addr_lbl {
+        font-size: 14px;
+        color: grey;
+        font-weight: 500;
+      }
+
+      button {
+        width: 220px;
+        min-width: 220px;
+        background: $theme-color;
+        color: white;
+        font-weight: 600;
+        text-transform: capitalize;
+        letter-spacing: 1.5px;
+        font-size: 14px;
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
+  }
+
+  .payment_box {
+    border-radius: 5px;
+    background: white;
+    padding: 30px 20px;
+    margin-bottom: 20px;
+
+    .flex_price {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0px;
+
+      .price_lbl {
+        font-size: 14px;
+        color: grey;
+      }
+      .red_lbl {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+    }
+    .green_lbl {
+      color: #00a100;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+  }
+
+  .grey_lbl {
+    font-size: 14px;
+    color: grey;
+    margin-bottom: 16px;
+  }
+
+  .call_lbl {
+    font-size: 14px;
+    color: grey;
+    font-weight: 600;
+
+    span {
+      color: black;
+    }
+  }
+
+  .small_lbl {
+    font-size: 13px;
+    width: 70%;
+    font-weight: 500;
+  }
+}

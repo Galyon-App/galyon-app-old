@@ -1,0 +1,152 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="row">
+    <!-- counter-card-1 start-->
+    <div class="col-md-12 col-xl-4">
+        <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('orders')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-chart-histogram"></i>
+                </div>
+                <div class="col-6  text-right">
+                    <div class="counter-card-text">
+                        <h3> {{allOrders.length}} </h3>
+                        <p>{{api.translate('Orders')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-1 end-->
+
+    <!-- counter-card-2 start -->
+    <div class="col-md-6 col-xl-4">
+        <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('users')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-chart-line-alt"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3> {{users.length}} </h3>
+                        <p>{{api.translate('Users')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-2 end -->
+
+    <!-- counter-card-3 start -->
+    <div class="col-md-6 col-xl-4">
+        <app-card [cardClass]="'counter-card-3'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('stores')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-chart-line"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3> {{stores.length}} </h3>
+                        <p>{{api.translate('Stores')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-3 end -->
+
+
+    <!-- Reset Order Start -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{api.translate('Recent 10 Order')}} </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{api.translate('User')}} </th>
+                                <th>{{api.translate('User Name')}} </th>
+                                <th>{{api.translate('Stores')}} </th>
+                                <th>{{api.translate('Ordered on')}} </th>
+                                <th>{{api.translate('Total')}} </th>
+                                <th>{{api.translate('Quantity')}} </th>
+                                <th>{{api.translate('Action')}} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let item of orders;let i = index">
+                                <td><a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;" [src]="api.mediaURL+item.cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                </td>
+                                <td> {{item.first_name}} {{item.last_name}} </td>
+                                <td> from {{item.store_id.length }} stores </td>
+
+                                <td>{{getDates(item.date_time)}}</td>
+                                <td>
+                                    $
+                                    {{item.grand_total}}
+                                </td>
+                                <td>{{item.orders.length}}</td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{api.translate('View')}}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Reset Order End -->
+</div>

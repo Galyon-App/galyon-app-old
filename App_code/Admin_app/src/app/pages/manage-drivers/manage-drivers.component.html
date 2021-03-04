@@ -1,0 +1,110 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5> <span *ngIf="new">CREATE NEW</span> <span *ngIf="!new">Edit</span> Driver </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <h4 class="sub-title">Owner Details</h4>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>First Name</label>
+                        <input type="text" [(ngModel)]="fname" class="form-control" placeholder="First Name">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Last Name</label>
+                        <input type="text" [(ngModel)]="lname" class="form-control" placeholder="Last Name">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Email</label>
+                        <input type="email" [disabled]="!new" [(ngModel)]="email" class="form-control"
+                            placeholder="Email">
+                    </div>
+                    <div class="col-sm-6" *ngIf="new">
+                        <label>Password</label>
+                        <input type="password" [(ngModel)]="password" class="form-control" placeholder="Password">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Contact No</label>
+                        <!-- <input type="number" [(ngModel)]="mobile" class="form-control" placeholder="Mobile No"> -->
+                        <span class="md-line"></span>
+                        <div class="row">
+                            <div class="col-3" *ngIf="new === true">
+                                <select name="select" class="form-control" [(ngModel)]="mobileCcode">
+                                    <option *ngFor="let item of util.countrys;" [value]="item.dialling_code">
+                                        {{item.country_name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-9">
+                                <input type="number" class="form-control" [placeholder]="api.translate('Mobile Number')"
+                                    [(ngModel)]="mobile" [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>Others</label>
+                        <input type="text" [(ngModel)]="others" class="form-control" placeholder="Others">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label>Select Gender</label>
+                        <select name="select" [(ngModel)]="gender" class="form-control">
+                            <option value='1'>Male</option>
+                            <option value='0'>Female</option>
+                            <option value='2'>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label>Address</label>
+                        <input type="text" [(ngModel)]="address" ngx-google-places-autocomplete #placesRef="ngx-places"
+                            (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Address">
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label>Select City</label>
+                        <select name="select" [(ngModel)]="city" class="form-control">
+                            <option *ngFor="let item of cities" [value]="item.id">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{api.translate('Upload cover image here')}} </label>
+                    <div class="col-sm-4">
+                        <input (change)="preview_banner($event.target.files)" type="file" class="form-control">
+                    </div>
+                    <div class="col-sm-4">
+                        <img [src]="imageUrl" alt="" style="height: 100px;width: 100px;float: right;"
+                            onError="this.src='assets/icon.png'">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="create()" *ngIf="new">Add New Driver
+                        </button>
+                        <button class="btn btn-danger btn-round" (click)="update()" *ngIf="!new">
+                            Update Driver </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

@@ -1,0 +1,298 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="container">
+
+  <div class="row" style="border-bottom: 1px solid lightgrey">
+
+    <div class="col-lg-6">
+      <div class="product_image">
+        <div class="slider_div">
+          <div class="slider_box" *ngFor="let item of products">
+            <img src="{{item.img}}">
+          </div>
+        </div>
+
+        <div class="grey_image_box">
+          <img src="assets/imgs/products/1.jpeg">
+          <img src="assets/imgs/discount.png" class="dis_img">
+          <label>37% <br>{{util.translate('OFF')}}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="product_detail">
+        <label class="pro_name">Good life almonds</label>
+
+        <div class="price_flex">
+          <label>{{util.translate('MRP')}} : <del>₹ 195.00</del></label>
+          <label style="margin-left: 20px !important;">{{util.translate('Price')}} : <span class="bold_price">
+              ₹ 170.00</span></label>
+        </div>
+
+        <div class="price_flex">
+          <label>{{util.translate('You Save')}} : <span class="green_span">₹ 25.00</span></label>
+          <label style="margin-left: 20px !important;">{{util.translate('Inclusive of all taxes')}}</label>
+        </div>
+
+        <label class="stock_lbl">{{util.translate('In Stock')}}</label>
+        <label class="sold_lbl">{{util.translate('Sold by')}} <span>Initappz</span></label>
+        <label class="ship_lbl">{{util.translate('Inaugural Offer')}} <span>{{util.translate('Free
+            Shipping')}}</span></label>
+
+        <div class="eligible_div">
+          <label>{{util.translate('Eligible')}}</label>
+          <img src="assets/imgs/sodexo_2.png">
+        </div>
+
+        <div class="cart_div">
+          <label>{{util.translate('Add to Cart')}}</label>
+          <div class="round_div">
+            <mdb-icon fas icon="plus"></mdb-icon>
+          </div>
+        </div>
+
+        <label class="delivery_lbl">{{util.translate('Delivery')}}</label>
+
+        <div class="loc_flex">
+          <mdb-icon fas icon="map-marker-alt"></mdb-icon>
+          <input type="text" class="form-control" [placeholder]="util.translate('Enter Your Pincode')">
+          <label class="app_btn">{{util.translate('CHECK')}}</label>
+        </div>
+        <label style="margin-top: 6px;font-size: 12px;color: grey;">{{util.translate('Check for estimated delivery
+          date')}}</label>
+
+        <div class="save_offer">
+          <img src="assets/imgs/green_discount.png">
+          <label><span>{{util.translate('Save Extra')}}</span> {{util.translate('with')}} 3
+            {{util.translate('offers')}}</label>
+        </div>
+
+        <div class="border_div">
+          <label>
+            {{util.translate('Mastercard – 10% Cashback on Saving Mastercard Details & completing a Min. Txn of Rs.')}}
+            799/- :
+            <span>{{util.translate('T&C Apply')}}</span>
+          </label>
+          <mdb-icon fas icon="angle-right"></mdb-icon>
+        </div>
+
+        <div class="border_div">
+          <label>
+            {{util.translate('Mobikwik - Flat Rs. 50/- SuperCash* on Min. Transaction of Rs.')}} 499/-:
+            <span>{{util.translate('T&C Apply')}}</span>
+          </label>
+          <mdb-icon fas icon="angle-right"></mdb-icon>
+        </div>
+
+        <label class="offer_btn">{{util.translate('See All Offers')}}</label>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="border_box">
+    <label class="bold_title">{{util.translate('Description')}}</label>
+    <label class="subtitle">Good Life Almonds</label>
+    <label class="desc_title">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe facere culpa iure ipsa voluptatum. Ipsa
+      provident sunt exercitationem ex illum delectus iste quis facilis? Aliquam consequatur sequi consequuntur
+      officiis soluta.
+    </label>
+    <label class="red_lbl">{{util.translate('SEE MORE')}}</label>
+  </div>
+
+  <div class="border_box">
+    <label class="bold_title">{{util.translate('Features & Details')}}</label>
+    <ul class="desc_title" style="padding-left: 16px;">
+      <li>100% pure and natural product</li>
+      <li>Superior quality product</li>
+      <li>Improves brain health</li>
+    </ul>
+  </div>
+
+  <div class="border_box">
+    <label class="bold_title">{{util.translate('Product Information')}}</label>
+    <div class="row">
+      <div class="col-lg-6">
+        <table>
+          <tr style="border-bottom: 1px solid lightgray;">
+            <td class="grey_back">
+              <label>{{util.translate('Brand')}}</label>
+            </td>
+            <td>
+              <label>Good Life</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="grey_back">
+              <label> {{util.translate('Manufacturer')}} </label>
+            </td>
+            <td>
+              <label> Manufacturer</label>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-lg-6">
+        <table>
+          <tr style="border-bottom: 1px solid lightgray;">
+            <td class="grey_back">
+              <label>{{util.translate('Country of Origin')}}</label>
+            </td>
+            <td>
+              <label>India</label>
+            </td>
+          </tr>
+          <tr>
+            <td class="grey_back">
+              <label>{{util.translate('Food Type')}}</label>
+            </td>
+            <td>
+              <img src="assets/imgs/veg.png" style="width: 15px;">
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="border_box">
+    <label class="bold_title">{{util.translate('Disclaimer')}}:</label>
+    <label class="desc_title">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe facere culpa iure ipsa voluptatum. Ipsa
+      provident sunt exercitationem ex illum delectus iste quis facilis? Aliquam consequatur sequi consequuntur
+      officiis soluta.
+    </label>
+  </div>
+
+  <div class="border_box">
+    <label class="bold_title">{{util.translate('Disclaimer')}}:</label>
+    <label class="desc_title">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe facere culpa iure ipsa voluptatum. Ipsa
+      provident sunt exercitationem ex illum delectus iste quis facilis? Aliquam consequatur sequi consequuntur
+      officiis soluta.
+    </label>
+  </div>
+
+  <div class="border_box">
+    <label class="bold_title">{{util.translate('You May Also Like')}}</label>
+    <carousel [cellWidth]="200" [height]="310" [autoplay]="true" style="z-index: unset;">
+      <div class="carousel-cell" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+        <div class="border_div">
+          <img src="assets/imgs/discount.png" class="abs_img">
+          <label class="abs_lbl">33% <br>{{util.translate('OFF')}}</label>
+          <img src="assets/imgs/products/2.jpeg" class="pro_image">
+          <label class="pro_name">Good Life Almonds</label>
+          <label class="old_price">{{util.translate('MRP')}} - <del>₹ 399.00</del></label>
+          <label class="bold_lbl">₹ 350.00</label>
+          <label class="green_lbl">₹ {{util.translate('Save')}} 49.00</label>
+          <div class="cart_div">
+            <label>{{util.translate('Add to Cart')}}</label>
+            <div class="round_div">
+              <mdb-icon fas icon="plus"></mdb-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </carousel>
+  </div>
+
+  <div class="border_box">
+    <label class="bold_title">{{util.translate("Don't Forget to Add")}}</label>
+    <carousel [cellWidth]="200" [height]="310" [autoplay]="true" style="z-index: unset;">
+      <div class="carousel-cell" *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+        <div class="border_div">
+          <img src="assets/imgs/discount.png" class="abs_img">
+          <label class="abs_lbl">33% <br>{{util.translate('OFF')}}</label>
+          <img src="assets/imgs/products/2.jpeg" class="pro_image">
+          <label class="pro_name">Good Life Almonds</label>
+          <label class="old_price">{{util.translate('MRP')}} - <del>₹ 399.00</del></label>
+          <label class="bold_lbl">₹ 350.00</label>
+          <label class="green_lbl">₹ {{util.translate('Save')}} 49.00</label>
+          <div class="cart_div">
+            <label>{{util.translate('Add to Cart')}}</label>
+            <div class="round_div">
+              <mdb-icon fas icon="plus"></mdb-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </carousel>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-5 border_box2">
+      <label class="bold_title">{{util.translate('Product Rating')}}</label>
+      <div class="flex_div">
+        <div class="first_div">
+          <label class="no_lbl">0<span>/5</span> </label>
+          <div class="star_div">
+            <mdb-icon far icon="star"></mdb-icon>
+            <mdb-icon far icon="star"></mdb-icon>
+            <mdb-icon far icon="star"></mdb-icon>
+            <mdb-icon far icon="star"></mdb-icon>
+            <mdb-icon far icon="star"></mdb-icon>
+          </div>
+          <label class="simple_lbl">{{util.translate('Based on 0 Ratings')}}</label>
+        </div>
+        <div class="rating_bar">
+          <div class="rate_flex" *ngFor="let review of reviews">
+            <label class="no_lbl">{{review.no}}</label>
+            <mdb-icon fas icon="star"></mdb-icon>
+            <div class="bar_div" [style.background]="getBackground(0, review.per)"></div>
+            <label class="per_lbl">{{review.per}}%</label>
+          </div>
+        </div>
+      </div>
+      <div class="rate_div">
+        <label>{{util.translate('Rate Products')}}</label>
+        <div class="star_div">
+          <mdb-icon fas icon="star"></mdb-icon>
+          <mdb-icon fas icon="star"></mdb-icon>
+          <mdb-icon fas icon="star"></mdb-icon>
+          <mdb-icon fas icon="star"></mdb-icon>
+          <mdb-icon fas icon="star"></mdb-icon>
+        </div>
+      </div>
+
+      <button type="button" class="btn review_btn" (click)="basicModal.show()">
+        {{util.translate('WRITE REVIEW')}}
+      </button>
+
+    </div>
+  </div>
+
+</div>
+
+
+<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">{{util.translate('Rate and Review Product')}}</h4>
+      </div>
+      <div class="modal-body">
+        <input mdbInput type="text" [placeholder]="util.translate('Name')" class="form-control">
+        <input mdbInput type="text" [placeholder]="util.translate('Title')" class="form-control">
+        <textarea [placeholder]="util.translate('Detail')" class="md-textarea form-control" mdbInput></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" mdbBtn class="waves-light" aria-label="Close" (click)="basicModal.hide()"
+          mdbWavesEffect>{{util.translate('SUBMIT')}}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-title> {{util.getString('Analytics')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+<app-closed *ngIf="util.appClosed"></app-closed>
+<ion-content class="ion-padding" *ngIf="!util.appClosed">
+  <ion-item>
+    <ion-label> {{util.getString('From Date')}} </ion-label>
+    <ion-datetime display-format="YYYY-MM-DD" mode="md" [(ngModel)]="from"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label> {{util.getString('To Date')}} </ion-label>
+    <ion-datetime display-format="YYYY-MM-DD" mode="md" [(ngModel)]="to"></ion-datetime>
+  </ion-item>
+  <ion-row>
+    <ion-col size="6">
+      <ion-button (click)="getStats()" expand="block" fill="outline" size="small">
+        {{util.getString('Get Stats')}}
+      </ion-button>
+    </ion-col>
+    <ion-col size="6" *ngIf="from && to && storeOrder?.length">
+      <ion-button (click)="print()" expand="block" fill="clear" size="small">
+        {{util.getString('Print')}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="from && to && storeOrder?.length && apiCalled" #invoiceTicket>
+    <h4 style="text-align: center;color: #7ec6aa;font-size: 14px;font-weight: bold;">Groceryee Full App </h4>
+    <p style="text-align: center;color: #ED7669;font-size: 12px;">{{getDate(from)}} to {{getDate(to)}}</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;font-size: 12px;">Groceryee Full
+      App</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;font-size: 12px;">Havamahel Palace Road
+      Palitana, <br>
+      Bhavnagar
+      364270</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;font-size: 12px;">info@groceryee.com</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;font-size: 12px;">9426585554</p>
+    <p style="text-align: left; font-weight: bold;color: #7EC6AA;font-size: 12px;">{{today()}}</p>
+    <ion-row>
+      <ion-col size="3"></ion-col>
+      <ion-col size="5">
+        <p
+          style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;font-size: 12px;font-weight: bold;;">
+          Total</p>
+        <p
+          style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;;font-size: 12px;font-weight: bold;">
+          {{util.getString('Commission')}}
+        </p>
+        <p
+          style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;font-size: 12px;font-weight: bold;;">
+          {{util.getString('Amount Received')}}
+        </p>
+      </ion-col>
+      <ion-col size="4">
+        <p style="color: black !important;margin: 0px !important;text-align: right;font-size: 12px;font-weight: bold;">
+          {{util.currecny}}
+          {{totalAmount}}
+        </p>
+        <p style="color: black !important; margin: 0px !important;text-align: right;font-size: 12px;font-weight: bold;">
+          {{util.currecny}}
+          {{commisionAmount}}
+        </p>
+        <p style="color: black !important;margin: 0px !important;text-align: right;font-size: 12px;font-weight: bold;">
+          {{util.currecny}}
+          {{toPay}}</p>
+      </ion-col>
+    </ion-row>
+    <table class="table" style="font-size: 10px;width: 100%;text-align: center;">
+      <thead>
+        <tr class="text-uppercase" style="color:#7ec6aa ;">
+          <th> {{util.getString('Id')}} </th>
+          <th> {{util.getString('Ordered on')}} </th>
+          <th> {{util.getString('Items')}} </th>
+          <th> {{util.getString('Total')}} </th>
+          <th> {{util.getString('Commission')}} </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of storeOrder" style="background-color: #F5F8FA;">
+          <td>#{{item.id}}</td>
+          <td>{{item.date_time}}</td>
+          <td>
+            <div style="width: 120px !important; white-space: pre-wrap;">
+              <span *ngFor="let orders of item.orders;let i =index;">
+                {{orders.name}} <span *ngIf="item.orders.length -1 !== i">,</span>
+              </span>
+            </div>
+          </td>
+
+          <td style="font-size: 8px;font-weight: bold;"> {{util.currecny}} {{item.grand_total}}</td>
+          <td style="font-size: 8px;font-weight: bold;">{{util.currecny}}{{getCommisions(item.grand_total)}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</ion-content>

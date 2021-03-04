@@ -1,0 +1,80 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="container">
+  <div class="row">
+
+    <div class="col-lg-3 sidemenu">
+      <div class="flex_title">
+        <label>{{util.translate('My Orders')}}</label>
+        <mdb-icon fas icon="angle-right"></mdb-icon>
+      </div>
+      <div class="flex_title">
+        <label>{{util.translate('My Refunds')}}</label>
+        <mdb-icon fas icon="angle-right"></mdb-icon>
+      </div>
+
+      <div class="flex_title" style="margin-top: 20px;">
+        <label>{{util.translate('Filters')}}</label>
+      </div>
+
+      <label class="bold_lbl"></label>
+
+      <div class="border_div">
+        <label class="bold_lbl">{{util.translate('Order Type')}}</label>
+        <div class="flex_div" *ngFor="let item of typeFilter; let i = index">
+          <div class="radio_div" [class.active]="type == i" (click)="chooseType(i)">
+            <div class="inner_div" *ngIf="type == i"></div>
+          </div>
+          <label>{{item}}</label>
+        </div>
+      </div>
+
+      <div class="border_div">
+        <label class="bold_lbl">{{util.translate('Time Filter')}}</label>
+        <div class="flex_div" *ngFor="let item of timeFilter; let i = index">
+          <div class="radio_div" [class.active]="time == i" (click)="chooseTime(i)">
+            <div class="inner_div" *ngIf="time == i"></div>
+          </div>
+          <label>{{item}}</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-9 right_side">
+
+      <div class="white_div" *ngFor="let item of products">
+        <div class="flex_status">
+          <label class="grey_lbl">{{util.translate('Order Status')}}</label>
+          <label class="grey_lbl">{{util.translate('Order Total')}} (2 {{util.translate('items')}})</label>
+        </div>
+        <div class="flex_status">
+          <label class="color_lbl">{{util.translate('Arriving')}} 1, Jan</label>
+          <label class="price_lbl">₹ {{item.price}}</label>
+        </div>
+        <div class="pro_flex">
+          <div class="pro_div">
+            <img src="{{item.img}}">
+            <label>
+              {{item.name}}
+            </label>
+          </div>
+          <div class="btns_div">
+            <button type="button" class="btn fill_btn" (click)="goToOrderDetail()">{{util.translate('View
+              Details')}}</button>
+            <button type="button" class="btn outline_btn">{{util.translate('Need Help')}}</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

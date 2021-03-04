@@ -1,0 +1,151 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+ion-content{
+    --background: var(--ion-color-primary);
+}
+
+.main_content_div{
+    width: 100%;
+    padding: 30px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    ion-icon{
+        color: var(--ion-color-primary);
+        font-size: 20px;
+        padding: 10px;
+    }
+    .iconDiv{
+        // margin-top: 80px;
+        text-align: center;
+        .icon{
+            // height: 50px;
+            width: 60px;
+        }
+    }
+    .form_div{
+        padding: 25px;
+        
+        position: relative;
+        .main_head{
+            display: block;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+            font-size: 30px;
+            margin: 10px;
+        }
+        ion-label {
+            font-size: 12px;
+            color: white;
+        }
+
+        .forgot{
+            display: block;
+            text-align: right;
+            color: white;
+        }
+        ion-input{
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            --padding-start: 8px;
+            --padding-end: 10px;
+        }
+
+        .cCode{
+            padding: 0px 10px;
+            border-bottom: 1px solid lightgray;
+            margin-bottom: 5px;
+            .ccLbl{
+            margin: 0px;
+            color: white;
+            padding: 5px;
+            } 
+        }
+
+        ion-item {
+            --border-radius: 20px;
+            ion-label {
+                color: gray !important;
+            }
+            ion-icon {
+                padding: 0px !important;
+            }
+        }
+
+        ion-button{
+            margin-top: 20px;
+            --border-radius: 20px;
+            --background: white;
+            --color: var(--ion-color-primary);
+            font-family: muli-bold;
+        }
+        .tri {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 15px solid white;
+            position: absolute;
+            top: -15px;
+        }
+        .lbl{
+            margin-top: 20px;
+            color: white;
+            display: block;
+            text-align: center;
+        }
+        .signup_span{
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+         .div_chk{
+            width: 100%;
+            margin: 20px 0px;
+            position: relative;
+
+            .lbl_police{
+                font-size: 10px;
+                // color: black;
+                margin-left: 40px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .span_term{
+                color: white;
+                // opacity: 0.5;
+                margin-right : 10px;
+            }
+
+            .chk{
+                --size : 20px;
+                // --background : transparent !important;
+                --border-radius : 5px !important;
+                --border-color-checked : var(--ion-color-primary);
+            }
+            .lbl_by{
+                display: block;
+                font-size: 10px;
+                color: black;
+                margin-top: 10px;
+            }
+            .span_termm{
+                color: #8992AA;
+                margin-right : 10px;
+            }
+        }
+    }
+}

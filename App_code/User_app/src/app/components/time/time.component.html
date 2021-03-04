@@ -1,0 +1,16 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-item (click)="selected('today')">
+  <p style="font-size: 12px;font-weight: bold;">{{util.getString('Today')}} {{today}}</p>
+</ion-item>
+
+<ion-item (click)="selected('next')">
+  <p style="font-size: 12px;font-weight: bold;">{{util.getString('Tomorrow')}} {{nextDay}}</p>
+</ion-item>

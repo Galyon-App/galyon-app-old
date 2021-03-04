@@ -1,0 +1,757 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div mdbModal #offersModal="mdbModal" class="modal fade center" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 9999;">
+  <div class="modal-dialog modal-notify " role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead" style="text-align: center;color:black"> {{util.translate('Apply Coupon')}} </p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="offersModal.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let item of offers" (click)="selectedOffers(item)">
+          <p class="couponDesc">
+            <span class="code"> {{util.translate('Use coupon code')}} {{item.name}} </span> <br>
+            <span class="desc">
+              {{ (item.descriptions.length>30)? (item.descriptions | slice:0:30)+'..':(item.descriptions) }}
+            </span> <br>
+            <span class="desc"> {{util.translate('Valid until')}} {{getTime(item.date_time)}} </span> <br>
+          </p>
+        </div>
+      </div>
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="primary" outline="true" class="waves-light" mdbWavesEffect data-dismiss="modal"
+          (click)="offersModal.hide()"> {{util.translate('Cancel')}} </a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<div mdbModal #addressFromMap="mdbModal" class="modal fade center" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 9999;">
+  <div class="modal-dialog modal-notify modal-success" role="document">
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Body-->
+      <div class="modal-body">
+        <div #map id="map" class="map"></div>
+        <div>
+          <h3>{{util.translate('Set your delivery location')}}</h3>
+          <p>{{util.translate('DELIVERY AREA')}}</p>
+          <div class="borders">
+            <p class="address">
+              <mdb-icon fas icon="check-circle" color="primary"></mdb-icon>
+              {{ (address.length>50)? (address | slice:0:50)+'..':(address) }}
+            </p>
+            <p class="changeBtn" mdbWavesEffect (click)="changeAddress()">{{util.translate('Change')}}</p>
+          </div>
+          <div *ngIf="addressSelected === true">
+            <div class="md-form">
+              <input id="house" style="height: auto !important;" [(ngModel)]="house" class="form-control" type="text"
+                mdbInput>
+              <label for="house"> {{util.translate('HOUSE / FLAT NO')}} </label>
+            </div>
+            <div class="md-form">
+              <input id="landmark" style="height: auto !important;" [(ngModel)]="landmark" class="form-control"
+                type="text" mdbInput>
+              <label for="landmark"> {{util.translate('LANDMARK')}} </label>
+            </div>
+            <div class="md-form">
+              <input id="pincode" style="height: auto !important;" [(ngModel)]="pincode" class="form-control"
+                type="text" mdbInput>
+              <label for="pincode"> {{util.translate('Pincode')}} </label>
+            </div>
+            <div class="md-form">
+              <select class="browser-default custom-select" [(ngModel)]="title">
+                <option value="home"> {{util.translate('HOME')}} </option>
+                <option value="work"> {{util.translate('WORK')}} </option>
+                <option value="other"> {{util.translate('OTHER')}} </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div>
+        </div>
+      </div>
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" *ngIf="addressSelected === false" mdbBtn color="success" class="waves-light" mdbWavesEffect
+          (click)="chooseFromMaps()">
+          {{util.translate('Confirm and Proceed')}}
+        </a>
+        <a type="button" *ngIf="addressSelected === true && editClicked ===false" mdbBtn color="success"
+          class="waves-light" mdbWavesEffect (click)="addAddress()">
+          {{util.translate('Add Address')}}
+        </a>
+        <a type="button" *ngIf="editClicked ===true" mdbBtn color="success" class="waves-light" mdbWavesEffect
+          (click)="editMyAddress()">
+          {{util.translate('Edit')}}
+        </a>
+        <a type="button" mdbBtn color="success" outline="true" class="waves-light" mdbWavesEffect data-dismiss="modal"
+          (click)="addressFromMap.hide()"> {{util.translate('Cancel')}} </a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<div mdbModal #frame="mdbModal" class="modal fade center" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 9999;">
+  <div class="modal-dialog modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead" style="text-align: center;"> {{util.translate('Pay with Stripe')}} </p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="row d-flex justify-content-center align-items-center" *ngIf="!addCard">
+          <a type="button" mdbBtn color="danger" outline="true" class="waves-light" mdbWavesEffect data-dismiss="modal"
+            (click)="addCard = true" *ngIf="cards?.length"> {{util.translate('Add New Card')}}
+          </a>
+        </div>
+        <hr *ngIf="!addCard">
+        <div *ngIf="!addCard" class="cards_list">
+          <div class="form-check" style="display: flex;flex-direction: row;align-items: center;"
+            *ngFor="let card of cards;let i = index">
+            <input type="radio" style="margin-right: 5px;" [(ngModel)]="token" class="form-check-input"
+              [value]="card.id" [id]="card.id" name="materialExampleRadios" mdbInput
+              [checked]="card.id === token ? true:false">
+            <label class="form-check-label" style="margin-left: 5px;" [for]="card.id"> {{card.brand}}
+              XXXX{{card.last4}} {{util.translate('Expiry')}} {{card.exp_month}} / {{card.exp_year}}
+            </label>
+          </div>
+        </div>
+        <div *ngIf="!cards?.length || addCard">
+          <!-- <input type="email" [placeholder]="util.translate('Email')" [(ngModel)]="email" class="form-control inputItem"> -->
+          <div class="md-form">
+            <input id="cnum" style="height: auto !important;" [(ngModel)]="cnumber" class="form-control" type="tel"
+              autocomplete="cc-number" ccNumber mdbInput>
+            <label for="cnum"> {{util.translate('Card Number')}} </label>
+          </div>
+          <div class="md-form">
+            <input id="cvc" style="height: auto !important;" [(ngModel)]="cvc" class="form-control" type="tel"
+              autocomplete="off" ccCvc mdbInput>
+            <label for="cvc">{{util.translate('CVC')}} </label>
+          </div>
+          <div class="md-form">
+            <input id="date" style="height: auto !important;" [(ngModel)]="date" class="form-control" type="tel"
+              autocomplete="cc-exp" ccExp mdbInput>
+            <label for="date">{{util.translate('Expire Date')}} </label>
+          </div>
+          <div class="md-form">
+            <input type="text" style="height: auto !important;" id="cname" class="form-control" [(ngModel)]="cname"
+              mdbInput>
+            <label for="cname"> {{util.translate('Card Holder Name')}} </label>
+          </div>
+          <div class="md-form">
+            <input type="email" style="height: auto !important;" id="email" class="form-control" [(ngModel)]="email"
+              mdbInput>
+            <label for="email"> {{util.translate('Email')}} </label>
+          </div>
+
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center" *ngIf="!addCard && cards.length">
+        <a type="button" mdbBtn color="danger" class="waves-light" mdbWavesEffect
+          (click)="payWithCard()">{{util.translate('Submit')}}
+        </a>
+      </div>
+
+      <div class="modal-footer justify-content-center" *ngIf="addCard || !cards?.length">
+        <a type="button" mdbBtn color="danger" class="waves-light" mdbWavesEffect
+          (click)="addcard()">{{util.translate('Pay')}}
+        </a>
+        <a type="button" mdbBtn color="danger" outline="true" class="waves-light" mdbWavesEffect data-dismiss="modal"
+          (click)="addCard = false;frame.hide()"> {{util.translate('Cancel')}} </a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<div mdbModal #changedPlace="mdbModal" class="modal fade center" id="frameModalTop" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 9999;">
+  <div class="modal-dialog modal-lg" role="document">
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Body-->
+
+      <div class="modal-body">
+        <div class="headers">
+          <p class="text">{{util.translate('Search Location')}}</p>
+          <mdb-icon fas mdbWavesEffect (click)="changedPlace.hide();addressFromMap.show()" icon="times-circle">
+          </mdb-icon>
+        </div>
+        <div class="md-form">
+          <input id="cnum" style="height: auto !important;" [(ngModel)]="query" [placeholder]="util.translate('Search')"
+            class="form-control" type="text" mdbInput (ngModelChange)="onSearchChange($event)">
+        </div>
+        <div class="addressList">
+          <div class="select_addr" *ngFor="let item of autocompleteItems1" (click)="selectSearchResult1(item)">
+            <mdb-icon fas icon="map-marker-alt" style="color: gray; margin-right: 10px;"></mdb-icon>
+            {{ item.description }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="cart.cart?.length">
+
+  <div class="row heading_row">
+    <div class="col-lg-7">
+      <label class="head_lbl" *ngIf="tabID == 1">{{util.translate('Cart')}} ({{this.cart.cart.length}} )</label>
+      <label class="head_lbl" *ngIf="tabID == 2">{{util.translate('Confirm Order')}}</label>
+      <label class="head_lbl" *ngIf="tabID == 3">{{util.translate('Payment')}}</label>
+    </div>
+    <div class="col-lg-5 flex_tab">
+      <div class="inner_flex">
+        <mdb-icon fas icon="shopping-cart" [class.active]="tabID == 1"></mdb-icon>
+        <label>{{util.translate('Your Cart')}}</label>
+      </div>
+      <div class="line_div"></div>
+      <div class="inner_flex">
+        <mdb-icon fas icon="clipboard-check" [class.active]="tabID == 2"></mdb-icon>
+        <label>{{util.translate('Confirm Order')}}</label>
+      </div>
+      <div class="line_div"></div>
+      <div class="inner_flex">
+        <mdb-icon fas icon="credit-card" [class.active]="tabID == 3"></mdb-icon>
+        <label>{{util.translate('Payment')}}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="tabID == 1">
+    <div class="col-lg-7">
+      <div class="cart_box">
+        <div class="header_flex">
+          <label class="head_lbl">{{util.translate('Groceries Basket')}} <span>({{cart.cart.length}}
+              {{util.translate('items')}})</span></label>
+          <label class="price_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.totalPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+
+        <div class="product_div" *ngFor="let item of cart.cart;let i = index">
+          <img [src]="api.mediaURL+item.cover">
+          <div class="detail_div">
+            <label class="pro_name">{{item.name}}</label>
+
+            <div *ngIf="item.size ==='1'" class="variant">
+              <div class="selecter" [ngbPopover]="popContent" placement="bottom" triggers="manual" #p1="ngbPopover"
+                (click)="p1.open()">
+                <span>
+                  <span> {{
+                    item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                    item.variations[0].items[item.variant].title ?
+                    item.variations[0].items[item.variant].title : ''}} </span>
+                  -
+                  <span *ngIf="util.cside ==='left'" class="price_lbl"> {{util.currecny}}
+                    <span class="original" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                                item.variations[0].items[item.variant].discount">
+                      {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                      item.variations[0].items[item.variant].price ?
+                      item.variations[0].items[item.variant].price : 0}}
+                    </span>
+                    <span class="sell" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                                item.variations[0].items[item.variant].discount"> {{item.variations &&
+                      item.variations[0] && item.variations[0].items[item.variant] &&
+                      item.variations[0].items[item.variant].discount ?
+                      item.variations[0].items[item.variant].discount : 0}}
+                    </span>
+                    <span
+                      *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                                item.variations[0].items[item.variant].discount === 0 && !item.variations[0].items[item.variant].discount">
+                      {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                      item.variations[0].items[item.variant].price ?
+                      item.variations[0].items[item.variant].price : 0}}
+                    </span>
+
+                  </span>
+                  <span *ngIf="util.cside ==='right'">
+                    <span class="original" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                                          item.variations[0].items[item.variant].discount">
+                      {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                      item.variations[0].items[item.variant].price ?
+                      item.variations[0].items[item.variant].price : 0}}
+                    </span>
+                    <span class="sell" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                                        item.variations[0].items[item.variant].discount">
+                      {{item.variations &&
+                      item.variations[0] && item.variations[0].items[item.variant] &&
+                      item.variations[0].items[item.variant].discount ?
+                      item.variations[0].items[item.variant].discount : 0}}
+                    </span>
+                    <span
+                      *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                                          item.variations[0].items[item.variant].discount === 0 && !item.variations[0].items[item.variant].discount">
+                      {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                      item.variations[0].items[item.variant].price ?
+                      item.variations[0].items[item.variant].price : 0}}
+                    </span>
+                    {{util.currecny}}
+                  </span>
+                </span>
+                <mdb-icon fas icon="angle-down"></mdb-icon>
+
+              </div>
+              <ng-template #popContent let-greeting="greeting">
+                <div *ngFor="let option of item.variations[0].items;let ix = index" class="normalItem"
+                  (click)="item.variant = ix;cart.calcuate()">
+                  {{option.title}} -
+                  <span class="price_lbl" *ngIf="option.discount === 0 && util.cside ==='left'"> {{util.currecny}}
+                    {{option.price}} </span>
+                  <span class="price_lbl" *ngIf="option.discount === 0 && util.cside ==='right'">
+                    {{option.price}}
+                    {{util.currecny}}</span>
+                  <span class="price_lbl" *ngIf="option.discount !== 0">
+                    <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{option.price}} </span>
+                    <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{option.discount}} </span>
+                    <span class="original" *ngIf="util.cside ==='right'"> {{option.price}} {{util.currecny}}</span>
+                    <span class="sell" *ngIf="util.cside ==='right'"> {{option.discount}} {{util.currecny}}</span>
+                  </span>
+                </div>
+
+              </ng-template>
+            </div>
+            <p class="itemsKind" *ngIf="item.size ==='0'">
+              <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.translate('grams')}} </span>
+              <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.translate('kg')}} </span>
+              <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.translate('ltr')}} </span>
+              <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.translate('ml')}} </span>
+              <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.translate('pcs')}} </span>
+            </p>
+            <div *ngIf="item.size ==='0'">
+              <p class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
+                {{item.original_price}} </p>
+              <p class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">
+                {{item.original_price}}
+                {{util.currecny}}</p>
+              <p class="price_lbl" *ngIf="item.discount !== '0'">
+                <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.original_price}} </span>
+                <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
+                <span class="original" *ngIf="util.cside ==='right'"> {{item.original_price}} {{util.currecny}}</span>
+                <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
+              </p>
+            </div>
+            <div class="qty_flex">
+              <div class="round_btn" (click)="remove(item,i)">
+                <mdb-icon fas icon="minus"></mdb-icon>
+              </div>
+              <label>{{item.quantiy}}</label>
+              <div class="round_btn" (click)="add(item,i)">
+                <mdb-icon fas icon="plus"></mdb-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+
+      <div class="login_box" *ngIf="haveSigned()===false">
+        <label class="head_lbl">{{util.translate('Authentication')}}</label>
+        <label class="simp_lbl"><span (click)="login()">{{util.translate('Log in')}}</span> {{util.translate('to see the
+          best offers and cashbacks deals')}}</label>
+      </div>
+
+      <div class="apply_box">
+        <label class="head_lbl">{{util.translate('Apply Coupon')}} <span class="btns"
+            (click)="offersModal.show()">{{util.translate('View deals')}}</span> </label>
+        <div class="apply_flex">
+          <img src="assets/imgs/discount2.png">
+          <input type="text" [(ngModel)]="offerName" class="form-control"
+            [placeholder]="util.translate('Enter coupon code')">
+          <label class="app_btn" (click)="applyOffers()" *ngIf="!cart.coupon">{{util.translate('APPLY')}}</label>
+          <label class="app_btn" (click)="removeOffers()" *ngIf="cart.coupon">{{util.translate('Remove')}}</label>
+        </div>
+      </div>
+
+      <div class="payment_box">
+        <label class="head_lbl">{{util.translate('Payment Details')}}</label>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Item Total')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.totalPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Taxes & Charges')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.orderTax}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.orderTax}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Delivery Charges')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.deliveryPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray" *ngIf="cart.coupon">
+          <label class="price_lbl">{{util.translate('Product Discount')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.discount}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price">
+          <label class="price_lbl" style="font-weight: 600;color: black;">{{util.translate('Total Amount')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.grandTotal}} {{util.currecny}}</span>
+          </label>
+        </div>
+
+      </div>
+
+      <div class="delivery-options">
+        <label class="head_lbl">{{util.translate('Delivery Options')}}</label>
+        <div class="form-check">
+          <input type="radio" (change)="handleChange('home')" class="form-check-input" id="materialUnchecked"
+            name="materialExampleRadios" [checked]="deliveryOption === 'home'?true:false" value="home" mdbInput>
+          <label class="form-check-label" for="materialUnchecked"> {{util.translate('At Home')}} </label>
+          <img src="assets/imgs/home.png" class="imgs" />
+        </div>
+
+        <div class="form-check">
+          <input type="radio" (change)="handleChange('store')" class="form-check-input" id="materialChecked"
+            name="materialExampleRadios" value="store" mdbInput [checked]="deliveryOption === 'store'?true:false">
+          <label class="form-check-label" for="materialChecked"> {{util.translate('Self Pickup')}} </label>
+          <img src="assets/imgs/store.png" class="imgs" />
+        </div>
+        <br>
+        <label class="head_lbl">{{util.translate('Receive at')}}</label>
+        <ng-template #popContent2 let-greeting="greeting">
+          <button type="button" class="btn btn-clear mr-2 bolder" (click)="onSelect('today')" mdbWavesEffect mdbBtn
+            triggers="manual">
+            {{util.translate('Today')}} {{today}}
+
+          </button>
+          <button type="button" class="btn btn-clear mr-2 bolder" (click)="onSelect('next')" mdbWavesEffect mdbBtn
+            triggers="manual">
+            {{util.translate('Tomorrow')}} {{nextDay}}
+
+          </button>
+        </ng-template>
+        <button type="button" class="btn btn-clear mr-2 dateBtn" mdbWavesEffect mdbBtn [ngbPopover]="popContent2"
+          triggers="manual" placement="bottom" #p2="ngbPopover" (click)="p2.open()">
+          {{time}}
+          <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        </button>
+        <div *ngIf="deliveryOption === 'store'">
+          <br>
+          <label class="head_lbl"> {{util.translate('Stores')}} </label>
+          <div *ngFor="let item of storeAddress" class="stores">
+            <p class="name">
+              <span class="fa fa-map-marker" aria-hidden="true"></span> {{item.name}}
+            </p>
+            <p class="address"> {{item.address}} </p>
+          </div>
+
+          <p class="bottomText" *ngIf="deliveryOption === 'store'"> <span class="bolder">{{util.translate('Note')}} :
+            </span>
+            {{util.translate(getString())}}
+          </p>
+        </div>
+      </div>
+
+      <div class="btn_div" *ngIf="haveSigned()===true">
+        <button type="button" class="btn" (click)="next()">{{util.translate('Place Order')}}</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row" *ngIf="tabID == 2">
+    <div class="col-lg-7">
+
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12 newAddress_card" (click)="addNewAddress()">
+          <i class="fas fa-plus-circle"></i>
+          <label class="lbl">{{util.translate('Add New')}}</label>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 address_card" (click)="selectAddress(item)"
+          *ngFor="let item of myaddress">
+          <p class="title">{{item.title}} </p>
+          <div class="selectedAddress" *ngIf="selectedAddress ===item.id">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="full_address">{{item.house}} {{item.landmark}} {{item.address}}</p>
+
+        </div>
+      </div>
+
+
+      <div class="cart_box">
+        <div class="header_flex">
+          <label class="head_lbl">{{util.translate('Groceries Basket')}} <span>({{cart.cart.length}}
+              {{util.translate('items')}})</span></label>
+          <label class="price_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.totalPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+
+        <div class="product_div" *ngFor="let item of cart.cart;let i = index">
+          <img [src]="api.mediaURL+item.cover">
+          <div class="detail_div">
+            <label class="pro_name">{{item.name}}</label>
+
+            <span class="itemsKind" *ngIf="item.size ==='1'">
+              {{item.variations[0].items[item.variant].title}}
+            </span>
+            <div *ngIf="item.size ==='1'">
+              <p class="price_lbl"
+                *ngIf="item.variations[0].items[item.variant].discount === 0 && util.cside ==='left'"> {{util.currecny}}
+                {{item.variations[0].items[item.variant].price}} </p>
+              <p class="price_lbl"
+                *ngIf="item.variations[0].items[item.variant].discount === 0 && util.cside ==='right'">
+                {{item.variations[0].items[item.variant].price}}
+                {{util.currecny}}</p>
+              <p class="price_lbl" *ngIf="item.variations[0].items[item.variant].discount !== 0">
+                <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}}
+                  {{item.variations[0].items[item.variant].price}} </span>
+                <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}}
+                  {{item.variations[0].items[item.variant].discount}} </span>
+                <span class="original" *ngIf="util.cside ==='right'"> {{item.variations[0].items[item.variant].price}}
+                  {{util.currecny}}</span>
+                <span class="sell" *ngIf="util.cside ==='right'"> {{item.variations[0].items[item.variant].discount}}
+                  {{util.currecny}}</span>
+              </p>
+            </div>
+            <p class="itemsKind" *ngIf="item.size ==='0'">
+              <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.translate('grams')}} </span>
+              <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.translate('kg')}} </span>
+              <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.translate('ltr')}} </span>
+              <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.translate('ml')}} </span>
+              <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.translate('pcs')}} </span>
+            </p>
+            <div *ngIf="item.size ==='0'">
+              <p class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
+                {{item.original_price}} </p>
+              <p class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">
+                {{item.original_price}}
+                {{util.currecny}}</p>
+              <p class="price_lbl" *ngIf="item.discount !== '0'">
+                <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.original_price}} </span>
+                <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
+                <span class="original" *ngIf="util.cside ==='right'"> {{item.original_price}} {{util.currecny}}</span>
+                <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-lg-5">
+
+
+      <div class="payment_box">
+        <label class="head_lbl">{{util.translate('Payment Details')}}</label>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Item Total')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.totalPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Taxes & Charges')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.orderTax}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.orderTax}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Delivery Charges')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.deliveryPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray" *ngIf="cart.coupon">
+          <label class="price_lbl">{{util.translate('Product Discount')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.discount}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price">
+          <label class="price_lbl" style="font-weight: 600;color: black;">{{util.translate('Total Amount')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.grandTotal}} {{util.currecny}}</span>
+          </label>
+        </div>
+
+      </div>
+      <div class="btn_div">
+        <button type="button" class="btn" (click)="prev()">{{util.translate('Back')}}</button>
+        <button type="button" class="btn" (click)="next()">{{util.translate('Make Payment')}}</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row" *ngIf="tabID == 3">
+    <div class="col-lg-7">
+
+      <div class="payPalBtn" *ngIf="cart.havePayment && cart.havePayPal">
+        <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+      </div>
+      <div class="radioBtns">
+        <div class="flexer" (click)="payMethod('cod')" *ngIf="cart.havePayment && cart.haveCOD">
+          <div class="checkMark" *ngIf="payMethods=='cod'">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="payName"> {{util.translate('Cash on delivery')}} </p>
+          <img src="assets/imgs/cod.png" class="imgs" />
+        </div>
+
+        <div class="flexer" (click)="payMethod('stripe')" *ngIf="cart.havePayment && cart.haveStripe">
+          <!-- <img src="assets/check.png" alt="" class="checkMark" *ngIf="payMethods=='stripe'"> -->
+          <div class="checkMark" *ngIf="payMethods=='stripe'">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="payName"> {{util.translate('Pay with Stripe')}} </p>
+          <img src="assets/imgs/stripe.png" class="imgs" />
+        </div>
+
+        <div class="flexer" (click)="payMethod('razor')" *ngIf="cart.havePayment && cart.haveRazor">
+          <!-- <img src="assets/check.png" alt="" class="checkMark" *ngIf="payMethods=='razor'"> -->
+          <div class="checkMark" *ngIf="payMethods=='razor'">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="payName"> {{util.translate('Pay with RazorPay')}} </p>
+          <img src="assets/imgs/razor.svg" class="imgs" />
+        </div>
+
+        <div class="flexer" (click)="payMethod('paytm')" *ngIf="cart.havePayment && cart.havePayTM">
+          <!-- <img src="assets/check.png" alt="" class="checkMark" *ngIf="payMethods=='paytm'"> -->
+          <div class="checkMark" *ngIf="payMethods=='paytm'">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="payName"> {{util.translate('Pay with PayTM')}} </p>
+          <img src="assets/imgs/paytmlogo.png" class="imgs" />
+        </div>
+
+        <div class="flexer" (click)="payMethod('instamojo')" *ngIf="cart.havePayment && cart.haveInstamojo">
+          <!-- <img src="assets/check.png" alt="" class="checkMark" *ngIf="payMethods=='instamojo'"> -->
+          <div class="checkMark" *ngIf="payMethods=='instamojo'">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="payName"> {{util.translate('Pay with Instamojo')}} </p>
+          <img src="assets/imgs/instalogos.png" class="imgs" />
+        </div>
+
+        <div class="flexer" (click)="payMethod('paystacks')" *ngIf="cart.havePayment && cart.havePayStack">
+          <!-- <img src="assets/check.png" alt="" class="checkMark" *ngIf="payMethods=='paystacks'"> -->
+          <div class="checkMark" *ngIf="payMethods=='paystacks'">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="payName"> {{util.translate('Pay with PayStacks')}} </p>
+          <img src="assets/imgs/paystack.png" class="imgs" />
+        </div>
+
+        <div class="flexer" (click)="payMethod('flutterPay')" *ngIf="cart.havePayment && cart.haveFlutterwave">
+          <!-- <img src="assets/check.png" alt="" class="checkMark" *ngIf="payMethods=='flutterPay'"> -->
+          <div class="checkMark" *ngIf="payMethods=='flutterPay'">
+            <i class="fas fa-check-circle arrow"></i>
+          </div>
+          <p class="payName"> {{util.translate('Pay with Flutterwave')}} </p>
+          <img src="assets/imgs/flutter.png" class="imgs" />
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+    <div class="col-lg-5">
+      <div class="payment_box">
+        <label class="head_lbl">{{util.translate('Payment Details')}}</label>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Item Total')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.totalPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Taxes & Charges')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.orderTax}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.orderTax}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Delivery Charges')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.deliveryPrice}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray" *ngIf="cart.coupon">
+          <label class="price_lbl">{{util.translate('Product Discount')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.discount}} {{util.currecny}}</span>
+          </label>
+        </div>
+        <div class="flex_price">
+          <label class="price_lbl" style="font-weight: 600;color: black;">{{util.translate('Total Amount')}}</label>
+          <label class="red_lbl">
+            <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}} </span>
+            <span class="original" *ngIf="util.cside ==='right'"> {{cart.grandTotal}} {{util.currecny}}</span>
+          </label>
+        </div>
+
+      </div>
+      <div class="btn_div">
+        <button type="button" class="btn" (click)="prev()">{{util.translate('Back')}}</button>
+        <button type="button" class="btn" (click)="proceed()">{{util.translate('Create Payment')}}</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="container not-found" *ngIf="!cart.cart?.length">
+  <img src="assets/imgs/3298067.jpg" class="img" alt="">
+  <p class="text">{{util.translate('No items found')}} </p>
+</div>

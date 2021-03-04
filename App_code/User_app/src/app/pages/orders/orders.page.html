@@ -1,0 +1,77 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-title> {{util.getString('Your Orders')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-closed *ngIf="util.appClosed"></app-closed>
+
+<ion-content *ngIf="!util.appClosed">
+  <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="!dummy?.length && !orders?.length" class="nothing">
+    <p class="bolder"> {{util.getString('No Order found!')}} </p>
+    <img src="assets/imgs/basket.gif" alt="" srcset="">
+  </div>
+  <ion-item *ngFor="let item of dummy">
+    <ion-thumbnail slot="start">
+      <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
+    </ion-thumbnail>
+    <ion-label>
+      <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+    </ion-label>
+
+  </ion-item>
+  <div class="main_content_div" *ngIf="orders?.length">
+
+    <ion-label class="top_lbl"> {{util.getString('Orders')}} </ion-label>
+
+    <div class="content_div">
+
+      <div class="card_div" *ngFor="let item of orders" (click)="goToOrder(item)">
+
+        <div class="image_div">
+          <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/user.png'">
+        </div>
+        <div class="desc_div">
+          <ion-label style="font-weight: bold;color: gray;font-size: 12px;"> {{util.getString('ORDER')}} #{{item.id}}
+          </ion-label>
+          <div *ngIf="item.orders?.length" class="border_bottom">
+            <p *ngFor="let order of item.orders;let ol = index" class="items">
+              <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
+                </span> </span>
+              <span>X {{order.quantiy}}</span>
+            </p>
+            <p class="itemss">
+              <span> {{util.getString('Total')}} </span>
+              <span *ngIf="util.cside ==='left'"> {{util.currecny}}{{item.grand_total}} </span>
+              <span *ngIf="util.cside ==='right'">{{item.grand_total}} {{util.currecny}} </span>
+            </p>
+          </div>
+          <ion-label class="datetime">{{ item.date_time}}</ion-label>
+        </div>
+        <!-- <div class="status">
+          {{item.status}}
+        </div> -->
+      </div>
+
+    </div>
+  </div>
+</ion-content>

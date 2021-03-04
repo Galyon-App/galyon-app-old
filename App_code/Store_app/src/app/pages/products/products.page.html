@@ -1,0 +1,79 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Products')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createNew()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [placeholder]="util.getString('Search')" mode="ios" inputmode="text" type="text"
+    (ionChange)="onSearchChange($event)" [debounce]="250" animated></ion-searchbar>
+  <div class="main_content_div">
+    <h2 class="ion-text-center" *ngIf="!dummy?.length && !products?.length"> {{util.getString('No Products Found!')}}
+    </h2>
+    <ion-item *ngFor="let item of dummy">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+
+    <div class="card_div" *ngFor="let item of products;" (click)="viewProduct(item)">
+      <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+item.cover+')'">
+        <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
+      </div>
+      <div class="second_div">
+        <ion-label class="name_lbl">{{item.name}}</ion-label>
+        <img src="assets/imgs/veg.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
+        <img src="assets/imgs/non.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+        <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
+        <ion-label class="desc">
+          {{ (item.descriptions.length>50)? (item.descriptions | slice:0:50)+'..':(item.descriptions) }} </ion-label>
+        <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
+          {{item.original_price}} </ion-label>
+        <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">{{item.original_price}}
+          {{util.currecny}}</ion-label>
+        <ion-label class="price_lbl" *ngIf="item.discount !== '0'">
+          <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.original_price}} </span>
+          <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
+
+          <span class="original" *ngIf="util.cside ==='right'"> {{item.original_price}} {{util.currecny}}</span>
+          <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
+
+        </ion-label>
+        <ion-label class="stoke">
+          <span *ngIf="item.in_stoke === '1'" class="in"> {{util.getString('In Stoke')}} </span>
+          <span *ngIf="item.in_stoke === '0'" class="out"> {{util.getString('Out of Stoke')}} </span>
+        </ion-label>
+      </div>
+    </div>
+  </div>
+</ion-content>

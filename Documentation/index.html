@@ -1,0 +1,1704 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<head lang="en">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Ionic 5 Grocery Full App / Delivery Service / E-Commerce / Multile Payment</title>
+	<!-- Framework CSS -->
+	<link rel="stylesheet" href="assets/blueprint-css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="assets/blueprint-css/print.css" type="text/css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+	<link rel="stylesheet" href="assets/blueprint-css/plugins/fancy-type/screen.css" type="text/css"
+		media="screen, projection">
+	<style type="text/css" media="screen">
+		p,
+		table,
+		hr,
+		.box {
+			margin-bottom: 25px;
+		}
+
+		.box p {
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+
+
+<body>
+	<a href="https://youtu.be/8kJZTueGdeA" target="_blank"
+		style="position: fixed;background: red;text-decoration: none; padding: 20px;color: white;">Video
+		Tutorial</a>
+	<div class="container">
+
+		<h3 class="center alt">&ldquo;Ionic 5 Grocery Full App / Delivery Service / E-Commerce / Multile Payment&rdquo;
+			Documentation by
+			&ldquo;initappz&rdquo; v1.0
+		</h3>
+
+		<hr>
+
+		<h1 class="center">&ldquo;Ionic 5 Grocery Full App / Delivery Service / E-Commerce / Multile Payment&rdquo;</h1>
+
+		<div class="borderTop">
+			<div class="span-6 colborder info prepend-1">
+				<p class="prepend-top">
+					<strong>
+						Created: 18/09/2020<br>
+						By: Rahul Jograna (initappz) <br>
+						Email: <a href="mailto:info@initappz.com">info@initappz.com</a>
+					</strong>
+				</p>
+			</div><!-- end div .span-6 -->
+
+			<div class="span-12 last">
+				<p class="prepend-top append-0">Thank you for purchasing my app. If you have any questions that are
+					beyond the scope of this help file, please feel free to email via my user page contact form <a
+						href="https://themeforest.net/user/initappz">here</a>. Thanks so much!</p>
+			</div>
+		</div><!-- end div .borderTop -->
+
+		<hr>
+
+		<h2 id="toc" class="alt">Table of Contents</h2>
+		<ol class="alpha">
+			<li><a href="#start">Overview</a></li>
+			<li><a href="#folders">Folder Structure</a></li>
+			<li><a href="#ionicSetup">Ionic Setup</a></li>
+			<li><a href="#apisetup">API setup</a></li>
+			<li><a href="#emailSetup">Email setup</a></li>
+			<li><a href="#adminConfigure">Admin App Configuration</a> </li>
+			<li><a href="#userAppConfigure">User App Configuration </a> </li>
+			<li><a href="#storeAppConfigure">Store App Configuration </a> </li>
+			<li><a href="#driverAppConfigure">Driver App Configuration </a> </li>
+			<li><a href="#webAppConfigure">Web App Configuration </a> </li>
+			<li><a href="#onesignal">OneSignal Setup (Push Notifications)</a></li>
+			<li><a href="#googleMaps">Google Maps Setup</a></li>
+			<li><a href="#stripeKeys">Stripe Payment Setup</a></li>
+			<li><a href="#paypalKeys">PayPal Payment Setup</a></li>
+			<li><a href="#razorKeys">RazorPay Payment Setup</a></li>
+			<li><a href="#paytmKeys">Paytm Payment Setup</a></li>
+			<li><a href="#instamojo">Instamojo Payment Setup</a></li>
+			<li><a href="#paystack">PayStack Payment Setup</a></li>
+			<li><a href="#flutterwave">Flutterwave Payment Setup</a></li>
+			<li><a href="#help"> Help </a></li>
+			<li><a href="#translations"> Translations </a></li>
+			<li><a href="#twillo"> Twillo Setup FOR SMS </a></li>
+			<li><a href="#sources">Sources and Credits</a></li>
+
+		</ol>
+
+		<hr>
+
+		<h3 id="htmlStructure"><strong>A) Overview</strong> - <a href="#toc">top</a></h3>
+		<p>This Ionic 5 Grocery Full App / Delivery Service / E-Commerce / Multile Payment is fully functional and ready
+			to use app with PHP(codeigniter) backend,
+			you will receive 4 main
+			apps(User App, Store App, Delivery App,Web User Version made with angular 8+) including Admin Panel with
+			support of PWA. App is
+			regularly
+			tested with
+			Androird and iOS.App supports multi
+			stores, multiple cities , multi languages and multiple payment gateway. the app is well documented with
+			installations guides .</p>
+
+		<p style="text-align: left;font-size: 1.5rem;"><b>Features</b></p>
+		<p>
+		<ul>
+			<li>Fully functional. </li>
+			<li>4 Main Apps (User App,Store App, Delivery App,Web User Version made with angular 8+ )+ Admin Panel PWA
+				support.</li>
+			<li>Multi Store supports. </li>
+			<li>Multi languages. </li>
+			<li>Mutli payment gateway (Cash on Delivery, PayPal,Stripe,RazorPay,PayTM,Instamojo,Paystack,Flutterwave)
+			</li>
+			<li>Multi currency</li>
+			<li>RTL support</li>
+			<li>Self / Home Delivery </li>
+			<li>Today / Tomorrow Days Delivery </li>
+			<li>Unique and Attractive UI </li>
+			<li>Address From Geo Location</li>
+			<li>Push Notification </li>
+			<li>Print Order For User</li>
+			<li>Mail Features</li>
+			<li>Admin Invoice Generator</li>
+			<li>Stores Reviews </li>
+			<li>Products Reviews </li>
+			<li>Driver Reviews </li>
+			<li>Text Messages (Twillio)</li>
+			<li>Live Demo</li>
+		</ul>
+		<br>
+		<hr>
+		<br>
+		<h3 id="folders"><strong>B) Folder Structure</strong> - <a href="#toc">top</a></h3>
+		<p>Once You Download the Product You will Receive the Zip File which contains Project Zip.
+			Named as ionic5GroceryeeAppFull.zip</p>
+		<p>Unzip the ionic5GroceryeeAppFull.zip File And You Will Find The Zip File Of All The Projects Like in
+			ScreenShot:
+		</p>
+		<hr>
+		<img src="assets/images/folder.png" alt="Folder Structure" style="width: 100%;" />
+		<p> <b>Open the Installations Guides.pdf File for Installations and Setup Instructions for ionic cli.</b></p>
+		<p><i>Note If you wish to Use whole project instead of the Some Content of Project then you can
+				Directly use it
+				as
+				Shown in
+				Installations Guides.pdf file</i></p>
+
+
+
+		<p>You will find the Folder name as App_code</p>
+		<p> Now Open Terminal for Mac or Command Prompt for Windows and Open App_code Folder
+			Inside
+			terminal.</p>
+		<img src="assets/images/terminal.png" alt="terminal" style="width: 100%;" />
+		<p> Now Follow the Instructions in Installations Guides.pdf file for further Installations Steps.
+		</p>
+
+		<p> Now Open any app from App_code. for full configuration and comman we will open the UserApp or
+			folder inside
+			your
+			Code Editor Like Visula Studio code ,sublime
+			etc. you
+			will
+			see
+			the structure of Ionic Projects</p>
+		<img src="assets/images/code.png" alt="Project structure" style="width: 100%;" />
+		<p> Now Open the config.xml file and Change the Name and Other Stuff like app version and app
+			package
+			name.</p>
+		<img src="assets/images/config.png" alt="config" style="width: 100%;" />
+		<p>Next if you want to change the Theme Color of Your Application. you can do it from your self by
+			changing
+			the color code of this file. open src/app/theme/variables.scss file and you can find the rest of
+			the
+			code
+			like in image
+			you can change color of primary as your default app color</p>
+		<p><i>Note: color should be in hex format only.</i></p>
+		<img src="assets/images/color.png" alt="config" style="width: 100%;" />
+		<p> Now to use rest of the Screens and Config you can find in app folder and pages,components,
+			folders
+		</p>
+		<img src="assets/images/folder2.png" alt="config" /><br>
+		<img src="assets/images/folder3.png" alt="config" /><br>
+		<img src="assets/images/folder4.png" alt="config" /><br>
+		<p>For FrontEnd designs you Can Edit the Code inside .html File and The css you can edit or add
+			inside .scss
+			file.</p>
+		<p>Ionic 5 use Html as FrontEnd designs which is Easy to Develop. you can find The Component of
+			Ionic From <a href="https://ionicframework.com/docs/components/">here</a>
+		</p>
+		<p>You can see the Structure of Html from in Image</p>
+		<img src="assets/images/html.png" alt="html Structure" style="width: 100%;" />
+		<br><br>
+		<p>Ionic 5 use scss as StyleSheet !, the scss is same as css.</p>
+		<img src="assets/images/scss.png" alt="scss Structure" style="width: 100%;" />
+		<br>
+		<br>
+		<p>Ionic 5 use Typescript as Business Login Development you can write your login inside the .ts
+			file.</p>
+		<img src="assets/images/ts.png" alt="scss Structure" style="width: 100%;" />
+
+		<hr>
+		<br>
+		<hr>
+		<br>
+		<h3 id="ionicSetup"><strong>C) Ionic Setup</strong> - <a href="#toc">top</a></h3>
+
+		<p><b> If you already have ionic setup in your system then you can skip this step</b></p>
+
+		<a
+			href="https://medium.com/@prajramesh93/installation-and-setup-of-android-ios-using-ionic3-cordova-5598efa46d8e">Follow
+			this link for more</a>
+		<br>
+		<br>
+		<h3><b>Installing Ionic</b></h3>
+		<p>Ionic apps are created and developed primarily through the Ionic command-line utility. The Ionic CLI is the
+			preferred
+			method of installation, as it offers a wide range of dev tools and help options along the way. It is also
+			the main tool
+			through which to run the app and connect it to other services, such as Ionic Appflow.</p>
+		<h3><b>Install the Ionic CLI</b></h3>
+		Before proceeding, make sure your computer has <a
+			href="https://ionicframework.com/docs/reference/glossary#node">Node.js</a> installed. <a
+			href="https://ionicframework.com/docs/intro/environment">See these instructions</a>
+		to set up an environment for
+		Ionic.
+		<p></p>
+		<h3><b> Install the Ionic CLI with npm:</b></h3>
+		<pre>
+		npm install -g @ionic/cli
+		</pre>
+		<p>If there was a previous installation of the Ionic CLI, it will need to be uninstalled due to a change in
+			package name.</p>
+		<pre>
+		npm uninstall -g ionic
+		npm install -g @ionic/cli
+		</pre>
+		<p>For More Installations guide follow <a href="https://ionicframework.com/docs/intro/cli">this instructions</a>
+		</p>
+		<hr>
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="apisetup"><strong>D) API setup</strong> - <a href="#toc">top</a></h3>
+		<p>
+			CodeIgniter is a powerful PHP framework with a very small footprint, built for developers who need a simple
+			and elegant
+			toolkit to create full-featured web applications.
+		</p>
+		<p>We have used <b> CodeIgniter version 3.1.11 </b> for APIs </p>
+		<p>Let's Integrate APIs in your app</p>
+		<p>open environment.ts file in src/environment folder, here you can find two environment file, one is for debug
+			mode and
+			one is for production mode. you can set your credentials here for better security</p>
+		<p>Visit Website for more about CodeIgniter and installation <a
+				href="https://codeigniter.com/userguide3/installation/index.html">here</a> </p>
+		<p>Now as you can see in below image, we have set many credentials for various apis</p>
+		<img src="assets/images/env.png" alt="" style="width: 100%;">
+		<br>
+		<br>
+		<h2 style="text-transform: uppercase;"> <b> There are 5 Steps for integrate API to your apps</b> </h2>
+
+		<!-- Step 1 -->
+
+		<h3 style="text-transform: uppercase;"> <b>Step 1 : Database </b> </h3>
+
+		<p>First step to integrate api is for your app is to create database in your live or local phpmyadmin, here we
+			are configured it to live server </p>
+		<p> for this open you cPANEL and open link called MYSQL Database as shown in image below </p>
+		<img src="assets/images/api2.png" alt="" style="width: 100%;">
+		<p> Once you click on MYSQL Database link it will redirect you to page, where we can create/manage
+			database,user.
+		</p>
+		<p>Now first create databse for our APIs as shown in image below, give suitable name to your database</p>
+		<img src="assets/images/api3.png" alt="" style="width: 100%;">
+		<p> After successfully creating database you have to add it to database.sql file find in source code. copy the
+			name of database as shown in image below</p>
+		<img src="assets/images/api4.png" alt="" style="width: 100%;">
+		<p> Now Open App_code folder and open database.sql file in Code Editor as shown in image below </p>
+		<img src="assets/images/db.png" alt="" style="width: 100%;">
+		<p>And Change name to newly newly created database name as shown in image below</p>
+		<img src="assets/images/api5.png" alt="" style="width: 100%;">
+		<p> Next step is to create database user, for that in same MYSQL Database page scroll down and you will find
+			MYSQL Users Section and Add New User Section </p>
+		<p>Now Create User with giving suitable username and password as shown in image below</p>
+		<img src="assets/images/api6.png" alt="" style="width: 100%;">
+		<p> After successfully creating user, we have to add this user to our database, in order to do that just scroll
+			down MYSQL Database page, you can see the section called Add User To Database as shown in image below </p>
+		<p>Select Recently created database user that you have created, and click Add button</p>
+		<img src="assets/images/api7.png" alt="" style="width: 100%;">
+		<p>Now it will redircting you to permission page for database, now select all the permission as shown image
+			below and click submit button</p>
+		<img src="assets/images/api8.png" alt="" style="width: 100%;">
+		<p>Now our database is ready to use, now go to home page of cPANEL and click on phpmyadmin and it will
+			redircting you to the phpmyadmin console page as shown in image below </p>
+		<img src="assets/images/api9.png" alt="" style="width: 100%;">
+		<p>Now select database you have created and in phpmyadmin console and click on import section on top of the
+			screen as shown in image below and try to import or drag and drop database.sql from App_code folder </p>
+		<img src="assets/images/api10.png" alt="" style="width: 100%;">
+		<p>Wait a minute our database will execute and create database for you as shown in image below</p>
+		<img src="assets/images/api11.png" alt="" style="width: 100%;">
+		<!-- Step 1 -->
+
+		<!-- Step 2 -->
+		<h3 style="text-transform: uppercase;"> <b>Step 2 : APIs Setup</b> </h3>
+		<p> Now our database is ready to use for rest APIs, ok so next step is to add connection between PHP CodeIgniter
+			to Database, here CodeIgniter provide bridge between it, called database config, in order to do that you
+			have to add, username/password and database name to the CodeIgniter
+		</p>
+		<p>Now Open App_code folder and open folder called API(CodeIgniter project) as shown in image below</p>
+		<img src="assets/images/folder.png" alt="" style="width: 100%;">
+		<img src="assets/images/db.png" alt="" style="width: 100%;">
+
+		<p>Open file API/application/config/database.php as shown in image below</p>
+		<img src="assets/images/api12.png" alt="" style="width: 100%;">
+
+		<p>Here we have used to different variables called debug and prod commented, </p>
+		<ul>
+			<li>
+				Debug for localhost
+			</li>
+			<li>
+				prod for live server
+			</li>
+		</ul>
+		<p>If you wanted to test locally just comment out prod variables or if you wanted to run it live just comment
+			out debug variables</p>
+		<p>Now add username, password recently created user in MYSQL Database and database which we have created in same
+		</p>
+		<p>Done with database connection, Yeepee!!</p>
+
+		<!-- Step 2 -->
+
+		<!-- Step 3 -->
+		<h3 style="text-transform: uppercase;"> <b>Step 3 : Upload APIs</b> </h3>
+		<p>Uploading APIs or Make it live on server is easy, here you can upload it to sub domain or in primary domain,
+			we suggest you to upload it in sub domain. we will demonstrate it on sub domain. </p>
+		<p> In order to create sub domain visit cPanel Home page and find Domains Sections and click on Subdomains as
+			shown in image below</p>
+		<img src="assets/images/api13.png" alt="" style="width: 100%;">
+		<p>It will redirecting you to sub domain page as shown in image below, no give suitable name to your sub domain.
+			and give default path from system. in image below you can see your Path Will be mentioned in Document Root.
+		</p>
+		<img src="assets/images/api14.png" alt="" style="width: 100%;">
+		<p>After your Subdomain successfully created, visit File Manager from cPanel Home page as shown in image below
+		</p>
+		<img src="assets/images/api15.png" alt="" style="width: 100%;">
+		<p>As You can see from page your subdomain folder will be created. in our demonstrate example our folder will
+			called as
+			grocery-api.initstore.net as shown in image below</p>
+		<img src="assets/images/api16.png" alt="" style="width: 100%;">
+		<p>
+			Now open that folder and upload API folder as shown in image below, you can find upload button on top
+			toolbar
+		</p>
+		<img src="assets/images/api17.png" alt="" style="width: 100%;">
+		<p>After uploading API zip file, extract it make it root like this. in image below</p>
+		<img src="assets/images/api18.png" alt="" style="width: 100%;">
+		<p>Yeepee API Uploading is done!! Now verify your API by visit subdomain in our demonstrate case we have this
+			url : <a href="http://grocery-api.initstore.net/">http://grocery-api.initstore.net/</a>
+		</p>
+		<p>Once you see message like in image below then everything is fine. otherwise there will be issue on database
+			connections like username,password,database</p>
+		<img src="assets/images/api19.png" alt="" style="width: 100%;">
+
+		<!-- Step 3 -->
+
+		<!-- Step 4 -->
+		<h3 style="text-transform: uppercase;"> <b>Step 4 : Configuration</b> </h3>
+
+		<p>After successfully uploading API, there few more things too be setup before proceeding to APP side. </p>
+		<p> Once you done uploading API with success message, first thing we have to add some configurations in API
+			project </p>
+		<ol>
+			<li> <b>open applications/config/config.php</b> </li>
+			<p>
+				Find code <br>
+				<b>"$config['base_url'] = 'YOUR_BASE_URL/';"</b> <br>
+				and change base_url to your domain name, in our
+				demonstrate
+				case we will change it to this
+				<br>
+				<b>"$config['base_url'] = 'YOUR_BASE_URL/';"</b>
+				<br>
+				<b>Make sure your domain ends with index.php/</b>
+			</p>
+			<li> <b>Second is to add encryption_key for security purpose while using data from database </b>
+				<p>
+					Find code in same file <br>
+					<b>" $config['encryption_key'] = 'YOUR_ENCRYPTION_KEY';"</b> <br>
+					this will be your auth token while calling api from apps remember this, let me put this as <br>
+					<b>"$config['encryption_key'] = '123456';"</b>
+				</p>
+			</li>
+		</ol>
+
+		<h3 style="text-transform: uppercase;"> <b>Step 5 : Contact Informations</b> </h3>
+
+		<p>Open file in APIs application/models/Users_model.php and change information according to you as shown in
+			image below </p>
+		<img src="assets/images/contactinformations.png" alt="" width="100%">
+		<!-- Step 4 -->
+		<br>
+		<hr>
+		<br>
+		<h3 id="emailSetup"><strong>E) Email Setup</strong> - <a href="#toc">top</a></h3>
+		<p>By default, you have no email account set up. The main username may look like it is set up as an email, but
+			if you wish
+			to use it, you will need to add it as an email account. The video and instructions below will guide you
+			through creating
+			and accessing an email account in cPanel.
+		</p>
+		<p>To create an email account:</p>
+		<ol>
+			<li>Log into cPanel</li>
+			<li>In the <strong>Email</strong> section, click <strong>Email Accounts</strong>.</li>
+			<li>In the <strong>Email</strong> field, type your preferred username and select the domain name from the
+				drop-down
+				menu below.
+				<div class="look_here"><strong>Note:</strong> The email name <strong>shadow</strong>&nbsp;is reserved
+					and cannot
+					be used for an email address.</div>
+			</li>
+			<li>In the <strong>Password</strong> fields, type the desired password twice.</li>
+			<li>Make a selection for <strong>Mailbox Quota</strong>.</li>
+			<li>Click <strong>Create Account</strong>.</li>
+		</ol>
+		<img src="assets/images/mail1.png" alt="" width="100%">
+		<img src="assets/images/mail2.png" alt="" width="100%">
+		<img src="assets/images/mail3.png" alt="" width="100%">
+
+		<p> In our app we have used mail system to send Password reset, Welcome email, general email, and others in
+			order to use this feature it's required to change email to your newly created mail </p>
+
+		<p>We have to change email from three files, just find and replace with newly created mail</p>
+		<ol>
+			<li> <b> application/models/Users_model.php </b> </li>
+			<li> <b> application/models/Driver_model.php </b> </li>
+			<li> <b> applications/core/Main_model.php </b> </li>
+		</ol>
+
+		<p>Change <br>
+		<pre>yourmail@domain.com</pre> <br>
+		to Your Newly created mail <br>
+
+		<pre>mail@xyz.com</pre>
+		</p>
+
+		<br>
+		<hr>
+		<br>
+
+		<h3 id="adminConfigure"><strong>F) Admin App Configuration</strong> - <a href="#toc">top</a></h3>
+		<h3 style="text-transform: uppercase;"> <b> </b> </h3>
+		<p>
+			After successfully configuare and adding base_url and encryption_key to the applications/config/config.php
+			we are now ready to use this api and calling it into mobile app and website
+		</p>
+		<h2> <b>Please upload atleast one language in order to run the app. we provided language in translations
+				folder.. called translations. we suggest to upload en.json from admin panel</b> </h2>
+		<p> <b>Note: Setup and adding APIs is comman in all app</b> </p>
+		<p>Here for Mobile,website,and Admin panel is made up with Angular and they all have same structure, so there is
+			no any confusion for setup it to other </p>
+		<p> <b>We will first setup Admin Panel</b> </p>
+		<p>Follow this step in order to configure</p>
+		<p>Open App_code Folder and you will find folder called Admin_app in your text editor</p>
+		<p>Now we have to change environment files in source code to do that open src/environments folder and edit both
+			file environments.ts and environments.prod.ts file </p>
+		<p>Change baseURL to our apis endpoint, in our case we have <br>
+			baseURL : = <b> "YOUR_BASE_URL/" </b> <br>
+			mediaURL : = <b> "YOUR_BASE_URL/uploads/" </b>
+		</p>
+		<p>Make sure this url is same in every app's environments files </p>
+		<p>Change authToken value to encryption_key's value which we have added in APIs applications/config/config.php
+			file </p>
+		<p> <b>Note : authToken must be same as API's applications/config/config.php "$config['encryption_key']" value
+			</b> </p>
+		<p> <b>Note : This configuration is same in every app, UserApp,DriverApp,StoreApp,WebApp,AdminApp <br>
+				you have to add this value in same both file environments.ts and environments.prod.ts file </b> </p>
+		<p>Please find image below for more</p>
+		<img src="assets/images/api20.png" alt="" style="width: 100%;">
+		<p>Yepee done with admin panel</p>
+
+		<h3> <b>How to run admin panel?</b> </h3>
+		<p>In order to run admin panel you first have install angular in your system follow this step to install angular
+			in your machine!, skip if you already have it</p>
+		<p>
+			open Command prompt for windows and terminal for mac and linux user and enter this command
+		</p>
+		<pre>npm install -g @angular/cli</pre>
+		<p>wait for moment while it's installing into your machine</p>
+		<p>After sucessfully installed Angular into your system next step is to run it </p>
+		<p>Open Admin_app folder into cmd or in terminal and enter this command</p>
+		<pre> npm install </pre>
+		<p>This command will install node dependencies into our project </p>
+		<p>After successfully installed it next is to run this command to run</p>
+		<pre> ng serve </pre>
+		<p>This command will execute the app and run it into this url <a href="http://localhost:4200/"
+				target="_blank">http://localhost:4200/</a></p>
+		<p>Once it's run, it will redirect you to setup page, here create admin profile for your app, now you are ready
+			use
+		</p>
+		<p>For make it live , you have to create production build by entering this command </p>
+		<pre>ng build --prod </pre>
+		<p>wait for moment while this command generate production build for you, it will create folder called dist in
+			root of the Admin_app folder, inside this folder there is another with name of store-app-admin, now create
+			new subdomain for admin panel and upload it in root of that subdomain. as shown in image below
+		</p>
+		<img src="assets/images/api21.png" alt="" style="width: 100%;">
+		<img src="assets/images/api22.png" alt="" style="width: 100%;">
+		<p>After successfully installed admin panel you can now manage admin.</p>
+		<hr>
+		<!-- User app -->
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="userAppConfigure"><strong>G) User App Configuration </strong> - <a href="#toc">top</a></h3>
+		<p>
+			After successfully configuare and adding base_url and encryption_key to the applications/config/config.php
+			we are now ready to use this api and calling it into mobile app and website
+		</p>
+		<h2> <b>Please upload atleast one language in order to run the app. we provided language in translations
+				folder.. called translations. we suggest to upload en.json from admin panel</b> </h2>
+		<p> <b>Note: Setup and adding APIs is comman in all app</b> </p>
+		<p>Here for Mobile,website,and Admin panel is made up with Angular and they all have same structure, so there is
+			no any confusion for setup it to other </p>
+		<p> <b>Now Let's configure user app </b> </p>
+		<p>Follow this step in order to configure</p>
+		<p>Open App_code Folder and you will find folder called User_app in your text editor</p>
+		<p>Now we have to change environment files in source code to do that open src/environments folder and edit both
+			file environments.ts and environments.prod.ts file </p>
+		<p>Change baseURL to our apis endpoint, in our case we have <br>
+			baseURL : = <b> "YOUR_BASE_URL/" </b> <br>
+			mediaURL : = <b> "YOUR_BASE_URL/uploads/" </b>
+		</p>
+		<p>Make sure this url is same in every app's environments files </p>
+		<p>Change authToken value to encryption_key's value which we have added in APIs applications/config/config.php
+			file </p>
+		<p> <b>Note : authToken must be same as API's applications/config/config.php "$config['encryption_key']" value
+			</b> </p>
+		<p> <b>Note : This configuration is same in every app, UserApp,DriverApp,StoreApp,WebApp,AdminApp <br>
+				you have to add this value in same both file environments.ts and environments.prod.ts file </b> </p>
+		<p>Please find image below for more</p>
+		<img src="assets/images/api20.png" alt="" style="width: 100%;">
+		<p>Yepee done with user app</p>
+
+		<h3> <b>How to run user app?</b> </h3>
+		<p>In order to run user app, you first have install ionic in your system follow this step to install ionic
+			in your machine!, skip if you already have it</p>
+		<p>
+			open Command prompt for windows and terminal for mac and linux user and enter this command
+		</p>
+		<pre>npm install -g @ionic/cli</pre>
+		<p>wait for moment while it's installing into your machine</p>
+		<p>After sucessfully installed Ionic into your system next step is to run it </p>
+		<p>Open User_app folder into cmd or in terminal and enter this command</p>
+		<pre> npm install </pre>
+		<p>This command will install node dependencies into our project </p>
+		<p>After successfully installed it next is to run this command to run</p>
+		<pre> ionic serve </pre>
+		<p>This command will execute the app and run it into this url <a href="http://localhost:8100/"
+				target="_blank">http://localhost:8100/</a></p>
+		<p>for more installations support please read this <a href="https://ionicframework.com/docs/intro/cli"
+				target="_blank" rel="noopener noreferrer">docs</a> </p>
+		<p>for make this app live please follow this <a href="https://ionicframework.com/docs/v1/guide/publishing.html"
+				target="_blank" rel="noopener noreferrer">docs</a> </p>
+
+		<!-- User app -->
+
+
+		<!-- Store app -->
+		<br>
+		<hr>
+		<br>
+		<h3 id="storeAppConfigure"><strong>H) Store App Configuration </strong> - <a href="#toc">top</a></h3>
+		<p>
+			After successfully configuare and adding base_url and encryption_key to the applications/config/config.php
+			we are now ready to use this api and calling it into mobile app and website
+		</p>
+		<h2> <b>Please upload atleast one language in order to run the app. we provided language in translations
+				folder.. called translations. we suggest to upload en.json from admin panel</b> </h2>
+		<p> <b>Note: Setup and adding APIs is comman in all app</b> </p>
+		<p>Here for Mobile,website,and Admin panel is made up with Angular and they all have same structure, so there is
+			no any confusion for setup it to other </p>
+		<p> <b>Now Let's configure user app </b> </p>
+		<p>Follow this step in order to configure</p>
+		<p>Open App_code Folder and you will find folder called Store_app in your text editor</p>
+		<p>Now we have to change environment files in source code to do that open src/environments folder and edit both
+			file environments.ts and environments.prod.ts file </p>
+		<p>Change baseURL to our apis endpoint, in our case we have <br>
+			baseURL : = <b> "YOUR_BASE_URL/" </b> <br>
+			mediaURL : = <b> "YOUR_BASE_URL/uploads/" </b>
+		</p>
+		<p>Make sure this url is same in every app's environments files </p>
+		<p>Change authToken value to encryption_key's value which we have added in APIs applications/config/config.php
+			file </p>
+		<p> <b>Note : authToken must be same as API's applications/config/config.php "$config['encryption_key']" value
+			</b> </p>
+		<p> <b>Note : This configuration is same in every app, UserApp,DriverApp,StoreApp,WebApp,AdminApp <br>
+				you have to add this value in same both file environments.ts and environments.prod.ts file </b> </p>
+		<p>Please find image below for more</p>
+		<img src="assets/images/api20.png" alt="" style="width: 100%;">
+		<p>Yepee done with store app</p>
+
+		<h3> <b>How to run store app?</b> </h3>
+		<p>In order to run store app, you first have install ionic in your system follow this step to install ionic
+			in your machine!, skip if you already have it</p>
+		<p>
+			open Command prompt for windows and terminal for mac and linux user and enter this command
+		</p>
+		<pre>npm install -g @ionic/cli</pre>
+		<p>wait for moment while it's installing into your machine</p>
+		<p>After sucessfully installed Ionic into your system next step is to run it </p>
+		<p>Open Store_app folder into cmd or in terminal and enter this command</p>
+		<pre> npm install </pre>
+		<p>This command will install node dependencies into our project </p>
+		<p>After successfully installed it next is to run this command to run</p>
+		<pre> ionic serve </pre>
+		<p>This command will execute the app and run it into this url <a href="http://localhost:8100/"
+				target="_blank">http://localhost:8100/</a></p>
+		<p>for more installations support please read this <a href="https://ionicframework.com/docs/intro/cli"
+				target="_blank" rel="noopener noreferrer">docs</a> </p>
+		<p>for make this app live please follow this <a href="https://ionicframework.com/docs/v1/guide/publishing.html"
+				target="_blank" rel="noopener noreferrer">docs</a> </p>
+
+		<!-- Store app -->
+
+
+
+		<!-- Driver App -->
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="driverAppConfigure"><strong>I) Driver App Configuration </strong> - <a href="#toc">top</a></h3>
+		<p>
+			After successfully configuare and adding base_url and encryption_key to the applications/config/config.php
+			we are now ready to use this api and calling it into mobile app and website
+		</p>
+		<h2> <b>Please upload atleast one language in order to run the app. we provided language in translations
+				folder.. called translations. we suggest to upload en.json from admin panel</b> </h2>
+		<p> <b>Note: Setup and adding APIs is comman in all app</b> </p>
+		<p>Here for Mobile,website,and Admin panel is made up with Angular and they all have same structure, so there is
+			no any confusion for setup it to other </p>
+		<p> <b>Now Let's configure user app </b> </p>
+		<p>Follow this step in order to configure</p>
+		<p>Open App_code Folder and you will find folder called Driver_app in your text editor</p>
+		<p>Now we have to change environment files in source code to do that open src/environments folder and edit both
+			file environments.ts and environments.prod.ts file </p>
+		<p>Change baseURL to our apis endpoint, in our case we have <br>
+			baseURL : = <b> "YOUR_BASE_URL/" </b> <br>
+			mediaURL : = <b> "YOUR_BASE_URL/uploads/" </b>
+		</p>
+		<p>Make sure this url is same in every app's environments files </p>
+		<p>Change authToken value to encryption_key's value which we have added in APIs applications/config/config.php
+			file </p>
+		<p> <b>Note : authToken must be same as API's applications/config/config.php "$config['encryption_key']" value
+			</b> </p>
+		<p> <b>Note : This configuration is same in every app, UserApp,DriverApp,StoreApp,WebApp,AdminApp <br>
+				you have to add this value in same both file environments.ts and environments.prod.ts file </b> </p>
+		<p>Please find image below for more</p>
+		<img src="assets/images/api20.png" alt="" style="width: 100%;">
+		<p>Yepee done with driver app</p>
+
+		<h3> <b>How to run driver app?</b> </h3>
+		<p>In order to run driver app, you first have install ionic in your system follow this step to install ionic
+			in your machine!, skip if you already have it</p>
+		<p>
+			open Command prompt for windows and terminal for mac and linux user and enter this command
+		</p>
+		<pre>npm install -g @ionic/cli</pre>
+		<p>wait for moment while it's installing into your machine</p>
+		<p>After sucessfully installed Ionic into your system next step is to run it </p>
+		<p>Open Driver_app folder into cmd or in terminal and enter this command</p>
+		<pre> npm install </pre>
+		<p>This command will install node dependencies into our project </p>
+		<p>After successfully installed it next is to run this command to run</p>
+		<pre> ionic serve </pre>
+		<p>This command will execute the app and run it into this url <a href="http://localhost:8100/"
+				target="_blank">http://localhost:8100/</a></p>
+		<p>for more installations support please read this <a href="https://ionicframework.com/docs/intro/cli"
+				target="_blank" rel="noopener noreferrer">docs</a> </p>
+		<p>for make this app live please follow this <a href="https://ionicframework.com/docs/v1/guide/publishing.html"
+				target="_blank" rel="noopener noreferrer">docs</a> </p>
+		<!-- Driver App -->
+
+
+		<!-- Web App -->
+		<br>
+		<hr>
+		<br>
+		<h3 id="webAppConfigure"><strong>J) Web App Configuration</strong> - <a href="#toc">top</a></h3>
+		<h3 style="text-transform: uppercase;"> <b> </b> </h3>
+		<p>
+			After successfully configuare and adding base_url and encryption_key to the applications/config/config.php
+			we are now ready to use this api and calling it into mobile app and website
+		</p>
+		<h2> <b>Please upload atleast one language in order to run the app. we provided language in translations
+				folder.. called translations. we suggest to upload en.json from admin panel</b> </h2>
+		<p> <b>Note: Setup and adding APIs is comman in all app</b> </p>
+		<p>Here for Mobile,website,and Admin panel is made up with Angular and they all have same structure, so there is
+			no any confusion for setup it to other </p>
+
+		<p>Follow this step in order to configure</p>
+		<p>Open App_code Folder and you will find folder called Web_Version in your text editor</p>
+		<p>Now we have to change environment files in source code to do that open src/environments folder and edit both
+			file environments.ts and environments.prod.ts file </p>
+		<p>Change baseURL to our apis endpoint, in our case we have <br>
+			baseURL : = <b> "YOUR_BASE_URL/" </b> <br>
+			mediaURL : = <b> "YOUR_BASE_URL/uploads/" </b>
+		</p>
+		<p>Make sure this url is same in every app's environments files </p>
+		<p>Change authToken value to encryption_key's value which we have added in APIs applications/config/config.php
+			file </p>
+		<p> <b>Note : authToken must be same as API's applications/config/config.php "$config['encryption_key']" value
+			</b> </p>
+		<p> <b>Note : This configuration is same in every app, UserApp,DriverApp,StoreApp,WebApp,AdminApp <br>
+				you have to add this value in same both file environments.ts and environments.prod.ts file </b> </p>
+		<p>Please find image below for more</p>
+		<img src="assets/images/api20.png" alt="" style="width: 100%;">
+		<p>Yepee done with web app</p>
+
+		<h3> <b>How to run web app?</b> </h3>
+		<p>In order to run web app you first have install angular in your system follow this step to install angular
+			in your machine!, skip if you already have it</p>
+		<p>
+			open Command prompt for windows and terminal for mac and linux user and enter this command
+		</p>
+		<pre>npm install -g @angular/cli</pre>
+		<p>wait for moment while it's installing into your machine</p>
+		<p>After sucessfully installed Angular into your system next step is to run it </p>
+		<p>Open Web_Version folder into cmd or in terminal and enter this command</p>
+		<pre> npm install </pre>
+		<p>This command will install node dependencies into our project </p>
+		<p>After successfully installed it next is to run this command to run</p>
+		<pre> ng serve </pre>
+		<p>This command will execute the app and run it into this url <a href="http://localhost:4200/"
+				target="_blank">http://localhost:4200/</a></p>
+		<p>Once it's run, it will redirect you to setup page, here create admin profile for your app, now you are ready
+			use
+		</p>
+		<p>For make it live , you have to create production build by entering this command </p>
+		<pre>ng build --prod </pre>
+		<p>wait for moment while this command generate production build for you, it will create folder called dist in
+			root of the Web_Version folder, inside this folder there is another with name of store-app-admin, now create
+			new subdomain for admin panel and upload it in root of that subdomain. as shown in image below
+		</p>
+		<img src="assets/images/api21.png" alt="" style="width: 100%;">
+		<img src="assets/images/api22.png" alt="" style="width: 100%;">
+		<!-- Web App -->
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="onesignal"><strong>K) OneSignal Setup </strong> - <a href="#toc">top</a></h3>
+		<p><b>Increase clicks and engagement</b></p>
+		<p>You can increase engagement by targeting users based on attributes like new products, offers , and interests.
+		</p>
+		<img src="assets/images/onesignal.png" alt="" style="width: 100%;">
+		<p>For Sending Push Notifications we will create New App in OneSignal Website </p>
+		<p>Visit this link to create app <a href="https://app.onesignal.com">https://app.onesignal.com</a> </p>
+		<p>Login with your account in onesignal </p>
+		<p>Now Create new app as image below</p>
+		<img src="assets/images/push1.png" alt="" style="width: 100%;">
+		<p>By Clicking NEW APP/WEBSITE you will redirected to new app creation page as you can see image below </p>
+		<p>Now Give your App name and select Android Platform and click on configure your platform button </p>
+		<img src="assets/images/push2.png" alt="" style="width: 100%;">
+		<p>Now here it will ask for firebase server key and firebase sender id. this two ids are available in our
+			firebase project</p>
+		<img src="assets/images/push3.png" alt="" style="width: 100%;">
+		<p>Now visit our firebase project again and as you can see image below click on project overview setting icon
+			left side of firebase dashboard and click on project settings.</p>
+		<img src="assets/images/push4.png" alt="" style="width: 100%;">
+		<p>It will redirect to you project settings now click on cloud messaging on tabs. you will see keys for server
+			key and sender key. copy and paste it to onesignal app </p>
+
+
+		<img src="assets/images/push5.png" alt="" style="width: 100%;">
+		<p>Paste those keys here and click on next button</p>
+
+		<img src="assets/images/push6.png" alt="" style="width: 100%;">
+		<p>here in environment file googleProjectNumber is firebase sender id </p>
+		<img src="assets/images/firegn.png" alt="" style="width: 100%;">
+		<p>Now Select Phonegap,Cordova, Ionic,Intel XDK as you can see image below and click next</p>
+		<h3 style="color: red;"><b>Note All configuration is same for all the project so add this keys and credentials
+				inside other project's environment.prod.ts and in environment.ts file as well </b></h3>
+		<img src="assets/images/push7.png" alt="" style="width: 100%;">
+		<p>Ok now our onesignal app ready to use copy this id as you can see in image bellow and paste in our
+			environment file </p>
+		<h3><b> Note After adding all the keys of OneSignal you have to run your app in android, to check whether it's
+				install or not, once you run app in android device, you can click on
+				check subscribed users button
+			</b>
+		</h3>
+		<img src="assets/images/push8.png" alt="" style="width: 100%;">
+		<p>Paste this app id inside our environment file as image bellow </p>
+		<img src="assets/images/fireappid.png" alt="" style="width: 100%;">
+		<p>Now for Rest key inside environment file go to account settings inside OneSignal account as you can see in
+			image bellow and click on Account & API keys </p>
+		<img src="assets/images/push9.png" alt="" style="width: 100%;">
+		<p>It will redirected to you in API's page as you can see in image below, so copy respected project id and paste
+			in environment file </p>
+		<img src="assets/images/push10.png" alt="" style="width: 100%;">
+		<img src="assets/images/firereset.png" alt="" style="width: 100%;">
+		<h3 style="color: red;"><b>Note All configuration is same for all the project so add this keys and credentials
+				inside other project's environment.prod.ts and in environment.ts file as well </b></h3>
+		<hr>
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="googleMaps"><strong>L) Google Maps Setup</strong> - <a href="#toc">top</a></h3>
+		<p>In this app we have used google maps for live Tracking of food orders. from drivers to customer locations for
+			accurate results. this feature make customer more trust on his order and timing.</p>
+		<p>in order to use google maps in our app we must have google maps keys with following permissions</p>
+		<ol>
+			<li>Geocoding API</li>
+			<li>Places API</li>
+			<li>Maps JavaScript API</li>
+			<li>Distance Matrix API</li>
+			<li>Directions API</li>
+		</ol>
+		<p>You can find and create keys at google cloud console visit this <a
+				href="https://console.cloud.google.com/google/maps-apis/start?pli=1">https://console.cloud.google.com/google/maps-apis/start?pli=1</a>
+		</p>
+		<p>for more about google maps key please follow this instructions <a
+				href="https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwiAjpqA76bpAhWMJCsKHQ1NAUMYABAAGgJzZg&ohost=www.google.com&cid=CAESQeD2mlEuIq-o2NAYQGTXSzkugvLfLkdb0SrUV8d_J7cmc_lQczQ15AfM6UkGXEk0N7OAGC-xohO0d4aVBWb83s-x&sig=AOD64_2mguemXSbeCADiPIAbmuBjsLnWMQ&q=&ved=2ahUKEwjj05GA76bpAhWtlEsFHcPWA8gQ0Qx6BAgREAE&adurl="
+				target="_blank">here</a>
+		</p>
+		<p>After creating keys with respected permission add this keys in all the project
+			(UserApp,RestaunrantApp,DriverApp)</p>
+		<p>Open index.html inside src/ and add your google maps keys as you can see image bellow</p>
+		<img src="assets/images/maps.png" alt="" width="100%">
+		<h3 style="color: red;"><b>Note All configuration is same for all the project so add this keys and credentials
+				inside other project's environment.prod.ts and in environment.ts file as well </b></h3>
+
+
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="stripeKeys"><strong>M) Stripe Payment Setup</strong> - <a href="#toc">top</a></h3>
+		<p>Stripe allows individuals and businesses to make and receive payments over the Internet</p>
+		<p>using stripe user can pay with your debit/credit card</p>
+		<p>For accepting payment from stripe we need stripe keys, follow this link for more about stripe keys <a
+				href="https://stripe.com/docs/keys" target="_blank">https://stripe.com/docs/keys</a> </p>
+		<p>You can get your stripe keys here <a href="https://dashboard.stripe.com/"
+				target="_blank">https://dashboard.stripe.com/</a> </p>
+		<h3>Follow the instructions closely and it will work smoothly!
+		</h3>
+		<p>Create and confirm your free Stripe account</p>
+		<p>Creating a Stripe account is free and you can delete it anytime. If you already have a Stripe account (for
+			another
+			project), it's better to create a new one to avoid any interference.
+			<br>
+			Note that right now, once you have configured your Stripe account in your Sharetribe marketplace, you won't
+			be able to
+			change it to another one. You can always update all details (bank account, account name...) in your Stripe
+			dashboard but
+			using another new account later isn't possible for the time being.
+			<br>
+			To create your Stripe account:
+		</p>
+		<ul>
+			<li>Go to <a href="https://dashboard.stripe.com/register">https://dashboard.stripe.com/register</a></li>
+			<img src="assets/images/stripe1.png" alt="" width="100%">
+			<li>Fill in the required fields, then create your Stripe account</li>
+			<p></p>
+			<p>Great! You can skip the first question by clicking "Skip for now" and you now have to confirm your Stripe
+				email to
+				confirm your account.
+			</p>
+			<p></p>
+			<h3>Confirm your Stripe account</h3>
+			<p>To confirm your Stripe email and account:</p>
+			<p></p>
+			<li>Check your email inbox and look for a confirmation email sent from Stripe (by <a
+					href="mailto:support@stripe.com" rel="nofollow noopener noreferrer"
+					target="_blank"><i>support@stripe.com</i></a>) named <i>Confirm your Stripe
+					email address!</i>
+			</li>
+			<img src="assets/images/stripe2.png" alt="" width="100%">
+			<li>Click the confirmation link in this email and log in with your credentials recently created</li>
+			<img src="assets/images/stripe3.jpeg" alt="" width="100%">
+			<p>Yeah! Your Stripe account is now confirmed. You should now activate it to be able to receive money via
+				this Stripe
+				account.</p>
+			<h3><b>Activate your Stripe account
+				</b></h3>
+			<p>As you will receive money from your users via your Stripe account, you have to provide some details such
+				as your address
+				and your bank account. This data is secured by Stripe and won't be shared with anyone.
+			</p>
+			<p>To activate your Stripe account:</p>
+			<li>Log in your Stripe account and click the Activate your account link in the left menu.</li>
+			<img src="assets/images/stripe4.png" alt="" width="100%">
+
+
+			<li>Complete all the fields according to the instructions and set <i>Your website</i> to your Sharetribe
+				marketplace
+				address when asked. It's OK to activate your account as an individual, you don't need a company ID.
+				Stripe may
+				review your account later but you are able to activate it immediately.</li>
+			<li>The activation form varies based on your country, so select that first!</li>
+			<li>Any doubts or questions? <a href="mailto:help@sharetribe.com" rel="nofollow noopener noreferrer"
+					target="_blank">Contact Sharetribe's support</a>.</li>
+			<li>Once completed, click "Activate account".</li>
+			<li>Your Stripe account may still need to be reviewed by Stripe. It's automatic, and it should be a very
+				quick
+				process.</li>
+			<img src="assets/images/stripe5.png" alt="" width="100%">
+			<li>After the automatic activation process, you may need to provide additional information to Stripe for
+				identity
+				verification. If you get this notification, click on "Review" on the dashboard as shown below. If you
+				are not prompted
+				for additional information, you can move to the next step.</li>
+			<img src="assets/images/stripe6.png" alt="" width="100%">
+			<p>Good job! Now you need to enable Connect in your platform so your sellers can add their bank details in
+				their settings.
+			</p>
+			<h3>Enable Stripe Connect in your platform</h3>
+			<p>Sharetribe uses the Stripe Connect features with Custom Accounts and you have to enable it to enjoy those
+				features.</p>
+			<p><b>This step is important: without this step, providers will not be able to receive money and buyers will
+					not be able to
+					start any transaction.
+				</b></p>
+			<h3>To enable Stripe Connect:</h3>
+			<li>Click the Connect left menu item.</li>
+			<img src="assets/images/stripe7.png" alt="" width="100%">
+			<li>Click the Get started button.</li>
+			<img src="assets/images/stripe8.png" alt="" width="100%">
+			<li>Select "Build a platform or marketplace" from the prompt.</li>
+			<img src="assets/images/stripe9.png" alt="" width="100%">
+			<p>At this point, Stripe may have to review your account. If that's the case, <a
+					href="https://help.sharetribe.com/sharetribe-go-payments-and-transactions/online-payments-with-stripe/how-to-apply-for-stripe-connect-review-us-accounts-only">you
+					can learn more about this process here</a>.</p>
+			<li>After a few seconds or the review process, you should see your Connect dashboard. From the left sidebar,
+				go to
+				<i>Settings</i> then <i>Connect settings</i>, at <a href="https://dashboard.stripe.com/settings"
+					rel="nofollow noopener noreferrer" target="_blank">https://dashboard.stripe.com/settings</a>
+			</li>
+			<img src="assets/images/stripe10.png" alt="" width="100%">
+
+			<li>Make sure that <i>Custom</i> is enabled in the <i>Account types</i> section.&nbsp;</li>
+			<li>If you see a message on this screen that your platform profile needs to be completed, click "Start" on
+				the
+				notification and provide the additional information required.&nbsp;</li>
+			<li>Stripe may still need to review your platform and account details. However, you can already move to the
+				next
+				step.&nbsp;</li>
+			<img src="assets/images/stripe11.png" alt="" width="100%">
+			<p>Great! You now have to get your API keys and input them into your marketplace.</p>
+			<h3>Get your API keys from Stripe and add them to your Sharetribe marketplace</h3>
+			<p>API keys are some text strings that have one technical purpose: link your Sharetribe marketplace with
+				your Stripe
+				account, so you can manage payments in your marketplace.</p>
+			<p>First, get your API keys from Stripe:</p>
+			<li>Click "Developers" → "API Keys" in the left menu item.</li>
+			<img src="assets/images/stripe12.png" alt="" width="100%">
+			<li>Make sure that <b>you are not using test data</b>. If this is the case, switch the <i>View test data</i>
+				toggle.
+				Test API keys will <b>not</b> work in your Sharetribe marketplace.</li>
+			<img src="assets/images/stripe13.png" alt="" width="100%">
+			<li>Copy the value from the <i>Publishable key</i> row, from the <i>Token</i> column. It should look like
+				<code>pk_live_somelongrandomvaluelikeVqFze9etc</code>&nbsp;
+			</li>
+			<li>Go back to your Stripe account, in the API tab and click the Reveal live key token button.</li>
+			<img src="assets/images/stripe15.png" alt="" width="100%">
+
+			<li>A new window will pop up with the secret key. <b>Note: You won't be able to see the key again after
+					this. Make
+					sure you copy it and save it somewhere safe and private.</b>
+			</li>
+			<li>Copy the value of the <i>Secret key</i>. It should look like
+				sk_live_somelongrandomvaluelike0Rx3jvetc&nbsp;</li>
+			<li>Paste this key Admin Panels payment section inside stripe keys </li>
+			<img src="assets/images/stripeadmin.png" alt="" width="100%">
+			<p>That's it! You have now connected your Stripe account and are ready to receive payments in your app!</p>
+		</ul>
+		<p></p>
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="paypalKeys"><strong>N) PayPal Payment setup</strong> - <a href="#toc">top</a></h3>
+		<p>PayPal is online payments system that supports online money transfers and serves as an electronic alternative
+			to traditional paper
+			methods like checks and money orders</p>
+		<p>in this app we have used paypal for accepting payments.for accepting payment from paypal we need PayPal
+			Applications </p>
+		<p>
+			<span>To create a Paypal App, go and visit: </span><a target="_blank"
+				href="https://developer.paypal.com/developer/applications">https://developer.paypal.com/developer/applications</a>
+		</p>
+		<p><strong>Important:</strong> To use live PayPal app, your app must be approved by PayPal. Read
+			PayPal app review submission steps <a href="#app_review_submission_step">here</a></p>
+		<p>You need to be logged in to your PayPal account to be able to access their developer page. So first, login to
+			your
+			PayPal account and then follow the link above to get to their developer page. This should look similar to
+			the one shown
+			in the image below:
+		</p>
+		<img src="assets/images/paypal1.png" alt="" width="100%">
+		<p>When you click on "Create a App", A new window will pop up (see image below). Enter a App name and Sandbox
+			developer
+			account. Now Click on Create App.
+		</p>
+		<img src="assets/images/paypal2.png" alt="" width="100%">
+		<p>By clicking on Create App, it will redirect you to the settings page for your new PayPal App. page will look
+			like as
+			mentioned in the image below:
+		</p>
+		<img src="assets/images/paypal3.png" alt="" width="100%">
+		<p><b>Important: Use the "Return URI" field same as the Paypal Callback URL meentioned on the social login
+				setting page. If
+				these entries do not completely match the URL of your website, the application won't work.
+			</b></p>
+		<p>Underneath the "App feature options" First, uncheck "Accept Payments", "Invoicing", "Payouts" and keep only
+			"Log In with
+			PayPal" as checked.
+		</p>
+		<img src="assets/images/paypal4.png" alt="" width="100%">
+		<p>Now, Copy the Client ID (See
+			image
+			below).
+		</p>
+
+		<img src="assets/images/paypal5.png" alt="" width="100%">
+		<p>Now second step is to add PayPal Registered email to our APIs </p>
+		<p> <b>
+				Open APIs code and open file application/config/paypallib_config.php and add your Registered email
+				address
+				and select mode, as shown in image below
+			</b>
+		</p>
+		<img src="assets/images/paypalAPI.png" alt="" width="100%">
+		<p>Important: When you copy and paste all the needed IDs and Keys, make sure, that you don't have any empty
+			spaces, either
+			at the beginning nor at the end of these entries. If you have any empty spaces, then the Application won't
+			work and will
+			show an error message when you try to connect to the App.
+		</p>
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="razorKeys"><strong>O) RazorPay Payment Setup</strong> - <a href="#toc">top</a></h3>
+		<p> <b>Create a Razorpay Account</b> </p>
+		<p>To access the Dashboard, you must have an Razorpay account. To create an account:</p>
+		<ol>
+			<li>Sign up</li>
+			<li>Complete the pre-sign up form</li>
+			<li>Verify email address</li>
+		</ol>
+		<p>After creating an account, you can start accepting payments from customers. However, the money is settled to
+			your
+			account only after your KYC is verified.</p>
+		<h3>Sign Up</h3>
+		<p>To create a Razorpay PG account:</p>
+		<ol>
+			<li>Go to the <a href="https://razorpay.com/" target="_blank">Razorpay PG website</a> and click <strong>Sign
+					Up</strong>.</li>
+			<li>Enter your work email address and a password for your Razorpay account and click <strong>Create
+					Account</strong>.</li>
+		</ol>
+		<img src="assets/images/razor1.png" alt="">
+		<h3>Pre-sign Up Form</h3>
+		<p>Before you can complete the sign up process, you are required to provide some basic details about your
+			business.</p>
+		<img src="assets/images/razor2.png" alt="">
+		<p>Once you have provided the required details, click <strong>Login</strong>.</p>
+		<h3>Verify Email Address</h3>
+		<p>Upon completion of the sign up nad pre- sign up processed, you receive a verification email to the provided
+			email
+			address.</p>
+		<img src="assets/images/razor3.png" alt="">
+		<p>Follow the instructions in the email to verify your email and proceed to log into your Razorpay Dashboard.
+		</p>
+		<p>Once your account is created, you have access to Test mode on the Dashboard. Test mode is used for testing
+			purposes
+			and does not involves actual money transactions.</p>
+		<p><b>Note:
+				You can access the Dashboard in test mode for as long as you like. However, you would need to activate
+				your account in
+				order to accept live payments.</b></p>
+
+		<h3>Account Activation</h3>
+		<p>To access live mode and accept payments from customers, you must activate your account. To activate your
+			account, click
+			Activate account in the menu panel. Enter the required information and click Activate Account.
+		</p>
+		<img src="assets/images/razor4.png" alt="" width="100%">
+		<p>Once you have activated your account, you have access to the live mode in addition to the test mode. Live
+			mode is to be
+			used once testing is complete and all required setup is in place on your platform. You can start accepting
+			domestic
+			payments via Live mode.
+		</p>
+		<img src="assets/images/razor5.png" alt="">
+		<p><b>Note</b></p>
+		<ul>
+			<li>You have to generate separate API keys for live and test modes. Refer to the <a
+					href="/docs/payment-gateway/dashboard-guide/settings/#api-keys" target="_blank">API Keys</a> section
+				for
+				more details about API keys.
+				<br>
+			</li>
+			<li>Even though your account is active and you can start accepting domestic payments, your payments will be
+				settled
+				only after KYC verification.
+				<br>
+			</li>
+			<li>In some cases, you might have to complete KYC verification to get access to Live mode. You can contact
+				<a href="https://razorpay.com/support/" target="_blank">Razorpay Support</a> for further clarification.
+			</li>
+		</ul>
+		<h3>KYC Verification</h3>
+		<p>As part of the KYC verification, you need to submit information like contact details, business details,
+			account details
+			and business documents to Razorpay.
+		</p>
+		<p>To submit your KYC, navigate to My Account and click View KYC Form. The form can be partially filled and
+			saved for
+			future use.
+		</p>
+		<p>The first page on the form is pre-filled and contains the contact information submitted during the sign-up
+			process.
+		</p>
+		<img src="assets/images/razor6.png" alt="" width="100%">
+		<p>The second page requires details about the business.</p>
+		<img src="assets/images/razor7.png" alt="" width="100%">
+		<p>The third page requires business registration details. These include details like Company PAN, PAN of the
+			Director,
+			Registered Address and GSTIN.
+		</p>
+		<img src="assets/images/razor8.png" alt="" width="100%">
+		<p>The bank account section is the fourth page on your KYC form and requires you to fill in your bank account
+			details such
+			as Bank account number, Beneficiary name and IFSC. This will be the account to which Razorpay settles your
+			funds.
+		</p>
+		<img src="assets/images/razor9.png" alt="" width="100%">
+		<p>The fifth page requires you to upload PDF copies of the following business documents:
+		</p>
+		<ul>
+			<li>Business Registration Proof</li>
+			<li>Company PAN</li>
+			<li>Company's Bank Account Statement with Address</li>
+			<li>Authorized Signatory's Address Proof</li>
+		</ul>
+		<img src="assets/images/razor10.png" alt="" width="100%">
+		<p>Once you have completed the KYC form and uploaded the required document, read through the Terms and
+			Conditions, select
+			the checkbox on the page, if you have read abd agree with the terms and conditions, and click Submit.
+		</p>
+		<img src="assets/images/razor11.png" alt="" width="100%">
+		<p>Once submitted, Razorpay starts the KYC review process. This usually takes 4-5 working days.
+		</p>
+		<img src="assets/images/razor12.png" alt="" width="100%">
+		<p>Once the review is done, all payments received before you submitted the KYC form and documents, are settled
+			to your PG
+			account.
+		</p>
+		<h3>Razorpay Developer Account
+		</h3>
+		<p>Visit <a href="https://dashboard.razorpay.com/">https://dashboard.razorpay.com/</a> and create an account.
+			Razorpay payment services are currently
+			available only for business
+			in India.</p>
+		<p>Once you are inside Razorpay Dashboard, look for the Settings Tab -> API keys.
+		</p>
+		<img src="assets/images/razor13.png" alt="" width="100%">
+		<p>Key Id is what you use for connecting the Razorpay SDK in front-end. Key Secret is used in the back-end, and
+			is only
+			shown once to you when generated. You should save these values in a safe place, or you can always generate
+			again.
+		</p>
+		<p>That’s all you need from Razorpay account, for now. You can toggle the Live keys and use them instead, once
+			you have
+			tested the process.
+		</p>
+
+		<p>Now Copy and paste keys into admin panel payments page, razorpay link</p>
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="paytmKeys"><strong>P) Paytm Payment Setup</strong> - <a href="#toc">top</a></h3>
+		<h3>Start Building with Paytm</h3>
+		<p>Paytm Payment Gateway provides a secure, PCI-compliant way to accept Debit/Credit card, Net-Banking, UPI and
+			Paytm
+			wallet payments from your customers.
+		</p>
+		<ul>
+			<li><a href="https://dashboard.paytm.com" target="_blank">Create account</a> or <a
+					href="https://dashboard.paytm.com" target="_blank"> login</a> using your existing Paytm account.
+			</li>
+			<li>Generate your <a href="https://dashboard.paytm.com/next/apikeys?src=dev" target="_blank">staging account
+					credentials</a> from the dashboard. These are required to explore Paytm's integration solutions.
+			</li>
+			<li>When you are ready to go live, <a href="https://dashboard.paytm.com/next/activate?src=dev"
+					target="_blank">activate your account </a>in the dashboard to get production account credentials.
+			</li>
+		</ul>
+		<img src="assets/images/paytm1.png" alt="" width="100%">
+		<img src="assets/images/paytm2.png" alt="" width="100%">
+		<h3>Understanding account credentials</h3>
+		<p><a href="https://dashboard.paytm.com/next/apikeys?src=dev" target="_blank">Account credentials</a> are
+			available in
+			your dashboard for both staging and production environment. These credentials consist of -</p>
+		<ul>
+			<li><strong>MID (Merchant ID)</strong> - This is a unique identifier provided to every merchant by Paytm.
+				MID is
+				part of your account credentials and is different on staging and production environment. Your staging
+				MID is
+				available <a href="https://dashboard.paytm.com/next/apikeys?src=dev" target="_blank">here</a> and
+				production MID
+				will be available once your activation is complete.</li>
+			<li><strong>Merchant Key</strong> - This is a unique secret key used for secure encryption of every request.
+				This
+				needs to be kept on server side and <u>should not be shared with anyone</u>.</li>
+		</ul>
+		<img src="assets/images/paytm3.png" alt="" width="100%">
+		<h3>Dashboard</h3>
+		<p>The Paytm <a href="https://dashboard.paytm.com" target="_blank">Dashboard</a> is a single window to manage
+			your
+			account -</p>
+		<ul>
+			<li>
+				<p>Activate account to start accepting payments</p>
+			</li>
+			<li>
+				<p>Generate your staging and production account credentials</p>
+			</li>
+			<li>
+				<p>Switch views between staging and production transaction data</p>
+			</li>
+			<li>
+				<p>Check payments received from your customers</p>
+			</li>
+			<li>
+				<p>Check bank transfers Paytm makes into your account</p>
+			</li>
+			<li>
+				<p>Initiate refunds if you need to</p>
+			</li>
+			<li>
+				<p>Download all kinds of transaction reports</p>
+			</li>
+			<li>
+				<p>Get help </p>
+			</li>
+		</ul>
+
+		<h3> <b>Configure in APIs </b></h3>
+		<p><b>Now in order to use Paytm in your website. we have to added callback url in APIs, to do that open APIs
+				and
+				open file APIs/application/controllers/Paytm.php and </b> </p>
+		<p> <b> change <br>
+				<pre>public $redirectWebURL = 'http://YOUR_WEBSITE_URL.COM/';</pre>
+			</b><br>
+			to your website endpoint in our case we have set it into <br>
+		<pre> public $redirectWebURL = 'http://groceryee.initstore.net/'; </pre>
+		</p>
+
+		<h2><b>Add Keys to APIs</b> </h2>
+		<p>For Paytm we have to add keys inside api.. here is path </p>
+		<pre> <b>API/application/libraries/paytm/config_paytm.php</b> </pre>
+		<p>Follow image below.. If you wanted production then use PROD</p>
+
+		<img src="assets/images/paytm4.png" alt="" width="100%">
+		<h3>Fundamentals of collecting payments with Paytm:</h3>
+		<ul>
+			<li>Your customer clicks on Pay button in your web/mobile application.</li>
+			<li>Customer is shown a checkout form where she fills her payment details and authorizes the payment.</li>
+			<li>After completion of transaction, Paytm posts the response (success or failed) on a Callback URL defined
+				by you.
+			</li>
+			<li>As a <u>recommended</u> security measure, you validate each transaction response via a server-to-server
+				(S2S)
+				API call. Transaction revalidation protects from request/response tampering possible in browser calls.
+				This S2S
+				call is not required for Paytm plugins and hosted e-commerce website integration solutions.</li>
+			<li>Based on the response received, you display order status to customer.</li>
+			<li>See a real-time summary of payments received and other insights in your <a
+					href="https://dashboard.paytm.com" target="_blank">dashboard</a>.</li>
+			<li>Receive payments collected from customers in your bank account on next business day.</li>
+		</ul>
+		<h3>Detailed Payment Flow Explained</h3>
+		<h5>Transaction Creation</h5>
+		<p>When a transaction request is received at Paytm's server, there are multiple validations carried out like
+			valid
+			source of request, structure of request, uniqueness of request etc. Once these validations are passed, a
+			transaction
+			is created.</p>
+		<hr>
+		<h5>Successful Transaction</h5>
+		<p>Customer fills basic payment details to authorize the payment. Once the authorization is successful, money is
+			debited
+			from customer’s account. This transaction is a successful transaction.
+		</p>
+		<hr>
+		<h5>Failed Transaction</h5>
+		<p>If the customer drops out from the payment process or in the event of payment authorization failure, money is
+			not
+			deducted from customer’s account. This is marked as failed transaction.
+		</p>
+		<hr>
+		<h5>Pending Transaction</h5>
+		<p>Sometimes Paytm doesn't receive real-time transaction status from the bank. This can be due to many reasons
+			such as
+			network issues, technical errors at customer's/bank's end etc. This is marked as pending transaction. Refer
+			this for
+			detailed handling of pending transaction.
+		</p>
+		<hr>
+		<h5>Settled Transaction</h5>
+		<p>Payments received against successful transactions are credited into your bank account on T+1, where T is the
+			date of
+			successful transaction. Once the payment is credited, corresponding transaction is marked as Settled.
+		</p>
+		<hr>
+		<h5>Refund Transaction</h5>
+		<p>Sometimes there are use cases where you need to reverse payments for successful or settled transactions. The
+			reversal
+			transaction of a successful or settled payment is called refund transaction. Refer <a
+				href="/docs/refund-management">Refunds</a> for more details.</p>
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="instamojo"><strong>Q) Instamojo Payment Setup</strong> - <a href="#toc">top</a></h3>
+		<p>Instamojo is the easiest Payment Gateway solution for any developer. It can be integrated on any website with
+			any stack.
+			We have Simple Payment APIs with detailed documentation and SDKs for all major platforms. With responsive
+			developer
+			support, integrating Instamojo is a butter-smooth experience!
+		</p>
+		<h3>Sign Up as an Individual or Proprietor</h3>
+		<p>Signing up with Instamojo as a individual or as a proprietor of a
+			business for a Trial Account only takes few minutes.</p>
+		<p><em>Please note that Instamojo serves businesses in India, if your business
+				is not registered in India or you are not an Indian citizen, we will be
+				unable to serve you at the moment.</em></p>
+		<h3>Here is the information you will need to sign up:</h3>
+		<p><strong>Email address</strong></p>
+		<ul class="simple">
+			<li>Please use a valid email address that you check regularly.</li>
+		</ul>
+		<p><strong>Phone number</strong></p>
+		<ul class="simple">
+			<li>🇮🇳 Indian mobile phone numbers are accepted. (+91 ISD code.)</li>
+			<li>Provided number should be able to receive SMS for one-time-passwords
+				(OTP)</li>
+		</ul>
+		<p><strong>Username</strong></p>
+		<ul class="simple">
+			<li>Username is visible to everyone.</li>
+			<li>Username is included in the link to your store and payment links
+				created by you.</li>
+		</ul>
+		<p><strong>PAN number</strong></p>
+		<ul class="simple">
+			<li>Permanent Account Number (PAN) issued in India.</li>
+			<li>PAN number is required to pay out the earned money.</li>
+			<li>Use business PAN number if you have one for the business.</li>
+			<li>Use your own PAN number otherwise.</li>
+		</ul>
+		<h3>Steps to Sign Up as an Individual or as Proprietor of a business.</h3>
+		<h3>1. Visit the home page:<a class="reference external"
+				href="https://www.instamojo.com/">https://www.instamojo.com/</a></h3>
+		<h3>2. Click on Sign Up(1)</h3>
+		<img src="assets/images/insta1.png" alt="" width="100%">
+		<h3>3. Ensure you are signing up as a Business (1). Enter your email (2) and pick a strong, unique password (3)
+			for your
+			Instamojo account. Click on Signup as Business (4) to continue to the next step.</h3>
+		<img src="assets/images/insta2.png" alt="" width="100%">
+		<h3>4. You should see the following screen. Verify your phone number by entering your phone number (1) and then
+			click on
+			Send OTP (2).</h3>
+		<img src="assets/images/insta3.png" alt="" width="100%">
+		<h3>5. Check your phone and enter the OTP received via SMS (1). Click on Verify (2) to continue.</h3>
+		<img src="assets/images/insta4.png" alt="" width="100%">
+		<h3>6. Choose the option (1) that describes whether you run the business yourself as an individual, or whether
+			it is a
+			registered organization like a LLP, Private Limited, NGO etc. Choose the appropriate option in (2) and click
+			Next
+			(2) to continue.</h3>
+		<h3>7. Enter your/business PAN number and your/business name as it appears on the PAN card (1). Enter
+			your/business address,
+			state and pin code (2). If applicable to your business, enter the GSTIN (3). Finally, select the appropriate
+			option that
+			applies to your business in (4) and click Next (5)
+		</h3>
+		<img src="assets/images/insta5.png" alt="" width="100%">
+		<h3>8. Choose a username that matches your business (1) , or pick a suggested username if you like (2) and click
+			on Next (3)
+			to continue.</h3>
+		<img src="assets/images/insta6.png" alt="" width="100%">
+		<h3>9. Almost done! Enter your bank account number (1) and IFSC code (3) to receive payouts. Confirm that the
+			account name
+			(2) matches with the bank’s records. Finally click on Accept Terms and Create Account (4).
+		</h3>
+		<h3>10. You will now be logged in to your Instamojo Dashboard.
+		</h3>
+		<p>For Test API keys visit <a href="https://test.instamojo.com/" target="_blank"
+				rel="noopener noreferrer">https://test.instamojo.com/</a> </p>
+		<p>For Live API key visit <a href="https://www.instamojo.com/" target="_blank"
+				rel="noopener noreferrer">https://www.instamojo.com/</a> </p>
+		<img src="assets/images/insta7.png" alt="" width="100%">
+		<p> Copy those keys and add into admin panel's payment page to Instamojo link</p>
+
+		<br>
+		<hr>
+		<br>
+
+		<h3 id="paystack"><strong>R) PayStack Payment Setup</strong> - <a href="#toc">top</a></h3>
+		<p>Creating a Paystack account is free, easy and can be done in a few minutes. The steps below should guide you
+			on how
+			to create your account.</p>
+		<h3>Creating a Paystack account</h3>
+		<ol>
+			<li class="wysiwyg-text-align-left">Begin by following this link to provide us with your business name,
+				email
+				address, country, and a password for your account:&nbsp;<a
+					href="https://dashboard.paystack.co/#/signup">https://dashboard.paystack.co/#/signup<br><br></a>
+				<img src="assets/images/paystack.gif" alt="Creating_a_Paystack_Account.gif" width="100%"
+					height="450"><br><br>
+			</li>
+			<li>At this point, your account has been created. However, we'll need more information about you and your
+				business
+				before you can start using it. You'll be redirected to another page asking for detailed information,
+				simply
+				provide all that is required to complete your setup.<br><br>
+				<img src="assets/images/paystack2.png" alt="Creating_a_Paystack_Account.png" width="100%"
+					height="450"><br><br>
+			</li>
+			<li>Once your setup is complete you'll be redirected to your dashboard. Congratulations, you've just created
+				your
+				Paystack account!</li>
+		</ol>
+		<p>After creating your account, you are able to start testing your integration and playing around with our
+			product suite.
+		</p>
+		<img src="assets/images/paystack3.png" alt="Creating_a_Paystack_Account.png" width="100%" height="450">
+		<p>However, your account is still in <strong>Test Mode</strong> and you cannot receive real money. You will have
+			to
+			activate your account to take it <strong>Live</strong> and start collecting real money from your customers.
+			Follow
+			this link to activate your business:&nbsp;<a href="https://dashboard.paystack.com/#/get-started/activate"
+				target="_blank" rel="noopener">https://dashboard.paystack.com/#/get-started/activate</a>.<br><br>Also,
+			here are
+			guides to activating your business:</p>
+		<p>You can find your keys in bottom of screen as you can see in image below</p>
+		<img src="assets/images/paystack4.png" alt="" width="100%">
+		<p>Copy this Keys and add into admin panel payments page to Paystack link</p>
+		<ul>
+			<li><a href="https://support.paystack.com/hc/en-us/articles/360009972779-How-do-I-activate-my-Paystack-Starter-Business-"
+					target="_blank" rel="noopener">How do I activate my Paystack Starter Business?</a></li>
+			<li><a href="https://support.paystack.com/hc/en-us/articles/360009881220-How-do-I-activate-my-Paystack-Registered-Business-"
+					target="_blank" rel="noopener">How do I activate my Paystack Registered Business?</a></li>
+		</ul>
+
+		<br>
+		<hr>
+		<br>
+		<h3 id="flutterwave"><strong>S) Flutterwave Payment Setup</strong> - <a href="#toc">top</a></h3>
+
+		<h3>Creating a Flutterwave account</h3>
+		<p>1) Kindly visit the homepage <a href="https://dashboard.flutterwave.com" rel="nofollow noopener noreferrer"
+				target="_blank">dashboard.flutterwave.com</a> and navigate to <i>GET STARTED.</i></p>
+		<img src="assets/images/flutterwave1.png" alt="" width="100%">
+		<p>2) Select the Individual, Business or NGO account as applicable and fill in your details accordingly.</p>
+		<img src="assets/images/flutterwave2.png" alt="" width="100%">
+		<p>3) On completing your application, you will be redirected to the homepage where you will see a pop-up
+			welcoming
+			you to
+			Flutterwave.</p>
+		<img src="assets/images/flutterwave3.png" alt="" width="100%">
+		<p>By default, you can receive payments into Flutterwave once you create an account. However, you will need to
+			set your
+			bank account details for your settlement to be made from your Flutterwave account to your bank account.
+			(Check “How
+			settlements are made” for more information.)
+		</p>
+		<p>4) It is advisable for you to add your bank account details immediately so that you can receive your funds in
+			your bank
+			account. You can, however, skip this and go straight to the dashboard.</p>
+		<p>That’s it, you’re set to start receiving payments! <br>&nbsp;You can follow these
+			links
+			for more information on how <a
+				href="https://support.flutterwave.com/en/articles/3632715-receiving-payments">to
+				receive payments</a> or <a
+				href="https://support.flutterwave.com/en/articles/3632711-managing-bank-accounts">how
+				to manage your bank accounts.</a></p>
+		<p> Once you signup successfully, now login into your account and navigate to Settings->API section as shown in
+			image below</p>
+		<p>Now copy Public Key and add into Admin Panel's payment page to Flutterwave link</p>
+		<img src="assets/images/flutterwave4.png" alt="" width="100%">
+		<br>
+		<hr>
+		<br>
+
+		<h3 id="help"><strong>T) Help</strong> - <a href="#toc">top</a></h3>
+		<p> If you are facing issue with existing setup. there are couple of issue may be in your setup. here are comman
+			issues </p>
+		<ol>
+			<li>Apple Reject UIWebView Issue</li>
+			<li>APIs are not working</li>
+			<li>Twillio messages are not sent </li>
+			<li>Emails are not sent</li>
+			<li>ERR_CLEARTEXT_NOT_PERMITTED error</li>
+			<li>404 URL not found error</li>
+		</ol>
+		<p>If you have one of those issues? then please check below steps to fix this</p>
+
+		<h3><b>1) Apple Reject UIWebView</b></h3>
+		<p>In current build we have fixed this issue, but still if you are facing this issue please check steps below
+		</p>
+		<ol>
+			<li><b>rm -rf platform <br>rm -rf plugins</b></li>
+			<li> <b>add the following to the config.xml file</b> <br>
+
+			</li>
+
+			<pre>< feature name="CDVWKWebViewEngine">
+					< param name="ios-package" value="CDVWKWebViewEngine" />
+				</>
+				< preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+				< preference name="WKWebViewOnly" value="true" /></pre>
+
+			<li>
+				<b>update cordova-ios to latest or to version 5.1.0, (npm install cordova-ios@5.1.0 or latest)</b>
+			</li>
+			<li> <b>
+					<pre>ionic cordova plugin add cordova-plugin-ionic-webview --save</pre>
+				</b> </li>
+			<li>
+				<b>
+					<pre>ionic cordova prepare ios</pre>
+				</b>
+			</li>
+			<li>
+				<b>
+					<pre>ionic cordova build ios</pre>
+				</b>
+			</li>
+		</ol>
+
+
+		<h3><b>2) APIs are not working</b> </h3>
+		<p>If your APIs is not working then there will be few issues while setup or in configurations</p>
+		<ol>
+			<li>Check Database and username password in application/config/database.php </li>
+			<li> APIs endpoints in mobile app must be like this <br>
+				API EndPoint Must be
+				<pre>http://yourapi.abc.com/index.php/</pre> <br>
+				MediaURL Must be
+				<pre>http://yourapi.abc.com/uploads/</pre>
+			</li>
+		</ol>
+
+		<h3><b>3) Twillio messages are not sent</b></h3>
+		<p>If messages are not being sent, there are few issue listed below</p>
+		<ol>
+			<li>Low Balance in account</li>
+			<li>From Number. you have to purchase from number</li>
+			<li>API keys </li>
+		</ol>
+
+		<h3><b>4) Emails are not sent</b></h3>
+		<p>If mail is not sent from apps or from admin panel then there will be few issues in mail</p>
+		<ol>
+			<li> Create Mail in cPanel and add into APIs. if still don't work please contact your provider</li>
+			<li> Change default email address to your mails which is mentioned in Email Setup</li>
+		</ol>
+
+		<h3><b>5) ERR_CLEARTEXT_NOT_PERMITTED</b></h3>
+		<p>If you are facing issue like this, then there must be your domain don't have SSL certificates </p>
+		<p>The default API level in the Cordova Android platform has been upgraded. On an Android 9 device, clear text
+			communication is now <a
+				href="https://developer.android.com/training/articles/security-config#CleartextTrafficPermitted"
+				rel="noreferrer">disabled by default</a>.
+		</p>
+		<p>In order to fix this issue you have to add your server IP Address into Mobile apps</p>
+		<p>Open Applications/resources/android/xml/network_security_config.xml and add your server IP address as shown
+			in image below</p>
+		<img src="assets/images/context1.png" alt="" width="100%">
+		<img src="assets/images/context2.png" alt="" width="100%">
+
+		<p>If you still facing issue please contact us on our mail <a
+				href="mailto:contactatracp@gmail.com">contactatracp@gmail.com</a> </p>
+		<br>
+		<hr>
+		<br>
+		<h3><b>5) 404 URL not found error</b></h3>
+		<p>If you are facing this kind of issue on your live server than there is issue with routing. in order to fix
+			this you have to upload one file called .htaccess in root of your project.</p>
+		<p>
+			open code and you will find htaccess.txt rename this to .htacces it will hide in your system once you do it
+			but you have to upload it in root of the project in server
+		</p>
+		<h3 id="translations"><strong>U) Translations</strong> - <a href="#toc">top</a></h3>
+
+		<p>We made with app as multi language supported. so you can upload any number of language with right to left or
+			left to right direction</p>
+
+		<h2> <b>Please upload atleast one language in order to run the app. we provided language in translations
+				folder.. called translations. we suggest to upload en.json from admin panel</b> </h2>
+
+		<p>In order to upload new language to app, we provided translations file with this. open that folder as shown in
+			image below</p>
+		<p>Upload en.json file for english language</p>
+
+		<p>
+			<img src="assets/images/trans1.png" alt="" width="100%">
+		</p>
+		<p>
+			<img src="assets/images/trans2.png" alt="" width="100%">
+		</p>
+		<p>
+			<img src="assets/images/trans3.png" alt="" width="100%">
+		</p>
+
+		<p>If you wanted to add your own language then edit untitled.json with your own value as shown in image below
+		</p>
+		<p>
+			<img src="assets/images/trans4.png" alt="" width="100%">
+		</p>
+		<p>
+			<img src="assets/images/trans5.png" alt="" width="100%">
+		</p>
+		<h3 id="twillo"><strong>V) Twillo Setup FOR SMS</strong> - <a href="#toc">top</a></h3>
+		<p>To get started with text&nbsp;you will first need to setup a free Twilio account and purchase a phone number.
+		</p>
+		<p>To do this:</p>
+		<h2 style="font-weight: bolder;">Twillo will not work on trial credits.. please add your own credits</h2>
+		<p><span><strong>1. Create a Twilio Account:</strong></span></p>
+		<ul>
+			<li>Go to Twilio's website: <a style="background-color: #ffffff;" href="http://www.twilio.com"
+					target="_blank" rel="noopener noreferrer">http://www.twilio.com</a></li>
+			<li>Once there you will click on the +SIGN UP button found in the upper right hand corner<br><br><img
+					src="assets/images/sms1.png" alt="" width="100%"></li>
+		</ul>
+		<p>Now that you have signed up for an account you&nbsp;will need to&nbsp;obtain&nbsp;a phone number to send
+			messages
+			from.</p>
+
+		<p><span><strong>2. Buy a text&nbsp;Capable Phone Number:</strong></span></p>
+		<ul>
+			<li>Go to the Buy a Number page (Dashboard Console &gt; Phone Numbers &gt; Buy a Number)</li>
+			<li>From this page you will see search filters, it is important that you check the SMS check box to ensure
+				that you
+				only see numbers that are SMS capable.<br><br><img src="assets/images/sms2.png" alt="" width="675"
+					height="383"><br><br></li>
+			<li>Click Search</li>
+			<li>Once you find a number you like click Buy</li>
+		</ul>
+		<p>Now that you have an SMS phone number, we recommend that you create a Messaging Service as it is easy to do
+			and much
+			easier to manage.</p>
+		<div><span class="wysiwyg-font-size-large"><strong>3. Enter your Twilio Authentication Details In Your EDM
+					Account</strong></span></div>
+		<div>
+			<ul>
+				<li>In Twilio go to your Dashboard</li>
+				<li>Copy your Account SID&nbsp; and Auth Token<br><br><img src="assets/images/sms3.png" alt=""
+						width="100%" height="251"><br><br></li>
+				<li> Now Open admin panel add keys to App settings </li>
+			</ul>
+			<p>You will now receive your Request URL which will need to be added to Twilio.</p>
+			<img src="assets/images/sms4.png" alt="scss Structure" style="width: 100%;" />
+		</div>
+		<h3 id="sources"><strong>W) Sources and Credits</strong> - <a href="#toc">top</a></h3>
+
+		<p>I've used the following images, icons or other files as listed.
+
+		<ul>
+			<li>flaticons <a href="https://www.flaticon.com/">here</a> </li>
+			<li>freepik <a href="http://freepik.com/">here</a> </li>
+			<li>pixabay <a href="https://pixabay.com/">here</a></li>
+		</ul>
+
+		<hr>
+
+
+
+		<p>Once again, thank you so much for purchasing this app. As I said at the beginning, I'd be glad to help you
+			if you have any questions relating to this app. No guarantees, but I'll do my best to assist. If you have
+			a more general question relating to the themes on ThemeForest, you might consider visiting the forums and
+			asking your question in the "Item Discussion" section.</p>
+
+		<p class="append-bottom alt large"><strong>initappz (Rahul Jograna)</strong></p>
+		<p><a href="#toc">Go To Table of Contents</a></p>
+
+		<hr class="space">
+	</div><!-- end div .container -->
+</body>
+
+</html>

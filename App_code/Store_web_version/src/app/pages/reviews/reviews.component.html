@@ -1,0 +1,41 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-body">
+            <h5>{{util.getString('Reviews')}} </h5>
+         </div>
+
+      </div>
+   </div>
+   <div class="col-lg-6" *ngFor="let item of reviews">
+      <div class="card">
+
+         <div class="card-block p-t-0">
+            <div class="card-msg b-b-default p-b-10">
+               <div class="card-msg-img">
+                  <a>
+                     <img class="img-circle" [src]="api.mediaURL+item.cover" style="height: 50px;width: 50px;"
+                        onError="this.src='assets/images/user.png'" alt="chat-user">
+                  </a>
+               </div>
+               <div class="card-msg-contain">
+                  <p>{{util.getString('Received From')}} {{item.way}} </p>
+                  <h3> {{item.fname}} {{item.lname}} </h3>
+                  <p> {{item.msg}} </p>
+                  <p> {{getDate(item.timestamp)}} </p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,204 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c"> {{util.getString('Please wait...')}} </p>
+</ngx-spinner>
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title"> {{util.getString('Select Driver')}} </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p *ngIf="!dummyDrivers?.length"> {{util.getString('No Active Driver Found')}} </p>
+        <select name="select" class="form-control" [(ngModel)]="selectedDriver">
+            <option *ngFor="let item of dummyDrivers;" [value]="item.id">
+                <span>
+                    <a href="javascript:;"><img class="img-responsive" style="height: 40px;border-radius: 50%;"
+                            [src]="api.mediaURL+item.cover" onError="this.src='assets/images/user.png'"
+                            alt="chat-user"></a>
+                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                        {{item.last_name}} </label>
+                </span>
+            </option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="close()">{{util.getString('Save')}} </button>
+    </div>
+</ng-template>
+<div class="row" *ngIf="loaded === true">
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <h5> {{util.getString('Order Details')}} </h5>
+            </div>
+            <div class="card-block p-t-0">
+                <p class="titles">{{util.getString('Orders')}} </p>
+                <div class="desc_div">
+                    <div *ngIf="orders?.length" class="border_bottom">
+                        <p *ngFor="let order of orders;let ol = index" class="items">
+                            <span *ngIf="!order.size">{{order.name}} -
+                                <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                    {{util.getString('grams')}} </span>
+                                <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                </span>
+                                <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                    {{util.getString('ltr')}} </span>
+                                <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                </span>
+                                <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                    {{util.getString('pcs')}} </span>
+
+
+                            </span>
+                            <span *ngIf="order.size ==='0'">{{order.name}} -
+                                <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                    {{util.getString('grams')}} </span>
+                                <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                </span>
+                                <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                    {{util.getString('ltr')}} </span>
+                                <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                </span>
+                                <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                    {{util.getString('pcs')}} </span>
+
+                            </span>
+                            <span *ngIf="order.size ==='1'">
+                                {{order.name}} -
+                                <span> {{order.variations[0].items[order.variant].title}}
+                                    <span *ngIf="util.cside ==='right'">
+                                        {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                      order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount : 
+                                      order.variations[0].items[order.variant].price }} {{util.currecny}}
+                                    </span>
+                                    <span *ngIf="util.cside ==='left'">
+                                        {{util.currecny}} {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                            order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount : 
+                                            order.variations[0].items[order.variant].price }}
+                                    </span>
+
+                                </span>
+                            </span>
+                            <span *ngIf="order.size ==='0'">
+                                <span *ngIf="util.cside ==='right'">
+                                    {{util.currecny}}
+                                    {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                </span>
+                                <span *ngIf="util.cside ==='left'">
+                                    {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                    {{util.currecny}}
+                                </span>
+
+                            </span>
+                            <span>X {{order.quantiy}}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex_div">
+                    <p>{{util.getString('Deliver to')}} </p>
+                    <p class="values">{{orderAt}}</p>
+                </div>
+                <div class="flex_div" *ngIf="orderAt ==='home'">
+                    <p class="values">
+                        <i class="ti-location-pin"></i>
+                        {{address}}
+                    </p>
+
+                </div>
+
+                <p class="titles">{{util.getString('Basic Details')}} </p>
+                <div class="flex_div">
+                    <p>{{util.getString('Order ID')}} </p>
+                    <p class="values">{{id}}</p>
+                </div>
+                <div class="flex_div">
+                    <p>{{util.getString('Grand Total')}} </p>
+                    <p class="values">
+                        <span *ngIf="util.cside ==='left'">{{util.currecny}} {{grandTotal}} </span>
+                        <span *ngIf="util.cside ==='right'">{{grandTotal}} {{util.currecny}}</span>
+
+                    </p>
+                </div>
+                <div class="flex_div">
+                    <p>{{util.getString('Payment Method')}} </p>
+                    <p class="values"> {{payMethod}} </p>
+                </div>
+
+                <div class="flex_div">
+                    <p>{{util.getString('Delivery On')}} </p>
+                    <p class="values"> {{datetime}} </p>
+                </div>
+
+
+                <p class="titles">{{util.getString('Order Tracking')}} </p>
+
+                <div class="tracking_div">
+
+                    <div class="left">
+                        <span *ngFor="let item of orderDetail"
+                            style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <div class="line_div" [class.line_div_darkgray]="item.status === 1"></div>
+                            <i class="ti-check-box" *ngIf="item.status === 1"></i>
+                        </span>
+
+                    </div>
+
+                    <div class="right">
+                        <span *ngFor="let item of orderDetail">
+                            <div class="line_div">
+                                <p [class.round_div_red]="item.status === 1"
+                                    [class.round_div_darkgray]="item.status === 1">
+                                    {{item.time}}</p>
+                            </div>
+                            <div class="round_div_gray" [class.round_div_red]="item.status === 1"
+                                [class.round_div_darkgray]="item.status === 1">
+                                {{item.value}}
+                            </div>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="btn_div" *ngIf="status == 'created'">
+                <button type="button" (click)="changeStatus('rejected')"
+                    class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">{{util.getString('Reject Order')}}
+                </button>
+                <button type="button" (click)="changeStatus('accepted')"
+                    class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">{{util.getString('Accept Order')}}
+                </button>
+            </div>
+            <div *ngIf="status == 'accepted' || status == 'ongoing' "
+                style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                <select name="select" [(ngModel)]="changeStatusOrder" class="form-control">
+                    <option value='ongoing'>{{util.getString('Ongoing')}} </option>
+                    <option value='cancelled'>{{util.getString('Cancelled')}} </option>
+                    <option value='delivered'>{{util.getString('Delivered')}} </option>
+                    <option value='rejected'>{{util.getString('Rejected')}} </option>
+                </select>
+                <button type="button" (click)="changeOrderStatus()"
+                    class="btn btn-primary btn-md btn-block waves-effect text-center">{{util.getString('Update Status')}}
+                </button>
+            </div>
+            <p class="green" *ngIf="status == 'delivered'">{{util.getString('Order Status')}} :
+                {{util.getString('Order Delivered')}}</p>
+            <p class="red" *ngIf="status == 'cancel'"> {{util.getString('Order Cancelled by user')}} </p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<ng2-toasty></ng2-toasty>

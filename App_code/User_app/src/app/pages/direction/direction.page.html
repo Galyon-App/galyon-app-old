@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="navCtrl.back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="upper_div">
+      <div #map id="map" class="map"></div>
+    </div>
+    <div class="lower_div" *ngIf="who==='driver' && driverInfo && driverInfo.cover">
+      <ion-label class="head_lbl">Order on the Way</ion-label>
+
+      <div class="driver_detail_div">
+        <div class="back_image"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+driverInfo.cover+'),url(assets/bg.png)'}"></div>
+        <div style="padding-left: 20px;" (click)="callDriver()">
+          <ion-label class="boy_name">{{driverInfo.first_name +' '+ driverInfo.last_name}}</ion-label>
+          <ion-label class="boy_name">
+            <ion-icon name="mail-outline"></ion-icon> {{driverInfo.email}}
+          </ion-label>
+          <ion-label class="boy_name">
+            <ion-icon name="call-outline"></ion-icon> {{driverInfo.mobile}}
+          </ion-label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="lower_div" *ngIf="who === 'store' && storeInfo && storeInfo.cover">
+      <ion-label class="head_lbl">Order on the Way</ion-label>
+
+      <div class="driver_detail_div">
+        <div class="back_image"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+storeInfo.cover+'),url(assets/bg.png)'}"></div>
+        <div style="padding-left: 20px;" (click)="callStore()">
+          <ion-label class="boy_name">{{storeInfo.name}}</ion-label>
+          <ion-label class="boy_name">
+            <ion-icon name="location-outline"></ion-icon> {{storeInfo.address}}
+          </ion-label>
+          <ion-label class="boy_name">
+            <ion-icon name="call-outline"></ion-icon> {{storeInfo.mobile}}
+          </ion-label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

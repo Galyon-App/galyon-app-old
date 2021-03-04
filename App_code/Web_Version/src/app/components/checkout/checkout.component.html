@@ -1,0 +1,73 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="container">
+
+  <label class="title_lbl">{{util.translate('Your Order is placed!')}}</label>
+  <label class="simple_lbl">{{util.translate("Thank you for shopping with us. We'll send a confirmation when your items
+    ship.")}}</label>
+
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="white_box">
+        <label class="head_lbl">{{util.translate('Delivery Address')}}</label>
+        <div class="flex_div">
+          <div>
+            <label class="name_lbl">Mausam Chavda</label>
+            <label class="addr_lbl">
+              1234, <br>
+              Eva surbhi complex, <br>
+              waghawadi road, <br>
+              aksharwadi road, <br>
+              Bhavnagar, Gujrat , 364001.
+            </label>
+          </div>
+
+          <button type="button" class="btn" (click)="goToOrder()">{{util.translate('View Or Manage Order')}}</button>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="payment_box">
+        <label class="head_lbl">{{util.translate('Payment Details')}}</label>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('MRP Total')}}</label>
+          <label class="red_lbl">$454.98</label>
+        </div>
+        <div class="flex_price" style="border-bottom: 1px solid lightgray">
+          <label class="price_lbl">{{util.translate('Product Discount')}}</label>
+          <label class="red_lbl">$54.00</label>
+        </div>
+        <div class="flex_price">
+          <label class="price_lbl" style="font-weight: 600;color: black;">{{util.translate('Total Amount')}}</label>
+          <label class="red_lbl">$400.98</label>
+        </div>
+
+        <label class="green_lbl">{{util.translate('You Save')}} ₹54.00</label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row" style="margin-top: 30px;">
+    <div class="col-lg-4">
+      <label class="grey_lbl">{{util.translate('For any queries')}}</label>
+      <label class="call_lbl">{{util.translate('WhatsApp')}} : <span>9876543212</span></label>
+    </div>
+    <div class="col-lg-8">
+      <label class="small_lbl">
+        {{util.translate('We will try to deliver your order at the earliest. However, due to the current surge in order
+        it may be delayed. Our team will be in touch with you regarding your order.')}}
+      </label>
+    </div>
+  </div>
+
+</div>

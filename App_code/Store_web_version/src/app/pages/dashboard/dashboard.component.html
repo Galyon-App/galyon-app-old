@@ -1,0 +1,698 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title"> {{util.getString('Select Driver')}} </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p *ngIf="!dummyDrivers?.length"> {{util.getString('No Active Driver Found')}} </p>
+        <select name="select" class="form-control" [(ngModel)]="selectedDriver">
+            <option *ngFor="let item of dummyDrivers;" [value]="item.id">
+                <span>
+                    <a href="javascript:;"><img class="img-responsive" style="height: 40px;border-radius: 50%;"
+                            [src]="api.mediaURL+item.cover" onError="this.src='assets/images/user.png'"
+                            alt="chat-user"></a>
+                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                        {{item.last_name}} </label>
+                </span>
+            </option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="close()"> {{util.getString('Save')}} </button>
+    </div>
+</ng-template>
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c"> {{util.getString('updating')}} </p>
+</ngx-spinner>
+<div class="row">
+    <!-- Reset Order Start -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5> {{util.getString('Orders')}} </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label"> {{util.getString('Search')}} </label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-round"
+                            [placeholder]="util.getString('Search Order By ID')" (input)="search($event.target.value)">
+                    </div>
+                    <div class="col-sm-4">
+                        <select name="select" [(ngModel)]="current" (ngModelChange)="changeOrders()"
+                            class="form-control">
+                            <option value='all'> {{util.getString('All Orders')}} </option>
+                            <option value='new'> {{util.getString('New')}} </option>
+                            <option value='ongoing'> {{util.getString('Ongoing')}} </option>
+                            <option value='old'> {{util.getString('Delivered / Rejected / Cancelled / Refund')}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive" *ngIf="current==='all'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.getString('ID')}} </th>
+                                <th>{{util.getString('User')}} </th>
+                                <th>{{util.getString('Orders')}} </th>
+                                <th>{{util.getString('Ordered on')}} </th>
+                                <th>{{util.getString('Quantity')}} </th>
+                                <th>{{util.getString('Status')}} </th>
+                                <th>{{util.getString('Action')}} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of orders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.id}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;" [src]="api.mediaURL+item.cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                                        {{item.last_name}} </label>
+                                </td>
+                                <td>
+                                    <p *ngFor="let order of item.orders;let ol = index"
+                                        style="font-weight: 500;margin: 0px;">
+                                        <span *ngIf="!order.size">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='1'">
+                                            {{order.name}} -
+                                            <span> {{order.variations[0].items[order.variant].title}}
+                                                <span *ngIf="util.cside ==='right'">
+                                                    {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                    order.variations[0].items[order.variant].price }} {{util.currecny}}
+                                                </span>
+                                                <span *ngIf="util.cside ==='left'">
+                                                    {{util.currecny}} {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                    order.variations[0].items[order.variant].price }}
+                                                </span>
+
+                                            </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+
+                                        </span>
+                                        <span>X {{order.quantiy}}</span>
+                                    </p>
+                                </td>
+                                <td>{{getDates(item.date_time)}}</td>
+                                <td>
+                                    {{item.orders.length}}
+                                </td>
+                                <td>
+                                    <select name="select" [(ngModel)]="item.storeStatus"
+                                        (ngModelChange)="changeStatus(item.storeStatus,item)" class="form-control">
+                                        <option value='created'> {{util.getString('Created')}} </option>
+                                        <option value='accepted'>{{util.getString('Accepted')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                        <option value='ongoing'>{{util.getString('Ongoing')}} </option>
+                                        <option value='cancelled'>{{util.getString('Cancelled')}} </option>
+                                        <option value='delivered'>{{util.getString('Delivered')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                    </select>
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.getString('View')}}
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive" *ngIf="current==='new'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.getString('ID')}} </th>
+                                <th>{{util.getString('User')}} </th>
+                                <th>{{util.getString('Orders')}} </th>
+                                <th>{{util.getString('Ordered on')}} </th>
+                                <th>{{util.getString('Quantity')}} </th>
+                                <th>{{util.getString('Status')}} </th>
+                                <th>{{util.getString('Action')}} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of newOrders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.id}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;" [src]="api.mediaURL+item.cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                                        {{item.last_name}} </label>
+                                </td>
+                                <td>
+                                    <p *ngFor="let order of item.orders;let ol = index"
+                                        style="font-weight: 500;margin: 0px;">
+                                        <span *ngIf="!order.size">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='1'">
+                                            {{order.name}} -
+                                            <span> {{order.variations[0].items[order.variant].title}}
+                                                <span *ngIf="util.cside ==='right'">
+                                                    {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                                                    order.variations[0].items[order.variant].price }}
+                                                    {{util.currecny}}
+                                                </span>
+                                                <span *ngIf="util.cside ==='left'">
+                                                    {{util.currecny}}
+                                                    {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                                                    order.variations[0].items[order.variant].price }}
+                                                </span>
+
+                                            </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+
+                                        </span>
+                                        <span>X {{order.quantiy}}</span>
+                                    </p>
+                                </td>
+                                <td>{{getDates(item.date_time)}}</td>
+                                <td>
+                                    {{item.orders.length}}
+                                </td>
+                                <td>
+                                    <select name="select" [(ngModel)]="item.storeStatus"
+                                        (ngModelChange)="changeStatus(item.storeStatus,item)" class="form-control">
+                                        <option value='created'> {{util.getString('Created')}} </option>
+                                        <option value='accepted'>{{util.getString('Accepted')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                        <option value='ongoing'>{{util.getString('Ongoing')}} </option>
+                                        <option value='cancelled'>{{util.getString('Cancelled')}} </option>
+                                        <option value='delivered'>{{util.getString('Delivered')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                    </select>
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.getString('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive" *ngIf="current==='ongoing'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.getString('ID')}} </th>
+                                <th>{{util.getString('User')}} </th>
+                                <th>{{util.getString('Orders')}} </th>
+                                <th>{{util.getString('Ordered on')}} </th>
+                                <th>{{util.getString('Quantity')}} </th>
+                                <th>{{util.getString('Status')}} </th>
+                                <th>{{util.getString('Action')}} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of onGoingOrders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.id}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;" [src]="api.mediaURL+item.cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                                        {{item.last_name}} </label>
+                                </td>
+                                <td>
+                                    <p *ngFor="let order of item.orders;let ol = index"
+                                        style="font-weight: 500;margin: 0px;">
+                                        <span *ngIf="!order.size">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='1'">
+                                            {{order.name}} -
+                                            <span> {{order.variations[0].items[order.variant].title}}
+                                                <span *ngIf="util.cside ==='right'">
+                                                    {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                                                    order.variations[0].items[order.variant].price }}
+                                                    {{util.currecny}}
+                                                </span>
+                                                <span *ngIf="util.cside ==='left'">
+                                                    {{util.currecny}}
+                                                    {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                                                    order.variations[0].items[order.variant].price }}
+                                                </span>
+
+                                            </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+
+                                        </span>
+                                        <span>X {{order.quantiy}}</span>
+                                    </p>
+                                </td>
+                                <td>{{getDates(item.date_time)}}</td>
+                                <td>
+                                    {{item.orders.length}}
+                                </td>
+                                <td>
+                                    <select name="select" [(ngModel)]="item.storeStatus"
+                                        (ngModelChange)="changeStatus(item.storeStatus,item)" class="form-control">
+                                        <option value='created'> {{util.getString('Created')}} </option>
+                                        <option value='accepted'>{{util.getString('Accepted')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                        <option value='ongoing'>{{util.getString('Ongoing')}} </option>
+                                        <option value='cancelled'>{{util.getString('Cancelled')}} </option>
+                                        <option value='delivered'>{{util.getString('Delivered')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                    </select>
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.getString('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive" *ngIf="current==='old'">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>{{util.getString('ID')}} </th>
+                                <th>{{util.getString('User')}} </th>
+                                <th>{{util.getString('Orders')}} </th>
+                                <th>{{util.getString('Ordered on')}} </th>
+                                <th>{{util.getString('Quantity')}} </th>
+                                <th>{{util.getString('Status')}} </th>
+                                <th>{{util.getString('Action')}} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of oldOrders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>#{{item.id}} </td>
+                                <td>
+                                    <a href="javascript:;"><img class="img-responsive"
+                                            style="height: 40px;border-radius: 50%;" [src]="api.mediaURL+item.cover"
+                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                                        {{item.last_name}} </label>
+                                </td>
+                                <td>
+                                    <p *ngFor="let order of item.orders;let ol = index"
+                                        style="font-weight: 500;margin: 0px;">
+                                        <span *ngIf="!order.size">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">{{order.name}} -
+                                            <span *ngIf="order.have_gram === '1'"> {{order.gram}}
+                                                {{util.getString('grams')}} </span>
+                                            <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}}
+                                            </span>
+                                            <span *ngIf="order.have_liter ==='1'"> {{order.liter}}
+                                                {{util.getString('ltr')}} </span>
+                                            <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}
+                                            </span>
+                                            <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                {{util.getString('pcs')}} </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='1'">
+                                            {{order.name}} -
+                                            <span> {{order.variations[0].items[order.variant].title}}
+                                                <span *ngIf="util.cside ==='right'">
+                                                    {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                                                    order.variations[0].items[order.variant].price }}
+                                                    {{util.currecny}}
+                                                </span>
+                                                <span *ngIf="util.cside ==='left'">
+                                                    {{util.currecny}}
+                                                    {{order.variations[0].items[order.variant].discount && order.variations[0].items[order.variant].discount !==0 &&
+                                                                                    order.variations[0].items[order.variant].discount !=='0' ? order.variations[0].items[order.variant].discount :
+                                                                                    order.variations[0].items[order.variant].price }}
+                                                </span>
+
+                                            </span>
+                                        </span>
+                                        <span *ngIf="order && order.size && order.size ==='0'">
+                                            <span *ngIf="util.cside ==='left'">
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                                {{util.currecny}}
+                                            </span>
+                                            <span *ngIf="util.cside ==='right'">
+                                                {{util.currecny}}
+                                                {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                            </span>
+
+                                        </span>
+                                        <span>X {{order.quantiy}}</span>
+                                    </p>
+                                </td>
+                                <td>{{getDates(item.date_time)}}</td>
+                                <td>
+                                    {{item.orders.length}}
+                                </td>
+                                <td>
+                                    <select name="select" [(ngModel)]="item.storeStatus"
+                                        (ngModelChange)="changeStatus(item.storeStatus,item)" class="form-control">
+                                        <option value='created'> {{util.getString('Created')}} </option>
+                                        <option value='accepted'>{{util.getString('Accepted')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                        <option value='ongoing'>{{util.getString('Ongoing')}} </option>
+                                        <option value='cancelled'>{{util.getString('Cancelled')}} </option>
+                                        <option value='delivered'>{{util.getString('Delivered')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                    </select>
+                                </td>
+                                <td><button type="button" (click)="openOrder(item)"
+                                        class="btn btn-success btn-round btn-outline-success">{{util.getString('View')}}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="has-text-centered">
+                    <pagination-controls id="pagin1" (pageChange)="page = $event"></pagination-controls>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Reset Order End -->
+</div>

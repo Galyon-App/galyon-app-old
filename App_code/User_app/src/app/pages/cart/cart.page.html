@@ -1,0 +1,150 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-title> {{util.getString('Cart')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<app-closed *ngIf="util.appClosed"></app-closed>
+<ion-content *ngIf="!util.appClosed">
+  <div *ngIf="!cart.cart?.length" class="nothing">
+    <p class="bolder"> {{util.getString('Your cart is empty')}} </p>
+    <img src="assets/imgs/basket.gif" alt="" srcset="">
+  </div>
+  <div class="main_content_div" *ngIf="cart.cart?.length">
+
+    <ion-label class="top_lbl"> {{util.getString('Your Cart')}} </ion-label>
+
+    <div class="content_div">
+
+      <div class="card_div" *ngFor="let item of cart.cart;let i = index">
+        <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+item.cover+')'">
+          <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
+          <div *ngIf="item.in_stoke === '0'" class="notInStoke">
+            <ion-label class="text"> {{util.getString('Out of Stoke')}} </ion-label>
+          </div>
+        </div>
+        <div class="second_div">
+          <ion-label class="name_lbl">{{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}</ion-label>
+          <div *ngIf="item.size ==='1'" class="variant" (click)="variant(item,i)">
+            <ion-label class="selecter ion-activatable">
+              <span>
+                <span> {{
+                              item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                              item.variations[0].items[item.variant].title ?
+                              item.variations[0].items[item.variant].title : ''}} </span>
+                -
+                <span *ngIf="util.cside ==='left'" class="price_lbl"> {{util.currecny}}
+                  <span class="original" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                 item.variations[0].items[item.variant].discount">
+                    {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                 item.variations[0].items[item.variant].price ?
+                                 item.variations[0].items[item.variant].price : 0}}
+                  </span>
+                  <span class="sell" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                item.variations[0].items[item.variant].discount"> {{item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                item.variations[0].items[item.variant].discount ?
+                                item.variations[0].items[item.variant].discount : 0}}
+                  </span>
+                  <span
+                    *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                item.variations[0].items[item.variant].discount === 0 && !item.variations[0].items[item.variant].discount">
+                    {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                 item.variations[0].items[item.variant].price ?
+                                 item.variations[0].items[item.variant].price : 0}}
+                  </span>
+
+                </span>
+                <span *ngIf="util.cside ==='right'">
+                  <span class="original" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                  item.variations[0].items[item.variant].discount">
+                    {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                  item.variations[0].items[item.variant].price ?
+                                  item.variations[0].items[item.variant].price : 0}}
+                  </span>
+                  <span class="sell" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                item.variations[0].items[item.variant].discount"> {{item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                item.variations[0].items[item.variant].discount ?
+                                item.variations[0].items[item.variant].discount : 0}}
+                  </span>
+                  <span
+                    *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                  item.variations[0].items[item.variant].discount === 0 && !item.variations[0].items[item.variant].discount">
+                    {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
+                                  item.variations[0].items[item.variant].price ?
+                                  item.variations[0].items[item.variant].price : 0}}
+                  </span>
+                  {{util.currecny}}
+                </span>
+              </span>
+              <ion-icon slot="start" name="caret-down-outline"></ion-icon>
+              <ion-ripple-effect type="bounded"></ion-ripple-effect>
+            </ion-label>
+          </div>
+          <img src="assets/imgs/veg.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
+          <img src="assets/imgs/non.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+          <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
+          <ion-label class="itemsKind" *ngIf="item.size ==='0'">
+            <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
+            <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
+            <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
+            <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}}</span>
+            <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
+          </ion-label>
+          <div *ngIf="item.size ==='0'">
+            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
+              {{item.original_price}} </ion-label>
+            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">{{item.original_price}}
+              {{util.currecny}}</ion-label>
+            <ion-label class="price_lbl" *ngIf="item.discount !== '0'">
+              <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.original_price}} </span>
+              <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
+
+              <span class="original" *ngIf="util.cside ==='right'"> {{item.original_price}} {{util.currecny}}</span>
+              <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
+
+            </ion-label>
+          </div>
+          <div class="cartBtn" *ngIf="cart.itemId.includes(item.id)">
+            <div class="abs_add">
+              <img src="assets/imgs/remove.png" (click)="remove(item,i)">
+              <ion-label>{{item.quantiy}}</ion-label>
+              <img src="assets/imgs/add.png" (click)="add(item,i)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="instructions">
+        {{util.getString('Orders once placed cannot be cancelled and are non-refundable')}}
+      </p>
+    </div>
+  </div>
+
+
+
+</ion-content>
+
+<ion-footer>
+  <div class="bottom_div" (click)="goToPayment()" *ngIf="cart.cart?.length">
+    <ion-label>{{cart.cart.length}} {{util.getString('Items')}}:
+      <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}}</span>
+      <span *ngIf="util.cside ==='right'">{{cart.totalPrice}} {{util.currecny}} </span>
+    </ion-label>
+    <ion-label>{{util.getString('Checkout')}}
+      <ion-icon name="exit-outline"></ion-icon>
+    </ion-label>
+  </div>
+</ion-footer>

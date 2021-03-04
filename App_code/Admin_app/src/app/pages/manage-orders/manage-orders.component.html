@@ -1,0 +1,192 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+
+<div class="row" *ngIf="loaded === true">
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <h5>Order Details</h5>
+            </div>
+            <div class="card-block p-t-0">
+                <p class="titles">Orders</p>
+                <div class="desc_div">
+                    <div *ngIf="orders?.length" class="border_bottom">
+                        <div *ngFor="let item of orders">
+                            <p class="storeName">
+                                <span class="name"> {{getStoreName(item.id)}} </span>
+                                <span class="status"> {{getOrderStatus(item.id)}} </span>
+                            </p>
+                            <p *ngFor="let order of item.order;let ol = index" class="items">
+                                <span *ngIf="!order.size">{{order.name}} -
+                                    <span *ngIf="order.have_gram === '1'"> {{order.gram}} grams </span>
+                                    <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg </span>
+                                    <span *ngIf="order.have_liter ==='1'"> {{order.liter}} ltr </span>
+                                    <span *ngIf="order.have_ml ==='1'"> {{order.ml}} ml</span>
+                                    <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} pcs </span>
+                                    <span>
+                                        $ {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                    </span>
+
+                                </span>
+                                <span *ngIf="order.size ==='0'">{{order.name}} -
+                                    <span *ngIf="order.have_gram === '1'"> {{order.gram}} grams </span>
+                                    <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg </span>
+                                    <span *ngIf="order.have_liter ==='1'"> {{order.liter}} ltr </span>
+                                    <span *ngIf="order.have_ml ==='1'"> {{order.ml}} ml</span>
+                                    <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} pcs </span>
+                                </span>
+                                <span *ngIf="order.size ==='1'">
+                                    {{order.name}} -
+                                    <span> {{order.variations[0].items[order.variant].title}}
+                                        <span>
+                                            $
+                                            {{order.variations[0].items[order.variant].discount &&
+                                            order.variations[0].items[order.variant].discount !==0 &&
+                                            order.variations[0].items[order.variant].discount !=='0' ?
+                                            order.variations[0].items[order.variant].discount :
+                                            order.variations[0].items[order.variant].price }}
+                                        </span>
+
+                                    </span>
+                                </span>
+                                <span *ngIf="order.size ==='0'">
+                                    <span>
+                                        $ {{order.discount ==='0' ? order.original_price : order.sell_price}}
+                                    </span>
+
+                                </span>
+                                <span>X {{order.quantiy}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex_div">
+                    <p>Deliver to</p>
+                    <p class="values">{{orderAt}}</p>
+                </div>
+                <div class="flex_div" *ngIf="orderAt ==='home'">
+                    <p class="values">
+                        <!-- <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> -->
+                        <i class="ti-location-pin"></i>
+                        {{address}}
+                    </p>
+
+                </div>
+
+                <p class="titles">Basic Details</p>
+                <div class="flex_div">
+                    <p>Order ID</p>
+                    <p class="values">{{id}}</p>
+                </div>
+
+                <div class="flex_div">
+                    <p>Payment Method</p>
+                    <p class="values"> {{payMethod}} </p>
+                </div>
+
+                <div class="flex_div">
+                    <p>Delivery On</p>
+                    <p class="values"> {{datetime}} </p>
+                </div>
+
+
+                <p class="titles">Order Tracking</p>
+
+                <div class="tracking_div">
+
+                    <div class="left">
+                        <span *ngFor="let item of orderDetail"
+                            style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <div class="line_div" [class.line_div_darkgray]="item.status === 1"></div>
+                            <!-- <ion-icon *ngIf="item.status === 1" name="checkmark-sharp"></ion-icon> -->
+                            <i class="ti-check-box" *ngIf="item.status === 1"></i>
+                        </span>
+
+                    </div>
+
+                    <div class="right">
+                        <span *ngFor="let item of orderDetail">
+                            <div class="line_div">
+                                <p [class.round_div_red]="item.status === 1"
+                                    [class.round_div_darkgray]="item.status === 1">
+                                    {{item.time}}</p>
+                            </div>
+                            <div class="round_div_gray" [class.round_div_red]="item.status === 1"
+                                [class.round_div_darkgray]="item.status === 1">
+                                {{item.value}}
+                            </div>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-lg-6" *ngIf="stores && stores?.length">
+        <div class="card">
+            <div class="card-block">
+                <h5>Stores</h5>
+            </div>
+            <div class="card-block p-t-0">
+                <div class="card-msg b-b-default p-b-10" *ngFor="let item of stores">
+                    <div class="card-msg-img">
+                        <a>
+                            <img class="img-circle" [src]="api.mediaURL+item.cover"
+                                onError="this.src='assets/images/user.png'" alt="chat-user">
+                        </a>
+                    </div>
+                    <div class="card-msg-contain">
+                        <h6> {{item.name}} </h6>
+                        <p class="text-muted">{{item.email}}.</p>
+                        <span>{{item.mobile}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6" *ngIf="driverInfo && driverInfo.length">
+        <div class="card">
+            <div class="card-block">
+                <h5>Drivers</h5>
+            </div>
+
+
+            <div class="card-block p-t-0">
+                <div class="card-msg b-b-default p-b-10" *ngFor="let item of driverInfo">
+                    <div class="card-msg-img">
+                        <a>
+                            <img class="img-circle" [src]="api.mediaURL+item.cover"
+                                onError="this.src='assets/images/user.png'" alt="chat-user">
+                        </a>
+                    </div>
+                    <div class="card-msg-contain">
+                        <h6> {{item.first_name}} {{item.last_name}} </h6>
+                        <p class="text-muted">{{item.email}}.</p>
+                        <span>{{item.mobile}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<ng2-toasty></ng2-toasty>

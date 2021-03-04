@@ -1,0 +1,336 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+.topHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: lightgray;
+    align-items: center;
+    padding: 0px 5px;
+    .itemsFound{
+        color: gray;
+        font-weight: bold;
+    }
+}
+.main_content{
+    padding-bottom: 80px;
+    .back_image{
+        width: 100%;
+        height: 100px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        min-width: 100px;
+        position: relative;
+        .percent{
+            position: absolute;
+            height: 25px;
+            width: 25px;
+            background: red;
+            left: 5px;
+            top: 2px;
+            line-height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            color:white;
+        }
+        .notInStoke{
+            background: #8373735c;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+            .text{
+                border: 1px solid gray;
+                padding: 5px;
+                border-radius: 5px;
+                background: white;
+                color: gray;
+                font-size: 10px;
+            }
+        }
+        .kind{
+            height: 15px;
+            width: 15px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+        }
+    }
+    .second_div{
+           padding: 5px;
+           position: relative;
+           width: 100%;
+        //    border-bottom: 1px solid lightgray;
+        //    border-left: 1px solid lightgray;
+        //    border-right: 1px solid lightgray;
+           ion-label {
+               display: block !important;
+               padding-bottom: 2px;
+           }
+            .offer{
+                height: 15px;
+                width: 15px;
+                position: absolute;
+                right: 20px;
+                top: 0px;
+            }
+            .variant{
+                .selecter{
+                    font-size: 10px;
+                    padding: 2px;
+                    border: 1px solid lightgray;
+                    margin: 10px 0px;
+                    border-radius: 5px;
+                    display: flex !important;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    color: gray;
+                    position: relative;
+                    overflow: hidden;
+                    ion-icon {
+                        box-shadow: none !important;
+                        font-size: 10px;
+                        color: gray !important;
+                    }
+                }
+                ion-item {
+                width: 100%;
+                min-width: 100%;
+                font-size: 10px !important;
+                --padding-start: 0px;
+                --padding-end: 0px;
+                font-size: 10px !important;
+                ion-label {
+                    font-size: 10px !important;
+                }
+                .select-icon{
+                    display: none !important;   
+                }
+                ion-select {
+                    width: 100%;
+                    min-width: 100%;
+                    font-size: 10px !important;
+                    border: 1px solid lightgray;
+                    border-radius: 5px;
+                    min-height: 20px;
+                    height: 20px;
+                    }
+                }
+            }
+            .itemsKind{
+                font-weight: 400;
+                font-size: 11px;
+            }
+           .price_lbl{
+                font-weight: 400;
+                font-size: 15px;
+                .original{
+                    text-decoration: line-through;
+                    font-size: 13px;
+                }
+                .sell{
+                    font-weight: bold;
+                }
+                .dicount{
+                    font-weight: bold;
+                    font-size: 13px;
+                }
+            }
+            .name_lbl{
+                font-weight: 700;
+                font-size: 15px;
+                text-transform: capitalize;
+            }
+            .desc{
+                font-size: 12px;
+            }
+            .stoke{
+                font-size: 10px;
+                .in{
+                    color: green;
+                }
+                .out{
+                    color: indianred;
+                }
+            }
+           .btnBtm{
+               display: flex;
+               flex-direction: row-reverse;
+               .ripple-parent {
+                    position: relative;
+                    overflow: hidden;
+                    padding: 5px;
+                    color: white;
+                    background: #f27474;
+                    border-radius: 5px;
+                }
+           }
+           .cartBtn{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                .abs_add{
+                    width: 100px;
+                    background: var(--ion-color-primary);
+                    height: 30px;
+                    border-radius: 15px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                    ion-label {
+                        color: white;
+                        font-size: 14px;
+                        font-family: muli-bold;
+                    }
+
+                    img{
+                        color: #FF8E80;
+                        width: 25px;
+                    }
+                }
+           }
+           
+            ion-icon{
+                position: absolute;
+                right: 0;
+                top: 0;
+                font-size: 20px;
+                color: #29b507;
+                padding: 5px;
+                box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+                border-radius: 50%;
+            }
+
+            ion-button{
+                position: absolute;
+                // right: 0;
+                bottom: 0;
+                width: 90px;
+                font-size: 12px;
+                color: #29b507;
+                --border-color: #73D25C;
+            }
+    }
+
+    .card_div{
+       width: 100%; 
+       padding: 10px;
+       border-bottom: 0.5px solid #E8E8E8;
+       display: flex;
+       flex-direction: row;
+
+       .back_image{
+           width: 100px;
+           height: 100px;
+           background-position: center;
+           background-repeat: no-repeat;
+           background-size: cover;
+           border-radius: 7px;
+           min-width: 100px;
+           position: relative;
+           .percent{
+            position: absolute;
+            height: 25px;
+            width: 25px;
+            background: red;
+            left: 5px;
+            top: 2px;
+            line-height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10px;
+            color:white;
+           }
+       }
+       .second_div{
+           padding-left: 15px;
+           position: relative;
+           width: 100%;
+            .kind{
+                height: 15px;
+                width: 15px;
+                position: absolute;
+                right: 0px;
+                top: 0px;
+            }
+            .offer{
+                height: 15px;
+                width: 15px;
+                position: absolute;
+                right: 20px;
+                top: 0px;
+            }
+           .price_lbl{
+                font-weight: 400;
+                font-size: 15px;
+                .original{
+                    text-decoration: line-through;
+                    font-size: 13px;
+                }
+                .sell{
+                    font-weight: bold;
+                }
+                .dicount{
+                    font-weight: bold;
+                    font-size: 13px;
+                }
+            }
+            .name_lbl{
+                font-weight: 700;
+                font-size: 15px;
+                text-transform: capitalize;
+            }
+            .desc{
+                font-size: 12px;
+            }
+            .stoke{
+                font-size: 10px;
+                .in{
+                    color: green;
+                }
+                .out{
+                    color: indianred;
+                }
+            }
+            ion-icon{
+                position: absolute;
+                right: 0;
+                top: 0;
+                font-size: 20px;
+                color: #29b507;
+                padding: 5px;
+                box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+                border-radius: 50%;
+            }
+
+            ion-button{
+                position: absolute;
+                // right: 0;
+                bottom: 0;
+                width: 90px;
+                font-size: 12px;
+                color: #29b507;
+                --border-color: #73D25C;
+            }
+        }
+    }
+}

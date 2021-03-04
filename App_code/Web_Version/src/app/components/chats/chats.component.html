@@ -1,0 +1,104 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="container">
+
+  <div mdbModal #basicModal="mdbModal" class="modal fade bottom" tabindex="-1" role="dialog"
+    aria-labelledby="myBasicModalLabel" aria-hidden="true" style="z-index: 99999;"
+    [config]="{backdrop: true, ignoreBackdropClick: true}">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel"> {{name}} </h4>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="!loaded"
+            style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only">{{util.translate('Loading...')}}</span>
+            </div>
+          </div>
+          <div class="main_content_div" #scrollMe>
+
+            <span *ngFor="let item of messages">
+              <div class="left_div" *ngIf="item.from_id != uid">
+                <div class="inner_div">
+                  <div class="msg_div">
+                    <p>{{item.message}}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="right_div" *ngIf="item.from_id == uid">
+                <div class="inner_div">
+                  <div class="msg_div">
+                    <p>{{item.message}}</p>
+                  </div>
+                </div>
+
+              </div>
+            </span>
+          </div>
+          <div *ngIf="!yourMessage && loaded" style="display: flex;flex-direction: row-reverse;padding: 20px;">
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only">{{util.translate('Loading...')}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div style="width: 100%;">
+            <div class="md-form">
+              <textarea type="text" [(ngModel)]="msg" id="form8" class="md-textarea form-control" rows="1" mdbInput
+                mdbValidate></textarea>
+              <label for="form8"> {{util.translate('Type Here..')}} </label>
+            </div>
+          </div>
+          <div>
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="closeModal()"
+              mdbWavesEffect>{{util.translate('Close')}}</button>
+            <button type="button" mdbBtn color="primary" (click)="sendMessage()" class="relative waves-light"
+              mdbWavesEffect>{{util.translate('Send Message')}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6" (click)="onAdmin()" style="cursor: pointer;">
+      <div class="boxed">
+        <div class="img_div" [ngStyle]="{'background-image':'url(assets/placeholder.png)'}">
+        </div>
+        <p class="name">
+          {{util.translate('Support')}}
+        </p>
+      </div>
+    </div>
+    <div class="col-12 col-md-6" style="cursor: pointer;" *ngFor="let item of users" (click)="onChat(item)">
+      <div class="boxed">
+        <div class="img_div" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+')'}">
+        </div>
+        <p class="name">
+          {{item.name}} <br>
+          <span class="mbl">{{item.mobile}}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let item of dummy">
+    <div class="row" style="overflow: hidden;">
+      <div class="col-12 col-md-6" *ngFor="let item of [1,2,3,4,5,6,7,8]">
+        <ngx-skeleton-loader [theme]="{ 'border-radius': '5px', height: '120px',width:'100%'}"></ngx-skeleton-loader>
+      </div>
+    </div>
+  </div>
+</div>

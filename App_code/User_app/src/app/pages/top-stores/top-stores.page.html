@@ -1,0 +1,60 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Top Stores</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="search()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-searchbar mode="ios" *ngIf="haveSearch" (ionCancel)="search()" [placeholder]="util.getString('Search')"
+    type="text" (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="always">
+  </ion-searchbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngFor="let item of dummy" style="margin-bottom: 10px;">
+    <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
+  </div>
+
+  <div class="content_div" *ngFor="let item of stores">
+    <div class="card_div">
+      <div class="image_div" (click)="openStore(item)"
+        [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}">
+        <img src="assets/imgs/open.png" class="isOpen" alt="Veg" *ngIf="item.isOpen && item.isClosed ==='1'">
+        <img src="assets/imgs/close.png" class="isOpen" alt="Non Veg" *ngIf="!item.isOpen || item.isClosed === '0'">
+      </div>
+      <div class="desc_div" (click)="openStore(item)">
+        <ion-label class="pro_name">
+          {{ (item.name.length>12)? (item.name | slice:0:12)+'..':(item.name) }}</ion-label>
+        <ion-label class="pro_detail">
+          {{ (item.address.length>20)? (item.address | slice:0:20)+'..':(item.address) }}
+        </ion-label>
+        <ion-label class="price_lbl"> {{getTime(item.open_time)}} - {{getTime(item.close_time)}} </ion-label>
+
+        <div class="small_flex">
+          <div class="btnBtm">
+            <div class="ion-activatable ripple-parent">
+              {{util.getString('View')}}
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

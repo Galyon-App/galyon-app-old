@@ -1,0 +1,159 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+   <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-body">
+            <h5>Product Details</h5>
+         </div>
+         <div class="card-body reset-table p-t-0">
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Name</label>
+                  <input type="text" [(ngModel)]="name" disabled="true" class="form-control" placeholder="Name">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Real price</label>
+                  <input type="text" [(ngModel)]="realPrice" disabled="true" class="form-control"
+                     placeholder="Real price">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Sell price</label>
+                  <input type="text" [(ngModel)]="sellPrice" disabled="true" class="form-control"
+                     placeholder="Sell price">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Discount</label>
+                  <input type="text" [(ngModel)]="discount" disabled="true" class="form-control" placeholder="Discount">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Exp Date</label>
+                  <input type="text" [(ngModel)]="exp_date" disabled="true" class="form-control" placeholder="Exp Date">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_gram">
+               <div class="col-sm-12">
+                  <label>Gram</label>
+                  <input type="text" [(ngModel)]="gram" disabled="true" class="form-control" placeholder="Gram">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_kg">
+               <div class="col-sm-12">
+                  <label>KG</label>
+                  <input type="text" [(ngModel)]="kg" disabled="true" class="form-control" placeholder="KG">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_liter">
+               <div class="col-sm-12">
+                  <label>Liter</label>
+                  <input type="text" [(ngModel)]="liter" disabled="true" class="form-control" placeholder="Liter">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_ml">
+               <div class="col-sm-12">
+                  <label>ML</label>
+                  <input type="text" [(ngModel)]="ml" disabled="true" class="form-control" placeholder="ML">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_pcs">
+               <div class="col-sm-12">
+                  <label>PCs</label>
+                  <input type="text" [(ngModel)]="pcs" disabled="true" class="form-control" placeholder="PCs">
+               </div>
+            </div>
+
+            <div class="form-group row" *ngIf="have_pcs">
+               <div class="col-sm-12">
+                  <label>PCs</label>
+                  <input type="text" [(ngModel)]="pcs" disabled="true" class="form-control" placeholder="PCs">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Kind</label>
+                  <input type="text" [value]="veg?'Veg':'Non Veg' " disabled="true" class="form-control"
+                     placeholder="PCs">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Rating</label>
+                  <input type="text" [(ngModel)]="rating" disabled="true" class="form-control" placeholder="Rating">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Total Rating</label>
+                  <input type="text" [(ngModel)]="total_rating" disabled="true" class="form-control"
+                     placeholder="Total Rating">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Descriptions</label>
+                  <textarea rows="5" cols="5" [(ngModel)]="description" disabled="true" class="form-control"
+                     placeholder="Descriptions"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Key feature</label>
+                  <textarea rows="5" cols="5" [(ngModel)]="key_features" disabled="true" class="form-control"
+                     placeholder="Key feature"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>Disclaimer</label>
+                  <textarea rows="5" cols="5" [(ngModel)]="disclaimer" disabled="true" class="form-control"
+                     placeholder="Disclaimer"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div *ngFor="let item of images">
+                  <div class="back_image" *ngIf="item !==''"
+                     [ngStyle]="{'background-image':'url('+api.mediaURL+item+')'}"></div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+</div>
+<ng2-toasty></ng2-toasty>

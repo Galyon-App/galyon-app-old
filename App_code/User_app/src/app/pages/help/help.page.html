@@ -1,0 +1,44 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{util.getString('Help')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="!loaded">
+    <div *ngFor="let item of [1,2,3,4,5,6,7,8]">
+      <h3>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </h3>
+      <p>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </p>
+      <p>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </p>
+      <h3>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </h3>
+    </div>
+  </div>
+  <p [innerHTML]="getContent()" *ngIf="loaded"></p>
+</ion-content>

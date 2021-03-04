@@ -1,0 +1,29 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="page-header">
+  <div class="page-header-title">
+    <span *ngFor="let breadcrumb of breadcrumbs; let last = last">
+      <h4 *ngIf="last">{{ breadcrumb.label }}</h4>
+    </span>
+  </div>
+  <div class="page-header-breadcrumb">
+    <ul class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="'/'">
+          <i class="icofont icofont-home"></i>
+        </a>
+      </li>
+      <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs">
+        <a [ngClass]="breadcrumb.status === false ? 'not-active': ''"
+          [routerLink]="breadcrumb.url">{{breadcrumb.label}}</a>
+      </li>
+    </ul>
+  </div>
+</div>

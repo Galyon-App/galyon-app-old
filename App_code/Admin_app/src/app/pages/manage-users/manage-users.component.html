@@ -1,0 +1,194 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>User Details</h5>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="user-card-body ">
+                        <div class="card-body">
+                            <div class="top-card text-center">
+                                <img [src]="photo" style="height: 100px;width: 100px;border-radius: 50%;"
+                                    onError="this.src='assets/icon.png'" class="img-responsive" alt="">
+                            </div>
+                            <div class="card-contain text-center p-t-40">
+                                <h5 class="text-capitalize p-b-10">{{name}}</h5>
+                                <p class="text-muted">{{email}}</p>
+                            </div>
+                            <div class="card-data">
+                                <div class="row">
+
+                                    <div class="col-4 b-r-default text-center">
+                                        <p class="text-muted">Orders</p>
+                                        <span>{{myOrders.length}}</span>
+                                    </div>
+                                    <div class="col-4 b-r-default text-center">
+                                        <p class="text-muted">Address</p>
+                                        <span>{{myaddress.length}}</span>
+                                    </div>
+                                    <div class="col-4 b-r-default text-center">
+                                        <p class="text-muted">Reviews</p>
+                                        <span>{{reviews.length}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="user-card-body">
+                        <div class="card-body">
+                            <ngb-tabset>
+                                <ngb-tab title="Orders">
+                                    <ng-template ngbTabContent>
+                                        <div class="orders">
+                                            <div class="card_div" *ngFor="let item of myOrders">
+
+                                                <div class="resto_detail">
+                                                    <div class="back_image"
+                                                        [style.backgroundImage]="'url('+api.mediaURL+item.orders[0].cover+')'">
+                                                    </div>
+                                                    <div style="margin-left: 20px;">
+                                                        <p class="res_name">Ordered {{item.store_id.length}} stores </p>
+                                                        <p class="res_location" *ngIf="item.address">
+                                                            {{item.address.address}}
+                                                        </p>
+                                                        <p class="res_location" *ngIf="!item.address"> At Store </p>
+                                                    </div>
+                                                </div>
+                                                <div class="line_div"></div>
+                                                <div class="order_detail">
+                                                    <p class="head_gray">ITEMS</p>
+                                                    <div class="small_lbl">
+                                                        <span *ngFor="let order of item.orders;let ol = index">
+                                                            <div class="border_bottom">
+                                                                <span *ngIf="!order.size">{{order.name}} -
+                                                                    <span *ngIf="order.have_gram === '1'">
+                                                                        {{order.gram}} grams </span>
+                                                                    <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg
+                                                                    </span>
+                                                                    <span *ngIf="order.have_liter ==='1'">
+                                                                        {{order.liter}} ltr </span>
+                                                                    <span *ngIf="order.have_ml ==='1'"> {{order.ml}}
+                                                                        ml</span>
+                                                                    <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                                        pcs </span>
+                                                                    <span>
+                                                                        $
+                                                                        {{order.discount ==='0' ? order.original_price :
+                                                                        order.sell_price}}
+                                                                    </span>
+
+                                                                </span>
+                                                                <span *ngIf="order.size ==='0'">{{order.name}} -
+                                                                    <span *ngIf="order.have_gram === '1'">
+                                                                        {{order.gram}} grams </span>
+                                                                    <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg
+                                                                    </span>
+                                                                    <span *ngIf="order.have_liter ==='1'">
+                                                                        {{order.liter}} ltr </span>
+                                                                    <span *ngIf="order.have_ml ==='1'"> {{order.ml}}
+                                                                        ml</span>
+                                                                    <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                                        pcs </span>
+                                                                </span>
+                                                                <span *ngIf="order.size ==='1'">
+                                                                    {{order.name}} -
+                                                                    <span>
+                                                                        {{order.variations[0].items[order.variant].title}}
+                                                                        <span>
+                                                                            $
+                                                                            {{order.variations[0].items[order.variant].discount
+                                                                            &&
+                                                                            order.variations[0].items[order.variant].discount
+                                                                            !==0 &&
+                                                                            order.variations[0].items[order.variant].discount
+                                                                            !=='0' ?
+                                                                            order.variations[0].items[order.variant].discount
+                                                                            :
+                                                                            order.variations[0].items[order.variant].price
+                                                                            }}
+                                                                        </span>
+
+                                                                    </span>
+                                                                </span>
+                                                                <span *ngIf="order.size ==='0'">
+                                                                    <span>
+                                                                        $
+                                                                        {{order.discount ==='0' ? order.original_price :
+                                                                        order.sell_price}}
+                                                                    </span>
+
+                                                                </span>
+                                                                <span>X {{order.quantiy}}</span>
+                                                            </div>
+
+
+                                                        </span>
+                                                    </div>
+                                                    <p class="head_gray">ORDERED ON</p>
+                                                    <p class="small_lbl">{{getDate(item.time)}} </p>
+                                                    <p class="head_gray" *ngIf="item.coupon_code">
+                                                        Discount</p>
+                                                    <p class="small_lbl" *ngIf="item.coupon_code">
+                                                        ${{item.discount}}
+                                                    </p>
+                                                    <p class="head_gray">TOTAL AMOUNT</p>
+                                                    <p class="small_lbl">${{item.grand_total}}</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab title="Address">
+                                    <ng-template ngbTabContent>
+                                        <div class="address">
+                                            <div class="list" *ngFor="let item of myaddress">
+                                                <p class="title">{{item.title}}</p>
+                                                <p class="name">{{item.house}} {{item.landmark}} {{item.address}}</p>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab title="Reviews">
+                                    <ng-template ngbTabContent>
+                                        <div class="review">
+                                            <div class="row" *ngFor="let item of reviews"
+                                                style="border-bottom: 1px solid lightgray;padding: 10px;">
+                                                <div class="col-md-10">
+                                                    <p style="font-weight: bold;"> {{item.msg}}</p>
+                                                    {{item.timestamp}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                            </ngb-tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End-->
+
+        </div>
+    </div>
+</div>
+
+
+<ng2-toasty></ng2-toasty>

@@ -1,0 +1,38 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-tabs>
+  <ion-tab-bar slot="bottom" class="ion-no-border">
+    <ion-tab-button tab="home">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label> {{util.getString('Home')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="categories">
+      <ion-icon name="apps-outline"></ion-icon>
+      <ion-label> {{util.getString('Categories')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="cart">
+      <ion-icon name="basket-outline"></ion-icon>
+      <ion-label> {{util.getString('Cart')}} </ion-label>
+      <ion-badge color="danger" *ngIf="cart.cart?.length"> {{cart.cart.length}} </ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="orders">
+      <ion-icon name="newspaper-outline"></ion-icon>
+      <ion-label> {{util.getString('History')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="account">
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-label> {{util.getString('Account')}} </ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

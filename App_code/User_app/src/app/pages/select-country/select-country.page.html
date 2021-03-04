@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{util.getString('Select country')}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-searchbar [placeholder]="util.getString('Search')" type="text" (ionChange)="onSearchChange($event)"
+    [debounce]="250"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none" *ngIf="dummyLoad?.length">
+    <ion-item *ngFor="let item of dummyLoad">
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="dummy?.length">
+    <ion-radio-group [(ngModel)]="ccCode">
+      <ion-item *ngFor="let item of countries">
+        <ion-label>+{{item.dialling_code}} {{item.country_name}} </ion-label>
+        <ion-radio [value]="item.dialling_code"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="okay()">
+    <ion-fab-button>
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

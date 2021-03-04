@@ -1,0 +1,276 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <p style="color: red;font-size: 1.5rem;">
+                    Stores will be shown to users once Stores add products to his store
+                </p>
+                <h5> <span *ngIf="new">CREATE NEW</span> <span *ngIf="!new">Edit</span>
+                    Store </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <h4 class="sub-title" *ngIf="new">Owner Details</h4>
+                <div class="form-group row" *ngIf="new">
+                    <div class="col-sm-6">
+                        <label>First Name</label>
+                        <input type="text" [(ngModel)]="fname" class="form-control" placeholder="First Name">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Last Name</label>
+                        <input type="text" [(ngModel)]="lname" class="form-control" placeholder="Last Name">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Email</label>
+                        <input type="email" [disabled]="!new" [(ngModel)]="email" class="form-control"
+                            placeholder="Email">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Password</label>
+                        <input type="password" [(ngModel)]="password" class="form-control" placeholder="Password">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Contact No</label>
+                        <!-- <input type="number" [(ngModel)]="phone" class="form-control" placeholder="Contact No"> -->
+                        <div class="row">
+                            <div class="col-3" *ngIf="new ===true">
+                                <select name="select" class="form-control" [(ngModel)]="mobileCcode">
+                                    <option *ngFor="let item of util.countrys;" [value]="item.dialling_code">
+                                        {{item.country_name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-9">
+                                <input type="number" class="form-control" [placeholder]="api.translate('Mobile Number')"
+                                    [(ngModel)]="phone" [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Gender</label>
+                        <select name="select" [(ngModel)]="gender" class="form-control">
+                            <option value="1">Male</option>
+                            <option value="0">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <h4 class="sub-title">Stores Details</h4>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Stores Name</label>
+                        <input type="text" [(ngModel)]="name" class="form-control" placeholder="Stores Name">
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label>Address</label>
+                        <input type="text" [(ngModel)]="address" ngx-google-places-autocomplete #placesRef="ngx-places"
+                            (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Address">
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <label>Opening Time</label>
+                        <input [(ngModel)]="openTime" type="time" class="form-control" placeholder="Opening Time">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Closing Time</label>
+                        <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Store Commision %</label>
+                        <input [(ngModel)]="commission" type="number" class="form-control"
+                            placeholder="Store commission %">
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Store Description</label>
+                        <textarea [(ngModel)]="descritions" rows="5" cols="5" class="form-control"
+                            placeholder="Store Description"></textarea>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Select city</label>
+                        <select name="select" [(ngModel)]="city" class="form-control">
+                            <option *ngFor="let item of cities" [value]="item.id">{{item.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">{{api.translate('Upload cover image here')}} </label>
+                    <div class="col-sm-4">
+                        <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
+                            accept="image/*">
+                    </div>
+                    <div class="col-sm-4">
+                        <img [src]="coverImage" alt="" style="height: 100px;width: 100px;float: right;"
+                            onError="this.src='assets/icon.png'">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="create()" *ngIf="new">Create new Store
+                        </button>
+                        <button class="btn btn-danger btn-round" (click)="updateVenue()" *ngIf="!new">
+                            Update Store </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="!new">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body-big card-status">
+                <h5>Income Status</h5>
+                <div class="card-body text-center">
+                    <h2 class="text-primary">ORDERS : {{orders.length}}</h2>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p class="f-16 text-muted m-0">Totale Income : {{getCurrency()}} {{totalSales}}
+                        </p>
+                    </div>
+                    <div class="col-6">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body-big card-status">
+                <h5>Orders & Reviews</h5>
+                <ngb-tabset>
+                    <ngb-tab title="Orders">
+                        <ng-template ngbTabContent>
+                            <div class="orders">
+                                <div class="card_div" *ngFor="let item of orders">
+
+                                    <div class="resto_detail">
+                                        <div class="back_image"
+                                            [style.backgroundImage]="'url('+api.mediaURL+item.orders[0].cover+')'">
+                                        </div>
+                                        <div style="margin-left: 20px;">
+                                            <p class="res_name">Ordered {{item.store_id.length}} stores </p>
+                                            <p class="res_location" *ngIf="item.address">
+                                                {{item.address.address}}
+                                            </p> <br>
+                                            <p class="res_location" *ngIf="!item.address"> At Store </p>
+                                        </div>
+                                    </div>
+                                    <div class="line_div"></div>
+                                    <div class="order_detail">
+                                        <p class="head_gray">ITEMS</p>
+                                        <div class="small_lbl">
+                                            <span *ngFor="let order of item.orders;let ol = index">
+                                                <div class="border_bottom">
+                                                    <span *ngIf="!order.size">{{order.name}} -
+                                                        <span *ngIf="order.have_gram === '1'"> {{order.gram}} grams
+                                                        </span>
+                                                        <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg </span>
+                                                        <span *ngIf="order.have_liter ==='1'"> {{order.liter}} ltr
+                                                        </span>
+                                                        <span *ngIf="order.have_ml ==='1'"> {{order.ml}} ml</span>
+                                                        <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} pcs </span>
+                                                        <span>
+                                                            $
+                                                            {{order.discount ==='0' ? order.original_price :
+                                                            order.sell_price}}
+                                                        </span>
+
+                                                    </span>
+                                                    <span *ngIf="order.size ==='0'">{{order.name}} -
+                                                        <span *ngIf="order.have_gram === '1'"> {{order.gram}} grams
+                                                        </span>
+                                                        <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg </span>
+                                                        <span *ngIf="order.have_liter ==='1'"> {{order.liter}} ltr
+                                                        </span>
+                                                        <span *ngIf="order.have_ml ==='1'"> {{order.ml}} ml</span>
+                                                        <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} pcs </span>
+                                                    </span>
+                                                    <span *ngIf="order.size ==='1'">
+                                                        {{order.name}} -
+                                                        <span> {{order.variations[0].items[order.variant].title}}
+                                                            <span>
+                                                                $
+                                                                {{order.variations[0].items[order.variant].discount &&
+                                                                order.variations[0].items[order.variant].discount !==0
+                                                                &&
+                                                                order.variations[0].items[order.variant].discount !=='0'
+                                                                ? order.variations[0].items[order.variant].discount :
+                                                                order.variations[0].items[order.variant].price }}
+                                                            </span>
+
+                                                        </span>
+                                                    </span>
+                                                    <span *ngIf="order.size ==='0'">
+                                                        <span>
+                                                            $
+                                                            {{order.discount ==='0' ? order.original_price :
+                                                            order.sell_price}}
+                                                        </span>
+
+                                                    </span>
+                                                    <span>X {{order.quantiy}}</span>
+                                                </div>
+
+
+                                            </span>
+                                        </div>
+                                        <p class="head_gray">ORDERED ON</p><br>
+                                        <p class="small_lbl">{{getDate(item.time)}} </p> <br>
+                                        <p class="head_gray" *ngIf="item.coupon_code"> <br>
+                                            Discount</p>
+                                        <p class="small_lbl" *ngIf="item.coupon_code"> <br>
+                                            ${{item.discount}}
+                                        </p> <br>
+                                        <p class="head_gray">TOTAL AMOUNT</p> <br>
+                                        <p class="small_lbl">${{item.grand_total}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab title="Reviews">
+                        <ng-template ngbTabContent>
+                            <div class="review">
+                                <div class="row" *ngFor="let item of reviews"
+                                    style="border-bottom: 1px solid lightgray;padding: 10px;">
+                                    <div class="col-md-2">
+                                        <img height="50" width="50" [src]="api.mediaURL+item.cover" alt=""
+                                            onError="this.src='assets/icon.png'">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <p style="font-weight: bold;"> {{item.fname}} {{item.lname}} </p> <br>
+                                        <p> {{item.msg}} </p> <br>
+                                        <p>{{item.timestamp}}</p> <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng2-toasty></ng2-toasty>

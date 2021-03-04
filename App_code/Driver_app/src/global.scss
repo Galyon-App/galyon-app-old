@@ -1,0 +1,68 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@font-face {
+    font-family: muli-regular;
+    src: url(assets/fonts/Muli/Muli-Regular.ttf);
+}
+@font-face {
+    font-family: muli-bold;
+    src: url(assets/fonts/Muli/Muli-Bold.ttf);
+}
+
+*{
+    font-family: muli-regular;
+}
+
+ion-header{
+    --box-shadow:none;
+    --border: none !important;
+    border-color: white !important;
+    border-width: 0px !important;
+}
+ion-toolbar{
+    --border: none !important;
+    --box-shadow:none;
+    border-color: white !important;
+
+    ion-buttons{
+        margin-top: 0px;
+    }
+    .menuIcon{
+        // height: 30px;
+        width: 25px;
+    }
+}

@@ -1,0 +1,81 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Rate Order')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <ion-spinner color="primary" name="crescent"></ion-spinner>
+  </div>
+  <div class="main_content_div" *ngIf="loaded">
+
+
+    <ion-label class="titles"> {{util.getString('Orders')}} </ion-label>
+    <div class="desc_div">
+      <div *ngIf="orders?.length" class="border_bottom">
+        <div *ngFor="let item of orders">
+          <p class="storeName">
+            <span class="name"> {{getStoreName(item.id)}} </span>
+            <span class="status" (click)="rateStore(item.id)">
+              <div class="ion-activatable ripple-parent">
+                <ion-icon slot="start" color="warning" name="star-outline"></ion-icon>
+                <ion-ripple-effect type="bounded"></ion-ripple-effect>
+              </div>
+            </span>
+          </p>
+          <p *ngFor="let order of item.order;let ol = index" class="items">
+            <span>{{order.name}} -
+              <span *ngIf="order.have_gram === '1'"> {{order.gram}} {{util.getString('grams')}} </span>
+              <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}} </span>
+              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} {{util.getString('ltr')}} </span>
+              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}}</span>
+              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} {{util.getString('pcs')}} </span>
+            </span>
+            <span (click)="rateProduct(order)">
+              <div class="ion-activatable ripple-parent">
+                <ion-icon slot="start" color="warning" name="star-outline"></ion-icon>
+                <ion-ripple-effect type="bounded"></ion-ripple-effect>
+              </div>
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <ion-label class="titles" *ngIf="driverInfo && driverInfo.length"> {{util.getString('Rate Drivers')}} </ion-label>
+
+      <div *ngFor="let item of driverInfo">
+        <div class="card_div">
+          <div class="resto_detail">
+            <div class="back_image"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}"></div>
+            <div style="margin-left: 10px;" (click)="ratDriver(item)">
+              <ion-label class="res_name">{{item.first_name}} {{item.last_name}}</ion-label>
+              <ion-label class="res_location">
+                <ion-icon name="mail-outline"></ion-icon> {{item.email}}
+              </ion-label>
+              <ion-label class="res_location">
+                <ion-icon name="call-outline"></ion-icon> {{item.mobile}}
+              </ion-label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

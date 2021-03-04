@@ -1,0 +1,55 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> {{util.getString('Select Category')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" color="light" name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [placeholder]="util.getString('Search')" mode="ios" inputmode="text" type="text"
+    (ionChange)="onSearchChange($event)" [debounce]="250" animated></ion-searchbar>
+  <h2 class="ion-text-center" *ngIf="!dummy?.length && !category?.length"> {{util.getString('No Category found')}} </h2>
+  <ion-item *ngFor="let item of dummy">
+    <ion-avatar slot="start">
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </ion-avatar>
+    <ion-label>
+      <h3>
+        <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+      </h3>
+    </ion-label>
+  </ion-item>
+
+  <ion-list>
+    <ion-radio-group [(ngModel)]="id">
+
+      <ion-item *ngFor="let item of category">
+        <ion-avatar slot="start">
+          <img [src]="api.mediaURL + item.cover" alt="">
+        </ion-avatar>
+        <ion-label> {{item.name}}</ion-label>
+        <ion-radio slot="end" mode="md" [value]="item.id"></ion-radio>
+      </ion-item>
+
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="id">
+    <ion-fab-button (click)="selected()">
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

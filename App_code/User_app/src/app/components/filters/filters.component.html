@@ -1,0 +1,18 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="mainContent ion-activatable ripple-parent">
+  <p (click)="selected('1')"> {{util.getString('Popularity')}} </p>
+  <p (click)="selected('2')">{{util.getString('Price - Low to High')}}</p>
+  <p (click)="selected('3')"> {{util.getString('Price - High to Low')}} </p>
+  <p (click)="selected('4')"> {{util.getString('A - Z')}} </p>
+  <p (click)="selected('5')"> {{util.getString('Z - A')}} </p>
+  <p (click)="selected('6')"> {{util.getString('% Off - High to Low')}} </p>
+  <ion-ripple-effect type="bounded"></ion-ripple-effect>
+</div>

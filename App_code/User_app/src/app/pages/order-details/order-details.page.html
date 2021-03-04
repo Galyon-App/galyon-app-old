@@ -1,0 +1,194 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Order Details')}} ##{{id}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <ion-spinner color="primary" name="crescent"></ion-spinner>
+  </div>
+  <div class="main_content_div" *ngIf="loaded">
+
+
+    <ion-label class="titles"> {{util.getString('Orders')}} </ion-label>
+    <div class="desc_div">
+      <div *ngIf="orders?.length" class="border_bottom">
+        <div *ngFor="let item of orders">
+          <p class="storeName">
+            <span class="name"> {{getStoreName(item.id)}} </span>
+            <span class="status"> {{getOrderStatus(item.id)}} </span>
+          </p>
+          <p *ngFor="let order of item.order;let ol = index" class="items">
+            <span *ngIf="!order.size">{{order.name}} -
+              <span *ngIf="order.have_gram === '1'"> {{order.gram}} grams </span>
+              <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg </span>
+              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} ltr </span>
+              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} ml</span>
+              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} pcs </span>
+              <span *ngIf="util.cside ==='left'">
+                {{util.currecny}} {{order.discount ==='0' ? order.original_price : order.sell_price}}
+              </span>
+              <span *ngIf="util.cside ==='right'">
+                {{order.discount ==='0' ? order.original_price : order.sell_price}} {{util.currecny}}
+              </span>
+            </span>
+            <span *ngIf="order.size ==='0'">{{order.name}} -
+              <span *ngIf="order.have_gram === '1'"> {{order.gram}} {{util.getString('grams')}} </span>
+              <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}} </span>
+              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} {{util.getString('ltr')}} </span>
+              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}} </span>
+              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} {{util.getString('pcs')}} </span>
+            </span>
+            <span *ngIf="order.size ==='1'">
+              {{order.name}} - <span> {{order.variations[0].items[order.variant].title}} </span>
+            </span>
+            <span>X {{order.quantiy}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex_div">
+      <ion-label> {{util.getString('Deliver to')}} </ion-label>
+      <ion-label class="values">{{orderAt}}</ion-label>
+    </div>
+    <div class="flex_div" *ngIf="orderAt ==='home'">
+      <ion-label class="values">
+        <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> {{address}}
+      </ion-label>
+
+    </div>
+
+    <ion-label class="titles"> {{util.getString('Basic Details')}} </ion-label>
+    <div class="flex_div">
+      <ion-label> {{util.getString('Order ID')}} </ion-label>
+      <ion-label class="values">{{id}}</ion-label>
+    </div>
+
+    <div class="flex_div">
+      <ion-label> {{util.getString('Payment Method')}} </ion-label>
+      <ion-label class="values"> {{payMethod}} </ion-label>
+    </div>
+
+    <div class="flex_div">
+      <ion-label> {{util.getString('Delivery On')}} </ion-label>
+      <ion-label class="values"> {{datetime}} </ion-label>
+    </div>
+
+
+    <ion-label class="titles"> {{util.getString('Order Tracking')}} </ion-label>
+
+    <div class="tracking_div">
+
+      <div class="left">
+        <span *ngFor="let item of orderDetail">
+          <div class="line_div" [class.line_div_darkgray]="item.status === 1"></div>
+          <ion-icon *ngIf="item.status === 1" name="checkmark-sharp"></ion-icon>
+        </span>
+
+      </div>
+
+      <div class="right">
+        <span *ngFor="let item of orderDetail">
+          <div class="line_div">
+            <ion-label [class.round_div_red]="item.status === 1" [class.round_div_darkgray]="item.status === 1">
+              {{item.time}}</ion-label>
+          </div>
+          <div class="round_div_gray" [class.round_div_red]="item.status === 1"
+            [class.round_div_darkgray]="item.status === 1">
+            {{item.value}}
+          </div>
+        </span>
+      </div>
+
+    </div>
+
+    <ion-label class="titles" *ngIf="driverInfo && driverInfo.length"> {{util.getString('Driver Informations')}}
+    </ion-label>
+
+    <div *ngFor="let item of driverInfo">
+      <div class="card_div">
+        <div class="resto_detail">
+          <div class="back_image"
+            [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}"></div>
+          <div style="margin-left: 10px;" (click)="contanctDriver(item)">
+            <ion-label class="res_name">{{item.first_name}} {{item.last_name}}</ion-label>
+            <ion-label class="res_location">
+              <ion-icon name="mail-outline"></ion-icon> {{item.email}}
+            </ion-label>
+            <ion-label class="res_location">
+              <ion-icon name="call-outline"></ion-icon> {{item.mobile}}
+            </ion-label>
+          </div>
+          <ion-fab class="directionBtn" (click)="direction(item,'driver')"
+            *ngIf="getOrderStatusFromDriver(item.id) ==='ongoing' || getOrderStatusFromDriver(item.id) ==='accepted' ">
+            <ion-fab-button color="light" size="small">
+              <ion-icon name="compass-outline"></ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="stores && stores?.length">
+      <ion-label class="titles" *ngIf="stores"> {{util.getString('Stores Informations')}} </ion-label>
+      <div *ngFor="let item of stores">
+        <div class="card_div">
+          <div class="resto_detail">
+            <div class="back_image"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}">
+            </div>
+            <div style="margin-left: 10px;" (click)="contanct(item)">
+              <ion-label class="res_name">{{item.name}}</ion-label>
+              <ion-label class="res_location">
+                <ion-icon name="mail-outline"></ion-icon> {{item.email}}
+              </ion-label>
+              <ion-label class="res_location">
+                <ion-icon name="call-outline"></ion-icon> {{item.mobile}}
+              </ion-label>
+              <ion-label class="res_location">
+                <ion-icon name="location-outline"></ion-icon>{{item.address}}
+              </ion-label>
+            </div>
+            <ion-fab class="directionBtn" (click)="direction(item,'store')"
+              *ngIf="getOrderStatus(item.uid) ==='ongoing' || getOrderStatus(item.uid) ==='accepted' ">
+              <ion-fab-button color="light" size="small">
+                <ion-icon name="compass-outline"></ion-icon>
+              </ion-fab-button>
+            </ion-fab>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="btn_div">
+      <ion-button *ngIf="isDelivered" (click)="presentAlertConfirm()" class="ratae">
+        <ion-icon name="star" color="light" slot="start"></ion-icon>
+        {{util.getString('Rate Order')}}
+      </ion-button>
+      <ion-button *ngIf="canCancle" (click)="changeStatus()" class="reject">
+        {{util.getString('Cancel Order')}}
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

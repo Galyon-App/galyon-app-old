@@ -1,0 +1,172 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="container">
+  <div class="row">
+    <div style="display: flex;flex-direction: row;justify-content: flex-start;">
+      <a mdbWavesEffect (click)="back()">
+        <mdb-icon fas icon="arrow-left" class="mr-1"></mdb-icon>
+      </a>
+    </div>
+  </div>
+  <div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <div class="spinner-border text-success" role="status">
+      <span class="sr-only">{{util.translate('Loading...')}}</span>
+    </div>
+  </div>
+
+  <div class="main_content_div" *ngIf="loaded">
+    <p class="titles"> {{util.translate('Orders')}} </p>
+    <div class="desc_div">
+      <div *ngIf="orders?.length" class="border_bottom">
+        <div *ngFor="let item of orders">
+          <p class="storeName">
+            <span class="name"> {{getStoreName(item.id)}} </span>
+            <span class="status"> {{getOrderStatus(item.id)}} </span>
+          </p>
+          <!-- <p *ngFor="let order of item.order;let ol = index" class="items">
+            <span>{{order.name}} -
+              <span *ngIf="order.have_gram === '1'"> {{order.gram}} {{util.translate('grams')}} </span>
+              <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.translate('kg')}} </span>
+              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} {{util.translate('ltr')}} </span>
+              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.translate('ml')}} </span>
+              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} {{util.translate('pcs')}} </span>
+            </span>
+            <span>X {{order.quantiy}}</span>
+          </p> -->
+          <p *ngFor="let order of item.order;let ol = index" class="items">
+            <span *ngIf="!order.size">{{order.name}} -
+              <span *ngIf="order.have_gram === '1'"> {{order.gram}} {{util.translate('grams')}} </span>
+              <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.translate('kg')}} </span>
+              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} {{util.translate('ltr')}} </span>
+              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.translate('ml')}}</span>
+              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} {{util.translate('pcs')}} </span>
+              <span *ngIf="util.cside ==='left'">
+                {{util.currecny}} {{order.discount ==='0' ? order.original_price : order.sell_price}}
+              </span>
+              <span *ngIf="util.cside ==='right'">
+                {{order.discount ==='0' ? order.original_price : order.sell_price}} {{util.currecny}}
+              </span>
+            </span>
+            <span *ngIf="order.size ==='0'">{{order.name}} -
+              <span *ngIf="order.have_gram === '1'"> {{order.gram}} {{util.translate('grams')}} </span>
+              <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.translate('kg')}} </span>
+              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} {{util.translate('ltr')}} </span>
+              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.translate('ml')}} </span>
+              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} {{util.translate('pcs')}} </span>
+            </span>
+            <span *ngIf="order.size ==='1'">
+              {{order.name}} - <span> {{order.variations[0].items[order.variant].title}} </span>
+            </span>
+            <span>X {{order.quantiy}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex_div">
+      <p>{{util.translate('Deliver to')}} </p>
+      <p class="values">{{orderAt}}</p>
+    </div>
+    <div class="flex_div" *ngIf="orderAt ==='home'">
+      <p class="values">
+        <mdb-icon fas icon="map-marker-alt"></mdb-icon> {{address}}
+      </p>
+
+    </div>
+
+    <p class="titles">{{util.translate('Basic Details')}} </p>
+    <div class="flex_div">
+      <p>{{util.translate('Order ID')}} </p>
+      <p class="values">{{id}}</p>
+    </div>
+
+    <div class="flex_div">
+      <p>{{util.translate('Payment Method')}} </p>
+      <p class="values"> {{payMethod}} </p>
+    </div>
+
+    <div class="flex_div">
+      <p>{{util.translate('Delivery On')}} </p>
+      <p class="values"> {{datetime}} </p>
+    </div>
+
+
+    <p class="titles">{{util.translate('Order Tracking')}} </p>
+
+    <div class="tracking_div">
+
+      <div class="left">
+        <span *ngFor="let item of orderDetail"
+          style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+          <div class="line_div" [class.line_div_darkgray]="item.status === 1"></div>
+          <mdb-icon *ngIf="item.status === 1" fas icon="check-circle"></mdb-icon>
+        </span>
+
+      </div>
+
+      <div class="right">
+        <span *ngFor="let item of orderDetail"
+          style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+          <div class="line_div">
+            <p [class.round_div_red]="item.status === 1" [class.round_div_darkgray]="item.status === 1">
+              {{item.time}}</p>
+          </div>
+          <div class="round_div_gray" [class.round_div_red]="item.status === 1"
+            [class.round_div_darkgray]="item.status === 1">
+            {{item.value}}
+          </div>
+        </span>
+      </div>
+
+    </div>
+
+    <p class="titles" *ngIf="driverInfo">{{util.translate('Driver Informations')}} </p>
+
+    <div class="card_div" *ngIf="driverInfo && driverInfo.length">
+      <div class="resto_detail" *ngFor="let item of driverInfo">
+        <div class="back_image"
+          [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/closed.png)'}"></div>
+        <div style="margin-left: 10px;" (click)="contanctDriver(item)">
+          <p class="res_name">{{item.first_name}} {{item.last_name}}</p>
+          <p class="res_location">
+            <mdb-icon fas icon="map-marker-alt"></mdb-icon> {{item.email}}
+          </p>
+          <p class="res_location">
+            <mdb-icon fas icon="map-marker-alt"></mdb-icon> {{item.mobile}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="stores && stores?.length">
+      <p class="titles" *ngIf="stores">{{util.translate('Stores Informations')}} </p>
+      <div *ngFor="let item of stores">
+        <div class="card_div">
+          <div class="resto_detail">
+            <div class="back_image"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/closed.png)'}">
+            </div>
+            <div style="margin-left: 10px;" (click)="contanct(item)">
+              <p class="res_name">{{item.name}}</p>
+              <p class="res_location">
+                <mdb-icon fas icon="map-marker-alt"></mdb-icon> {{item.email}}
+              </p>
+              <p class="res_location">
+                <mdb-icon fas icon="map-marker-alt"></mdb-icon> {{item.mobile}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

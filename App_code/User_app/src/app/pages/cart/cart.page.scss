@@ -1,0 +1,290 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+.main_content_div{
+    width: 100%;
+    padding: 16px;
+    padding-bottom: 110px;
+
+    ion-label {
+        display: block;
+    }
+
+    .top_lbl{
+        font-size: 25px;
+        font-family: muli-bold;
+        margin-bottom: 10px;
+    }
+
+    .small_lbl{
+        color: lightgray;
+        font-family: muli-bold;
+        font-size: 18px;
+    }
+
+    .content_div{
+        padding: 10px 0px;
+          .card_div{
+            width: 100%; 
+            padding: 10px;
+            border-bottom: 0.5px solid #E8E8E8;
+            display: flex;
+            flex-direction: row;
+
+          .back_image{
+              width: 100px;
+              height: 100px;
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: cover;
+              border-radius: 7px;
+              min-width: 100px;
+              position: relative;
+              .percent{
+                position: absolute;
+                height: 25px;
+                width: 25px;
+                background: red;
+                left: 5px;
+                top: 2px;
+                line-height: 25px;
+                border-radius: 50%;
+                text-align: center;
+                font-weight: bold;
+                font-size: 10px;
+                color:white;
+              }
+          }
+          .second_div{
+              padding-left: 15px;
+              position: relative;
+              width: 100%;
+                .kind{
+                    height: 15px;
+                    width: 15px;
+                    position: absolute;
+                    right: 0px;
+                    top: 0px;
+                }
+                .offer{
+                    height: 15px;
+                    width: 15px;
+                    position: absolute;
+                    right: 20px;
+                    top: 0px;
+                }
+                .itemsKind{
+                  font-size: 12px;
+                }
+                .variant{
+                    .selecter{
+                        font-size: 10px;
+                        padding: 10px;
+                        border: 1px solid lightgray;
+                        margin: 10px 0px;
+                        border-radius: 5px;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+                        color: gray;
+                        position: relative;
+                        overflow: hidden;
+                        ion-icon {
+                            box-shadow: none !important;
+                            padding:0px !important;
+                            color: gray !important;
+                            position: relative;
+                            font-size: 10px;
+                        }
+                    }
+                    ion-item {
+                    width: 100%;
+                    min-width: 100%;
+                    font-size: 10px !important;
+                    --padding-start: 0px;
+                    --padding-end: 0px;
+                    font-size: 10px !important;
+                    ion-label {
+                        font-size: 10px !important;
+                    }
+                    ion-select {
+                        --padding-end: 0px;
+                        --padding-start: 0px;
+                        width: 100%;
+                        min-width: 100%;
+                        font-size: 10px !important;
+                        }
+                    }
+                }
+                .price_lbl{
+                    font-weight: 400;
+                    font-size: 15px;
+                    .original{
+                        text-decoration: line-through;
+                        font-size: 13px;
+                    }
+                    .sell{
+                        font-weight: bold;
+                    }
+                    .dicount{
+                        font-weight: bold;
+                        font-size: 13px;
+                    }
+                }
+                .name_lbl{
+                    font-weight: 700;
+                    font-size: 15px;
+                    text-transform: capitalize;
+                }
+                .desc{
+                    font-size: 12px;
+                }
+                .stoke{
+                    font-size: 10px;
+                    .in{
+                        color: green;
+                    }
+                    .out{
+                        color: indianred;
+                    }
+                }
+                ion-icon{
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    font-size: 20px;
+                    color: #29b507;
+                    padding: 5px;
+                    box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
+                    border-radius: 50%;
+                }
+
+                ion-button{
+                    position: absolute;
+                    // right: 0;
+                    bottom: 0;
+                    width: 90px;
+                    font-size: 12px;
+                    color: #29b507;
+                    --border-color: #73D25C;
+                }
+            }
+             .cartBtn{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                .abs_add{
+                    width: 100px;
+                    background: var(--ion-color-primary);
+                    height: 30px;
+                    border-radius: 15px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-left: 3px;
+                    padding-right: 3px;
+
+                    ion-label {
+                        color: white;
+                        font-size: 14px;
+                        font-family: muli-bold;
+                    }
+
+                    img{
+                        color: #FF8E80;
+                        width: 25px;
+                    }
+                }
+           }
+        }
+        
+          .coupones{
+              display: flex;
+              padding: 20px 10px;
+              background: #f3f3f3;
+              margin-top: 10px;
+              .badge{
+                  width: 25px;
+                  height: 25px;
+              }
+              .title{
+                  padding: 0px 10px;
+                  color: var(--ion-color-primary);;
+              }
+          }
+          .billing{
+              padding: 5px 10px;
+              .singleRow{
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 10px 0px;
+                  border-bottom: 1px dashed lightgray;
+                  .headerTitle{
+                      font-size: 0.8rem;
+                  }
+                  .boldClass{
+                      font-weight: bold;
+                  }
+                  .headerTotal{
+                      font-size: 1rem;
+                  }
+                  .priceTotal{
+                      font-size: 1rem;
+                  }
+                  .price{
+                      font-size: 0.8rem;
+                  }
+              }
+          }
+          .instructions{
+              color: var(--ion-color-primary);
+              padding: 5px 10px;
+          }
+    }
+}
+
+.bottom_div{
+    height: 60px;
+    width: 100%;
+    background: var(--ion-color-primary);
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 16px;
+
+    ion-label {
+        color: white;
+        font-family: muli-bold;
+        display: flex;
+
+        ion-icon{
+            padding-left: 5px;
+            font-size: 20px;
+        }
+    }
+}
+
+.nothing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    .imgs{
+        height: 100px;
+        width: 100px;
+    }
+    .bolder{
+        text-align: center;
+        font-weight: bold;
+    }
+}

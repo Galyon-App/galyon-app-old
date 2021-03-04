@@ -1,0 +1,274 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="isNew"> {{util.getString('Create Product')}} </ion-title>
+    <ion-title *ngIf="!isNew"> {{util.getString('Update Product')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="mainContent">
+    <ion-list lines="none">
+
+      <ion-item (click)="openCate()">
+        <ion-label class="title">Category <br>
+          <span class="name" *ngIf="!cateName"> {{util.getString('Select Category')}} </span>
+          <span class="name" *ngIf="cateName">{{cateName}}</span>
+        </ion-label>
+      </ion-item>
+
+      <ion-item (click)="openSub()">
+        <ion-label class="title"> {{util.getString('Sub Category')}} <br>
+          <span class="name" *ngIf="!subName"> {{util.getString('Select Sub Category')}} </span>
+          <span class="name" *ngIf="subName">{{subName}}</span>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating"> {{util.getString('Product name')}} </ion-label>
+        <ion-input [(ngModel)]="name" type="text" [placeholder]="util.getString('Product name')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating"> {{util.getString('Product price')}} </ion-label>
+        <ion-input [(ngModel)]="realPrice" type="number" (ionChange)="onRealPrice($event.target.value)"
+          [placeholder]="util.getString('Product Price')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating"> {{util.getString('Discount %')}} </ion-label>
+        <ion-input [(ngModel)]="discount" (ionChange)="onDicount($event.target.value)" type="number"
+          [placeholder]="util.getString('Discount %')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating"> {{util.getString('Sell Price')}} </ion-label>
+        <ion-input [(ngModel)]="sellPrice" disabled="true" type="number" [placeholder]="util.getString('Sell Price')">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea [placeholder]="util.getString('Description')" [(ngModel)]="description" rows="5"></ion-textarea>
+      </ion-item>
+
+
+      <ion-item lines="none">
+        <ion-label> {{util.getString('Status')}} </ion-label>
+        <ion-select [(ngModel)]="status" interface="popover" mode="ios" lines="none">
+          <ion-select-option value="1"> {{util.getString('Available')}} </ion-select-option>
+          <ion-select-option value="0"> {{util.getString('Hide')}} </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- New Update 2.0 -->
+      <ion-item lines="none">
+        <ion-label> {{util.getString('In Stoke')}} </ion-label>
+        <ion-select [(ngModel)]="in_stoke" interface="popover" mode="ios" lines="none">
+          <ion-select-option value="1"> {{util.getString('In Stoke')}} </ion-select-option>
+          <ion-select-option value="0"> {{util.getString('Out of Stoke')}} </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <!-- New Update 2.0 -->
+
+      <ion-item>
+        <ion-label> {{util.getString('Veg')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="veg"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label> {{util.getString('Is Single')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="is_single"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label> {{util.getString('In Offer')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="in_offer"></ion-toggle>
+      </ion-item>
+
+      <div class="coverPlaceholder" (click)="cover()" *ngIf="!coverImage || coverImage ==''">
+        <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+        <p> {{util.getString('Upload products cover image here')}} </p>
+      </div>
+
+      <div class="coverReal" (click)="cover()" [style.backgroundImage]="'url('+api.mediaURL+ coverImage+')'"
+        *ngIf="coverImage && coverImage !=''">
+      </div>
+
+      <p class="lbl"> {{util.getString('Upload More Images')}} </p>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4">
+            <div class="galleryPlaceholder" (click)="others('1')" *ngIf="!image1 || image1 ==''">
+              <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+              <p> {{util.getString('Image 1')}} </p>
+            </div>
+            <div class="galleryReal" (click)="others('1')" [style.backgroundImage]="'url('+api.mediaURL+image1+')'"
+              *ngIf="image1 && image1 !=''">
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="galleryPlaceholder" (click)="others('2')" *ngIf="!image2 || image2 ==''">
+              <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+              <p>{{util.getString('Image 2')}}</p>
+            </div>
+            <div class="galleryReal" (click)="others('2')" [style.backgroundImage]="'url('+api.mediaURL+image2+')'"
+              *ngIf="image2 && image2 !=''">
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="galleryPlaceholder" (click)="others('3')" *ngIf="!image3 || image3 ==''">
+              <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+              <p>{{util.getString('Image 3')}}</p>
+            </div>
+            <div class="galleryReal" (click)="others('3')" [style.backgroundImage]="'url('+api.mediaURL+image3+')'"
+              *ngIf="image3 && image3 !=''">
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="galleryPlaceholder" (click)="others('4')" *ngIf="!image4 || image4 ==''">
+              <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+              <p>{{util.getString('Image 4')}}</p>
+            </div>
+            <div class="galleryReal" (click)="others('4')" [style.backgroundImage]="'url('+api.mediaURL+image4+')'"
+              *ngIf="image4 && image4 !=''">
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="galleryPlaceholder" (click)="others('5')" *ngIf="!image5 || image5 ==''">
+              <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+              <p>{{util.getString('Image 5')}}</p>
+            </div>
+            <div class="galleryReal" (click)="others('5')" [style.backgroundImage]="'url('+api.mediaURL+image5+')'"
+              *ngIf="image5 && image5 !=''">
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <div class="galleryPlaceholder" (click)="others('6')" *ngIf="!image6 || image6 ==''">
+              <ion-icon name="cloud-upload-outline" color="primary"></ion-icon>
+              <p>{{util.getString('Image 6')}}</p>
+            </div>
+            <div class="galleryReal" (click)="others('6')" [style.backgroundImage]="'url('+api.mediaURL+image6+')'"
+              *ngIf="image6 && image6 !=''">
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-item>
+        <ion-label> {{util.getString('In Gram')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="have_gram"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="have_gram">
+        <ion-label position="floating"> {{util.getString('Gram value')}} </ion-label>
+        <ion-input [(ngModel)]="gram" type="number" [placeholder]="util.getString('Gram value')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label> {{util.getString('In KG')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="have_kg"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="have_kg">
+        <ion-label position="floating"> {{util.getString('KG value')}} </ion-label>
+        <ion-input [(ngModel)]="kg" type="number" [placeholder]="util.getString('KG value')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label> {{util.getString('In Liter')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="have_liter"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="have_liter">
+        <ion-label position="floating"> {{util.getString('Liter value')}} </ion-label>
+        <ion-input [(ngModel)]="liter" type="number" [placeholder]="util.getString('Liter value')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label> {{util.getString('In PCs')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="have_pcs"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="have_pcs">
+        <ion-label position="floating"> {{util.getString('PCs value')}} </ion-label>
+        <ion-input [(ngModel)]="pcs" type="number" [placeholder]="util.getString('PCs value')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label> {{util.getString('In ML')}} </ion-label>
+        <ion-toggle slot="end" [(ngModel)]="have_ml"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="have_ml">
+        <ion-label position="floating"> {{util.getString('ML value')}} </ion-label>
+        <ion-input [(ngModel)]="ml" type="number" [placeholder]="util.getString('ML value')"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating"> {{util.getString('Expire Date')}} </ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="exp_date" [min]="minEndDate()" [max]="getMaxDate()">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea [placeholder]="util.getString('Key Features')" [(ngModel)]="key_features" rows="5"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea [placeholder]="util.getString('Disclaimer')" [(ngModel)]="disclaimer" rows="5"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Size?</ion-label>
+        <ion-toggle slot="end" (ionChange)="changeSize($event)" [(ngModel)]="size"></ion-toggle>
+      </ion-item>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let item of variations;let i = index;">
+          <ion-item class="noLines">
+            <ion-label>{{item.title}}</ion-label>
+            <ion-icon name="create-outline" slot="end" *ngIf="item.title !=='size'" (click)="editTitle(i)"></ion-icon>
+            <ion-icon name="add-circle" slot="end" (click)="addItem(i)"></ion-icon>
+            <ion-icon name="trash" slot="end" (click)="delete(item)"></ion-icon>
+          </ion-item>
+          <ion-item *ngFor="let sub of item.items;let j = index" class="sub" lines="nones">
+            <ion-label>{{sub.title}}
+              <ion-label *ngIf="sub.discount === 0 || sub.discount ==='0'">
+                <span *ngIf="util.cside ==='right'"> {{sub.price}} {{util.currecny}}</span>
+                <span *ngIf="util.cside ==='left'">{{util.currecny}} {{sub.price}} </span>
+              </ion-label>
+              <ion-label class="price_lbl" *ngIf="sub.discount !== 0 && sub.discount !=='0'">
+                <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{sub.price}} </span>
+                <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{sub.discount}} </span>
+                <span class="original" *ngIf="util.cside ==='right'"> {{sub.price}} {{util.currecny}}</span>
+                <span class="sell" *ngIf="util.cside ==='right'"> {{sub.discount}} {{util.currecny}}</span>
+              </ion-label>
+            </ion-label>
+            <ion-icon name="create-outline" slot="end" (click)="editSub(i,sub,j)"></ion-icon>
+            <ion-icon name="trash-outline" slot="end" (click)="deleteSub(i,sub)"></ion-icon>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+
+    </ion-list>
+
+    <ion-button (click)="submit()" expand="block" shape="round">
+      {{util.getString('Submit')}}
+    </ion-button>
+  </div>
+
+
+</ion-content>

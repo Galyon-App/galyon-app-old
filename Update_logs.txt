@@ -1,0 +1,67 @@
+Update version 2 
+================================================================================================
+Whats New In this Update ?
+
+* Store Web Version Added. now you can add / manage store from website as well
+* Product variations added, now you can add variations in product like 1kg,2kg
+
+
+Bug Fixed
+
+* Product Stoke Management
+* Driver Current Status Issue
+* Order Status issue Fixed
+* Store App Vendor Profile issue Fixed
+* Toast Message Issue Fixed
+* COD amount in Driver App Fixed
+* User App Back button issue Fixed
+
+
+
+Upcomming Updates
+
+* Firebase OTP Verificaitons (Not working for iOS)
+* New UI for User Web
+
+
+Update version 3
+================================================================================================
+
+Whats New In this Update ?
+* Google Maps Added for Location tracking
+* Notification Alert Added For Driver and Store Whenever Order Status Changed
+* Store Web Version Translations and curreny added
+* Video Installations guide added
+
+Bug Fixed
+
+* Payment Status hide disabled 
+* Admin profile edit on admin panel
+* Add new contact button
+* Store stats only Online Payments
+* Full Address Field user and driver order details
+* Order issue
+* Driver Available Status Manual change 
+
+
+Update version 4
+================================================================================================
+Whats New In this Update ?
+* Orders Pull to Refresh
+
+Bug Fixed
+
+* Documentations updated
+* Fixed PayTm mobile callback bugs for mobile
+* Delivery Boy SMS bug fixed
+
+
+Update version 5
+================================================================================================
+Whats New In this Update?
+* Multiple Login on User/Driver/Store/Store-Web/User-Web version
+* NEW UI for User-Web version
+* Cart Bug Fixed
+* Added Translations on Store-Web and Admin panel
+* Lazy Load Orders on Driver and Store App
+* Documentations Updated

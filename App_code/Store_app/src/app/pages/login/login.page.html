@@ -1,0 +1,79 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-content>
+    <div class="main_content_div">
+
+        <div class="iconDiv">
+            <img src="assets/imgs/icon.png" alt="" class="icon">
+        </div>
+        <div class="form_div" *ngIf="util.user_login ==='0'">
+            <ion-label class="main_head"> {{util.getString('Sign in')}} </ion-label>
+            <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email">
+                <ion-icon name="mail" slot="icon-only"></ion-icon>
+            </ion-input>
+            <ion-input type="password" [placeholder]="util.getString('Password')" [(ngModel)]="password">
+                <ion-icon name="key" slot="icon-only"></ion-icon>
+            </ion-input>
+            <ion-label class="forgot" *ngIf="!loggedIn" (click)="reset()">{{util.getString('Forgot Password ?')}}
+            </ion-label>
+            <ion-button expand="block" [disabled]="loggedIn" (click)="login()">
+                <span *ngIf="!loggedIn"> {{util.getString('SIGN IN')}} </span>
+                <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+            </ion-button>
+        </div>
+
+        <div class="form_div" *ngIf="util.user_login ==='1'">
+            <ion-label class="main_head"> {{util.getString('Sign in')}} </ion-label>
+
+            <ion-row>
+                <ion-col size="3" (click)="openCountry()">
+                    <ion-label class="ccCode">{{mobileCcode}} </ion-label>
+                </ion-col>
+                <ion-col size="9">
+                    <ion-input [(ngModel)]="mobileNumber" type="number" [placeholder]="util.getString('Mobile Number')">
+                    </ion-input>
+
+                </ion-col>
+            </ion-row>
+
+            <ion-input type="password" [placeholder]="util.getString('Password')" [(ngModel)]="mobilePassword">
+                <ion-icon name="key" slot="icon-only"></ion-icon>
+            </ion-input>
+            <ion-label class="forgot" *ngIf="!loggedIn" (click)="reset()">{{util.getString('Forgot Password ?')}}
+            </ion-label>
+            <ion-button expand="block" [disabled]="loggedIn" (click)="onPhoneLogin()">
+                <span *ngIf="!loggedIn"> {{util.getString('SIGN IN')}} </span>
+                <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+            </ion-button>
+        </div>
+
+        <div class="form_div" *ngIf="util.user_login ==='2'">
+            <ion-label class="main_head"> {{util.getString('Sign in')}} </ion-label>
+
+            <ion-row>
+                <ion-col size="3" (click)="openCountry()">
+                    <ion-label class="ccCode">{{mobileCcode}} </ion-label>
+                </ion-col>
+                <ion-col size="9">
+                    <ion-input [(ngModel)]="mobileNumber" type="number" [placeholder]="util.getString('Mobile Number')">
+                    </ion-input>
+
+                </ion-col>
+            </ion-row>
+
+            <ion-label class="forgot" *ngIf="!loggedIn" (click)="reset()">{{util.getString('Forgot Password ?')}}
+            </ion-label>
+            <ion-button expand="block" [disabled]="loggedIn" (click)="onOTPLogin()">
+                <span *ngIf="!loggedIn"> {{util.getString('SIGN IN')}} </span>
+                <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+            </ion-button>
+        </div>
+    </div>
+</ion-content>

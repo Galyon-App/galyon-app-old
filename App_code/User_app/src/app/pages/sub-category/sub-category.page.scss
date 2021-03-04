@@ -1,0 +1,232 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+.mnu-selected {
+  border-left: 3px solid var(--ion-color-primary) !important;
+  color: var(--ion-color-primary) !important;
+}
+ion-label {
+  display: block !important;
+}
+.product {
+  padding-top: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.coverimage {
+  padding-top: 15px;
+}
+.menutext {
+  font-size: 10px;
+  display: block;
+}
+.productimage {
+  height: 80px;
+  width: 100%;
+  margin: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-width: 100%;
+  position: relative;
+}
+.producttext {
+  font-size: 11px;
+  display: block;
+  text-align: left;
+  font-weight: bold;
+  margin-top: 5px;
+}
+.variant{
+    .selecter{
+        font-size: 10px;
+        padding: 2px;
+        border: 1px solid lightgray;
+        margin: 10px 0px;
+        border-radius: 5px;
+        display: flex !important;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        color: gray;
+        position: relative;
+        overflow: hidden;
+    }
+    ion-item {
+    width: 100%;
+    min-width: 100%;
+    font-size: 10px !important;
+    --padding-start: 0px;
+    --padding-end: 0px;
+    font-size: 10px !important;
+    ion-label {
+        font-size: 10px !important;
+    }
+    .select-icon{
+        display: none !important;   
+    }
+    ion-select {
+        width: 100%;
+        min-width: 100%;
+        font-size: 10px !important;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        min-height: 20px;
+        height: 20px;
+        }
+    }
+}
+.itemsKind{
+  font-weight: 400;
+  font-size: 10px;
+}
+.kind{
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+.offer{
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  right: 20px;
+  top: 5px;
+}
+
+.percent{
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background: red;
+    left: 5px;
+    top: 2px;
+    line-height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 8px;
+    color: white;
+}
+.notInStoke{
+    background: #8373735c;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    .text{   
+      border: 1px solid gray;
+      padding: 2px;
+      border-radius: 5px;
+      background: white;
+      color: gray;
+      font-size: 10px;
+    }
+}
+.price_lbl{
+    font-weight: 400;
+    font-size: 8px;
+    .original{
+        text-decoration: line-through;
+    }
+    .sell{
+        font-weight: bold;
+    }
+    .dicount{
+        font-weight: bold;
+    }
+}
+ .btnBtm{
+    display: flex;
+    flex-direction: row-reverse;
+    .ripple-parent {
+        position: relative;
+        overflow: hidden;
+        padding: 5px;
+        color: white;
+        background: #f27474;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 10px;
+    }
+}
+.cartBtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    .abs_add{
+        width: 100px;
+        background: var(--ion-color-primary);
+        height: 30px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 3px;
+        padding-right: 3px;
+
+        ion-label {
+            color: white;
+            font-size: 10px;
+            font-family: muli-bold;
+        }
+
+        img{
+            color: #FF8E80;
+            width: 25px;
+        }
+    }
+}
+
+.textconten {
+  font-weight: bold;
+  padding-top: 5%;
+}
+
+.toolbartop {
+  padding-top: 5%;
+}
+
+.icon-menu {
+    height: 25px;
+    width: 25px;
+}
+
+.menu-content {
+  height: 90vh;
+  overflow: auto;
+  background-color: #ededed;
+
+  .side_col{
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.text_head{
+  font-weight: 600;
+  display: block;
+  margin-top: 20px;
+}
+
+.brand {
+  background-color: #ededed;
+}
+
+

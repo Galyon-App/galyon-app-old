@@ -1,0 +1,510 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+@import "../../../variables.scss";
+label {
+  display: block;
+  margin: 0;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.banner_back {
+  width: 100%;
+  height: 450px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.container {
+  .header_div {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .title_lbl {
+      line-height: 1.5;
+      text-transform: uppercase;
+      text-align: center;
+      margin: 0;
+      font-family: mont-bold;
+    }
+    .sub-title {
+      color: gray;
+      text-align: center;
+      font-size: 15px;
+    }
+    .view_lbl {
+      color: red;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+  .category_div {
+    .slider_back {
+      height: 200px;
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    label {
+      color: black;
+      text-align: center;
+      margin-top: 5px !important;
+    }
+  }
+
+  .support_div {
+    margin-top: 30px;
+    // border: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+
+    .my_col {
+      padding: 0px 10px;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      // border-right: 1px solid lightgray;
+      // justify-content: center;
+
+      .icn_div {
+        height: 55px;
+        width: 55px;
+        border-radius: 5px;
+        border: 1px solid lightgray;
+        position: relative;
+        margin-right: 10px;
+      }
+      mdb-icon {
+        font-size: 25px;
+        color: #45c261;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .right_div {
+        text-align: left;
+      }
+
+      .title_lbl {
+        font-weight: 500;
+        font-size: 16px;
+        margin: 0;
+      }
+      .small_lbl {
+        color: gray;
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .categoryList {
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .back_img {
+      height: 60px;
+      width: 60px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .cate_name {
+      font-size: 15px;
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      text-transform: uppercase;
+      white-space: pre-wrap;
+    }
+  }
+
+  .offers_div {
+    margin: 20px 0px;
+    .back_img {
+      height: 450px;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    .back_img_between {
+      height: 150px;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-weight: bold;
+      text-align: center;
+      margin: 10px 0px;
+      background: #f3f3f3;
+      padding: 10px;
+      font-family: "mont-bold" !important;
+      text-transform: uppercase;
+      font-size: 1.5rem;
+    }
+    .subName {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      .back_img {
+        height: 80px;
+        width: 80px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        padding: 40px;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 12px;
+    }
+  }
+}
+
+// MOTO AND Galaxy s5
+@media only screen and (min-device-width: 360px) and (max-device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px;
+    }
+  }
+
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}
+
+// Pixel 2
+@media only screen and (min-device-width: 411px) and (max-device-height: 731px) and (-webkit-device-pixel-ratio: 2) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px !important;
+    }
+  }
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}
+
+// pixel 2 xl
+@media only screen and (min-device-width: 411px) and (max-device-height: 823px) and (-webkit-device-pixel-ratio: 3) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px !important;
+    }
+  }
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}
+
+// iphone 5/se
+@media only screen and (min-device-width: 320px) and (max-device-height: 568px) and (-webkit-device-pixel-ratio: 3) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px !important;
+    }
+  }
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}
+
+// iphone 6/7/8
+@media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (-webkit-device-pixel-ratio: 3) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px !important;
+    }
+  }
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px !important;
+    }
+  }
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}
+
+@media only screen and (min-device-width: 414px) and (max-device-height: 896px) and (-webkit-device-pixel-ratio: 2) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px !important;
+    }
+  }
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}
+
+@media only screen and (min-device-width: 414px) and (max-device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+  .banner_back {
+    height: 120px;
+  }
+  .categoryList {
+    .cate_name {
+      font-size: 10px !important;
+    }
+  }
+  .header_div {
+    .title_lbl {
+      font-size: 1rem !important;
+    }
+    .sub-title {
+      font-size: 12px !important;
+    }
+  }
+
+  .btm_category {
+    .cate_title {
+      font-size: 14px !important;
+      font-family: "mont-bold" !important;
+    }
+    .subName {
+      .back_img {
+        height: 80px !important;
+        width: 80px !important;
+        padding: 40px !important;
+      }
+    }
+    .cate_name {
+      font-weight: bold;
+      margin: 1rem 0px;
+      text-align: center;
+      font-size: 10px;
+    }
+  }
+}

@@ -1,0 +1,419 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+   <p style="font-size: 20px; color: #e74c3c"> {{util.getString('Please wait...')}} </p>
+</ngx-spinner>
+<ng-template #content let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Select Category')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.getString('Select Category')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="cateString"
+               (ngModelChange)="searchCates($event)" type="text" class="form-control" placeholder="Search Category">
+         </div>
+      </div>
+
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <div *ngFor="let item of category" (click)="cateId = item.id"
+               style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
+               <p style="margin: 0px;"> {{item.name}}</p>
+               <i class="ti-check-box" *ngIf="item.id === cateId"></i>
+            </div>
+         </div>
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<ng-template #contentSub let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Select Sub Category')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.getString('Select Sub Category')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="subString"
+               (ngModelChange)="searchSubCate($event)" type="text" class="form-control" placeholder="Search Category">
+         </div>
+      </div>
+
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <div *ngFor="let item of subCates" (click)="subId = item.id"
+               style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
+               <p style="margin: 0px;"> {{item.name}}</p>
+               <i class="ti-check-box" *ngIf="item.id === subId"></i>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close2()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<ng-template #contentVarient let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Add item to variations')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label> {{util.getString('Add-ons name')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_title" type="text"
+               class="form-control" [placeholder]="util.getString('Add-ons name')">
+         </div>
+
+         <div class="col-sm-12">
+            <label>{{util.getString('Add-ons price')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_price" type="number"
+               class="form-control" [placeholder]="util.getString('Add-ons price')">
+         </div>
+
+         <div class="col-sm-12">
+            <label>{{util.getString('Add-ons discount')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_discount" type="number"
+               class="form-control" [placeholder]="util.getString('Add-ons discount')">
+         </div>
+
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close3()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-body">
+            <h5>{{util.getString('Product Details')}} </h5>
+         </div>
+         <div class="card-body reset-table p-t-0">
+
+            <div class="form-group row">
+               <div class="col-sm-6" (click)="openCate()">
+                  <label>{{util.getString('Select Category')}} </label>
+                  <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="cateName"
+                     class="form-control" [placeholder]="util.getString('Select Category')">
+               </div>
+               <div class="col-sm-6" (click)="openSub()">
+                  <label>{{util.getString('Select Sub Category')}} </label>
+                  <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="subName"
+                     class="form-control" [placeholder]="util.getString('Select Sub Category')">
+               </div>
+
+               <div class="col-sm-6">
+                  <label>{{util.getString('Name')}} </label>
+                  <input type="text" [(ngModel)]="name" class="form-control" [placeholder]="util.getString('Name')">
+               </div>
+               <div class="col-sm-6">
+                  <label> {{util.getString('Real price')}} </label>
+                  <input type="text" [(ngModel)]="realPrice" (ngModelChange)="onRealPrice($event)" class="form-control"
+                     [placeholder]="util.getString('Real price')">
+               </div>
+               <div class="col-sm-6">
+                  <label>{{util.getString('Sell price')}} </label>
+                  <input type="text" [(ngModel)]="sellPrice" disabled="true" class="form-control"
+                     [placeholder]="util.getString('Sell price')">
+               </div>
+               <div class="col-sm-6">
+                  <label>{{util.getString('Discount %')}} </label>
+                  <input type="text" [(ngModel)]="discount" (ngModelChange)="onDicount($event)" class="form-control"
+                     [placeholder]="util.getString('Discount %')">
+               </div>
+               <div class="col-sm-6">
+                  <label>{{util.getString('Exp Date')}} </label>
+                  <input type="date" [(ngModel)]="exp_date" class="form-control"
+                     [placeholder]="util.getString('Exp Date')">
+               </div>
+
+               <div class="col-sm-6">
+                  <label> {{util.getString('Status')}}</label>
+                  <select name="select" [(ngModel)]="status" class="form-control">
+                     <option value='1'>{{util.getString('Available')}} </option>
+                     <option value='0'>{{util.getString('Hide')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6">
+                  <label>{{util.getString('In Stoke')}} </label>
+                  <select name="select" [(ngModel)]="in_stoke" class="form-control">
+                     <option value='1'>{{util.getString('In Stoke')}} </option>
+                     <option value='0'>{{util.getString('Out Of Stoke')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6">
+                  <label>{{util.getString('Kind')}} </label>
+                  <select name="select" [(ngModel)]="veg" class="form-control">
+                     <option value='1'>{{util.getString('Veg')}} </option>
+                     <option value='0'>{{util.getString('Non Veg')}} </option>
+                  </select>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.getString('Have Gram')}} </label>
+                  <select name="select" [(ngModel)]="have_gram" class="form-control">
+                     <option value='1'>{{util.getString('Yes')}} </option>
+                     <option value='0'> {{util.getString('No')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6" *ngIf="have_gram  ==='1'">
+                  <label>{{util.getString('Gram')}} </label>
+                  <input type="number" [(ngModel)]="gram" class="form-control" [placeholder]="util.getString('Gram')">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.getString('Have KG')}} </label>
+                  <select name="select" [(ngModel)]="have_kg" class="form-control">
+                     <option value='1'>{{util.getString('Yes')}} </option>
+                     <option value='0'>{{util.getString('No')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6" *ngIf="have_kg  ==='1'">
+                  <label>{{util.getString('KG')}} </label>
+                  <input type="number" [(ngModel)]="kg" class="form-control" [placeholder]="util.getString('KG')">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.getString('Have Liter')}} </label>
+                  <select name="select" [(ngModel)]="have_liter" class="form-control">
+                     <option value='1'>{{util.getString('Yes')}} </option>
+                     <option value='0'>{{util.getString('No')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6" *ngIf="have_liter  ==='1'">
+                  <label>{{util.getString('Liter')}} </label>
+                  <input type="number" [(ngModel)]="liter" class="form-control" [placeholder]="util.getString('Liter')">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.getString('Have ML')}} </label>
+                  <select name="select" [(ngModel)]="have_ml" class="form-control">
+                     <option value='1'>{{util.getString('Yes')}} </option>
+                     <option value='0'>{{util.getString('No')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6" *ngIf="have_ml  ==='1'">
+                  <label>{{util.getString('ML')}} </label>
+                  <input type="number" [(ngModel)]="ml" class="form-control" [placeholder]="util.getString('ML')">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.getString('Have PCs')}} </label>
+                  <select name="select" [(ngModel)]="have_pcs" class="form-control">
+                     <option value='1'>{{util.getString('Yes')}} </option>
+                     <option value='0'>{{util.getString('No')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6" *ngIf="have_pcs ==='1'">
+                  <label>{{util.getString('PCs')}} </label>
+                  <input type="number" [(ngModel)]="pcs" class="form-control" [placeholder]="util.getString('PCs')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.getString('Size')}} </label>
+                  <select name="select" (ngModelChange)="changeSize($event)" [(ngModel)]="size" class="form-control">
+                     <option value='1'>{{util.getString('Have Variations')}} </option>
+                     <option value='0'>{{util.getString('No Variations')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6">
+                  <div *ngFor="let item of variations;let i = index;">
+                     <div
+                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                        <label style="margin: 0px !important;font-weight: bold;">{{item.title}}</label>
+                        <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;" (click)="addItem(i)"></i>
+                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="delete(item)"></i>
+                     </div>
+                     <div *ngFor="let sub of item.items;let j = index"
+                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                        <div
+                           style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                           {{sub.title}}
+                           <p *ngIf="sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
+                              <span> {{sub.price}}$</span>
+                           </p>
+                           <p class="price_lbl" style="margin: 0px !important;"
+                              *ngIf="sub.discount !== 0 && sub.discount !=='0'">
+                              <span style="text-decoration:line-through;"> $ {{sub.price}}
+                              </span>
+                              <span class="sell">$ {{sub.discount}} </span>
+                           </p>
+                        </div>
+
+                        <i class="ti-pencil-alt" style="font-weight: bold;margin: 0px 10px;"
+                           (click)="editSub(i,sub,j)"></i>
+                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="deleteSub(i,sub)"></i>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{util.getString('Descriptions')}} </label>
+                  <textarea rows="5" cols="5" [(ngModel)]="description" class="form-control"
+                     [placeholder]="util.getString('Descriptions')"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{util.getString('Key feature')}} </label>
+                  <textarea rows="5" cols="5" [(ngModel)]="key_features" class="form-control"
+                     [placeholder]="util.getString('Key feature')"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12">
+                  <label>{{util.getString('Disclaimer')}} </label>
+                  <textarea rows="5" cols="5" [(ngModel)]="disclaimer" class="form-control"
+                     [placeholder]="util.getString('Disclaimer')"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.getString('Upload cover image here')}} </label>
+               <div class="col-sm-4">
+                  <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
+                     accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ coverImage" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 1')}} </label>
+               <div class="col-sm-4">
+                  <input (change)="others($event.target.files,'1')" type="file" class="form-control" accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ image1" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 2')}} </label>
+               <div class="col-sm-4">
+                  <input (change)="others($event.target.files,'2')" type="file" class="form-control" accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ image2" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 3')}} </label>
+               <div class="col-sm-4">
+                  <input (change)="others($event.target.files,'3')" type="file" class="form-control" accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ image3" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 4')}} </label>
+               <div class="col-sm-4">
+                  <input (change)="others($event.target.files,'4')" type="file" class="form-control" accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ image4" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 5')}} </label>
+               <div class="col-sm-4">
+                  <input (change)="others($event.target.files,'5')" type="file" class="form-control" accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ image5" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+
+               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 6')}} </label>
+               <div class="col-sm-4">
+                  <input (change)="others($event.target.files,'6')" type="file" class="form-control" accept="image/*">
+               </div>
+               <div class="col-sm-4">
+                  <img [src]="api.mediaURL+ image6" alt="" style="height: 100px;width: 100px;float: right;"
+                     onError="this.src='assets/icon.png'">
+               </div>
+
+            </div>
+
+            <div class="form-group row">
+               <button type="button" (click)="submit()"
+                  class="btn btn-primary btn-md btn-block waves-effect text-center">{{util.getString('Submit')}}
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<ng2-toasty></ng2-toasty>

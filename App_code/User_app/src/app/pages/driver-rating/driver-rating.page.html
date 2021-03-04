@@ -1,0 +1,42 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> {{name}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close('fail')">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main_content_div">
+    <div class="main_div">
+      <div class="info_div">
+        <div class="rattingBtns">
+          <rating [(ngModel)]="rate" readOnly="false" max="5" emptyStarIconName="star-outline"
+            halfStarIconName="star-half" starIconName="star" nullable="false" (ngModelChange)="onRatingChange($event)">
+          </rating>
+        </div>
+        <div class="name">
+          <div class="content_div">
+            <ion-textarea row="8" type="text" [placeholder]="util.getString('Comment')" [(ngModel)]="comment">
+            </ion-textarea>
+          </div>
+        </div>
+        <ion-button (click)="submit()" expand="block" fill="clear" shape="round">
+          {{util.getString('Submit')}}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

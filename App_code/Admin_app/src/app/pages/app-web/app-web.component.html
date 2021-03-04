@@ -1,0 +1,135 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>App Info </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Contact No</label>
+                        <input type="number" [(ngModel)]="mobile" class="form-control" placeholder="Contact No">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Contact Email</label>
+                        <input type="email" [(ngModel)]="email" class="form-control" placeholder="Contact Email">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Address</label>
+                        <input type="text" [(ngModel)]="address" class="form-control" placeholder="Address">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>City</label>
+                        <input type="text" [(ngModel)]="city" class="form-control" placeholder="City">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>State</label>
+                        <input type="text" [(ngModel)]="state" class="form-control" placeholder="State">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Zip</label>
+                        <input type="number" [(ngModel)]="zip" class="form-control" placeholder="Zip">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Country</label>
+                        <input type="text" [(ngModel)]="country" class="form-control" placeholder="Country">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-body">
+                <h5>Orders </h5>
+            </div>
+
+            <div class="card-body reset-table p-t-0">
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Minimum Order</label>
+                        <input type="number" [(ngModel)]="min" class="form-control" placeholder="Minimum Order">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Free Shipping on order price</label>
+                        <input type="number" [(ngModel)]="free" class="form-control"
+                            placeholder="Free Shipping on order price">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Order Tax</label>
+                        <input type="number" [(ngModel)]="tax" class="form-control" placeholder="Order Tax">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Shipping Price </label>
+                        <select name="select" [(ngModel)]="shipping" class="form-control">
+                            <option value="fixed">Fixed</option>
+                            <option value="km">Per KM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="shipping ==='fixed'">
+                    <div class="col-sm-12">
+                        <label>Fixed price</label>
+                        <input type="number" [(ngModel)]="shippingPrice" class="form-control" placeholder="Fixed price">
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="shipping ==='km'">
+                    <div class="col-sm-12">
+                        <label>Per KM price</label>
+                        <input type="number" [(ngModel)]="shippingPrice" class="form-control"
+                            placeholder="Per KM price">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="submit()">Update</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

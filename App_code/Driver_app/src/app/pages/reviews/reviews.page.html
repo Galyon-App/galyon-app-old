@@ -1,0 +1,51 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Reviews')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item *ngFor="let item of dummy">
+    <ion-thumbnail slot="start">
+      <ion-skeleton-text></ion-skeleton-text>
+    </ion-thumbnail>
+    <ion-label>
+      <h3>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </h3>
+      <p>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </p>
+      <p>
+        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+      </p>
+    </ion-label>
+  </ion-item>
+
+  <ion-item *ngFor="let item of reviews" lines="none">
+    <ion-avatar slot="start">
+      <img [src]="api.mediaURL+item.cover" />
+    </ion-avatar>
+    <ion-label>
+      <p> {{util.getString('Received From')}} {{item.way}} </p>
+      <h3> {{item.fname}} {{item.lname}} </h3>
+      <p> {{item.msg}} </p>
+      <p> {{getDate(item.timestamp)}} </p>
+    </ion-label>
+  </ion-item>
+</ion-content>

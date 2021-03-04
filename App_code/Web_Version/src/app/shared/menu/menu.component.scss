@@ -1,0 +1,290 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+@import "../../../variables.scss";
+label {
+  display: block;
+  margin-bottom: 0px !important;
+}
+.common_section {
+  margin-bottom: 20px;
+  margin-top: 56px;
+  padding-top: 20px;
+
+  .dropdown-menu {
+    background: black;
+    border-radius: 0px;
+
+    a {
+      color: white !important;
+      text-transform: capitalize !important;
+      font-weight: 400 !important;
+    }
+    a:hover {
+      color: $theme-color !important;
+      background: transparent !important;
+    }
+  }
+
+  .cat_drp_down {
+    background: $theme-color;
+    height: 50px;
+    color: white;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 18px;
+    justify-content: space-between;
+
+    .dropdown-toggle {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dropdown-toggle::after {
+      display: none;
+    }
+
+    .dropdown-menu {
+      top: 14px;
+      background: white;
+      border-radius: 0px;
+      border: 1px solid lightgrey;
+
+      a {
+        color: black !important;
+        text-transform: capitalize !important;
+        font-weight: 400 !important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        white-space: pre-wrap;
+        font-size: 15px;
+      }
+      a:hover {
+        color: $theme-color !important;
+        background: transparent !important;
+      }
+    }
+  }
+
+  .cat_city_select {
+    background: #ffff;
+    height: 50px;
+    color: gray;
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgrey;
+    justify-content: space-between;
+
+    .dropdown-toggle {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dropdown-toggle::after {
+      display: none;
+    }
+
+    .dropdown-menu {
+      top: 14px;
+      background: white;
+      border-radius: 0px;
+      border: 1px solid lightgrey;
+
+      a {
+        color: black !important;
+        text-transform: capitalize !important;
+        font-weight: 400 !important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+      a:hover {
+        color: $theme-color !important;
+        background: transparent !important;
+      }
+    }
+  }
+
+  .row {
+    align-items: center;
+  }
+
+  .new_menu {
+    a {
+      font-size: 14px;
+      color: #252525;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+  }
+
+  .form_flex {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+    .ip_div {
+      .input-group-text {
+        background: white;
+        border-right: 0px;
+      }
+      input {
+        border-radius: 0px;
+        margin-bottom: 0px !important;
+        border: 1px solid lightgrey;
+        border-left: 0px;
+        height: 50px;
+      }
+    }
+
+    .s_btn {
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: white;
+      margin: 0;
+      height: 50px;
+      padding-left: 20px;
+      padding-right: 20px;
+      background: $theme-color;
+      color: white;
+      font-weight: 700;
+      border-radius: 0px !important;
+    }
+  }
+  .search_list {
+    z-index: 9999;
+    position: absolute;
+    width: 90%;
+    background: white;
+    box-shadow: 0px 0px 12px 0px grey;
+    color: black;
+    .product_list {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 10px;
+      margin: 0px;
+      border-bottom: 1px solid lightgray;
+      color: gray;
+      cursor: pointer;
+      .imgs {
+        height: 20px;
+        width: 20px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      .product_name {
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+  }
+  .flex_div {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    .price {
+      font-size: 14px;
+      color: #6f6f6f;
+
+      span {
+        color: #252525;
+        font-weight: 700;
+      }
+    }
+
+    .badge_box {
+      position: relative;
+      width: 40px;
+      // border: 1px solid;
+      margin-right: 15px;
+
+      .badge_div {
+        height: 17px;
+        width: 17px;
+        background-color: $theme-color;
+        border-radius: 50%;
+        position: absolute;
+        right: 5px;
+        top: -5px;
+
+        .bagde_lbl {
+          position: absolute;
+          color: white;
+          font-weight: 700;
+          font-size: 12px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+
+    .call_box {
+      background: #f5f5f5;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      position: relative;
+      margin-right: 15px;
+
+      mdb-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $theme-color;
+      }
+    }
+
+    .call {
+      color: #1c1c1c;
+      font-weight: 700;
+      margin-bottom: 5px;
+      white-space: nowrap;
+    }
+    .support {
+      font-size: 14px;
+      color: #6f6f6f;
+    }
+  }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+  .new_menu {
+    .nav-link {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+    }
+  }
+
+  .flex_div {
+    .call {
+      font-size: 16px !important;
+      margin-bottom: 3px !important;
+      white-space: nowrap;
+    }
+  }
+
+  .cat_drp_down {
+    .nav-link {
+      font-size: 15px !important;
+    }
+  }
+}
+
+.dropdown-toggle::after {
+  display: none;
+}

@@ -1,0 +1,79 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="from ==='cart'"> {{util.getString('Delivery Address')}} </ion-title>
+    <ion-title *ngIf="from ==='account'"> {{util.getString('Manage Address')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="group">
+    <div class="mainContent">
+      <ion-button (click)="addNew()" expand="block" fill="clear">
+        <ion-icon slot="start" name="add"></ion-icon>
+        {{util.getString('Add Address')}}
+      </ion-button>
+      <div class="noData" *ngIf="!dummy?.length && !myaddress?.length"
+        [style.backgroundImage]="'url(assets/imgs/nothing.png)'">
+      </div>
+      <div *ngFor="let item of dummy">
+        <ion-list lines="none">
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3>
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+              </p>
+              <p>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+      <ion-list *ngIf="from ==='cart'">
+        <ion-radio-group [(ngModel)]="selectedAddress">
+          <ion-item *ngFor="let item of myaddress" class="list">
+            <ion-label class="title">{{item.title}} <br>
+              <span class="name">{{item.house}} {{item.landmark}} {{item.address}}</span></ion-label>
+            <!-- <ion-label class="name"></ion-label> -->
+            <ion-radio [value]="item.id" slot="start" mode="md"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+      <div *ngIf="from ==='account'">
+        <div class="list" *ngFor="let item of myaddress" scrollX="true">
+          <ion-label class="title">{{item.title}}</ion-label>
+          <ion-label class="name">{{item.house}} {{item.landmark}} {{item.address}}
+          </ion-label>
+          <ion-icon class="moreIcon" (click)="openMenu(item,$event)" name="ellipsis-vertical-outline">
+          </ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="selectedAddress" (click)="selectAddress()">
+    <ion-fab-button>
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

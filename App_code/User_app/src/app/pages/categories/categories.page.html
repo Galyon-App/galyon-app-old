@@ -1,0 +1,60 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-title> {{util.getString('Categories')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<app-closed *ngIf="util.appClosed"></app-closed>
+
+<ion-content class="ion-padding" *ngIf="!util.appClosed">
+  <ion-item *ngFor="let item of dummy">
+    <ion-thumbnail slot="start">
+      <ion-skeleton-text></ion-skeleton-text>
+    </ion-thumbnail>
+    <ion-label>
+      <h3>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </h3>
+      <p>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </p>
+      <p>
+        <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+      </p>
+    </ion-label>
+  </ion-item>
+  <div class="main" *ngIf="categories?.length && !dummy?.length">
+
+    <div class="flex_main" *ngFor="let item of categories">
+      <div class="flex_div" (click)="change(item.id)">
+        <img [src]="api.mediaURL+ item.cover" alt="" class="cateIcon">
+        <div class="detail_div">
+          <ion-label class="title_name" [class.boldFont]="selectedIndex === item.id">{{item.name}}</ion-label>
+        </div>
+        <ion-icon name="chevron-down-outline" class="arrow"></ion-icon>
+      </div>
+
+      <div class="details" *ngIf="selectedIndex === item.id">
+        <div class="inlnes" *ngFor="let sub of item.subCates" (click)="goToProductList(sub)">
+          <ion-label class="titles" [class.boldFont]="subIndex === sub.id">{{sub.name}}</ion-label>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</ion-content>

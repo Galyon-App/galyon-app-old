@@ -1,0 +1,52 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Pay with Stripe')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onAdd()">
+        <ion-icon slot="end" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="div_content">
+    <div *ngIf="!cards?.length">
+      <p class="ion-text-center"> {{util.getString('No Card Found Please Add Card')}} </p>
+    </div>
+    <ion-radio-group [(ngModel)]="token">
+      <ion-item class="div_inner" lines="none" *ngFor="let card of cards;let i = index">
+        <ion-thumbnail slot="end">
+          {{card.brand}}
+        </ion-thumbnail>
+        <ion-radio (ionSelect)="changeMethod(card.id)" [value]="card.id" slot="start"></ion-radio>
+        <ion-label>XXXX{{card.last4}} <br> {{util.getString('Expiry')}} {{card.exp_month}} / {{card.exp_year}}
+        </ion-label>
+      </ion-item>
+    </ion-radio-group>
+    <ion-button expand="block" *ngIf="cards?.length" class="btn_addcard" (click)="payment()">
+      {{util.getString('Payment')}} &nbsp;
+      <span *ngIf="util.cside ==='left'">
+        {{util.currecny}} {{cart.grandTotal}}
+      </span>
+      <span *ngIf="util.cside ==='right'">
+        {{cart.grandTotal}} {{util.currecny}}
+      </span>
+    </ion-button>
+
+  </div>
+</ion-content>

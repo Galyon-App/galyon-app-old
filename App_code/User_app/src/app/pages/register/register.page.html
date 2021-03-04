@@ -1,0 +1,78 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-content>
+  <div class="main_content_div">
+
+    <div class="iconDiv">
+      <img src="assets/imgs/icon.png" alt="" class="icon">
+    </div>
+    <div class="form_div">
+      <ion-label class="main_head"> {{util.getString('Sign Up')}} </ion-label>
+
+
+
+      <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email">
+        <ion-icon name="mail" slot="icon-only"></ion-icon>
+      </ion-input>
+
+      <ion-input type="password" [placeholder]="util.getString('Password')" [(ngModel)]="password">
+        <ion-icon name="key" slot="icon-only"></ion-icon>
+      </ion-input>
+
+      <ion-input type="text" [placeholder]="util.getString('First Name')" [(ngModel)]="fname">
+        <ion-icon name="person" slot="icon-only"></ion-icon>
+      </ion-input>
+
+      <ion-input type="text" [placeholder]="util.getString('Last Name')" [(ngModel)]="lname">
+        <ion-icon name="person" slot="icon-only"></ion-icon>
+      </ion-input>
+
+      <ion-input [placeholder]="util.getString('Select your Country')" type="text" (ionChange)="onCountryInput($event)"
+        [(ngModel)]="cc">
+      </ion-input>
+      <div *ngFor="let item of countries" class="cCode" (click)="selectedCC(item)">
+        <p class="ccLbl">+{{item.dialling_code}} {{item.country_name}}</p>
+      </div>
+      <ion-input type="number" [placeholder]="util.getString('Mobile')" [(ngModel)]="mobile">
+        <ion-icon name="call" slot="icon-only"></ion-icon>
+      </ion-input>
+
+      <ion-item lines="none">
+        <ion-icon name="man" slot="icon-only" slot="start"></ion-icon>
+        <ion-label> {{util.getString('Gender')}} </ion-label>
+        <ion-select okText="Okay" cancelText="Dismiss" interface="popover" [(ngModel)]="gender">
+          <ion-select-option value="1"> {{util.getString('Male')}} </ion-select-option>
+          <ion-select-option value="0"> {{util.getString('Female')}} </ion-select-option>
+          <ion-select-option value="2"> {{util.getString('Others')}} </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div class="div_chk">
+        <ion-checkbox [checked]="check" [(ngModel)]="check" color="light" class="chk"></ion-checkbox>
+        <ion-label class="lbl_police"><span class="span_term">
+            {{util.getString('By clicking on the I agree button click, download or if you use the Application, you agree to be bound by the')}}
+          </span>
+          <u> <a style="color: white;" (click)="open('eula')"> {{util.getString('EULA certificate')}} </a> </u>
+          {{util.getString('and')}}
+          <u> <a style="color: white;" (click)="open('privacy')"> {{util.getString('Privacy Policy')}} </a> </u>
+          {{util.getString('of this app')}}.
+        </ion-label>
+      </div>
+      <ion-button expand="block" (click)="login()" [disabled]="loggedIn">
+        <span *ngIf="!loggedIn"> {{util.getString('SIGN UP')}} </span>
+        <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+      </ion-button>
+
+      <ion-label class="lbl" (click)="goToLogin()"> {{util.getString('Already have an account ?')}} <span
+          class="signup_span"> {{util.getString('Sign In')}} </span>
+      </ion-label>
+    </div>
+  </div>
+</ion-content>

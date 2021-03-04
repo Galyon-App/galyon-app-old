@@ -1,0 +1,185 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title"> {{util.getString('Enter OTP')}} </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ng-otp-input (onInputChange)="onOtpChange($event)"
+            [config]="{length:6,inputStyles:{'width': '30px','height': '30px'}}">
+        </ng-otp-input>
+
+        <p style="cursor: pointer;text-align: right;margin: 1rem;" (click)="resend()" *ngIf="resendCode">
+            {{util.getString('Resend code')}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="continue()"> {{util.getString('Submit')}} </button>
+    </div>
+</ng-template>
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{util.getString('Log in...')}} </p>
+</ngx-spinner>
+<section class="login p-fixed d-flex text-center bg-light ">
+    <div class="auth-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="login-card card-body auth-body">
+                    <form class="md-float-material" *ngIf="util.reset_pwd === '0' ">
+                        <div class="text-center">
+                            <img src="assets/images/auth/big.png" style="width:150px;height:50px" alt="logo.png">
+                        </div>
+                        <div class="auth-box" *ngIf="currentDiv === 1">
+                            <div class="row m-b-20">
+                                <div class="col-md-12">
+                                    <h3 class="text-left txt-primary">{{util.getString('Reset Password')}} </h3>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="input-group">
+                                <input type="email" class="form-control"
+                                    [placeholder]="util.getString('Your Email Address')" [(ngModel)]="email"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <button type="button" (click)="sendOTP()"
+                                        class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">
+                                        {{util.getString('Send OTP')}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="auth-box" *ngIf="currentDiv === 2">
+                            <div class="row m-b-20">
+                                <div class="col-md-12">
+                                    <h3 class="text-left txt-primary">{{util.getString('Reset Password')}} </h3>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="input-group">
+                                <input type="number" class="form-control" placeholder="OTP" [(ngModel)]="otp"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <button type="button" (click)="verifyOTP()"
+                                        class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">
+                                        {{util.getString('Verify OTP')}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="auth-box" *ngIf="currentDiv === 3">
+                            <div class="row m-b-20">
+                                <div class="col-md-12">
+                                    <h3 class="text-left txt-primary">{{util.getString('Reset Password')}} </h3>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="input-group">
+                                <input type="password" class="form-control"
+                                    [placeholder]="util.getString('New Password')" [(ngModel)]="password"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                            <div class="input-group">
+                                <input type="password" class="form-control"
+                                    [placeholder]="util.getString('Confirm Password')" [(ngModel)]="repass"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <button type="button" (click)="sendEmail()"
+                                        class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">
+                                        {{util.getString('Reset Password')}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form class="md-float-material" *ngIf="util.reset_pwd === '1' ">
+                        <div class="text-center">
+                            <img src="assets/images/auth/big.png" style="width:150px;height:50px" alt="logo.png">
+                        </div>
+                        <div class="auth-box" *ngIf="currentDiv === 1">
+                            <div class="row m-b-20">
+                                <div class="col-md-12">
+                                    <h3 class="text-left txt-primary">{{util.getString('Reset Password')}} </h3>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="input-group">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select name="select" class="form-control" [(ngModel)]="cc">
+                                            <option *ngFor="let item of countries;" [value]="item.dialling_code">
+                                                {{item.country_name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="number" class="form-control"
+                                            [placeholder]="util.getString('Mobile Number')" [(ngModel)]="phone"
+                                            [ngModelOptions]="{standalone: true}">
+                                        <span class="md-line"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <button type="button" (click)="sendOTPOnMobile()"
+                                        class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">
+                                        {{util.getString('Send OTP')}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="auth-box" *ngIf="currentDiv === 3">
+                            <div class="row m-b-20">
+                                <div class="col-md-12">
+                                    <h3 class="text-left txt-primary">{{util.getString('Reset Password')}} </h3>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="input-group">
+                                <input type="password" class="form-control"
+                                    [placeholder]="util.getString('New Password')" [(ngModel)]="password"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                            <div class="input-group">
+                                <input type="password" class="form-control"
+                                    [placeholder]="util.getString('Confirm Password')" [(ngModel)]="repass"
+                                    [ngModelOptions]="{standalone: true}">
+                                <span class="md-line"></span>
+                            </div>
+                            <div class="row m-t-30">
+                                <div class="col-md-12">
+                                    <button type="button" (click)="resetPasswordWithPhone()"
+                                        class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">
+                                        {{util.getString('Reset Password')}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<ng2-toasty></ng2-toasty>

@@ -1,0 +1,123 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="common_section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <img src="assets/imgs/logo.png">
+      </div>
+
+      <div class="col-lg-6">
+        <ul class="nav new_menu">
+          <li class="nav-item">
+            <a class="nav-link active" href="../../home">{{util.translate('HOME')}}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../shop">{{util.translate('SHOP')}}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../shop">{{util.translate('HELP')}}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../blog">{{util.translate('BLOG')}}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../../contact">{{util.translate('CONTACT')}}</a>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="flex_div">
+
+          <div class="badge_box">
+            <div class="badge_div">
+              <label class="bagde_lbl">{{cart.cart.length}} </label>
+            </div>
+            <mdb-icon fas icon="shopping-bag"></mdb-icon>
+          </div>
+          <label class="price">{{util.translate('Item')}} : <span>${{cart.totalPrice}} </span></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="cat_drp_down" dropdown style="padding-left: 15px;padding-right: 15px;">
+          <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle" mdbWavesEffect>
+            <span>
+              <mdb-icon fas icon="bars"></mdb-icon>
+            </span>
+            {{util.translate('All Categories')}}
+            <mdb-icon fas icon="angle-down"></mdb-icon>
+          </a>
+          <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+            <a class="dropdown-item waves-light" mdbWavesEffect (click)="openCategory(item)"
+              *ngFor="let item of categories"> {{item.name}}
+            </a>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="form_flex">
+          <div class="input-group ip_div">
+            <div class="input-group-append">
+
+              <div class="cat_city_select" dropdown style="width: 150px;">
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle" mdbWavesEffect>
+                  <span>
+                    <mdb-icon fas icon="map-marker-alt"></mdb-icon>
+                  </span>
+                  <span *ngIf="seletectCities !==''">{{seletectCities}}</span>
+                  <span *ngIf="seletectCities ===''">{{util.translate('Fetching...')}}</span>
+                  <mdb-icon fas icon="angle-down"></mdb-icon>
+                </a>
+                <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                  <a class="dropdown-item waves-light" mdbWavesEffect *ngFor="let item of cities"
+                    (click)="selectedCity(item)">
+                    <mdb-icon fas icon="map-marker-alt" *ngIf="seletectCities ===item.name"></mdb-icon> {{item.name}}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <input type="text" (keydown.enter)="search($event.target.value)" [(ngModel)]="terms" class="form-control"
+              [placeholder]="util.translate('search for products')">
+          </div>
+          <button type="button" class="s_btn" (click)="search(terms)" mdbBtn>{{util.translate('SEARCH')}}</button>
+        </div>
+        <div class="search_list" *ngIf="products?.length && terms !=''">
+          <div class="product_list" *ngFor="let item of products">
+            <img class="imgs" [src]="api.mediaURL+item.cover" alt="" onError="this.src='assets/icon.png'">
+            <label class="product_name"> {{item.name}} </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="flex_div">
+          <div class="call_box">
+            <mdb-icon fas icon="phone-alt"></mdb-icon>
+          </div>
+          <div>
+            <h5 class="call">+ {{util.general && util.general.mobile ? util.general.mobile:'98785XXXX9' }}</h5>
+            <label class="support">{{util.translate('support 24/7 time')}}</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

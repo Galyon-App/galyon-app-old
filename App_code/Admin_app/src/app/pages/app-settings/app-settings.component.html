@@ -1,0 +1,173 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{api.translate('App Settings')}} </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label> {{api.translate('Currency Symbol')}}</label>
+                        <input type="text" [(ngModel)]="symbol" class="form-control"
+                            [placeholder]="api.translate('Currency Symbol')">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Currency Side')}} </label>
+                        <select name="select" [(ngModel)]="cside" class="form-control">
+                            <option value="left">{{api.translate('Left')}} </option>
+                            <option value="right">{{api.translate('Right')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('App Direction')}} </label>
+                        <select name="select" [(ngModel)]="direction" class="form-control">
+                            <option value="ltr">{{api.translate('Left to Right')}} </option>
+                            <option value="rtl">{{api.translate('Right to Left')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+
+                    <label class="col-sm-4 col-form-label">{{api.translate('Upload cover image here')}} </label>
+                    <div class="col-sm-4">
+                        <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
+                            accept="image/*">
+                    </div>
+                    <div class="col-sm-4">
+                        <img [src]="api.mediaURL+ logo" alt="" style="height: 100px;width: 100px;float: right;"
+                            onError="this.src='assets/icon.png'">
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Verify On Signup (Send SMS to registered mobile while signup)')}}
+                        </label>
+                        <select name="select" [(ngModel)]="twillo" class="form-control">
+                            <option value="1">{{api.translate('Enable')}} </option>
+                            <option value="0">{{api.translate('Disabled')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label> SID </label>
+                        <input type="text" [(ngModel)]="creds.sid" class="form-control" placeholder="SID">
+                    </div>
+                    <div class="col-sm-6">
+                        <label> Token </label>
+                        <input type="text" [(ngModel)]="creds.token" class="form-control" placeholder="Token">
+                    </div>
+                    <div class="col-sm-6">
+                        <label> {{api.translate('From Number')}} </label>
+                        <input type="text" [(ngModel)]="creds.from" class="form-control"
+                            [placeholder]="api.translate('From Number')">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate("Verify On Delivery")}}
+                        </label>
+                        <select name="select" [(ngModel)]="delivery" class="form-control">
+                            <option value="1">{{api.translate('Enable')}} </option>
+                            <option value="0">{{api.translate('Disabled')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('User Login with')}}
+                        </label>
+                        <select name="select" [(ngModel)]="user_login" class="form-control">
+                            <option value="0">{{api.translate('Email / Password')}}</option>
+                            <option value="1">{{api.translate('Phone / Password')}}</option>
+                            <option value="2">{{api.translate('Phone / OTP')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Store Login with')}}
+                        </label>
+                        <select name="select" [(ngModel)]="store_login" class="form-control">
+                            <option value="0">{{api.translate('Email / Password')}}</option>
+                            <option value="1">{{api.translate('Phone / Password')}}</option>
+                            <option value="2">{{api.translate('Phone / OTP')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Driver Login with')}}
+                        </label>
+                        <select name="select" [(ngModel)]="driver_login" class="form-control">
+                            <option value="0">{{api.translate('Email / Password')}}</option>
+                            <option value="1">{{api.translate('Phone / Password')}}</option>
+                            <option value="2">{{api.translate('Phone / OTP')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('User Website Login with')}}
+                        </label>
+                        <select name="select" [(ngModel)]="web_login" class="form-control">
+                            <option value="0">{{api.translate('Email / Password')}}</option>
+                            <option value="1">{{api.translate('Phone / Password')}}</option>
+                            <option value="2">{{api.translate('Phone / OTP')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>{{api.translate('Reset Password with')}}
+                        </label>
+                        <select name="select" [(ngModel)]="reset_pwd" class="form-control">
+                            <option value="0">{{api.translate('Email OTP')}}</option>
+                            <option value="1">{{api.translate('Phone / OTP')}} </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="submit()">{{api.translate('Update')}}
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

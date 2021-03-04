@@ -1,0 +1,85 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button (click)="openMenu()">
+        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-closed *ngIf="util.appClosed"></app-closed>
+  <div class="main_div" *ngIf="!util.appClosed">
+    <ion-row>
+      <ion-col size="4">
+        <img [src]="getCover()" alt="" class="profilePic" onError="this.src='assets/imgs/user.png'">
+      </ion-col>
+      <ion-col size="8">
+        <p class="username">{{getName()}}</p>
+        <p class="email">{{getEmail()}}</p>
+        <ion-button (click)="editProfile()" shape="round" size="small" color="light"> {{util.getString('Edit Profile')}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div class="options" *ngIf="!util.appClosed">
+
+    <ion-item lines="none" detail="" (click)="getReviews()" class="ion-activatable ripple-parent">
+      <ion-icon name="star-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('Reviews')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" (click)="getLanguages()" class="ion-activatable ripple-parent">
+      <ion-icon name="language-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('Language')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" (click)="changePassword()" class="ion-activatable ripple-parent">
+      <ion-icon name="key-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('Change Password')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToContact()">
+      <ion-icon name="mail-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('Contact Us')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" (click)="goToAbout()" class="ion-activatable ripple-parent">
+      <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('About Us')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goFaqs()">
+      <ion-icon name="flag-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('FAQs')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goHelp()">
+      <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('Help')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" (click)="logout()" class="ion-activatable ripple-parent">
+      <ion-icon name="power-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('Log Out')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+  </div>
+</ion-content>

@@ -1,0 +1,75 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+ion-thumbnail {
+    --size: 25px;
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+}
+.header{
+    font-size: 16px;
+    font-weight: bold;
+    background: #f3f3f3;
+    margin: 0px;
+    padding: 10px;
+}
+.stores{
+    border-bottom: 1px solid lightgray;
+    padding: 0px 20px;
+    margin-top: 20px;
+}
+.name{
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0px;
+}
+.address{
+    font-size: 12px;
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+.btm{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    .bottomText{
+        font-size: 10px;
+        color: gray;
+        padding: 0px 20px;
+        .bolder{
+            font-size: 12px;
+            font-weight: bold;
+            color: black;
+        }
+    }
+    .btmbar{
+        height: 60px;
+        width: 100%;
+        background: var(--ion-color-primary);
+        // position: fixed;
+        // bottom: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 16px;
+
+        ion-label {
+            color: white;
+            font-family: muli-bold;
+            display: flex;
+
+            ion-icon{
+                padding-left: 5px;
+                font-size: 20px;
+            }
+        }
+    }
+}

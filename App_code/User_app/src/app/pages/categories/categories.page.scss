@@ -1,0 +1,127 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+.main_content_div{
+    width: 100%;
+    padding: 16px;
+    ion-label {
+        display: block;
+    }
+
+    ion-grid{
+        padding: 0;
+
+        ion-col{
+            text-align: center;
+            .cat_div{
+                box-shadow: 0px 3px 6px rgba(0,0,0,0.3);
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            img{
+                height: 80px;
+                border-top-right-radius: 10px;
+                border-top-left-radius: 10px;
+                width: 100%;
+            }
+            .lbl{
+                margin: 10px 0px;
+            }
+        }
+    }
+}
+
+.main{
+    margin-bottom: 10px;
+    padding-bottom: 70px;
+    ion-label {
+      display: block;
+    }
+
+    .flex_main{
+        box-shadow: 0px 1px 2px rgba(0,0,0,0.2);
+        background: white;
+        border-radius: 12px;
+        margin-bottom: 10px;
+
+        .flex_div{
+            display: flex;
+            height: 56px;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+            position: relative;
+            .cateIcon{
+                height: 50px;
+                width: 50px;
+            }
+            .detail_div{
+                margin-left: 20px;
+                .title_name{
+                    font-size: 14px;
+                }
+                .boldFont{
+                    font-weight: bold;
+                }
+                .time{
+                  font-size: 12px;
+                  color: #707070;
+                }
+            }
+            ion-icon{
+                position: absolute;
+                right: 20px;
+                color: #3D4148;
+                font-size: 20px;
+            }
+        }
+    }
+
+    
+
+    .name{
+        margin: 0px;
+        font-size: 18px;
+        color: black;
+    }
+
+    .time {
+        margin: 5px 0px 0px 0px;
+        font-size: 15px;
+        color: gray;
+    }
+
+    .drop{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center ;
+    }
+
+    .details{
+        padding: 10px;
+        .inlnes{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            color: gray;
+            padding: 10px;
+            border-bottom: 1px solid lightgray;
+            .boldFont{
+                font-weight: bold;
+            }
+            ion-label {
+              font-size: 14px;
+              color: #575D67;
+            }
+        }
+    }
+}

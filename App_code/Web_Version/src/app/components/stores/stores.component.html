@@ -1,0 +1,44 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<div class="container">
+  <div class="row">
+    <div *ngFor="let item of  dummystores ;" class="col-12 col-md-6">
+      <ngx-skeleton-loader appearance="circle" [theme]="{ 'border-radius': '5px', height: '120px',width:'100%'}">
+      </ngx-skeleton-loader>
+    </div>
+  </div>
+  <div class="row">
+    <div class="content_div col-12 col-md-6" *ngFor="let item of stores">
+      <div class="card_div">
+        <div class="image_div" (click)="openStore(item)"
+          [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}">
+          <img src="assets/imgs/open.png" class="isOpen" alt="Veg" *ngIf="item.isOpen && item.isClosed ==='1'">
+          <img src="assets/imgs/close.png" class="isOpen" alt="Non Veg" *ngIf="!item.isOpen || item.isClosed === '0'">
+        </div>
+        <div class="desc_div" (click)="openStore(item)">
+          <p class="pro_name">
+            {{ (item.name.length>12)? (item.name | slice:0:12)+'..':(item.name) }}</p>
+          <p class="pro_detail">
+            {{ (item.address.length>20)? (item.address | slice:0:20)+'..':(item.address) }}
+          </p>
+          <p class="price_lbl"> {{getTime(item.open_time)}} - {{getTime(item.close_time)}} </p>
+
+          <div class="small_flex">
+            <div class="btnBtm">
+              <a class="ion-activatable ripple-parent">
+                {{util.translate('View')}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

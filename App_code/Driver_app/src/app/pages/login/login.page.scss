@@ -1,0 +1,105 @@
+/*
+  Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+*/
+ion-content{
+    --background: var(--ion-color-primary);
+}
+
+.main_content_div{
+    width: 100%;
+    padding: 30px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    ion-icon{
+        color: var(--ion-color-primary);
+        font-size: 20px;
+        padding: 10px;
+    }
+    .iconDiv{
+        // margin-top: 80px;
+        text-align: center;
+        .icon{
+            // height: 50px;
+            width: 60px;
+        }
+    }
+    .form_div{
+        padding: 25px;
+        
+        position: relative;
+        .main_head{
+            display: block;
+            // text-align: left;
+            color: white;
+            font-weight: 600;
+            font-size: 30px;
+            margin: 10px;
+        }
+        ion-label {
+            font-size: 12px;
+            color: white;
+        }
+
+        .forgot{
+            display: block;
+            text-align: right;
+            color: white;
+        }
+        ion-input{
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            --padding-start: 8px;
+            --padding-end: 10px;
+        }
+        .ccCode{
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            --padding-start: 8px;
+            --padding-end: 10px;
+            color: gray;
+            padding: 12px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        ion-button{
+            margin-top: 20px;
+            --border-radius: 20px;
+            --background: white;
+            --color: var(--ion-color-primary);
+            font-family: muli-bold;
+        }
+        .tri {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 15px solid white;
+            position: absolute;
+            top: -15px;
+        }
+        .lbl{
+            margin-top: 20px;
+            color: white;
+            display: block;
+            text-align: center;
+        }
+        .signup_span{
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    }
+}

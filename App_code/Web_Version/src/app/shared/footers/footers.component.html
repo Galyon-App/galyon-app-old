@@ -1,0 +1,116 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<!-- Footer -->
+<footer class="page-footer">
+
+  <div class="container text-center text-md-left mt-5">
+    <div class="row mt-3 dark-grey-text">
+
+      <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+        <img src="assets/imgs/logo.png" style="margin-bottom: 10px;">
+        <label class="simple_lbl">{{util.translate('Address')}}: {{util.general && util.general.address ?
+          util.general.address:'' }}</label>
+        <label class="simple_lbl">{{util.translate('Phone')}}: +{{util.general && util.general.mobile ?
+          util.general.mobile:'' }}</label>
+        <label class="simple_lbl">{{util.translate('Email')}}: {{util.general && util.general.email ?
+          util.general.email:'' }}</label>
+      </div>
+
+      <div class="col-md-6 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h6 class="footer_lbl">{{util.translate('Useful Links')}}</h6>
+        <div class="link_lbl" (click)="goToAccount()">
+          <a class="dark-grey-text">{{util.getString('Your Account')}} </a>
+        </div>
+        <div class="link_lbl" (click)="goToPrivacy()">
+          <a class="dark-grey-text">{{util.getString('Privacy & Terms')}}
+          </a>
+        </div>
+        <div class="link_lbl" (click)="goToRefund()">
+          <a class="dark-grey-text">{{util.getString('Refund Policy')}}
+          </a>
+        </div>
+        <div class="link_lbl" (click)="about()">
+          <a class="dark-grey-text">{{util.getString('About')}} </a>
+        </div>
+        <div class="link_lbl" (click)="goToHelp()">
+          <a class="dark-grey-text">{{util.getString('Help')}} </a>
+        </div>
+        <div class="link_lbl" (click)="goToContact()">
+          <a class="dark-grey-text">{{util.getString('Contact')}} </a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h6 class="footer_lbl">{{util.translate('Useful Links')}}</h6>
+        <div class="link_lbl" (click)="goToHome()">
+          <a class="dark-grey-text">{{util.getString('Home')}} </a>
+        </div>
+
+        <div class="link_lbl" (click)="goToOrders()">
+          <a class="dark-grey-text">{{util.getString('Orders')}} </a>
+        </div>
+        <div class="link_lbl" (click)="goToCart()">
+          <a class="dark-grey-text">{{util.getString('Cart')}} </a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+        <h6 class="footer_lbl">{{util.translate('Join Our Newsletter Now')}}</h6>
+        <label class="link_lbl">{{util.translate('Get E-mail updates about our latest shop and special
+          offers.')}}</label>
+
+        <div class="form_flex">
+          <input type="text" [(ngModel)]="email" class="form-control"
+            [placeholder]="util.translate('Enter your E-mail')">
+          <button type="button" (click)="subscribe()" class="btn">{{util.translate('SUBSCRIBE')}}</button>
+        </div>
+
+        <div class="share_flex">
+          <a class="icn_box" [href]="fb" target="_blank">
+            <mdb-icon fab icon="facebook-f"></mdb-icon>
+          </a>
+          <a class="icn_box" [href]="insta" target="_blank">
+            <mdb-icon fab icon="instagram"></mdb-icon>
+          </a>
+          <a class="icn_box" [href]="twitter" target="_blank">
+            <mdb-icon fab icon="twitter"></mdb-icon>
+          </a>
+          <a class="icn_box" [href]="ll" target="_blank">
+            <mdb-icon fab icon="linkedin"></mdb-icon>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div>
+    <div class="container copyright_div">
+      <div class="row">
+        <div class="col-lg-6" style="display: flex;align-items: center;">
+          <label style="color: #6f6f6f;font-size: 12px;">
+            {{util.translate('Copyright')}} © {{year}} {{util.translate('All rights reserved | This app is made with')}}
+            <i class="fa fa-heart" aria-hidden="true"></i>
+            {{util.translate('by')}} <a href="https://initappz.com" style="color: blue;">Initappz</a>
+          </label>
+        </div>
+        <div class="col-lg-6 payment_div">
+          <img src="assets/imgs/american.png">
+          <img src="assets/imgs/mastercard.png">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->

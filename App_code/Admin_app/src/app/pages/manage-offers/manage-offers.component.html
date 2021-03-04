@@ -1,0 +1,96 @@
+<!--
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>Add New Coupon </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Coupon code</label>
+                        <input type="text" [(ngModel)]="name" class="form-control" placeholder="Coupon code">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Discount</label>
+                        <input type="number" [(ngModel)]="off" class="form-control" placeholder="Discount">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Minimum cart value</label>
+                        <input type="number" [(ngModel)]="min" class="form-control" placeholder="Minimum cart value">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Upto</label>
+                        <input type="number" [(ngModel)]="upto" class="form-control" placeholder="Upto">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Discount Type</label>
+                        <select name="select" [(ngModel)]="type" class="form-control">
+                            <option value="per">%</option>
+                            <option value="flat">Flat</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Expire date</label>
+                        <input type="date" [(ngModel)]="date_time" class="form-control" placeholder="Expire date">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Descriptions</label>
+                        <textarea rows="5" cols="5" [(ngModel)]="descriptions" class="form-control"
+                            placeholder="Descriptions"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <label class="col-sm-4 col-form-label">{{api.translate('Upload cover image here')}} </label>
+                    <div class="col-sm-4">
+                        <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
+                            accept="image/*">
+                    </div>
+                    <div class="col-sm-4">
+                        <img [src]="api.mediaURL+ coverImage" alt="" style="height: 100px;width: 100px;float: right;"
+                            onError="this.src='assets/icon.png'">
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round" (click)="create()">Add coupon</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

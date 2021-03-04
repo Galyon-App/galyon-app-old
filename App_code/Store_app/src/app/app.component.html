@@ -1,0 +1,39 @@
+<!-- 
+   Authors : initappz (Rahul Jograna)
+  Website : https://initappz.com/
+  App Name : ionic 5 groceryee app
+  Created : 10-Sep-2020
+  This App Template Source code is licensed as per the
+  terms found in the Website https://initappz.com/license
+  Copyright and Good Faith Purchasers © 2020-present initappz.
+ -->
+<ion-app>
+    <ion-split-pane contentId="main-content">
+        <ion-menu contentId="main-content" type="overlay" side="end">
+            <ion-content>
+                <div class="infoSection">
+                    <img class="userPhoto" src="assets/imgs/icon.png" onError="this.src='assets/imgs/icon.png'" alt="">
+                    <p class="userName">Gloceryee</p>
+                </div>
+                <ion-list id="inbox-list" class="ion-no-padding">
+                    <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+                        <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none"
+                            detail="false" [class.selected]="selectedIndex == i">
+
+                            <ion-icon slot="start" name="{{p.icn}}" [class.active]="selectedIndex == i"></ion-icon>
+                            <ion-label>{{util.getString(p.title)  }}</ion-label>
+
+                        </ion-item>
+                    </ion-menu-toggle>
+                    <ion-menu-toggle auto-hide="false" (click)="logout()">
+                        <ion-item routerDirection="root" lines="none" detail="false">
+                            <ion-icon slot="start" name="power-outline"></ion-icon>
+                            <ion-label> {{util.getString('Logout')}} </ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                </ion-list>
+            </ion-content>
+        </ion-menu>
+        <ion-router-outlet id="main-content"></ion-router-outlet>
+    </ion-split-pane>
+</ion-app>
