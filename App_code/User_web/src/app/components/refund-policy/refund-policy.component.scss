@@ -1,0 +1,38 @@
+/*
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+*/
+.back_image{
+    width: 100%;
+    height: 500px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.head_title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 15px;
+
+    label {
+        font-weight: 500;
+        font-size: 26px;
+        text-transform: capitalize;
+    }
+}
+
+.content{
+    font-weight: 400;
+    margin-top: 30px;
+
+    p{
+        line-height: 23px;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+}

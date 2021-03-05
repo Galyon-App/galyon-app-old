@@ -1,0 +1,15 @@
+<!--
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<div class="container">
+  <div class="centered">
+    <h2 *ngIf="status ==='failure'"> {{util.translate('Transaction status is failure')}} </h2>
+    <h2 *ngIf="status ==='success'"> {{util.translate('Your payment was successful done, thank you for purchase.')}}
+    </h2>
+  </div>
+</div>
