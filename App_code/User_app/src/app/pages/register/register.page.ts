@@ -1,11 +1,8 @@
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
 */
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
@@ -280,12 +277,12 @@ export class RegisterPage implements OnInit {
   }
 
   open(type) {
-    // https://initappz.com/groceryeeaagya/privacy.html
-    // https://initappz.com/groceryeeaagya/eula.html
+    // https://bytescrafter.net/galyon/privacy.html
+    // https://bytescrafter.net/galyon/eula.html
     if (type === 'eula') {
-      this.iab.create('https://initappz.com/groceryeeaagya/eula.html');
+      this.iab.create('https://bytescrafter.net/eula');
     } else {
-      this.iab.create('https://initappz.com/groceryeeaagya/privacy.html');
+      this.iab.create('https://bytescrafter.net/privacy-policy');
     }
   }
 }
