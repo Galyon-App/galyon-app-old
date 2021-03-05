@@ -1,11 +1,8 @@
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
 */
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
@@ -13,8 +10,8 @@
 
 export const environment = {
   production: false,
-  baseURL: 'https://api.tinda.dev/',
-  mediaURL: 'https://api.tinda.dev/uploads/',
+  baseURL: 'https://api.galyon.dev/',
+  mediaURL: 'https://api.galyon.dev/uploads/',
   onesignal: {
     appId: 'YOUR_APP_ID',
     googleProjectNumber: 'YOUR_PROJECT_ID',
