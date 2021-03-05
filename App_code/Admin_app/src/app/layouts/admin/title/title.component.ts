@@ -29,7 +29,7 @@ export class TitleComponent implements OnInit {
             }
           });
         } while (currentRoute);
-        this.titleService.setTitle('Store App Admin');
+        this.titleService.setTitle('Galyon Admin App');
       });
   }
 
