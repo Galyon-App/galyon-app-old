@@ -1,0 +1,710 @@
+/*
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+*/
+@import "../../../variables.scss";
+$midnight: #ffffff;
+label {
+  display: block;
+  margin-bottom: 0px;
+}
+#map {
+  width: 100%;
+  height: 450px;
+}
+.headers {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  .text {
+    margin: 0px;
+    font-size: 28px;
+  }
+  mdb-icon {
+    color: $theme-color;
+    cursor: pointer;
+  }
+}
+
+.addressList {
+  background: white;
+
+  .select_addr {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    border-bottom: 1px dashed lightgray;
+    align-items: center;
+    padding: 5px;
+    z-index: 9999;
+    overflow: visible;
+    cursor: pointer;
+    &:hover {
+      background: darken($midnight, 5%);
+    }
+  }
+}
+.borders {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  align-items: center;
+  padding: 5px;
+  justify-content: space-between;
+  .address {
+    font-size: 15px;
+    margin: 0px;
+  }
+  .changeBtn {
+    color: $theme-color;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0px;
+  }
+}
+.couponDesc {
+  margin: 0px;
+  border-bottom: 1px solid lightgray;
+  .code {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  .desc {
+    font-size: 12px;
+  }
+}
+
+.container {
+  .heading_row {
+    margin-bottom: 20px;
+    .head_lbl {
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .flex_tab {
+      display: flex;
+      align-items: center;
+
+      .line_div {
+        height: 1px;
+        width: 100%;
+        background: lightgrey;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+
+      .inner_flex {
+        display: flex;
+        align-items: center;
+
+        mdb-icon {
+          color: lightgrey;
+        }
+
+        .active {
+          color: $theme-color;
+        }
+
+        label {
+          font-size: 13px;
+          margin-left: 5px;
+          font-weight: 600;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  .address_box {
+    background: white;
+    border-radius: 5px;
+    padding: 16px;
+    margin-bottom: 20px;
+
+    .head_lbl {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .grey_box {
+      background: #f3f6fa;
+      padding: 16px;
+      border-radius: 5px;
+
+      .border_box {
+        border: 1px solid lightgrey;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        width: fit-content;
+
+        mdb-icon {
+          color: $theme-color;
+        }
+
+        label {
+          margin-left: 16px;
+          font-size: 15px;
+          letter-spacing: 1px;
+        }
+      }
+    }
+  }
+
+  .newAddress_card {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      background: darken($midnight, 5%);
+    }
+  }
+
+  .address_card {
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0px;
+      text-transform: uppercase;
+    }
+    .full_address {
+      font-size: 14px;
+      margin: 0px;
+    }
+    .selectedAddress {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      .arrow {
+        color: $theme-color;
+      }
+    }
+  }
+
+  .cart_box {
+    background: white;
+    border-radius: 5px;
+    padding: 16px;
+
+    .header_flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .head_lbl {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 1px;
+
+        span {
+          color: grey;
+          font-size: 14px;
+        }
+      }
+
+      .price_lbl {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+
+    .product_div {
+      border-bottom: 1px solid lightgrey;
+      display: flex;
+      align-items: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+
+      img {
+        width: 80px;
+        height: 80px;
+      }
+
+      .detail_div {
+        width: 100%;
+        margin-left: 20px;
+        .pro_name {
+          font-weight: 600;
+          letter-spacing: 1px;
+        }
+        .flex_div {
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+
+          .bold_lbl {
+            font-weight: 600;
+            margin-right: 16px;
+            font-size: 14px;
+          }
+
+          .grey_lbl {
+            font-size: 14px;
+            color: grey;
+            margin-right: 16px;
+          }
+
+          .green_lbl {
+            color: #00a100;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+          }
+        }
+        .variant {
+          .selecter {
+            font-size: 10px;
+            padding: 2px;
+            border: 1px solid lightgray;
+            margin: 10px 0px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            color: gray;
+            position: relative;
+            overflow: hidden;
+            width: 50%;
+          }
+        }
+        .price_lbl {
+          font-weight: 400;
+          font-size: 12px;
+          margin: 0px;
+          font-weight: bold;
+          .original {
+            text-decoration: line-through;
+            font-size: 12px;
+          }
+          .sell {
+            font-weight: bold;
+          }
+          .dicount {
+            font-weight: bold;
+            font-size: 12px;
+          }
+        }
+        .itemsKind {
+          font-size: 12px;
+          margin: 0px;
+        }
+        .qty_lbl {
+          color: grey;
+          font-size: 13px;
+          margin-top: 10px;
+        }
+
+        .qty_flex {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+
+          .round_btn {
+            height: 40px;
+            width: 40px;
+            border-radius: 100%;
+            background: $theme-color;
+            position: relative;
+
+            mdb-icon {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: white;
+            }
+          }
+
+          label {
+            font-weight: 600;
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  .login_box {
+    border-radius: 5px;
+    background: white;
+    padding: 30px 20px;
+    margin-bottom: 20px;
+
+    .head_lbl {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .simp_lbl {
+      font-weight: 600;
+
+      span {
+        color: $theme-color;
+        border-bottom: 1px solid;
+      }
+    }
+  }
+
+  .delivery-options {
+    border-radius: 5px;
+    background: white;
+    padding: 10px 20px;
+    .head_lbl {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .btns {
+        color: $theme-color;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+    .form-check {
+      display: flex;
+      .imgs {
+        height: 20px;
+        width: 20px;
+        margin-left: 10px;
+      }
+    }
+    .dateBtn {
+      margin: 0px;
+      padding: 0px;
+      box-shadow: none;
+    }
+    .stores {
+      border-bottom: 1px solid lightgray;
+      padding: 0px 20px;
+      margin-top: 20px;
+    }
+    .name {
+      font-size: 14px;
+      font-weight: bold;
+      margin: 0px;
+    }
+    .address {
+      font-size: 12px;
+      margin: 0px;
+      margin-bottom: 5px;
+    }
+    .bottomText {
+      font-size: 10px;
+      color: gray;
+      padding: 0px 20px;
+      .bolder {
+        font-size: 12px;
+        font-weight: bold;
+        color: black;
+      }
+    }
+  }
+  .apply_box {
+    border-radius: 5px;
+    background: white;
+    padding: 30px 20px;
+    .head_lbl {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .btns {
+        color: $theme-color;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    }
+
+    .apply_flex {
+      border-bottom: 1px solid lightgray;
+      display: flex;
+      align-items: center;
+      img {
+        width: 20px;
+        height: 20px;
+      }
+
+      input {
+        border: 0px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .app_btn {
+        font-size: 14px;
+        color: grey;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+    }
+  }
+  .payPalBtn {
+    width: 150px !important;
+    .coverImg {
+      width: 25px;
+      height: 25px;
+    }
+  }
+  .radioBtns {
+    .flexer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        background: darken($midnight, 5%);
+      }
+      .checkMark {
+        height: 20px;
+        width: 20px;
+        margin-left: 10px;
+      }
+      .payName {
+        font-size: 16px;
+        margin: 0px;
+        margin-left: 10px;
+      }
+      .imgs {
+        height: 40px;
+        width: 40px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .payment_box {
+    border-radius: 5px;
+    background: white;
+    padding: 20px 20px;
+    margin-bottom: 20px;
+
+    .head_lbl {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .flex_price {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0px;
+
+      .price_lbl {
+        font-size: 14px;
+        color: grey;
+      }
+      .red_lbl {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+    }
+    .green_lbl {
+      color: #00a100;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+  }
+
+  .btn_div {
+    display: flex;
+    flex-direction: row;
+    text-align: right;
+    justify-content: flex-end;
+    button {
+      width: 220px;
+      background: $theme-color;
+      color: white;
+      font-weight: 600;
+      text-transform: capitalize;
+      letter-spacing: 1.5px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+  }
+
+  .white_box {
+    background: white;
+    border-radius: 5px;
+    padding: 16px;
+    margin-bottom: 20px;
+
+    .title_lbl {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+    }
+
+    .add_btn {
+      border-top: 1px solid lightgrey;
+      font-size: 14px;
+      color: $theme-color;
+      font-weight: 600;
+      padding-top: 16px;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .line_div {
+      padding-top: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid lightgrey;
+
+      .pay_flex_div {
+        display: flex;
+        align-items: center;
+      }
+
+      .radio_div {
+        height: 20px;
+        width: 20px;
+        border-radius: 100%;
+        border: 2px solid lightgray;
+        position: relative;
+
+        .inner_div {
+          height: 12px;
+          width: 12px;
+          border-radius: 100%;
+          background: $theme-color;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      .outer_active {
+        border: 2px solid $theme-color;
+      }
+
+      .check_div {
+        height: 20px;
+        width: 20px;
+        border-radius: 100%;
+        border: 2px solid lightgrey;
+        position: relative;
+
+        mdb-icon {
+          color: white;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 10px;
+        }
+      }
+
+      .active {
+        border: 2px solid $theme-color;
+        background: $theme-color;
+      }
+
+      img {
+        width: 40px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+    }
+
+    input,
+    select {
+      border-radius: 0px;
+      font-size: 13px;
+      border: 0px;
+      border-bottom: 1px solid lightgrey;
+    }
+
+    .bold_line_div {
+      height: 8px;
+      background: #f3f6fa;
+      width: 100%;
+      margin-top: 20px;
+      margin-bottom: 16px;
+    }
+
+    .bank_flex {
+      display: flex;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      .inner_flex {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 200px;
+
+        img {
+          width: 40px;
+        }
+
+        label {
+          font-size: 10px;
+          margin-top: 10px;
+          text-align: center;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .btn_div2 {
+      text-align: right;
+      button {
+        width: 250px;
+        background: $theme-color;
+        color: white;
+        font-weight: 600;
+        text-transform: capitalize;
+        letter-spacing: 1.5px;
+        font-size: 14px;
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+    }
+  }
+}
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .img {
+    height: 200px;
+    width: 200px;
+  }
+}
