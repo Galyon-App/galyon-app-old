@@ -1,2 +1,0 @@
-# store_web_groceryee
-store_Web_version_grocery
