@@ -1,11 +1,8 @@
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
 */
 import { Component, OnInit } from '@angular/core';
 import { ApisService } from 'src/app/services/apis.service';
@@ -158,7 +155,7 @@ export class SetupComponent implements OnInit {
 
   postLicense() {
     const param = {
-      name: 'groceryee',
+      name: 'galyon.app',
       title: this.appName,
       ip: this.ip
     };
@@ -168,7 +165,7 @@ export class SetupComponent implements OnInit {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/x-www-form-urlencoded')
     };
-    this.http.post('https://initappz.com/license/index.php/basics/save', params, header).subscribe((data: any) => {
+    this.http.post('https://bytescrafter.net/license/index.php/basics/save', params, header).subscribe((data: any) => {
       console.log(data);
     }, error => {
       console.log(error);
