@@ -1,8 +1,8 @@
 {
   "name": "galyon-store-app",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "version": "1.0.0",
+  "author": "BytesCrafter",
+  "homepage": "https://bytescrafter.net",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
