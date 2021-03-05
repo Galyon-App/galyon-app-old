@@ -1,2 +1,0 @@
-# store_web_galyon
-store_Web_version_grocery
