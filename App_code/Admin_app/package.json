@@ -1,5 +1,5 @@
 {
-  "name": "store-app-admin",
+  "name": "galyon-admin-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
