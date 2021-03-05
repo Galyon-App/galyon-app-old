@@ -1,11 +1,8 @@
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
 */
 import { environment } from 'src/environments/environment';
 import { Component } from '@angular/core';
@@ -49,7 +46,7 @@ export class AppComponent {
         this.platform.ready().then(() => {
             this.statusBar.styleLightContent();
             this.splashScreen.hide();
-            this.appPages = this.util.appPages; console.log('%c Copyright and Good Faith Purchasers © 2020-present initappz. ', 'background: #222; color: #bada55');
+            this.appPages = this.util.appPages; console.log('%c Copyright © 2021 Galyon. ', 'background: #222; color: #bada55');
             const lng = localStorage.getItem('language');
             if (!lng || lng === null) {
                 this.api.get('users/getDefaultSettings').subscribe((data: any) => {

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.grocery5.store" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Grocery Store</name>
-    <description>initappz.</description>
-    <author email="info@initappz.com" href="https://initappz.com/">initappz</author>
+<widget id="net.bytescrafter.galyon" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Galyon Stores</name>
+    <description>BytesCrafter</description>
+    <author email="support@bytescrafter.net" href="https://bytescrafter.net/">BytesCrafter</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
