@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "admin",
+  "appId": "net.bytescrafter.galyon",
+  "appName": "galyon-store-app",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

@@ -1,5 +1,5 @@
 {
-  "name": "admin",
+  "name": "galyon-store-app",
   "integrations": {
     "capacitor": {},
     "cordova": {}
