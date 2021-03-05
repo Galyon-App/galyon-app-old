@@ -1,6 +1,6 @@
-# TindaApp - eCommerce and Delivery Solutions.
+# Galyon App - eCommerce and Delivery Solutions.
 
-TindaApp was originally develop for the used of Bytes Crafter client eCommerce website and app.
+Galyon App was originally develop for the used of Bytes Crafter client eCommerce website and app.
 
 ## Contributing
 
@@ -8,13 +8,13 @@ Please read [CONTRIBUTING](CONTRIBUTING) for details on our code of conduct, and
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com//BytesCrafter/TindaApp/tags). 
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com//BytesCrafter/GalyonApp/tags). 
 
 ## Authors
 
 * **Bytes Crafter** - *Initial work* - [Github](https://github.com/BytesCrafter)
 
-See also the list of [contributors](https://github.com//BytesCrafter/TindaApp/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com//BytesCrafter/GalyonApp/graphs/contributors) who participated in this project.
 
 ## License
 
