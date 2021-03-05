@@ -1,6 +1,6 @@
 {
-  "name": "store-app-admin",
-  "short_name": "store-app-admin",
+  "name": "galyon-admin-app",
+  "short_name": "galyon-admin-app",
   "theme_color": "#ff384c",
   "background_color": "#fafafa",
   "display": "standalone",

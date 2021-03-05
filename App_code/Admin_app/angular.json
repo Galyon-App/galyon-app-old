@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "store-app-admin": {
+    "galyon-admin-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/store-app-admin",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -79,18 +79,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "store-app-admin:build"
+            "browserTarget": "galyon-admin-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "store-app-admin:build:production"
+              "browserTarget": "galyon-admin-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "store-app-admin:build"
+            "browserTarget": "galyon-admin-app:build"
           }
         },
         "test": {
@@ -128,16 +128,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "store-app-admin:serve"
+            "devServerTarget": "galyon-admin-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "store-app-admin:serve:production"
+              "devServerTarget": "galyon-admin-app:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "store-app-admin"
+  "defaultProject": "galyon-admin-app"
 }
