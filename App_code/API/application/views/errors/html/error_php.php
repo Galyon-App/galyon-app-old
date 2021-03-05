@@ -1,12 +1,9 @@
 <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
@@ -17,143 +14,104 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <p>Severity: <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo $severity; ?></p>
 <p>Message:  <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo $message; ?></p>
 <p>Filename: <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo $filepath; ?></p>
 <p>Line Number: <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo $line; ?></p>
 
 <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
 
 	<p>Backtrace:</p>
 	<?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ foreach (debug_backtrace() as $error): ?>
 
 		<?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ if (isset($error['file']) && strpos($error['file'], realpath(BASEPATH)) !== 0): ?>
 
 			<p style="margin-left:10px">
 			File: <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo $error['file'] ?><br />
 			Line: <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo $error['line'] ?><br />
 			Function: <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo $error['function'] ?>
 			</p>
 
 		<?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ endif ?>
 
 	<?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ endforeach ?>
 
 <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ endif ?>
 
 </div>

@@ -1,12 +1,9 @@
 <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */
 /**
  * CodeIgniter
@@ -243,14 +240,11 @@ class CI_Typography {
 						// we will retain them instead of using our tags.
 						'/(<p[^>*?]>)<p>/'	=> '$1', // <?php
 						/*
-						Authors : initappz (Rahul Jograna)
-						Website : https://initappz.com/
-						App Name : ionic 5 groceryee app
-						Created : 10-Sep-2020
-						This App Template Source code is licensed as per the
-						terms found in the Website https://initappz.com/license
-						Copyright and Good Faith Purchasers © 2020-present initappz.
-						*/ 
+						Authors : Bytes Crafter
+						Website : https://bytescrafter.net
+						App Name : TindaApp
+						Created : 01-Sep-2020
+						*/
 
 						// Reduce multiple instances of opening/closing paragraph tags to a single one
 						'#(</p>)+#'			=> '</p>',

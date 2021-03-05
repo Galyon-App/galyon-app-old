@@ -1,12 +1,9 @@
 <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */
 /**
  * CodeIgniter
@@ -972,13 +969,10 @@ class CI_Loader {
 		{
 			echo eval('?>'.preg_replace('/;*\s*\?>/', '; ?>', str_replace('<?=', '<?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ echo ', file_get_contents($_ci_path))));
 		}
 		else

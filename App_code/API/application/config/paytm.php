@@ -1,12 +1,9 @@
 <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */ defined('EXTPATH') OR exit('No direct script access allowed');
 
 /*
@@ -31,7 +28,7 @@ $config['extension_meta'] = array(
 	'version'     => '1.0',
 	'type'        => 'payment',
 	'title'       => 'Paytm',
-	'author'      => 'initappz',
+	'author'      => 'bytescrafter',
 	'description' => 'This extension will allow you to accept Paytm payment method during checkout.',
 	'settings'    => TRUE,
 );

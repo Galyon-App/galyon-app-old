@@ -1,21 +1,18 @@
 <?php
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : TindaApp
+  Created : 01-Sep-2020
 */
 require_once APPPATH.'/core/Main_model.php';
 class Driver_model extends Main_model
 {
     public $table_name = "drivers";
     public $mail_app_name = 'Groceryee app';
-	public $mail_address = 'Near havamahel motor garage, staff quarter,palitana bhavnagar-364270';
-	public $mail_email = 'info@initappz.com';
-	public $mail_phone = '+91 9426585554';
+	public $mail_address = 'B10 L18 Narra st., Brgy. San Francisco, Binan City, Laguna, Philippines 4024';
+	public $mail_email = 'support@bytescrafter.bet';
+	public $mail_phone = '+63 9294294225';
 	public function __construct(){
 		parent::__construct();
         $this->load->library('upload','encrypt');
@@ -40,8 +37,8 @@ class Driver_model extends Main_model
     public function sendBulk($to_address,$message,$subject){
         $this->load->library('email');
         $this->email->clear();
-        $this->email->from('info@initappz.com');
-        $this->email->reply_to('noreply@initappz.com');
+        $this->email->from('suppport@bytescrafter.bet');
+        $this->email->reply_to('noreply@bytescrafter.bet');
         $this->email->to($to_address);
         $this->email->subject($subject);
         $this->email->set_mailtype("html");
@@ -62,8 +59,8 @@ class Driver_model extends Main_model
     public function verificationLink($email,$url){
         $this->load->library('email');
         $this->email->clear();
-        $this->email->from('info@initappz.com');
-        $this->email->reply_to('noreply@initappz.com');
+        $this->email->from('support@bytescrafter.bet');
+        $this->email->reply_to('noreply@bytescrafter.bet');
         $this->email->to($email);
         $this->email->subject('Verification Link');
         $this->email->set_mailtype("html");
@@ -260,8 +257,8 @@ class Driver_model extends Main_model
         if($info != null){
             $this->load->library('email');
             $this->email->clear();
-            $this->email->from('info@initappz.com');
-            $this->email->reply_to('noreply@initappz.com');
+            $this->email->from('support@bytescrafter.bet');
+            $this->email->reply_to('noreply@bytescrafter.bet');
             $this->email->to($email);
             $this->email->subject('Email Verification');
             $this->email->set_mailtype("html");
