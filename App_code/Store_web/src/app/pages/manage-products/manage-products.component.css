@@ -1,0 +1,15 @@
+/*
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+*/
+ .back_image{
+      height: 100px;
+      width: 100px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      position: relative;
+      margin: 10px;
+ }
