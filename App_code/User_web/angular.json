@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "galyon": {
+    "galyon-user-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/galyon",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -84,18 +84,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "galyon:build"
+            "browserTarget": "galyon-user-web:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "galyon:build:production"
+              "browserTarget": "galyon-user-web:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "galyon:build"
+            "browserTarget": "galyon-user-web:build"
           }
         },
         "test": {
@@ -133,16 +133,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "galyon:serve"
+            "devServerTarget": "galyon-user-web:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "galyon:serve:production"
+              "devServerTarget": "galyon-user-web:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "galyon"
+  "defaultProject": "galyon-user-web"
 }
