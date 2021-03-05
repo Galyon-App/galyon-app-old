@@ -1,11 +1,8 @@
 /*
-  Authors : initappz (Rahul Jograna)
-  Website : https://initappz.com/
-  App Name : ionic 5 groceryee app
-  Created : 10-Sep-2020
-  This App Template Source code is licensed as per the
-  terms found in the Website https://initappz.com/license
-  Copyright and Good Faith Purchasers © 2020-present initappz.
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -338,7 +335,7 @@ export class PaymentPage implements OnInit {
     };
     const param = {
       uid: localStorage.getItem('uid'),
-      itemName: 'groceryee',
+      itemName: 'galyon',
       grandTotal: this.cart.grandTotal,
       dateTime: moment().format('YYYY-MM-DD HH:mm'),
       logo: this.api.mediaURL + this.util.logo
@@ -459,11 +456,11 @@ export class PaymentPage implements OnInit {
   }
 
   getName() {
-    return this.util.userInfo && this.util.userInfo.first_name ? this.util.userInfo.first_name + ' ' + this.util.userInfo.last_name : 'Groceryee';
+    return this.util.userInfo && this.util.userInfo.first_name ? this.util.userInfo.first_name + ' ' + this.util.userInfo.last_name : 'Galyon';
   }
 
   getEmail() {
-    return this.util.userInfo && this.util.userInfo.email ? this.util.userInfo.email : 'info@groceryee.com';
+    return this.util.userInfo && this.util.userInfo.email ? this.util.userInfo.email : 'support@galyon.app';
   }
 
   instaPay() {
@@ -478,7 +475,7 @@ export class PaymentPage implements OnInit {
       allow_repeated_payments: 'False',
       amount: this.cart.grandTotal,
       buyer_name: this.getName(),
-      purpose: 'Groceryee order',
+      purpose: 'Galyon order',
       redirect_url: this.api.baseUrl + 'paypal/success',
       phone: this.util.userInfo && this.util.userInfo.mobile ? this.util.userInfo.mobile : '',
       send_email: 'True',
