@@ -6,7 +6,10 @@
   Created : 01-Sep-2020
 
  -->
-<ion-app>
+
+<app-closed *ngIf="util.appClosed"></app-closed>
+
+<ion-app *ngIf="!util.appClosed">
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay" side="end">
       <ion-content>

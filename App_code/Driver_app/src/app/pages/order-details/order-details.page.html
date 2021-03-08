@@ -27,7 +27,7 @@
     <div class="card_div" *ngIf="storeInfo">
       <div class="resto_detail">
         <div class="back_image"
-          [ngStyle]="{'background-image':'url('+api.mediaURL+storeInfo.cover+'),url(assets/imgs/closed.png)'}"></div>
+          [ngStyle]="{'background-image':'url('+api.mediaURL+storeInfo.cover+'),url(assets/imgs/store.png)'}"></div>
         <div style="margin-left: 10px;" (click)="contact()">
           <ion-label class="res_name">{{storeInfo.name}} </ion-label>
           <ion-label class="res_location">{{storeInfo.mobile}}</ion-label>
@@ -45,7 +45,7 @@
     <div class="card_div" *ngIf="userInfo">
       <div class="resto_detail">
         <div class="back_image"
-          [ngStyle]="{'background-image':'url('+api.mediaURL+userInfo.cover+'),url(assets/imgs/closed.png)'}"></div>
+          [ngStyle]="{'background-image':'url('+api.mediaURL+userInfo.cover+'),url(assets/imgs/user.png)'}"></div>
         <div style="margin-left: 10px;">
           <ion-label class="res_name">{{userInfo.first_name}} {{userInfo.last_name}}</ion-label>
           <ion-label class="res_location">{{datetime}}</ion-label>

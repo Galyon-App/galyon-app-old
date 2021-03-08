@@ -51,7 +51,7 @@ export class HomePage implements OnInit {
     this.oldOrders = [];
     this.orders = [];
     this.api.post('orders/getByDriverId', param).subscribe((data: any) => {
-      console.log(data);
+
       this.dummy = [];
       if (data && data.status === 200 && data.data.length > 0) {
         data.data.forEach(async (element, index) => {
@@ -83,7 +83,7 @@ export class HomePage implements OnInit {
                   element['orderStatus'] = stat;
                   element.orders = await element.orders.filter(x => x.store_id === storeInfo[0].assignee);
                   if (stat === 'delivered' || stat === 'cancelled' || stat === 'rejected' || stat === 'refund') {
-                    // this.oldOrders.push(element);
+                    this.oldOrders.push(element);
                     this.olders.push(element);
                   } else {
                     this.orders.push(element);
@@ -93,8 +93,8 @@ export class HomePage implements OnInit {
             }
           }
           if (data.data.length === (index + 1)) {
-            console.log('same index');
-            this.loadMore(null, false);
+            //this.loadMore(null, false);
+            //TODO: Confirm if listing of completed really solved.
           }
         });
         if (haveRefresh) {
@@ -102,7 +102,6 @@ export class HomePage implements OnInit {
         }
       }
     }, error => {
-      console.log(error);
       this.dummy = [];
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
@@ -119,13 +118,12 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(event) {
-    console.log(event);
     this.getOrders(event, true);
   }
 
   loadMore(event, value) {
     const limit = this.limit * 10;
-    console.log(limit);
+    
     this.oldOrders = [];
     this.olders.forEach((element, index) => {
       if (index <= limit) {
@@ -136,6 +134,5 @@ export class HomePage implements OnInit {
       }
     });
     this.limit = this.limit + 1;
-    console.log('old orders-<', this.oldOrders.length, this.olders.length);
   }
 }

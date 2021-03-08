@@ -6,16 +6,17 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header *ngIf="!util.appClosed">
+<ion-header>
   <div class="segment_div">
-    <ion-label [class.active]="segId == 1" (click)="segId = 1 "> {{util.getString('Current Orders')}} </ion-label>
-    <ion-label [class.active]="segId == 2" (click)="segId = 2"> {{util.getString('Past Orders')}} </ion-label>
+    <ion-label>
+      <img class="tabheaderImage" src="assets/imgs/logo.png" onError="this.src='assets/imgs/logo.png'" alt="">
+    </ion-label>
+    <ion-label [class.active]="segId == 1" (click)="segId = 1 "> {{util.getString('New Orders')}} </ion-label>
+    <ion-label [class.active]="segId == 2" (click)="segId = 2"> {{util.getString('Completed')}} </ion-label>
   </div>
 </ion-header>
 
-<app-closed *ngIf="util.appClosed"></app-closed>
-
-<ion-content *ngIf="!util.appClosed">
+<ion-content style="background: whitesmoke;">
   <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -31,7 +32,7 @@
 
   </ion-item>
 
-  <div class="main_content_div" *ngIf="!util.appClosed">
+  <div class="main_content_div">
 
     <div class="content_div" *ngIf="segId === 1">
       <p *ngIf="!dummy?.length && !orders?.length" class="ion-text-center"> {{util.getString('No New Orders Found')}}

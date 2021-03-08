@@ -98,8 +98,7 @@ export class ApiService {
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .set('Basic', `${environment.authToken}`)
     };
-    const param = this.JSON_to_URLEncoded(body);
-    console.log(param);
+    const param = this.JSON_to_URLEncoded(body); //Param = {lang}.json
     return this.http.post(this.baseUrl + url, param, header);
   }
 

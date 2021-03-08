@@ -82,7 +82,7 @@ export class AppComponent {
         this.oneSignal.inFocusDisplaying(2);
       }
       this.appPages = this.util.appPage;
-      console.log('%c Copyright © 2021 Galyon. ', 'background: #222; color: #bada55');
+      console.log('%c Copyright © 2021 Galyon - BytesCrafter ', 'background: #222; color: #bada55');
       const lng = localStorage.getItem('language');
       if (!lng || lng === null) {
         this.api.get('users/getDefaultSettings').subscribe((data: any) => {
@@ -146,8 +146,8 @@ export class AppComponent {
         const param = {
           id: localStorage.getItem('language')
         };
+        //get default settings by id
         this.api.post('users/getDefaultSettingsById', param).subscribe((data: any) => {
-          console.log('get default settings by id', data);
           if (data && data.status === 200 && data.data) {
             const manage = data.data.manage;
             const language = data.data.lang;
@@ -166,8 +166,9 @@ export class AppComponent {
               this.util.translations = language;
             }
 
+            //common settings.
             const settings = data.data.settings;
-            console.log('-->', settings);
+            
             if (settings && settings.length > 0) {
               const info = settings[0];
               this.util.direction = info.appDirection;
@@ -179,7 +180,6 @@ export class AppComponent {
               this.util.user_login = info.driver_login;
               this.util.reset_pwd = info.reset_pwd;
               document.documentElement.dir = this.util.direction;
-              console.log('wont');
             } else {
               this.util.direction = 'ltr';
               this.util.cside = 'right';
@@ -187,21 +187,14 @@ export class AppComponent {
               document.documentElement.dir = this.util.direction;
             }
 
+            //general settings.
             const general = data.data.general;
-            console.log('generalllll============================>', general)
+            
             if (general && general.length > 0) {
               const info = general[0];
               this.util.general = info;
             }
-            console.log('app is closed', this.util.appClosed);
           }
-
-          console.log(this.util.translations);
-          console.log(this.util.direction);
-          console.log(this.util.cside);
-          console.log(this.util.appClosed);
-          console.log(this.util.appClosedMessage);
-
         }, error => {
           console.log('default settings by id', error);
           this.util.appClosed = false;
@@ -217,8 +210,8 @@ export class AppComponent {
         const param = {
           id: uid
         };
+        // Get object of current Driver.
         this.api.post('drivers/getById', param).subscribe((data: any) => {
-          console.log('*******************', data);
           if (data && data.status === 200 && data.data && data.data.length) {
             this.util.userInfo = data.data[0];
           }
