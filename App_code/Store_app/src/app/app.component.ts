@@ -46,11 +46,10 @@ export class AppComponent {
         this.platform.ready().then(() => {
             this.statusBar.styleLightContent();
             this.splashScreen.hide();
-            this.appPages = this.util.appPages; console.log('%c Copyright © 2021 Galyon. ', 'background: #222; color: #bada55');
+            this.appPages = this.util.appPages; console.log('%c Copyright © 2021 Galyon - BytesCrafter ', 'background: #222; color: #bada55');
             const lng = localStorage.getItem('language');
             if (!lng || lng === null) {
                 this.api.get('users/getDefaultSettings').subscribe((data: any) => {
-                    console.log('----------------- app setting', data);
                     if (data && data.status === 200 && data.data) {
                         const manage = data.data.manage;
                         const language = data.data.lang;
@@ -85,7 +84,7 @@ export class AppComponent {
                         }
 
                         const general = data.data.general;
-                        console.log('generalllll============================>', general)
+
                         if (general && general.length > 0) {
                             const info = general[0];
                             this.util.general = info;
@@ -100,7 +99,6 @@ export class AppComponent {
                     id: localStorage.getItem('language')
                 };
                 this.api.post('users/getDefaultSettingsById', param).subscribe((data: any) => {
-                    console.log('----------------- app setting', data);
                     if (data && data.status === 200 && data.data) {
                         const manage = data.data.manage;
                         const language = data.data.lang;
@@ -134,7 +132,7 @@ export class AppComponent {
                             document.documentElement.dir = this.util.direction;
                         }
                         const general = data.data.general;
-                        console.log('generalllll============================>', general)
+
                         if (general && general.length > 0) {
                             const info = general[0];
                             this.util.general = info;
@@ -142,7 +140,6 @@ export class AppComponent {
                         }
                     }
                 }, error => {
-                    console.log('default settings by id', error);
                     this.util.appClosed = false;
                     this.util.direction = 'ltr';
                     this.util.cside = 'right';
@@ -155,7 +152,6 @@ export class AppComponent {
                 setTimeout(async () => {
                     await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
                     this.oneSignal.getIds().then((data) => {
-                        console.log('-----------------------------------', data);
                         localStorage.setItem('fcm', data.userId);
                         const uid = localStorage.getItem('uid');
                         if (uid && uid !== null && uid !== 'null') {
@@ -196,7 +192,7 @@ export class AppComponent {
                     id: uid
                 };
                 this.api.post('stores/getByUid', param).subscribe((data: any) => {
-                    console.log('*******************', data);
+
                     if (data && data.status === 200 && data.data && data.data.length) {
                         this.util.store = data.data[0];
                     } else {
@@ -233,7 +229,6 @@ export class AppComponent {
                 icon: 'close',
                 role: 'cancel',
                 handler: () => {
-                    console.log('Cancel clicked');
                     this.nativeAudio.stop('audio').then(() => console.log('done'), () => console.log('error'));
                 }
             }]

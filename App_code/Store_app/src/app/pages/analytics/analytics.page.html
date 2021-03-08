@@ -6,13 +6,12 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header *ngIf="!util.appClosed">
+<ion-header>
   <ion-toolbar color="primary">
     <ion-title> {{util.getString('Analytics')}} </ion-title>
   </ion-toolbar>
 </ion-header>
-<app-closed *ngIf="util.appClosed"></app-closed>
-<ion-content class="ion-padding" *ngIf="!util.appClosed">
+<ion-content class="ion-padding">
   <ion-item>
     <ion-label> {{util.getString('From Date')}} </ion-label>
     <ion-datetime display-format="YYYY-MM-DD" mode="md" [(ngModel)]="from"></ion-datetime>
@@ -34,10 +33,9 @@
     </ion-col>
   </ion-row>
   <div *ngIf="from && to && storeOrder?.length && apiCalled" #invoiceTicket>
-    <h4 style="text-align: center;color: #7ec6aa;font-size: 14px;font-weight: bold;">Galyon Full App </h4>
+    <h4 style="text-align: center;color: #7ec6aa;font-size: 14px;font-weight: bold;">Galyon Store</h4>
     <p style="text-align: center;color: #ED7669;font-size: 12px;">{{getDate(from)}} to {{getDate(to)}}</p>
-    <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;font-size: 12px;">Galyon Full
-      App</p>
+    <p style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;font-size: 12px;">Galyon Store</p>
     <p style="text-align: right;font-weight: bold;margin: 0px !important;font-size: 12px;">B10 L18 Narra St., Silcas Village, Brgy. San Francisco
       Biñan City, Laguna, <br>
       Philippines

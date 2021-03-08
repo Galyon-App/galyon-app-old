@@ -6,7 +6,7 @@
 */
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
 @Component({
@@ -52,6 +52,16 @@ export class AccountPage implements OnInit {
 
   goToContact() {
     this.router.navigate(['tabs/tab3/contacts']);
+  }
+
+  goToSupport() {
+    const param: NavigationExtras = {
+      queryParams: {
+        id: 0,
+        name: 'Support'
+      }
+    };
+    this.router.navigate(['inbox'], param);
   }
 
 

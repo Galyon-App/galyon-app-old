@@ -112,8 +112,8 @@ export class OrdersPage implements OnInit {
             }
           }
           if (data.data.length === (index + 1)) {
-            console.log('same index');
-            this.loadMore(null, false);
+            //console.log('same index');
+            //this.loadMore(null, false);
           }
         });
 

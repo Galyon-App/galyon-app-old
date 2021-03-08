@@ -67,6 +67,14 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'tab4',
+        loadChildren: () => import('../chats/chats.module').then(m => m.ChatsPageModule)
+      },
+      {
+        path: 'tab5',
+        loadChildren: () => import('../reviews/reviews.module').then(m => m.ReviewsPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'
