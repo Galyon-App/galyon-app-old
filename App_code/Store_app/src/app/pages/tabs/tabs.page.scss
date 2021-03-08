@@ -4,3 +4,11 @@
   App Name : Galyon App
   Created : 01-Sep-2020
 */
+ion-tab-bar {
+  height: 65px;
+  ion-tab-button {        
+    ion-label {  
+        font-size: 11px;
+    }
+  }
+}
