@@ -6,21 +6,16 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+<ion-header class="ion-no-border">
   <ion-toolbar color="primary">
     <ion-title> {{util.getString('Cart')}} </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openMenu()">
-        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<app-closed *ngIf="util.appClosed"></app-closed>
-<ion-content *ngIf="!util.appClosed">
+
+<ion-content>
   <div *ngIf="!cart.cart?.length" class="nothing">
     <p class="bolder"> {{util.getString('Your cart is empty')}} </p>
-    <img src="assets/imgs/basket.gif" alt="" srcset="">
+    <img src="assets/imgs/basket.png" alt="" srcset="">
   </div>
   <div class="main_content_div" *ngIf="cart.cart?.length">
 
@@ -92,8 +87,8 @@
               <ion-ripple-effect type="bounded"></ion-ripple-effect>
             </ion-label>
           </div>
-          <img src="assets/imgs/veg.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
-          <img src="assets/imgs/non.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+          <img src="assets/imgs/normal.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
+          <img src="assets/imgs/verified.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
           <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
           <ion-label class="itemsKind" *ngIf="item.size ==='0'">
             <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>

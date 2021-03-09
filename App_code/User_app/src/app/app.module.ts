@@ -38,6 +38,7 @@ import { FormsModule } from '@angular/forms';
 import { SortPageModule } from './pages/sort/sort.module';
 import { VerifyPageModule } from './pages/verify/verify.module';
 import { SelectCountryPageModule } from './pages/select-country/select-country.module';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -55,7 +56,8 @@ import { SelectCountryPageModule } from './pages/select-country/select-country.m
     VerifyPageModule,
     SortPageModule,
     FormsModule,
-    SelectCountryPageModule
+    SelectCountryPageModule,
+    ComponentsModule,
   ],
   providers: [
     StatusBar,

@@ -6,10 +6,14 @@
 */
 ion-tabs{
 	ion-tab-bar {
+		height: 65px;
 		--border: 0;
 		--background: var(--ion-color-light);
 		ion-tab-button {
 			--background: var(--ion-color-light);
+			ion-label {  
+				font-size: 11px;
+			}
 		}
 
 	}

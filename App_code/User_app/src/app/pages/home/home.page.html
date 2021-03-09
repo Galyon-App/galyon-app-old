@@ -6,26 +6,24 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+<ion-header class="ion-no-border">
   <ion-toolbar color="primary">
-    <ion-title color="light" (click)="changeCity()" class="ion-text-left">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/logo.png" class="menu-logo">
+    </ion-thumbnail>
+    <ion-title slot="end" (click)="changeCity()" class="ion-text-left">
       <div class="ion-activatable" *ngIf="util && util.city && util.city.name">
-        <ion-icon slot="start" name="location"></ion-icon>
+        <ion-icon name="location"></ion-icon>
         {{ util.city.name }}
         <ion-ripple-effect type="bounded"></ion-ripple-effect>
       </div>
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openMenu()">
-        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<app-closed *ngIf="util.appClosed"></app-closed>
 
-<ion-content *ngIf="!util.appClosed">
+
+<ion-content>
   <div class="flx">
     <ion-searchbar [placeholder]="util.getString('Search  products')" [(ngModel)]="terms" inputmode="text" type="search"
       (keyup.enter)="search(q.value)" (ionChange)="onSearchChange($event)" #q [debounce]="250" mode="ios"
@@ -87,7 +85,7 @@
         <ion-slide *ngFor="let item of banners">
           <div class="card">
             <div class="back_image"
-              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/bg.png)'}"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}"
               (click)="openLink(item)">
               <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
@@ -122,8 +120,8 @@
               <div *ngIf="item.in_stoke === '0'" class="notInStoke">
                 <ion-label class="text"> {{util.getString('Out of Stoke')}} </ion-label>
               </div>
-              <img src="assets/imgs/veg.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
-              <img src="assets/imgs/non.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+              <img src="assets/imgs/normal.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
+              <img src="assets/imgs/verified.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
             </div>
             <div class="details">
               <ion-label class="pro_name" (click)="goToSingleProduct(item)">
@@ -282,7 +280,7 @@
         <ion-slide *ngFor="let item of betweenBanners">
           <div class="card">
             <div class="back_image"
-              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/bg.png)'}"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}"
               (click)="openLink(item)">
               <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
@@ -304,7 +302,7 @@
         <ion-slide *ngFor="let item of bottomBanners">
           <div class="card">
             <div class="back_image"
-              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/bg.png)'}"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}"
               (click)="openLink(item)">
               <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
@@ -335,7 +333,7 @@
       <p class="cateName">{{item.name}}</p>
       <ion-row>
         <ion-col size="4" *ngFor="let sub of item.subCates" class="bgColor" (click)="goToProductList(sub)">
-          <div class="bg_img" [ngStyle]="{'background-image':'url('+api.mediaURL+sub.cover+'),url(assets/bg.png)'}">
+          <div class="bg_img" [ngStyle]="{'background-image':'url('+api.mediaURL+sub.cover+'),url(assets/imgs/user.png)'}">
           </div>
           <p class="subCateName"> {{sub.name}} </p>
         </ion-col>

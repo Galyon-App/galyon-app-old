@@ -8,11 +8,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background: lightgray;
+    background: var(--ion-color-light);
     align-items: center;
     padding: 0px 5px;
     .itemsFound{
-        color: gray;
+        color: var(--ion-color-light-contrast);
         font-weight: bold;
     }
 }

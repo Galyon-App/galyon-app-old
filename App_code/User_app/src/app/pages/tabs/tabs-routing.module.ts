@@ -57,23 +57,18 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'categories',
+        path: 'chats',
         children: [
           {
             path: '',
             loadChildren: () =>
-              import('../categories/categories.module').then(m => m.CategoriesPageModule)
+              import('../chats/chats.module').then(m => m.ChatsPageModule)
           },
           {
-            path: 'products',
+            path: 'message',
             loadChildren: () =>
-              import('../products/products.module').then(m => m.ProductsPageModule)
+              import('../inbox/inbox.module').then(m => m.InboxPageModule)
           },
-          {
-            path: 'product',
-            loadChildren: () =>
-              import('../product/product.module').then(m => m.ProductPageModule)
-          }
         ]
       },
       {

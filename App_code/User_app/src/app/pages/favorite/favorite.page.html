@@ -14,11 +14,6 @@
       </ion-button>
     </ion-buttons>
     <ion-title> {{util.getString('Your Favourite')}} </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openMenu()">
-        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
   <ion-searchbar mode="ios" *ngIf="haveSearch" (ionCancel)="search()" [placeholder]="util.getString('Search')"
     type="text" (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="always">
@@ -65,8 +60,8 @@
             <div *ngIf="item.in_stoke === '0'" class="notInStoke">
               <ion-label class="text"> {{util.getString('Out of Stoke')}} </ion-label>
             </div>
-            <img src="assets/imgs/veg.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
-            <img src="assets/imgs/non.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+            <img src="assets/imgs/normal.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
+            <img src="assets/imgs/verified.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
           </div>
           <div class="second_div">
             <ion-label class="name_lbl" (click)="singleProduct(item)">
@@ -184,8 +179,8 @@
           <ion-label class="name_lbl">
             {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
           </ion-label>
-          <img src="assets/imgs/veg.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
-          <img src="assets/imgs/non.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+          <img src="assets/imgs/normal.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
+          <img src="assets/imgs/verified.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
           <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
           <div *ngIf="item.size ==='1'" class="variant" (click)="variant(item,i)">
             <ion-label class="selecter ion-activatable">

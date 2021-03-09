@@ -24,7 +24,7 @@
   </div>
 
   <div class="card" *ngFor="let item of list">
-    <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/bg.png)'}"
+    <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}"
       (click)="openLink(item)">
       <div class="overlay_div" *ngIf="item.message">
         <ion-label> {{item.message}} </ion-label>

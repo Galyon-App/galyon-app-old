@@ -23,12 +23,12 @@ export class CategoryService {
       color: 'rgba(113, 239, 239,0.2)'
     },
     {
-      img: 'assets/imgs/category/veg.png',
+      img: 'assets/imgs/category/normal.png',
       name: 'Veg',
       color: 'rgba(237, 129, 21, 0.2)'
     },
     {
-      img: 'assets/imgs/category/non-veg.png',
+      img: 'assets/imgs/category/verified.png',
       name: 'Non-veg',
       color: 'rgba(243, 210, 146,0.3)'
     },

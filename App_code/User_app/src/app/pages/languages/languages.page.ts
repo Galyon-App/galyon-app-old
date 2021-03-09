@@ -7,6 +7,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-languages',
@@ -20,7 +21,8 @@ export class LanguagesPage implements OnInit {
   selected: any;
   constructor(
     public util: UtilService,
-    public api: ApiService
+    public api: ApiService,
+    private navCtrl: NavController
   ) {
     this.selected = localStorage.getItem('language');
     this.getLangs();
@@ -58,5 +60,9 @@ export class LanguagesPage implements OnInit {
       localStorage.setItem('language', this.selected);
       window.location.reload();
     }
+  }
+
+  back() {
+    this.navCtrl.back();
   }
 }

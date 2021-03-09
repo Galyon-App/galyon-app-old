@@ -6,14 +6,14 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header>
+ <ion-header>
   <ion-toolbar color="primary">
-    <ion-title> {{util.getString('Languages')}} </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openMenu()">
-        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-title>{{util.getString('Languages')}} </ion-title>
   </ion-toolbar>
 </ion-header>
 

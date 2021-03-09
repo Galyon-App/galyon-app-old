@@ -4,20 +4,24 @@
   App Name : Galyon App
   Created : 01-Sep-2020
 */
+
+ion-header{
+    background-color: var(--ion-color-primary);
+}
 .segment_div{
-        display: flex;
-        margin-top: 20px;
-        border-bottom: 1px solid lightgray;
-        justify-content: space-around;
-        ion-label {
-            color: white;
-            padding-bottom: 10px;
-            width: 100%;
-            text-align: center;
-        }
-        .active{
-            border-bottom: 1px solid var(--ion-color-light);;
-        }
+    display: flex;
+    margin-top: 20px;
+    border-bottom: 1px solid lightgray;
+    justify-content: space-around;
+    ion-label {
+        color: var(--ion-color-primary-contrast);
+        padding-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+    .active{
+        border-bottom: 4px solid var(--ion-color-primary-contrast);
+    }
 }
 
 .main_content_div{

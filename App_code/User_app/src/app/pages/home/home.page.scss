@@ -5,7 +5,16 @@
   Created : 01-Sep-2020
 */
 ion-title {
-   text-align: left !important;
+   text-align: center !important;
+}
+.menu-logo {
+    padding-left: 0px;
+    padding-top: 7px;
+    position: absolute;
+    height: 35px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
 }
 .searchbar{
     padding: 0px 10px;
@@ -476,10 +485,9 @@ ion-title {
             text-align: center;
             font-weight: bold;
             font-size: 13px;
-            background: #d0e3e3;
+            background: #428cff;
             padding: 5px;
-            margin: 0px;
-            margin-top: 10px;
+            margin: 15px 0 12px 0;
         }
         .bgColor{
             background: ivory;
@@ -497,6 +505,7 @@ ion-title {
                 font-size: 10px;
                 font-weight: bold;
                 text-align: center;
+                color: var(--ion-color-light-shade);
             }
         }
         

@@ -6,15 +6,16 @@
   Created : 01-Sep-2020
 
  -->
+
 <ion-header>
-  <ion-toolbar>
-    <!-- <ion-title>Our Orders</ion-title> -->
     <div class="segment_div">
-      <ion-label [class.active]="segment == 1" (click)="onClick(1)"> {{util.getString('New Order')}} </ion-label>
-      <ion-label [class.active]="segment == 2" (click)="onClick(2)"> {{util.getString('Ongoing Order')}} </ion-label>
-      <ion-label [class.active]="segment == 3" (click)="onClick(3)"> {{util.getString('Past Order')}} </ion-label>
+      <ion-label>
+        <img class="tabheaderImage" src="assets/imgs/logo.png" onError="this.src='assets/imgs/logo.png'" alt="">
+      </ion-label>
+      <ion-label [class.active]="segment == 1" (click)="onClick(1)"> {{util.getString('New')}} </ion-label>
+      <ion-label [class.active]="segment == 2" (click)="onClick(2)"> {{util.getString('Ongoing')}} </ion-label>
+      <ion-label [class.active]="segment == 3" (click)="onClick(3)"> {{util.getString('Completed')}} </ion-label>
     </div>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content>

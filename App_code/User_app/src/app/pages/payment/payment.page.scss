@@ -7,7 +7,7 @@
 .coupones{
     display: flex;
     padding: 20px 10px;
-    background: #f3f3f3;
+    background: var(--ion-color-light);
     margin-top: 10px;
     .badge{
         width: 25px;
@@ -44,7 +44,7 @@
 }
 
 .header{
-    background: #f3f3f3;
+    background: var(--ion-color-light);
     padding: 20px;
     margin-top: 20px;
     .title{

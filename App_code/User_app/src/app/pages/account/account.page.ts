@@ -110,6 +110,16 @@ export class AccountPage implements OnInit {
     this.router.navigate(['chats']);
   }
 
+  goToSupport() {
+    const param: NavigationExtras = {
+      queryParams: {
+        id: 0,
+        name: 'Support'
+      }
+    };
+    this.router.navigate(['inbox'], param);
+  }
+
   goFaqs() {
     this.router.navigate(['tabs/account/faqs']);
   }

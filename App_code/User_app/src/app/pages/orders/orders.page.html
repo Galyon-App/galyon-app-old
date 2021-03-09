@@ -6,26 +6,21 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+<ion-header class="ion-no-border">
   <ion-toolbar color="primary">
     <ion-title> {{util.getString('Your Orders')}} </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openMenu()">
-        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<app-closed *ngIf="util.appClosed"></app-closed>
 
-<ion-content *ngIf="!util.appClosed">
+
+<ion-content>
   <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div *ngIf="!dummy?.length && !orders?.length" class="nothing">
     <p class="bolder"> {{util.getString('No Order found!')}} </p>
-    <img src="assets/imgs/basket.gif" alt="" srcset="">
+    <img src="assets/imgs/basket.png" alt="" srcset="">
   </div>
   <ion-item *ngFor="let item of dummy">
     <ion-thumbnail slot="start">

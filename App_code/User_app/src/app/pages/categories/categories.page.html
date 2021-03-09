@@ -6,20 +6,15 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header class="ion-no-border" *ngIf="!util.appClosed">
+<ion-header class="ion-no-border">
   <ion-toolbar color="primary">
     <ion-title> {{util.getString('Categories')}} </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openMenu()">
-        <img class="menuIcon" src="assets/sidemenu/menu_light.png" alt="">
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<app-closed *ngIf="util.appClosed"></app-closed>
 
-<ion-content class="ion-padding" *ngIf="!util.appClosed">
+
+<ion-content class="ion-padding">
   <ion-item *ngFor="let item of dummy">
     <ion-thumbnail slot="start">
       <ion-skeleton-text></ion-skeleton-text>
