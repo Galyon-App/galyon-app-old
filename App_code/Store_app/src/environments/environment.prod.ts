@@ -6,8 +6,8 @@
 */
 export const environment = {
   production: true,
-  baseURL: 'YOUR_BASE_URL/',
-  mediaURL: 'YOUR_BASE_URL/uploads/',
+  baseURL: 'https://api.galyon.app/',
+  mediaURL: 'https://api.galyon.app/uploads/',
   onesignal: {
     appId: 'YOUR_APP_ID',
     googleProjectNumber: 'YOUR_PROJECT_ID',
