@@ -14,13 +14,15 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
   templateUrl: './edit-profile.page.html',
   styleUrls: ['./edit-profile.page.scss'],
 })
+
 export class EditProfilePage implements OnInit {
   fname: any;
   lname: any;
   mobile: any;
   gender: any;
   email: any;
-  cover: any = '';
+  avatar: any;
+  coverImage: any = '';
   edit_flag: boolean;
   current: boolean;
   constructor(
@@ -37,6 +39,7 @@ export class EditProfilePage implements OnInit {
 
   ngOnInit() {
   }
+
   getProfile() {
     const param = {
       id: localStorage.getItem('uid')
@@ -52,7 +55,7 @@ export class EditProfilePage implements OnInit {
         this.lname = info.last_name;
         this.mobile = info.mobile;
         this.gender = info.gender;
-        this.cover = info.cover;
+        this.coverImage = info.cover;
         this.email = info.email;
         this.current = info.current === 'active' ? true : false;
       }
@@ -62,35 +65,91 @@ export class EditProfilePage implements OnInit {
     });
   }
 
-
   async updateProfile() {
-    const actionSheet = await this.actionSheetController.create({
-      header: this.util.getString('Choose from'),
-      buttons: [{
-        text: 'Camera',
-        icon: 'camera',
-        handler: () => {
-          console.log('camera clicked');
-          this.upload('camera');
-        }
-      }, {
-        text: this.util.getString('Gallery'),
-        icon: 'images',
-        handler: () => {
-          console.log('gallery clicked');
-          this.upload('gallery');
-        }
-      }, {
-        text: this.util.getString('Cancel'),
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
+    if(this.edit_flag == false) {
+      const actionSheet = await this.actionSheetController.create({
+        header: this.util.getString('Choose from'),
+        buttons: [{
+          text: this.util.getString('Camera'),
+          icon: 'camera',
+          handler: () => {
+            console.log('camera clicked');
+            this.upload('camera');
+          }
+        }, {
+          text: this.util.getString('Gallery'),
+          icon: 'images',
+          handler: () => {
+            console.log('gallery clicked');
+            this.upload('gallery');
+          }
+        }, {
+          text: this.util.getString('Cancel'),
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+      });
+  
+      await actionSheet.present();
+    }
+    
+  }
 
-    await actionSheet.present();
+  upload(type) {
+    try {
+      const options: CameraOptions = {
+        quality: 100,
+        targetHeight: 800,
+        targetWidth: 800,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        correctOrientation: true,
+        sourceType: type === 'camera' ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY
+      };
+      this.camera.getPicture(options).then((url) => {
+        console.log('url->', url);
+        this.util.show(this.util.getString('uploading'));
+        const alpha = {
+          img: url,
+          type: 'jpg'
+        };
+        console.log('parma==>', alpha);
+        this.api.nativePost('users/upload_file', alpha).then((data) => {
+          this.util.hide();
+          console.log('data', JSON.parse(data.data));
+          const info = JSON.parse(data.data);
+          this.coverImage = info.data;
+          console.log('cover image', this.coverImage);
+          const param = {
+            cover: this.coverImage,
+            id: localStorage.getItem('uid')
+          };
+          this.util.show(this.util.getString('updating...'));
+          this.api.post('users/edit_profile', param).subscribe((update: any) => {
+            this.util.hide();
+            console.log(update);
+          }, error => {
+            this.util.hide();
+            console.log(error);
+          });
+        }, error => {
+          console.log(error);
+          this.util.hide();
+          this.util.errorToast(this.util.getString('Something went wrong'));
+        }).catch(error => {
+          console.log(error);
+          this.util.hide();
+          this.util.errorToast(this.util.getString('Something went wrong'));
+        });
+      });
+
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 
   update() {
@@ -103,7 +162,7 @@ export class EditProfilePage implements OnInit {
       last_name: this.lname,
       email: this.email,
       gender: this.gender,
-      cover: this.cover,
+      cover: this.coverImage,
       mobile: this.mobile,
       id: localStorage.getItem('uid'),
       current: this.current === true ? 'active' : 'busy',
@@ -123,59 +182,4 @@ export class EditProfilePage implements OnInit {
     this.navCtrl.back();
   }
 
-  upload(type) {
-    try {
-      const options: CameraOptions = {
-        quality: 100,
-        targetHeight: 800,
-        targetWidth: 800,
-        destinationType: this.camera.DestinationType.DATA_URL,
-        encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE,
-        correctOrientation: true,
-        sourceType: type === 'camera' ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY
-      };
-      this.camera.getPicture(options).then((url) => {
-        console.log('url->', url);
-        this.util.show(this.util.getString('Uploading'));
-        const alpha = {
-          img: url,
-          type: 'jpg'
-        };
-        console.log('parma==>', alpha);
-        this.api.nativePost('users/upload_file', alpha).then((data) => {
-          this.util.hide();
-          console.log('data', JSON.parse(data.data));
-          const info = JSON.parse(data.data);
-          this.cover = info.data;
-          console.log('cover image', this.cover);
-          const param = {
-            cover: this.cover,
-            id: localStorage.getItem('uid')
-          };
-          this.util.show(this.util.getString('Updating...'));
-          this.api.post('users/edit_profile', param).subscribe((update: any) => {
-            this.util.hide();
-            console.log(update);
-            this.getProfile();
-          }, error => {
-            this.util.hide();
-            console.log(error);
-          });
-        }, error => {
-          console.log(error);
-          this.util.hide();
-          this.util.errorToast(this.util.getString('Something went wrong'));
-        }).catch(error => {
-          console.log(error);
-          this.util.hide();
-          this.util.errorToast(this.util.getString('Something went wrong'));
-        });
-      });
-
-    } catch (error) {
-      console.log('error', error);
-      this.util.errorToast(this.util.getString('Something went wrong'));
-    }
-  }
 }
