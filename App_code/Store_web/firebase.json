@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/galyon-store-web",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
