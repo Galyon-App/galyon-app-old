@@ -21,6 +21,7 @@ ion-content{
         font-size: 20px;
         padding: 10px;
     }
+
     .iconDiv{
         // margin-top: 80px;
         text-align: center;
@@ -51,8 +52,10 @@ ion-content{
             text-align: right;
             color: white;
         }
+        
         ion-input{
             background: white;
+            color: rgb(49, 49, 49);
             border-radius: 20px;
             margin-bottom: 15px;
             --padding-start: 8px;

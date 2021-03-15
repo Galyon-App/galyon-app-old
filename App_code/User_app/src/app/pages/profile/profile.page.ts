@@ -65,33 +65,35 @@ export class ProfilePage implements OnInit {
 
 
   async updateProfile() {
-    const actionSheet = await this.actionSheetController.create({
-      header: this.util.getString('Choose from'),
-      buttons: [{
-        text: this.util.getString('Camera'),
-        icon: 'camera',
-        handler: () => {
-          console.log('camera clicked');
-          this.upload('camera');
-        }
-      }, {
-        text: this.util.getString('Gallery'),
-        icon: 'images',
-        handler: () => {
-          console.log('gallery clicked');
-          this.upload('gallery');
-        }
-      }, {
-        text: this.util.getString('Cancel'),
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
-    });
-
-    await actionSheet.present();
+    if(this.edit_flag == false) {
+      const actionSheet = await this.actionSheetController.create({
+        header: this.util.getString('Choose from'),
+        buttons: [{
+          text: this.util.getString('Camera'),
+          icon: 'camera',
+          handler: () => {
+            console.log('camera clicked');
+            this.upload('camera');
+          }
+        }, {
+          text: this.util.getString('Gallery'),
+          icon: 'images',
+          handler: () => {
+            console.log('gallery clicked');
+            this.upload('gallery');
+          }
+        }, {
+          text: this.util.getString('Cancel'),
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+      });
+  
+      await actionSheet.present();
+    }
   }
 
   update() {

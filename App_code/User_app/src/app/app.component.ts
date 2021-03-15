@@ -55,7 +55,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.backgroundColorByHexString('#45C261');
+      this.statusBar.backgroundColorByHexString('#eb6363');
       this.splashScreen.hide();
       console.log('%c Copyright © 2021 Galyon. ', 'background: #222; color: #bada55');
       this.appPages = this.util.appPage;

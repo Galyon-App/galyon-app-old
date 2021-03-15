@@ -29,6 +29,9 @@ ion-label {
             position: relative;
             // display: flex;
             // flex-wrap: nowrap;
+            padding: 20px;
+            border: 1px solid var(--ion-color-light-contrast);
+            border-radius: 20px;
             overflow-x: auto;
             &::-webkit-scrollbar {
                 display: none;
@@ -38,19 +41,19 @@ ion-label {
             }
             .title{
                 font-weight: bold;
-                color: black;
+                color: var(--ion-color-light-contrast);
                 font-size: 0.8rem;
                 white-space: pre-wrap;
                 text-transform: capitalize;
             }
             .name{
-                color: lightgray;
+                color: var(--ion-color-light-contrast);
                 font-size: 0.7rem;
             }
             .moreIcon{
                 position: absolute;
-                right: 0px;
-                top: 1px;
+                right: 20px;
+                top: 20px;
             }
         }
     }

@@ -1,0 +1,27 @@
+{
+  "appId": "app.galyon.user",
+  "appName": "Galyon User",
+  "bundledWebRuntime": true,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {
+    "preferences": {
+      "ScrollEnabled": "false",
+      "android-minSdkVersion": "22",
+      "BackupWebStorage": "none",
+      "SplashMaintainAspectRatio": "true",
+      "FadeSplashScreenDuration": "300",
+      "SplashShowOnlyFirstTime": "false",
+      "SplashScreen": "screen",
+      "SplashScreenDelay": "3000",
+      "loadUrlTimeoutValue": "700000",
+      "CordovaWebViewEngine": "CDVWKWebViewEngine",
+      "WKWebViewOnly": "true"
+    }
+  }
+}
