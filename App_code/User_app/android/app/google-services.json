@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "601855270346",
+    "project_id": "galyon-app",
+    "storage_bucket": "galyon-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601855270346:android:613fb2735f77413324c333",
+        "android_client_info": {
+          "package_name": "app.galyon.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601855270346-7tvarrj1i6irfsjtfgevok43t4kq7mvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzmS5aTJVQOtUy7o4CIHT8daP57-h98Oc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601855270346-7tvarrj1i6irfsjtfgevok43t4kq7mvu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
