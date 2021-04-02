@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "galyon-store"
+  },
+  "targets": {
+    "galyon-app": {
+      "hosting": {
+        "galyon-store-web": [
+          "galyon-app"
+        ]
+      }
+    }
   }
 }

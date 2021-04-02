@@ -20,6 +20,11 @@ import { environment } from 'src/environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LeaveGuard } from './leaved/leaved.guard';
 
+// 1. Import the libs you need
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +41,11 @@ import { LeaveGuard } from './leaved/leaved.guard';
     SharedModule,
     HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+
+    // 3. Initialize
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule, // auth
+    AngularFireAnalyticsModule // analytics
   ],
   providers: [LeaveGuard],
   bootstrap: [AppComponent]

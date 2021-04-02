@@ -1,4 +1,3 @@
-import { Router } from '@angular/router';
 /*
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
@@ -11,6 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApisService } from 'src/app/services/apis.service';
 import { UtilService } from 'src/app/services/util.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -48,13 +48,11 @@ export class LoginComponent implements OnInit {
     if (!this.util.user_login || this.util.user_login === '') {
       this.util.user_login = '0';
     }
-    console.log('user login type', this.util.user_login);
   }
-
-
 
   ngOnInit(): void {
   }
+
   login() {
 
     if (!this.email || this.email === '' || !this.password || this.password === '') {
@@ -121,7 +119,6 @@ export class LoginComponent implements OnInit {
     // localStorage.setItem('type', 'admin');
     // this.router.navigate(['admin']);
   }
-
 
   error(message) {
     const toastOptions: ToastOptions = {

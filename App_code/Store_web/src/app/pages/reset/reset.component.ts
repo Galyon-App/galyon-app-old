@@ -60,11 +60,6 @@ export class ResetComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login() {
-    this.back();
-  }
-
-
   error(message) {
     const toastOptions: ToastOptions = {
       title: this.util.getString('Error'),

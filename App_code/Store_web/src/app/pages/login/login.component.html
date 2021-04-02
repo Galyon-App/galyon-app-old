@@ -34,19 +34,24 @@
             <div class="col-sm-12">
                 <div class="login-card card-body auth-body">
                     <form class="md-float-material">
-                        <div class="text-center">
-                            <img src="assets/images/auth/big.png" style="width:150px;height:50px" alt="logo.png">
+                        <div class="row m-b-20">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <img src="assets/images/big.png" style="width: auto; height: 75px;" alt="logo.png">
+                                </div>
+                            </div>
                         </div>
+                        <hr />
                         <div class="auth-box" *ngIf="util.user_login === '0' ">
                             <div class="row m-b-20">
                                 <div class="col-md-12">
-                                    <h3 class="text-left txt-primary"> {{util.getString('Sign In')}} </h3>
+                                    <h3 class="text-center txt-primary"> {{util.getString('Merchant Login')}} </h3>
                                 </div>
                             </div>
                             <hr />
                             <div class="input-group">
                                 <input type="email" class="form-control"
-                                    [placeholder]="util.getString('Your Email Address')" [(ngModel)]="email"
+                                    [placeholder]="util.getString('Email Address')" [(ngModel)]="email"
                                     [ngModelOptions]="{standalone: true}">
                                 <span class="md-line"></span>
                             </div>
@@ -65,18 +70,13 @@
                                         {{util.getString('Sign In')}}
                                     </button>
                                 </div>
-                                <div class="btns">
-                                    <img [src]="api.mediaURL+item.cover" (click)="changeLng(item)"
-                                        *ngFor="let item of util.languages"
-                                        [ngClass]="selected == item.file ? 'flagActive':'flagDeactive'" alt="">
-                                </div>
                             </div>
                         </div>
 
                         <div class="auth-box" *ngIf="util.user_login === '1' ">
                             <div class="row m-b-20">
                                 <div class="col-md-12">
-                                    <h3 class="text-left txt-primary"> {{util.getString('Sign In')}} </h3>
+                                    <h3 class="text-center txt-primary"> {{util.getString('Merchant Login')}} </h3>
                                 </div>
                             </div>
                             <hr />
@@ -113,18 +113,13 @@
                                         {{util.getString('Sign In')}}
                                     </button>
                                 </div>
-                                <div class="btns">
-                                    <img [src]="api.mediaURL+item.cover" (click)="changeLng(item)"
-                                        *ngFor="let item of util.languages"
-                                        [ngClass]="selected == item.file ? 'flagActive':'flagDeactive'" alt="">
-                                </div>
                             </div>
                         </div>
 
                         <div class="auth-box" *ngIf="util.user_login === '2' ">
                             <div class="row m-b-20">
                                 <div class="col-md-12">
-                                    <h3 class="text-left txt-primary"> {{util.getString('Sign In')}} </h3>
+                                    <h3 class="text-center txt-primary"> {{util.getString('Merchant Login')}} </h3>
                                 </div>
                             </div>
                             <hr />
@@ -154,11 +149,6 @@
                                         class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">
                                         {{util.getString('Sign In')}}
                                     </button>
-                                </div>
-                                <div class="btns">
-                                    <img [src]="api.mediaURL+item.cover" (click)="changeLng(item)"
-                                        *ngFor="let item of util.languages"
-                                        [ngClass]="selected == item.file ? 'flagActive':'flagDeactive'" alt="">
                                 </div>
                             </div>
                         </div>

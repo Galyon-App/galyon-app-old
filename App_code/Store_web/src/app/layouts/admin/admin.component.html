@@ -35,30 +35,16 @@
               </li>
             </ul>
             <ul [@mobileMenuTop]="isCollapsedMobile" class="nav-right" [ngClass]="isCollapsedMobile">
-              <li class="header-notification lng-dropdown">
-
-                <a href="javascript:;" id="dropdown-active-item">
-                  {{util.getString('Language')}}
-                </a>
-                <ul class="show-notification">
-                  <li>
-                    <a (click)="changeLng(item)" *ngFor="let item of util.languages" data-lng="en">
-                      {{item.name}}
-                    </a>
-                  </li>
-
-                </ul>
-              </li>
 
               <li class="user-profile header-notification">
                 <a [routerLink]="['/']">
-                  <img src="assets/images/user.png" alt="User-Profile-Image">
+                  <img src="assets/images/user.png" alt="User-Profile-Image" class="user-profile-img">
                   <span> {{util.storeInfo && util.storeInfo.name ? util.storeInfo.name : 'Store Vendors'}} </span>
                   <i class="ti-angle-down"></i>
                 </a>
                 <ul class="show-notification profile-notification">
                   <li>
-                    <a (click)="logout()">
+                    <a href="#" (click)="logout()">
                       <i class="ti-layout-sidebar-left"></i> Logout
                     </a>
                   </li>

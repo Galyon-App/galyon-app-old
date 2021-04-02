@@ -1,6 +1,6 @@
 {
-  "name": "store-app-admin",
-  "short_name": "store-app-admin",
+  "name": "Galyon Merchant",
+  "short_name": "galyon-store-web",
   "theme_color": "#ff384c",
   "background_color": "#fafafa",
   "display": "standalone",

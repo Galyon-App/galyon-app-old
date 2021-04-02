@@ -20,7 +20,7 @@
       <div class="card">
 
          <div class="card-block p-t-0">
-            <div class="card-msg b-b-default p-b-10">
+            <div class="card-msg b-b-default p-b-10" style="padding: 20px;">
                <div class="card-msg-img">
                   <a>
                      <img class="img-circle" [src]="api.mediaURL+item.cover" style="height: 50px;width: 50px;"
@@ -28,9 +28,9 @@
                   </a>
                </div>
                <div class="card-msg-contain">
-                  <p>{{util.getString('Received From')}} {{item.way}} </p>
-                  <h3> {{item.fname}} {{item.lname}} </h3>
-                  <p> {{item.msg}} </p>
+                  <!-- <p style="margin-bottom: 0;">{{util.getString('Received From')}} {{item.way}} </p> -->
+                  <h5> {{item.fname}} {{item.lname}} </h5>
+                  <p style="margin-bottom: 0;"> {{item.msg}} </p>
                   <p> {{getDate(item.timestamp)}} </p>
                </div>
             </div>

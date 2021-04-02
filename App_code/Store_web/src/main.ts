@@ -17,5 +17,9 @@ if (environment.production) {
   }
 }
 
+const script = document.createElement('script');
+script.src = 'https://maps.googleapis.com/maps/api/js?key='+environment.google.mapApi+'&libraries=places&language=en';
+document.head.appendChild(script);
+
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
