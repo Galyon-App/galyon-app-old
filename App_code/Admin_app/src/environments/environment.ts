@@ -12,6 +12,18 @@ export const environment = {
   production: false,
   baseURL: 'https://api.galyon.dev/',
   mediaURL: 'https://api.galyon.dev/uploads/',
+  firebase: {
+    apiKey: "AIzaSyDBieOxlT1pfwVwU1aAwNAVrIJgdul6uRc",
+    authDomain: "galyon-app.firebaseapp.com",
+    projectId: "galyon-app",
+    storageBucket: "galyon-app.appspot.com",
+    messagingSenderId: "601855270346",
+    appId: "1:601855270346:web:5c5ec298508dcac324c333",
+    measurementId: "G-SX0P87PDN1"
+  },
+  google: {
+    mapApi: "AIzaSyDuek6Uyv1OVdrNb75jAiWE6u89YU5W0CY"
+  },
   onesignal: {
     appId: 'YOUR_APP_ID',
     googleProjectNumber: 'YOUR_PROJECT_ID',

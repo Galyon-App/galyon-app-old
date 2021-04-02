@@ -1,6 +1,6 @@
 {
-  "name": "galyon-admin-app",
-  "short_name": "galyon-admin-app",
+  "name": "Galyon Admin",
+  "short_name": "galyon-admin",
   "theme_color": "#ff384c",
   "background_color": "#fafafa",
   "display": "standalone",

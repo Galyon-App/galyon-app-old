@@ -873,7 +873,7 @@ a.mytooltip {
 
 .jFiler-theme-default {
   .jFiler-input-button {
-    background-color: #0073aa;
+    background-color: #aa0000;
     background-image: none;
     color: #fff;
   }
@@ -1150,7 +1150,7 @@ a {
   }
   &.bg-danger {
     &:focus, &:hover {
-      background-color: #ed7669 !important;
+      background-color: #19948a !important;
       color: #fff;
     }
   }
@@ -2744,7 +2744,7 @@ p {
     color: #4CAF50;
   }
   .faq-bar3 {
-    background-color: #e74c3c;
+    background-color: #148279;
   }
   .faq-text3 {
     color: #ff5252;
@@ -3176,7 +3176,7 @@ table.matrics-table tr:first-child td {
 }
 
 .confirmation-icon {
-  color: #e74c3c;
+  color: #148279;
 }
 
 .width-100 {
@@ -4706,7 +4706,7 @@ table.matrics-table tr:first-child td {
 }
 
 .text-danger {
-  color: #e74c3c !important;
+  color: #148279 !important;
 }
 
 .text-success {
@@ -4770,7 +4770,7 @@ table.matrics-table tr:first-child td {
 }
 
 .label-danger {
-  background-color: #e74c3c;
+  background-color: #148279;
 }
 
 .label-success {
@@ -4801,7 +4801,7 @@ table.matrics-table tr:first-child td {
 }
 
 .badge-danger {
-  background-color: #e74c3c;
+  background-color: #148279;
 }
 
 .badge-success {
@@ -4849,7 +4849,7 @@ table.matrics-table tr:first-child td {
 }
 
 .bg-danger {
-  background-color: #e74c3c !important;
+  background-color: #148279 !important;
   color: #fff;
 }
 
@@ -4884,7 +4884,7 @@ table.matrics-table tr:first-child td {
 }
 
 .color-danger {
-  background-color: #e74c3c;
+  background-color: #148279;
 }
 
 .color-success {
@@ -4915,7 +4915,7 @@ table.matrics-table tr:first-child td {
 }
 
 .loader-danger {
-  background-color: #e74c3c !important;
+  background-color: #148279 !important;
 }
 
 .loader-success {
@@ -4952,8 +4952,8 @@ table.matrics-table tr:first-child td {
 }
 
 .nestable-danger {
-  background-color: #e74c3c !important;
-  border-color: #e74c3c;
+  background-color: #148279 !important;
+  border-color: #148279;
   color: #fff !important;
 }
 
@@ -5004,11 +5004,11 @@ table {
     }
   }
   thead .border-bottom-danger th {
-    border-bottom: 1px solid #e74c3c;
+    border-bottom: 1px solid #148279;
   }
   tbody .border-bottom-danger {
     th, td {
-      border-bottom: 1px solid #e74c3c;
+      border-bottom: 1px solid #148279;
     }
   }
   thead .border-bottom-success th {
@@ -5069,9 +5069,9 @@ table {
     border: 3px solid #a1aab0;
   }
   .table-danger, &.table-danger {
-    background-color: #e74c3c;
+    background-color: #148279;
     color: #fff;
-    border: 3px solid #e74c3c;
+    border: 3px solid #148279;
   }
   .table-danger thead, &.table-danger thead {
     background-color: #d62c1a;
@@ -5187,27 +5187,27 @@ table {
 
 .toolbar-danger {
   .tool-item {
-    background: #e74c3c !important;
+    background: #148279 !important;
     &.selected, &:hover {
       background: #d62c1a !important;
     }
   }
   &.tool-top .arrow {
-    border-color: #e74c3c transparent transparent;
+    border-color: #148279 transparent transparent;
   }
   &.tool-bottom .arrow {
-    border-color: transparent transparent #e74c3c;
+    border-color: transparent transparent #148279;
   }
   &.tool-left .arrow {
-    border-color: transparent transparent transparent #e74c3c;
+    border-color: transparent transparent transparent #148279;
   }
   &.tool-right .arrow {
-    border-color: transparent #e74c3c transparent transparent;
+    border-color: transparent #148279 transparent transparent;
   }
 }
 
 .btn-toolbar-danger.pressed {
-  background-color: #e74c3c;
+  background-color: #148279;
 }
 
 .toolbar-success {
@@ -5301,7 +5301,7 @@ table {
 }
 
 .card-border-danger {
-  border-top: 4px solid #e74c3c;
+  border-top: 4px solid #148279;
 }
 
 .card-border-success {
@@ -5330,7 +5330,7 @@ table {
     border-color: #bdc3c7;
   }
   .panel-danger {
-    border-color: #e74c3c;
+    border-color: #148279;
   }
   .panel-success {
     border-color: #2ecc71;
@@ -5395,19 +5395,19 @@ table {
 }
 
 .b-t-danger {
-  border-top: 1px solid #e74c3c;
+  border-top: 1px solid #148279;
 }
 
 .b-b-danger {
-  border-bottom: 1px solid #e74c3c;
+  border-bottom: 1px solid #148279;
 }
 
 .b-l-danger {
-  border-left: 1px solid #e74c3c;
+  border-left: 1px solid #148279;
 }
 
 .b-r-danger {
-  border-right: 1px solid #e74c3c;
+  border-right: 1px solid #148279;
 }
 
 .b-t-success {
@@ -5659,7 +5659,7 @@ table {
           padding: 20px;
         }
         .show-notification li:first-child h6, .profile-notification li:first-child h6 {
-          border-bottom: 1px solid #0073aa, #f1c40f, #bdc3c7, #e74c3c, #2ecc71, #34495e, #3498DB;
+          border-bottom: 1px solid #0073aa, #f1c40f, #bdc3c7, #148279, #2ecc71, #34495e, #3498DB;
           display: block;
           margin-bottom: 20px;
           padding-bottom: 10px;
@@ -10879,14 +10879,14 @@ body {
 }
 
 .btn-danger {
-  background-color: #dc3545;
-  border-color: #e74c3c;
+  background-color: #1EAEA2;
+  border-color: #148279;
   color: #fff;
   cursor: pointer;
   transition: all ease-in 0.3s;
   &:hover {
-    background-color: #ed7669;
-    border-color: #ed7669;
+    background-color: #19948a;
+    border-color: #19948a;
   }
   &:active {
     background-color: #cd2a19 !important;
@@ -11114,7 +11114,7 @@ body {
 }
 
 .btn-danger .badge {
-  color: #e74c3c;
+  color: #148279;
   background-color: #fff;
 }
 
@@ -11281,7 +11281,7 @@ body {
 }
 
 .dropdown-danger .dropdown-menu a:hover, .dropdown-split-danger .dropdown-menu a:hover {
-  background-color: #e74c3c;
+  background-color: #148279;
   color: #fff;
 }
 
@@ -11410,18 +11410,18 @@ body {
 }
 
 .form-control-danger {
-  border-color: #e74c3c;
+  border-color: #148279;
   &:focus {
-    border-color: #e74c3c;
+    border-color: #148279;
   }
 }
 
 .input-group-danger {
   .input-group-addon {
-    background-color: #e74c3c;
+    background-color: #148279;
   }
   .form-control {
-    border-color: #e74c3c;
+    border-color: #148279;
   }
 }
 
@@ -11518,16 +11518,16 @@ body {
 }
 
 .form-txt-danger {
-  color: #e74c3c;
+  color: #148279;
   &:focus {
-    color: #e74c3c;
+    color: #148279;
   }
   &::-moz-placeholder {
-    color: #e74c3c;
+    color: #148279;
     opacity: 1;
   }
   &:-ms-input-placeholder, &::-webkit-input-placeholder {
-    color: #e74c3c;
+    color: #148279;
   }
 }
 
@@ -11630,12 +11630,12 @@ body {
 }
 
 .form-bg-danger {
-  background-color: #e74c3c;
-  border-color: #e74c3c;
+  background-color: #148279;
+  border-color: #148279;
   color: #fff;
   &:focus {
-    background-color: #e74c3c;
-    border-color: #e74c3c;
+    background-color: #148279;
+    border-color: #148279;
     color: #fff;
   }
   &::-moz-placeholder {
@@ -11723,10 +11723,10 @@ body {
 
 .has-danger {
   .col-form-label {
-    color: #e74c3c;
+    color: #148279;
   }
   .form-control-success {
-    border-color: #e74c3c;
+    border-color: #148279;
   }
 }
 
@@ -11933,11 +11933,11 @@ body {
   }
   &.radio-danger .helper {
     &::after {
-      background-color: #e74c3c;
-      border-color: #e74c3c;
+      background-color: #148279;
+      border-color: #148279;
     }
     &::before {
-      border-color: #e74c3c;
+      border-color: #148279;
     }
   }
   &.radio-success .helper {
@@ -12052,10 +12052,10 @@ body {
   }
   .border-checkbox-group-danger {
     .border-checkbox-label:before {
-      border: 2px solid #e74c3c;
+      border: 2px solid #148279;
     }
     .border-checkbox:checked + .border-checkbox-label:after {
-      border-color: #e74c3c;
+      border-color: #148279;
     }
   }
   .border-checkbox-group-success {
@@ -12193,9 +12193,9 @@ body {
     }
   }
   &.fade-in-danger .cr {
-    border: 2px solid #e74c3c;
+    border: 2px solid #148279;
     .cr-icon {
-      color: #e74c3c;
+      color: #148279;
     }
   }
   &.fade-in-success .cr {
@@ -12305,7 +12305,7 @@ body {
 }
 
 .checkbox-danger input[type="checkbox"]:checked + label::before {
-  background-color: #e74c3c;
+  background-color: #148279;
 }
 
 .checkbox-success input[type="checkbox"]:checked + label::before {
@@ -12564,8 +12564,8 @@ span.badge {
 
 .label-inverse-danger {
   border: 1px solid;
-  border-color: #e74c3c;
-  color: #e74c3c !important;
+  border-color: #148279;
+  color: #148279 !important;
 }
 
 .label-inverse-info {
@@ -12606,8 +12606,8 @@ span.badge {
 
 .badge-inverse-danger {
   border: 1px solid;
-  border-color: #e74c3c;
-  color: #e74c3c !important;
+  border-color: #148279;
+  color: #148279 !important;
 }
 
 .badge-inverse-info {
@@ -13313,8 +13313,8 @@ button.dt-button.btn-warning, div.dt-button.btn-warning, a.dt-button.btn-warning
 }
 
 button.dt-button.btn-danger, div.dt-button.btn-danger, a.dt-button.btn-danger {
-  background-color: #e74c3c;
-  border-color: #e74c3c;
+  background-color: #148279;
+  border-color: #148279;
   border-radius: 2px;
   color: #fff;
   background-image: none;
@@ -13342,8 +13342,8 @@ button.dt-button.btn-warning:hover:not(.disabled), div.dt-button.btn-warning:hov
 
 button.dt-button.btn-danger:hover:not(.disabled), div.dt-button.btn-danger:hover:not(.disabled), a.dt-button.btn-danger:hover:not(.disabled) {
   background-image: none;
-  background-color: #ed7669;
-  border-color: #e74c3c;
+  background-color: #19948a;
+  border-color: #148279;
 }
 
 button.dt-button.btn-inverse:hover:not(.disabled), div.dt-button.btn-inverse:hover:not(.disabled), a.dt-button.btn-inverse:hover:not(.disabled) {
@@ -13459,7 +13459,7 @@ table {
     td.focus {
       outline: 3px solid #0073aa;
       outline-offset: -1px;
-      outline: 1px solid #e74c3c;
+      outline: 1px solid #148279;
       outline-offset: -3px;
       background-color: #f8e6e6 !important;
     }
@@ -13666,9 +13666,9 @@ table {
 }
 
 .counter-card-2 [class*="card-"] > i {
-  border: 4px solid #e74c3c;
+  border: 4px solid #148279;
   border-left: 4px solid #ccc;
-  color: #e74c3c;
+  color: #148279;
 }
 
 .counter-card-3 [class*="card-"] > i {
@@ -14791,8 +14791,8 @@ table {
 
 .alert-danger {
   background-color: #fff;
-  border-color: #e74c3c;
-  color: #e74c3c;
+  border-color: #148279;
+  color: #148279;
 }
 
 /*===== Border alert ===== */
@@ -14839,10 +14839,10 @@ table {
 
 .border-danger {
   border-color: transparent;
-  border-left: 3px solid #e74c3c;
+  border-left: 3px solid #148279;
   border-radius: 0;
   box-shadow: 0 0 1px #999;
-  color: #e74c3c;
+  color: #148279;
 }
 
 /*===== Solid-background alert ===== */
@@ -14873,7 +14873,7 @@ table {
 }
 
 .background-danger {
-  background-color: #e74c3c;
+  background-color: #148279;
   color: #fff;
 }
 
@@ -15031,6 +15031,7 @@ table {
 
 .auth-box {
   background-color: #fff;
+  border: 1px solid #ededed;
   border-radius: 8px;
   margin: 20px 0 0 0;
   padding: 20px;
@@ -15187,7 +15188,7 @@ table {
 }
 
 .danger-breadcrumb {
-  background-color: #e74c3c;
+  background-color: #148279;
 }
 
 .info-breadcrumb {
@@ -15349,7 +15350,7 @@ table {
         border-radius: 50px;
         left: 0;
         top: 6px;
-        background-color: #e74c3c;
+        background-color: #148279;
       }
     }
   }
@@ -17856,9 +17857,9 @@ table {
     }
   }
   &:nth-child(10) {
-    background-color: #ed7669;
+    background-color: #19948a;
     p:before {
-      content: "#ed7669";
+      content: "#19948a";
     }
   }
   &:nth-child(9) {
@@ -18821,7 +18822,7 @@ tr:first-child > td > .fc-day-grid-event {
         background-color: #f1c40f;
       }
       &.mail-office:before {
-        background-color: #e74c3c;
+        background-color: #148279;
       }
     }
   }
@@ -20271,7 +20272,7 @@ pre {
 }
 
 .progress-bar-danger {
-  background-color: #e74c3c;
+  background-color: #148279;
 }
 
 .progress-bar-pink {
@@ -21113,7 +21114,7 @@ span.value {
     }
     &.complete {
       opacity: 1;
-      border-top: 9px solid #e74c3c;
+      border-top: 9px solid #148279;
       transition: all ease-in 0.3s;
       &:before {
         background: url("assets/images/complete.png") no-repeat;
@@ -28013,4 +28014,7 @@ body {
   }
 }
 
-
+.user-profile-img {
+  border-radius: 50%;
+  padding: 5px;
+}

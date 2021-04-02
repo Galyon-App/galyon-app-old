@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot): any {
         ///// Less Secure but faster
         const uid = localStorage.getItem('uid');
-        console.log('uid', localStorage.getItem('uid'));
         if (uid && uid != null && uid !== 'null') {
             return true;
         }

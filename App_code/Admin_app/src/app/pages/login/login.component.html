@@ -27,7 +27,7 @@
                             <hr />
                             <div class="input-group">
                                 <input type="email" class="form-control"
-                                    [placeholder]="api.translate('Your Email Address')" [(ngModel)]="email"
+                                    [placeholder]="api.translate('Email Address')" [(ngModel)]="email"
                                     [ngModelOptions]="{standalone: true}">
                                 <span class="md-line"></span>
                             </div>
@@ -42,11 +42,6 @@
                                         class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20">
                                         {{api.translate("Sign In")}}
                                     </button>
-                                </div>
-                                <div class="btns">
-                                    <img [src]="api.mediaURL+item.cover" (click)="changeLng(item)"
-                                        *ngFor="let item of util.languages"
-                                        [ngClass]="selected == item.file ? 'flagActive':'flagDeactive'" alt="">
                                 </div>
                             </div>
                         </div>

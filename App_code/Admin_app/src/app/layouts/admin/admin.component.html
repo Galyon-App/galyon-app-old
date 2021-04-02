@@ -35,7 +35,7 @@
               </li>
             </ul>
             <ul [@mobileMenuTop]="isCollapsedMobile" class="nav-right" [ngClass]="isCollapsedMobile">
-              <li class="header-notification lng-dropdown">
+              <!-- <li class="header-notification lng-dropdown">
 
                 <a href="javascript:;" id="dropdown-active-item">
                   <img [src]="api.mediaURL+selectedFlag" alt="" onError="this.src='assets/en.png'"
@@ -47,19 +47,18 @@
                       <img [src]="api.mediaURL+item.cover" style="height: 15px;width: 15px;" alt=""> {{item.name}}
                     </a>
                   </li>
-
                 </ul>
-              </li>
+              </li> -->
 
               <li class="user-profile header-notification">
                 <a [routerLink]="['/']">
-                  <img src="assets/images/user.png" alt="User-Profile-Image">
+                  <img src="assets/images/user.png" alt="User-Profile-Image" class="user-profile-img">
                   <span>Store Admin</span>
                   <i class="ti-angle-down"></i>
                 </a>
                 <ul class="show-notification profile-notification">
                   <li>
-                    <a (click)="logout()">
+                    <a href="#" (click)="logout()">
                       <i class="ti-layout-sidebar-left"></i> {{api.translate('Logout')}}
                     </a>
                   </li>

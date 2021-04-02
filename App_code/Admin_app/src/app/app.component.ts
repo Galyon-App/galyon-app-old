@@ -38,7 +38,6 @@ export class AppComponent implements OnInit {
     const lng = localStorage.getItem('language');
     if (!lng || lng === null) {
       this.api.get('users/getDefaultSettings').then((data: any) => {
-        console.log('----------------- app setting', data);
         if (data && data.status === 200 && data.data) {
           const manage = data.data.manage;
           const language = data.data.lang;
@@ -57,7 +56,6 @@ export class AppComponent implements OnInit {
             this.util.currecny = '$';
           }
           const general = data.data.general;
-          console.log('generalllll============================>', general)
           if (general && general.length > 0) {
             const info = general[0];
             this.util.general = info;
@@ -71,7 +69,6 @@ export class AppComponent implements OnInit {
         id: localStorage.getItem('language')
       };
       this.api.post('users/getDefaultSettingsById', param).then((data: any) => {
-        console.log('----------------- app setting', data);
         if (data && data.status === 200 && data.data) {
           const manage = data.data.manage;
           const language = data.data.lang;
@@ -90,7 +87,6 @@ export class AppComponent implements OnInit {
             this.util.currecny = '$';
           }
           const general = data.data.general;
-          console.log('generalllll============================>', general)
           if (general && general.length > 0) {
             const info = general[0];
             this.util.general = info;
@@ -108,7 +104,6 @@ export class AppComponent implements OnInit {
 
   getLangs() {
     this.api.get('lang').then((data: any) => {
-      console.log(data);
       if (data && data.status === 200) {
         const info = data.data.filter(x => x.status === '1');
         this.util.languages = info;

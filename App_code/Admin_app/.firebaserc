@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "galyon-admin"
+  },
+  "targets": {
+    "galyon-app": {
+      "hosting": {
+        "galyon-admin": [
+          "galyon-app"
+        ]
+      }
+    }
   }
 }

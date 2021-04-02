@@ -103,7 +103,6 @@ export class ApisService {
           .set('Basic', `${environment.authToken}`)
       };
       const param = this.JSON_to_URLEncoded(body);
-      console.log(param);
       this.http.post(this.baseUrl + url, param, header).subscribe((data) => {
         resolve(data);
       }, error => {
