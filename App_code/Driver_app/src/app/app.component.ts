@@ -41,8 +41,6 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.show();
-      //this.statusBar.styleDefault();
-      this.splashScreen.hide();
       if (this.platform.is('cordova')) {
         setTimeout(async () => {
           await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
