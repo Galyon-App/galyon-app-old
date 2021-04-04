@@ -1,9 +1,9 @@
 <?php
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 /**
  * CodeIgniter
@@ -199,10 +199,10 @@ class CI_Log {
 			{
 				$message .= "<?php
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */ defined('BASEPATH') OR exit('No direct script access allowed'); ?>\n\n";
 			}
 		}

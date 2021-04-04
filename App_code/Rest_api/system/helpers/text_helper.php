@@ -1,9 +1,9 @@
 <?php
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 /**
  * CodeIgniter
@@ -344,10 +344,10 @@ if ( ! function_exists('highlight_code'))
 		// by PHP tags, which we will remove later
 		$str = highlight_string('<?php
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */ '.$str.' ?>', TRUE);
 
 		// Remove our artificially added PHP, and the syntax highlighting that came with it
