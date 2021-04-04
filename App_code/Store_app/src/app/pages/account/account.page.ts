@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
@@ -26,7 +26,7 @@ export class AccountPage implements OnInit {
   }
 
   editProfile() {
-    this.router.navigate(['/edit-profile']);
+    this.router.navigate(['edit-profile']);
   }
 
   logout() {
@@ -35,11 +35,7 @@ export class AccountPage implements OnInit {
   }
 
   getProducts() {
-    this.router.navigate(['/tabs/tab3/products']);
-  }
-
-  getReviews() {
-    this.router.navigate(['/reviews']);
+    this.router.navigate(['products']);
   }
 
   getLanguages() {
@@ -51,14 +47,14 @@ export class AccountPage implements OnInit {
   }
 
   goToContact() {
-    this.router.navigate(['tabs/tab3/contacts']);
+    this.router.navigate(['contacts']);
   }
 
   goToSupport() {
     const param: NavigationExtras = {
       queryParams: {
         id: 0,
-        name: 'Support'
+        name: 'Technical Support'
       }
     };
     this.router.navigate(['inbox'], param);
@@ -70,7 +66,7 @@ export class AccountPage implements OnInit {
   }
 
   getEmail() {
-    return localStorage.getItem('email') ? localStorage.getItem('email') : 'info@app.com';
+    return localStorage.getItem('email') ? localStorage.getItem('email') : 'support@bytescrafter.net';
   }
 
   getCover() {
@@ -78,7 +74,7 @@ export class AccountPage implements OnInit {
   }
 
   goToAbout() {
-    this.router.navigate(['tabs/tab3/about']);
+    this.router.navigate(['about']);
   }
 
   goToChats() {
@@ -90,10 +86,10 @@ export class AccountPage implements OnInit {
   }
 
   goFaqs() {
-    this.router.navigate(['tabs/tab3/faqs']);
+    this.router.navigate(['faqs']);
   }
 
   goHelp() {
-    this.router.navigate(['tabs/tab3/help']);
+    this.router.navigate(['help']);
   }
 }

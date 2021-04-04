@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from 'src/app/services/util.service';
@@ -63,57 +63,63 @@ export class OrdersPage implements OnInit {
     this.router.navigate(['/order-detail'], navData);
   }
 
-
-
   getOrders(event, haveRefresh) {
+    
     this.limit = 1;
     this.dummy = Array(50);
 
     const param = {
       id: localStorage.getItem('uid')
     };
+
     this.newOrders = [];
     this.onGoingOrders = [];
     this.oldOrders = [];
+
     this.api.post('orders/getByStore', param).subscribe((data: any) => {
-      console.log('by store id', data);
       this.dummy = [];
       if (data && data.status === 200 && data.data.length > 0) {
         data.data.forEach(async (element, index) => {
+
           if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.orders)) {
+
             element.orders = JSON.parse(element.orders);
             element.date_time = moment(element.date_time).format('dddd, MMMM Do YYYY');
             element.orders = await element.orders.filter(x => x.store_id === localStorage.getItem('uid'));
+
             if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.status)) {
+
               const info = JSON.parse(element.status);
               const selected = info.filter(x => x.id === localStorage.getItem('uid'));
+
               if (selected && selected.length) {
+
                 element.orders.forEach(order => {
                   if (order.variations && order.variations !== '' && typeof order.variations === 'string') {
-                    console.log('strings', element.id);
                     order.variations = JSON.parse(order.variations);
-                    console.log(order['variant']);
                     if (order["variant"] === undefined) {
                       order['variant'] = 0;
                     }
                   }
                 });
+
                 const status = selected[0].status;
                 element['storeStatus'] = status;
+
                 if (status === 'created') {
                   this.newOrders.push(element);
                 } else if (status === 'accepted' || status === 'picked' || status === 'ongoing') {
                   this.onGoingOrders.push(element);
                 } else if (status === 'rejected' || status === 'cancelled' || status === 'delivered' || status === 'refund') {
-                  // this.oldOrders.push(element);
-                  this.olders.push(element);
+                  this.oldOrders.push(element);
                 }
               }
             }
           }
+
           if (data.data.length === (index + 1)) {
             //console.log('same index');
-            //this.loadMore(null, false);
+            //this.loadMore(null, true);
           }
         });
 
@@ -127,6 +133,7 @@ export class OrdersPage implements OnInit {
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
   }
+
   getProfilePic(item) {
     return item && item.cover ? item.cover : 'assets/imgs/user.jpg';
   }
@@ -141,20 +148,16 @@ export class OrdersPage implements OnInit {
     this.getOrders(event, true);
   }
 
+  async loadMore(event, value) {
 
-  loadMore(event, value) {
-    const limit = this.limit * 10;
-    console.log(limit);
-    this.oldOrders = [];
-    this.olders.forEach((element, index) => {
-      if (index <= limit) {
-        this.oldOrders.push(element);
-      }
-      if (value) {
-        event.target.complete();
-      }
+    //TODO: Fetch new orders with last id and put it to this.olders.
+
+    await this.olders.forEach((element, index) => {
+      this.oldOrders.push(element);
     });
-    this.limit = this.limit + 1;
-    console.log('old orders-<', this.oldOrders.length, this.olders.length);
+
+    if (event != null) {
+      event.target.complete();
+    }
   }
 }

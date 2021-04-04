@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { environment } from 'src/environments/environment';
 import { Component } from '@angular/core';
@@ -41,11 +41,10 @@ export class AppComponent {
 
     }
 
-
     initializeApp() {
         this.platform.ready().then(() => {
-            this.statusBar.styleLightContent();
-            this.splashScreen.hide();
+            this.statusBar.show();
+            //this.splashScreen.hide();
             this.appPages = this.util.appPages; console.log('%c Copyright © 2021 Galyon - BytesCrafter ', 'background: #222; color: #bada55');
             const lng = localStorage.getItem('language');
             if (!lng || lng === null) {

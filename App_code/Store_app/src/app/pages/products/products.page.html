@@ -1,10 +1,8 @@
 <!-- 
-
+  Name : Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
-
+  Created : 01-Jan-2020
  -->
 <ion-header>
   <ion-toolbar color="primary">
@@ -13,7 +11,7 @@
         <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{util.getString('Products')}} </ion-title>
+    <ion-title class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Products')}} </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="createNew()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
@@ -23,7 +21,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [placeholder]="util.getString('Search')" mode="ios" inputmode="text" type="text"
+  <ion-searchbar [placeholder]="util.getString('Search')" mode="ios" inputmode="text" type="text" style="height: 70px; border-bottom: 1px solid #e0e0e0;"
     (ionChange)="onSearchChange($event)" [debounce]="250" animated></ion-searchbar>
   <div class="main_content_div">
     <h2 class="ion-text-center" *ngIf="!dummy?.length && !products?.length"> {{util.getString('No Products Found!')}}

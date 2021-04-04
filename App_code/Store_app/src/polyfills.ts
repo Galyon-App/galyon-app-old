@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
@@ -57,8 +57,8 @@
  *  (window as any).__Zone_enable_cross_context_check = true;
  *
  */
-
 import './zone-flags';
+
 
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
@@ -70,3 +70,4 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+ import 'globalthis/auto';

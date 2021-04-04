@@ -1,20 +1,23 @@
 <!-- 
-
+  Name : Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
-
+  Created : 01-Jan-2020
  -->
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button (click)="back()">
-        <ion-icon slot="icon-only" name="arrow-back" color="light"></ion-icon>
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="isNew"> {{util.getString('Create Product')}} </ion-title>
-    <ion-title *ngIf="!isNew"> {{util.getString('Update Product')}} </ion-title>
+    <ion-title *ngIf="isNew" class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Create Product')}} </ion-title>
+    <ion-title *ngIf="!isNew" class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Update Product')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="submit()">
+        <ion-icon slot="icon-only" name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -63,7 +66,6 @@
         <ion-textarea [placeholder]="util.getString('Description')" [(ngModel)]="description" rows="5"></ion-textarea>
       </ion-item>
 
-
       <ion-item lines="none">
         <ion-label> {{util.getString('Status')}} </ion-label>
         <ion-select [(ngModel)]="status" interface="popover" mode="ios" lines="none">
@@ -74,16 +76,16 @@
 
       <!-- New Update 2.0 -->
       <ion-item lines="none">
-        <ion-label> {{util.getString('In Stoke')}} </ion-label>
+        <ion-label> {{util.getString('In Stock')}} </ion-label>
         <ion-select [(ngModel)]="in_stoke" interface="popover" mode="ios" lines="none">
-          <ion-select-option value="1"> {{util.getString('In Stoke')}} </ion-select-option>
-          <ion-select-option value="0"> {{util.getString('Out of Stoke')}} </ion-select-option>
+          <ion-select-option value="1"> {{util.getString('In Stock')}} </ion-select-option>
+          <ion-select-option value="0"> {{util.getString('Out of Stock')}} </ion-select-option>
         </ion-select>
       </ion-item>
       <!-- New Update 2.0 -->
 
       <ion-item>
-        <ion-label> {{util.getString('Veg')}} </ion-label>
+        <ion-label> {{util.getString('Is Featured')}} </ion-label>
         <ion-toggle slot="end" [(ngModel)]="veg"></ion-toggle>
       </ion-item>
 
@@ -106,7 +108,7 @@
         *ngIf="coverImage && coverImage !=''">
       </div>
 
-      <p class="lbl"> {{util.getString('Upload More Images')}} </p>
+      <p class="lbl"> {{util.getString('More Images')}} </p>
       <ion-grid>
         <ion-row>
           <ion-col size="4">
@@ -166,6 +168,7 @@
         </ion-row>
       </ion-grid>
 
+      <p class="lbl"> {{util.getString('Measurement')}} </p>
       <ion-item>
         <ion-label> {{util.getString('In Gram')}} </ion-label>
         <ion-toggle slot="end" [(ngModel)]="have_gram"></ion-toggle>
@@ -216,18 +219,19 @@
         <ion-input [(ngModel)]="ml" type="number" [placeholder]="util.getString('ML value')"></ion-input>
       </ion-item>
 
-      <ion-item>
-        <ion-label position="floating"> {{util.getString('Expire Date')}} </ion-label>
-        <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="exp_date" [min]="minEndDate()" [max]="getMaxDate()">
-        </ion-datetime>
-      </ion-item>
-
+      <p class="lbl"> {{util.getString('About the Product')}} </p>
       <ion-item>
         <ion-textarea [placeholder]="util.getString('Key Features')" [(ngModel)]="key_features" rows="5"></ion-textarea>
       </ion-item>
 
       <ion-item>
         <ion-textarea [placeholder]="util.getString('Disclaimer')" [(ngModel)]="disclaimer" rows="5"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating"> {{util.getString('Expire Date')}} </ion-label>
+        <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="exp_date" [min]="minEndDate()" [max]="getMaxDate()">
+        </ion-datetime>
       </ion-item>
 
       <ion-item>
@@ -263,10 +267,6 @@
       </ion-list>
 
     </ion-list>
-
-    <ion-button (click)="submit()" expand="block" shape="round">
-      {{util.getString('Submit')}}
-    </ion-button>
   </div>
 
 

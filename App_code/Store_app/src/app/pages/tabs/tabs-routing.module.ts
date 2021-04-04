@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -10,19 +10,27 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: 'store',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'orders',
         loadChildren: () => import('../orders/orders.module').then(m => m.OrdersPageModule)
       },
       {
-        path: 'tab2',
+        path: 'messages',
+        loadChildren: () => import('../chats/chats.module').then(m => m.ChatsPageModule)
+      },
+      {
+        path: 'reviews',
+        loadChildren: () => import('../reviews/reviews.module').then(m => m.ReviewsPageModule)
+      },
+      {
+        path: 'analytics',
         loadChildren: () => import('../analytics/analytics.module').then(m => m.AnalyticsPageModule)
       },
       {
-        path: 'tab3',
+        path: 'accounts',
         children: [
           {
             path: '',
@@ -67,23 +75,15 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'tab4',
-        loadChildren: () => import('../chats/chats.module').then(m => m.ChatsPageModule)
-      },
-      {
-        path: 'tab5',
-        loadChildren: () => import('../reviews/reviews.module').then(m => m.ReviewsPageModule)
-      },
-      {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/store/orders',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/store/orders',
     pathMatch: 'full'
   }
 ];

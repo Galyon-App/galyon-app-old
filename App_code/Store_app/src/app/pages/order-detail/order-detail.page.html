@@ -1,10 +1,8 @@
 <!-- 
-
+  Name : Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
-
+  Created : 01-Jan-2020
  -->
 <ion-header>
   <ion-toolbar color="primary">
@@ -13,11 +11,10 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{util.getString('Order Details')}} #{{id}} </ion-title>
+    <ion-title class="ion-text-center"> {{util.getString('Order ')}} #{{id}} </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="printOrder()">
-        <ion-icon slot="start" name="print-outline"></ion-icon>
-        {{util.getString('Print')}}
+        <ion-icon slot="start" name="print"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -37,9 +34,9 @@
           <ion-label class="res_location">{{datetime}}</ion-label>
         </div>
       </div>
-    </div>
+    </div>  
 
-    <ion-label class="titles"> {{util.getString('Orders')}} </ion-label>
+    <ion-label class="titles"> {{util.getString('Order Details')}} </ion-label>
     <div class="desc_div">
       <div *ngIf="orders?.length" class="border_bottom">
         <p *ngFor="let order of orders;let ol = index" class="items">
@@ -121,23 +118,6 @@
     </div>
 
     <div class="flex_div">
-      <ion-label> {{util.getString('Deliver to')}} </ion-label>
-      <ion-label class="values">{{orderAt}}</ion-label>
-    </div>
-    <div class="flex_div" *ngIf="orderAt ==='home'">
-      <ion-label class="values">
-        <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> {{address}}
-      </ion-label>
-
-    </div>
-
-    <ion-label class="titles"> {{util.getString('Basic Details')}} </ion-label>
-    <div class="flex_div">
-      <ion-label> {{util.getString('Order ID')}} </ion-label>
-      <ion-label class="values">{{id}}</ion-label>
-    </div>
-
-    <div class="flex_div">
       <ion-label> {{util.getString('Payment Method')}} </ion-label>
       <ion-label class="values"> {{payMethod}} </ion-label>
     </div>
@@ -147,31 +127,44 @@
       <ion-label class="values"> {{datetime}} </ion-label>
     </div>
 
-    <div class="hr_line_div" *ngIf="userInfo && userInfo.mobile"></div>
-
-    <div class="card_div2" *ngIf="userInfo && userInfo.mobile">
-      <div class="personal_detail">
-        <div style="display: flex;">
-          <ion-icon name="call"></ion-icon>&nbsp;&nbsp;
-          <ion-label class="res_name">{{userInfo.mobile}}</ion-label>
-        </div>
-        <div>
-          <ion-button (click)="call()" size="small" fill="outline">Call</ion-button>
-        </div>
-      </div>
+    <div class="flex_div" style="padding-top: 10px;">
+      <ion-label class="values">
+        <ion-icon slot="start" name="location" color="primary"></ion-icon> Address: {{orderAt}} - {{address}}
+      </ion-label>
     </div>
-    <div class="hr_line_div" *ngIf="userInfo && userInfo.email"></div>
 
-    <div class="card_div2" *ngIf="userInfo && userInfo.email">
-      <div class="personal_detail">
-        <div style="display: flex;">
-          <ion-icon name="mail"></ion-icon>&nbsp;&nbsp;
-          <ion-label class="res_name">{{userInfo.email}}</ion-label>
-        </div>
-        <div>
-          <ion-button (click)="email()" size="small" fill="outline"> {{util.getString('Email')}} </ion-button>
-        </div>
-      </div>
+    <ion-label class="titles"> {{util.getString("Customer's Contact")}} </ion-label>
+    <div class="flex_div">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="card_div2" *ngIf="userInfo && userInfo.mobile">
+              <div class="personal_detail">
+                <div style="display: flex;">
+                  <ion-icon name="call"></ion-icon>&nbsp;&nbsp;
+                  <ion-label class="res_name">{{userInfo.mobile}}</ion-label>
+                </div>
+                <div>
+                  <ion-button (click)="call()" size="small" fill="outline">Call</ion-button>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="card_div2" *ngIf="userInfo && userInfo.email">
+              <div class="personal_detail">
+                <div style="display: flex;">
+                  <ion-icon name="mail"></ion-icon>&nbsp;&nbsp;
+                  <ion-label class="res_name">{{userInfo.email}}</ion-label>
+                </div>
+                <div>
+                  <ion-button (click)="email()" size="small" fill="outline"> {{util.getString('Email')}} </ion-button>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
 
     <ion-label class="titles"> {{util.getString('Order Tracking')}} </ion-label>
@@ -227,7 +220,8 @@
 
       <div>
         <ion-button (click)="changeOrderStatus()" size="small">
-          {{util.getString('Update Status')}}
+          <ion-icon name="save" style="margin-right: 10px;"></ion-icon>
+          {{util.getString('Save Status')}}
         </ion-button>
       </div>
     </div>

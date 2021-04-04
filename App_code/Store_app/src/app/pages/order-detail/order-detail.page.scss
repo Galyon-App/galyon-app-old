@@ -1,11 +1,10 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 ion-title {
-    font-size: 10px !important;
     ion-buttons {
        font-size: 10px !important;
     }
@@ -14,7 +13,7 @@ ion-title {
     width: 100%;
     padding: 16px;
     .card_div{
-        padding: 20px;
+        padding: 10px 20px;
 
         .resto_detail{
             display: flex;
@@ -32,8 +31,8 @@ ion-title {
             }
 
             .res_name{
-              font-weight: 600;  
-              font-size: 14px;
+                font-weight: 200;
+                font-size: 20px;
             } 
             .res_location{
                 color: gray;
@@ -128,8 +127,7 @@ ion-title {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                font-size: 12px;
-                font-weight: bold;
+                font-size: 17px;
                 padding-bottom: 5px;
                 border-bottom: .5px dashed lightgray;
                 margin-bottom: 10px;
@@ -152,12 +150,10 @@ ion-title {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        // height: 40px;
-        font-size: 12px;
         padding-bottom: 10px;
         .values{
-            font-weight: bold;
             text-transform: capitalize;
+            font-size: 14px;
         }
     }
 
@@ -260,9 +256,10 @@ ion-title {
     justify-content: center;
 
     ion-button{
-        font-weight: 600;
+        font-weight: 400;
         --border-radius: 5px;
-        // width: 130px;
+        height: 40px;
+        margin: 0 20px;
     }
     .reject{
         --background:var(--ion-color-danger);
@@ -278,18 +275,20 @@ ion-title {
     padding-left: 20px;
     padding-right: 20px;
     align-items: center;
+    height: 70px;
 
     ion-select{
-        border: 1px solid lightgray;
+        border: 1px solid var(--ion-color-primary);
         border-radius: 5px;
-        --padding-top: 3px;
-        --padding-bottom :3px;
+        text-align: center;
+        padding: 10px;
         width: 100%;
     }
 
     ion-button{
         font-weight: 600;
         --border-radius: 5px;
+        height: 40px;
     }
 }
 

@@ -1,9 +1,9 @@
 
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { MenuController, ModalController, NavController } from '@ionic/angular';
@@ -141,7 +141,6 @@ export class LoginPage implements OnInit {
         console.log('enter');
         this.menuController.enable(false);
     }
-
 
     async openCountry() {
         console.log('open ccode');

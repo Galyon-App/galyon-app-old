@@ -1,8 +1,13 @@
 {
-  "name": "galyon-store-app",
-  "integrations": {
-    "capacitor": {},
-    "cordova": {}
-  },
-  "type": "angular"
+  "defaultProject": "galyon-store-app",
+  "projects": {
+    "galyon-store-app": {
+      "name": "galyon-store-app",
+      "integrations": {
+        "cordova": {},
+        "capacitor": {}
+      },
+      "type": "angular"
+    }
+  }
 }
