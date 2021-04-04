@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -191,7 +191,7 @@ export class PaymentPage implements OnInit {
   }
 
   openStripe() {
-    this.router.navigate(['tabs/cart/stripe-payments']);
+    this.router.navigate(['user/cart/stripe-payments']);
   }
 
   goToSucess() {
@@ -257,7 +257,7 @@ export class PaymentPage implements OnInit {
       this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
-      this.navCtrl.navigateRoot(['/tabs/orders'], { replaceUrl: true, skipLocationChange: true });
+      this.navCtrl.navigateRoot(['/user/orders'], { replaceUrl: true, skipLocationChange: true });
     }, error => {
       console.log(error);
       this.util.hide();
@@ -316,7 +316,7 @@ export class PaymentPage implements OnInit {
       this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
-      this.navCtrl.navigateRoot(['/tabs/orders'], { replaceUrl: true, skipLocationChange: true });
+      this.navCtrl.navigateRoot(['/user/orders'], { replaceUrl: true, skipLocationChange: true });
     }, error => {
       console.log(error);
       this.util.hide();

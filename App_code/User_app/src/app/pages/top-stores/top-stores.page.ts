@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NavigationExtras, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -56,7 +56,7 @@ export class TopStoresPage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['tabs/home/store'], param);
+    this.router.navigate(['user/home/store'], param);
   }
 
 

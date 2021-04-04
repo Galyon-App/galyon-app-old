@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 #map {
     width: 100%;
@@ -12,8 +12,11 @@
 .flex_box{
     display: flex;
     align-items: center;
-    font-size: 12px;
+    font-size: 17px;
     padding: 10px;
+    ion-icon {
+        font-size: 25px;
+    }
     label {
         margin-bottom: 0;
         font-weight: 500;
@@ -67,7 +70,7 @@
         }
         .content_div{
             position: relative;
-            display: flex;
+            display: contents;
             flex-flow: row;
             margin-left: 15px;
 
@@ -77,8 +80,8 @@
                 padding-top: 5px;
             }
             ion-input{
-                font-size: 11px;
-                color: #454D62;
+                font-size: 15px;
+                color: var(--color);
             }
         }
     }
@@ -95,7 +98,7 @@
         font-weight: bold;
         font-size: 12px;
         height: 40px;
-        width: 150px;
+        width: auto;
         text-transform: capitalize;
         --background-activated: rgba(159, 201, 165, 0.5);
         --color-actived: white;

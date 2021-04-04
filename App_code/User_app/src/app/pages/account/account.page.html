@@ -16,34 +16,41 @@
       <ion-col size="8">
         <p class="username">{{getName()}}</p>
         <p class="email">{{getEmail()}}</p>
-        <ion-button (click)="editProfile()" shape="round" size="small" color="light"> {{util.getString('Edit Profile')}}
+        <ion-button (click)="logout()" shape="round" size="small" color="light"> {{util.getString('Log out')}}
         </ion-button>
       </ion-col>
     </ion-row>
   </div>
 
   <div class="options">
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="orders()">
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="editProfile()">
       <ion-icon name="calendar-outline" slot="start"></ion-icon>
-      <ion-label>{{util.getString('Orders')}} </ion-label>
-      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-    </ion-item>
-
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToFav()">
-      <ion-icon name="heart-outline" slot="start"></ion-icon>
-      <ion-label> {{util.getString('Favourite')}} </ion-label>
-      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-    </ion-item>
-
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToAddress()">
-      <ion-icon name="location-outline" slot="start"></ion-icon>
-      <ion-label> {{util.getString('Address')}} </ion-label>
+      <ion-label>{{util.getString('Edit Profile')}} </ion-label>
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
     </ion-item>
 
     <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="reset()">
       <ion-icon name="key-outline" slot="start"></ion-icon>
       <ion-label>{{util.getString('Change Password')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToAddress()">
+      <ion-icon name="location-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('Address List')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToFav()">
+      <ion-icon name="heart-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('My Favourites')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToSupport()">
+      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('Technical Support')}} </ion-label>
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
     </ion-item>
 
@@ -59,18 +66,6 @@
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
     </ion-item>
 
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goLangs()">
-      <ion-icon name="language-outline" slot="start"></ion-icon>
-      <ion-label> {{util.getString('Languages')}} </ion-label>
-      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-    </ion-item>
-
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToSupport()">
-      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
-      <ion-label> {{util.getString('Support')}} </ion-label>
-      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-    </ion-item>
-
     <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goFaqs()">
       <ion-icon name="flag-outline" slot="start"></ion-icon>
       <ion-label> {{util.getString('FAQs')}} </ion-label>
@@ -83,10 +78,5 @@
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
     </ion-item>
 
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="logout()">
-      <ion-icon name="power-outline" slot="start"></ion-icon>
-      <ion-label> {{util.getString('Log Out')}} </ion-label>
-      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-    </ion-item>
   </div>
 </ion-content>

@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Router, NavigationExtras } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -46,11 +46,11 @@ export class AccountPage implements OnInit {
     this.cart.coupon = null;
     this.cart.discount = null;
     this.util.clearKeys('cart');
-    this.navCtrl.navigateRoot(['/tabs/home']);
+    this.navCtrl.navigateRoot(['/user/home']);
   }
 
   orders() {
-    this.router.navigate(['/tabs/orders']);
+    this.router.navigate(['/user/orders']);
   }
 
   goToFav() {
@@ -66,11 +66,11 @@ export class AccountPage implements OnInit {
   }
 
   goToAbout() {
-    this.router.navigate(['/tabs/account/about']);
+    this.router.navigate(['/about']);
   }
 
   editProfile() {
-    this.router.navigate(['/tabs/account/profile']);
+    this.router.navigate(['/profile']);
   }
 
   getName() {
@@ -99,7 +99,7 @@ export class AccountPage implements OnInit {
   }
 
   goToContact() {
-    this.router.navigate(['tabs/account/contacts']);
+    this.router.navigate(['contacts']);
   }
 
   reset() {
@@ -121,10 +121,10 @@ export class AccountPage implements OnInit {
   }
 
   goFaqs() {
-    this.router.navigate(['tabs/account/faqs']);
+    this.router.navigate(['faqs']);
   }
 
   goHelp() {
-    this.router.navigate(['tabs/account/help']);
+    this.router.navigate(['help']);
   }
 }

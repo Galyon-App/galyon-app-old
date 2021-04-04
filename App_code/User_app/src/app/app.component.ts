@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component } from '@angular/core';
 import { IonRouterOutlet, MenuController, NavController, Platform } from '@ionic/angular';
@@ -49,20 +49,16 @@ export class AppComponent {
     this.selectedIndex = 0;
     this.initializeApp();
     this.menuCtrl.enable(false, 'menu1');
-    console.log(moment().format('lll'));
-
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.backgroundColorByHexString('#eb6363');
-      this.splashScreen.hide();
+      this.statusBar.show();
       console.log('%c Copyright © 2021 Galyon. ', 'background: #222; color: #bada55');
       this.appPages = this.util.appPage;
       const lng = localStorage.getItem('language');
       if (!lng || lng === null) {
         this.api.get('users/getDefaultSettings').subscribe((data: any) => {
-          console.log('----------------- app setting', data);
           if (data && data.status === 200 && data.data) {
             const manage = data.data.manage;
             const language = data.data.lang;
@@ -100,7 +96,6 @@ export class AppComponent {
             }
 
             const general = data.data.general;
-            console.log('generalllll============================>', general)
             if (general && general.length > 0) {
               const info = general[0];
               this.util.general = info;
@@ -119,7 +114,6 @@ export class AppComponent {
           id: localStorage.getItem('language')
         };
         this.api.post('users/getDefaultSettingsById', param).subscribe((data: any) => {
-          console.log('----------------- app setting', data);
           if (data && data.status === 200 && data.data) {
             const manage = data.data.manage;
             const language = data.data.lang;
@@ -156,7 +150,6 @@ export class AppComponent {
               document.documentElement.dir = this.util.direction;
             }
             const general = data.data.general;
-            console.log('generalllll============================>', general)
             if (general && general.length > 0) {
               const info = general[0];
               this.util.general = info;
@@ -168,7 +161,6 @@ export class AppComponent {
             }
           }
         }, error => {
-          console.log('default settings by id', error);
           this.util.appClosed = false;
           this.util.direction = 'ltr';
           this.util.cside = 'right';
@@ -189,7 +181,7 @@ export class AppComponent {
                 fcm_token: data.userId
               };
               this.api.post('users/edit_profile', param).subscribe((data: any) => {
-                console.log('user info=>', data);
+                //console.log('user info=>', data);
               }, error => {
                 console.log(error);
               });
@@ -205,7 +197,6 @@ export class AppComponent {
           id: uid
         };
         this.api.post('users/getById', param).subscribe((data: any) => {
-          console.log('user info=>', data);
           if (data && data.status === 200 && data.data && data.data.length) {
             this.util.userInfo = data.data[0];
           } else {
@@ -216,7 +207,6 @@ export class AppComponent {
         });
 
         this.api.post('favourite/getByUid', param).subscribe((data: any) => {
-          console.log('fav data', data);
           if (data && data.status === 200 && data.data.length > 0) {
             this.util.haveFav = true;
             try {
@@ -234,14 +224,11 @@ export class AppComponent {
       }
 
       this.platform.backButton.subscribe(async () => {
-        console.log('Back Button --------------->>>', this.router.url, 'ad', this.router.isActive('/tabs/', true));
-
-        if (this.router.url === '/tabs/categories' || this.router.url === '/tabs/cart' ||
-          this.router.url === '/tabs/orders' || this.router.url === '/tabs/account'
+        if (this.router.url === '/user/categories' || this.router.url === '/user/cart' ||
+          this.router.url === '/user/orders' || this.router.url === '/user/account'
           || this.router.url === '/login') {
-          console.log('can close');
-          this.navCtrl.navigateRoot(['/tabs/home']);
-        } else if (this.router.url === '/tabs/home' || this.router.url === '/cities') {
+          this.navCtrl.navigateRoot(['/user/home']);
+        } else if (this.router.url === '/user/home' || this.router.url === '/cities') {
           navigator['app'].exitApp();
         }
       });

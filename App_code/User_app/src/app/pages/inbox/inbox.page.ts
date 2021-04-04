@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -39,10 +39,9 @@ export class InboxPage implements OnInit {
         this.id = data.id;
         this.loaded = false;
         this.name = data.name;
-        this.getChats();
+        this.getChats(null);
         this.interval = setInterval(() => {
-          console.log('calling in interval');
-          this.getChats();
+          this.getChats(null);
         }, 12000);
       } else {
         this.navCtrl.back();
@@ -60,25 +59,28 @@ export class InboxPage implements OnInit {
   ngOnInit() {
   }
 
-  getChats() {
-    // store _ opponent
+  getChats(event) {
     const param = {
       id: this.id + '_' + this.uid,
       oid: this.id
     };
     this.api.post('chats/getById', param).subscribe((data: any) => {
-      console.log(data);
       this.loaded = true;
       this.yourMessage = true;
       if (data && data.status === 200) {
         this.messages = data.data;
         this.myContent.scrollToBottom(300);
       }
+      if(event != null) {
+        event.target.complete();
+      }
     }, error => {
-      console.log(error);
       this.loaded = true;
       this.yourMessage = true;
       this.util.errorToast(this.util.getString('Something went wrong'));
+      if(event != null) {
+        event.target.complete();
+      }
     });
   }
 
@@ -99,7 +101,7 @@ export class InboxPage implements OnInit {
       uid: this.id + '_' + this.uid,
       from_id: this.uid,
       message: msg,
-      message_type: 'users',
+      message_type: 'drivers',
       status: 1,
       timestamp: moment().format('YYYY-MM-DD HH:mm:ss')
     };
@@ -108,7 +110,7 @@ export class InboxPage implements OnInit {
     this.api.post('chats/save', param).subscribe((data: any) => {
       console.log(data);
       if (data && data.status === 200) {
-        this.getChats();
+        this.getChats(null);
       } else {
         this.yourMessage = true;
       }

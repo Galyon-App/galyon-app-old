@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -148,7 +148,7 @@ export class StripePaymentsPage implements OnInit {
       this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
-      this.navCtrl.navigateRoot(['/tabs/orders']);
+      this.navCtrl.navigateRoot(['/user/orders']);
     }, error => {
       console.log(error);
       this.util.hide();
@@ -157,7 +157,7 @@ export class StripePaymentsPage implements OnInit {
   }
 
   onAdd() {
-    this.router.navigate(['tabs/cart/add-card']);
+    this.router.navigate(['user/cart/add-card']);
   }
 
   back() {

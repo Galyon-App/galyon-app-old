@@ -169,13 +169,13 @@ export class AddAddressPage implements OnInit {
       center: location,
       mapTypeControl: false,
       mapTypeControlOptions: {
-        mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'Foodfire5']
+        mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'Galyon by BytesCrafter']
       }
     };
     this.map = new google.maps.Map(mapElement.nativeElement, mapOptions);
     const mapType = new google.maps.StyledMapType(style, { name: 'Grayscale' });
-    this.map.mapTypes.set('Foodfire5', mapType);
-    this.map.setMapTypeId('Foodfire5');
+    this.map.mapTypes.set('Galyon by BytesCrafter', mapType);
+    this.map.setMapTypeId('Galyon by BytesCrafter');
     this.addMarker(location);
   }
 

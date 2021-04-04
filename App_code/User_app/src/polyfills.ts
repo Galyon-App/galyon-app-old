@@ -51,7 +51,6 @@
  *  (window as any).__Zone_enable_cross_context_check = true;
  *
  */
-
 import './zone-flags';
 
 /***************************************************************************************************
@@ -64,3 +63,4 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+ import 'globalthis/auto';

@@ -13,7 +13,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{util.getString('Order Details')}} ##{{id}}</ion-title>
+    <ion-title class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Order')}} #{{id}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -22,9 +22,7 @@
     <ion-spinner color="primary" name="crescent"></ion-spinner>
   </div>
   <div class="main_content_div" *ngIf="loaded">
-
-
-    <ion-label class="titles"> {{util.getString('Orders')}} </ion-label>
+    
     <div class="desc_div">
       <div *ngIf="orders?.length" class="border_bottom">
         <div *ngFor="let item of orders">
@@ -32,6 +30,8 @@
             <span class="name"> {{getStoreName(item.id)}} </span>
             <span class="status"> {{getOrderStatus(item.id)}} </span>
           </p>
+
+          <ion-label class="titles"> {{util.getString('Order Details')}} </ion-label>
           <p *ngFor="let order of item.order;let ol = index" class="items">
             <span *ngIf="!order.size">{{order.name}} -
               <span *ngIf="order.have_gram === '1'"> {{order.gram}} grams </span>
@@ -63,18 +63,6 @@
     </div>
 
     <div class="flex_div">
-      <ion-label> {{util.getString('Deliver to')}} </ion-label>
-      <ion-label class="values">{{orderAt}}</ion-label>
-    </div>
-    <div class="flex_div" *ngIf="orderAt ==='home'">
-      <ion-label class="values">
-        <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> {{address}}
-      </ion-label>
-
-    </div>
-
-    <ion-label class="titles"> {{util.getString('Basic Details')}} </ion-label>
-    <div class="flex_div">
       <ion-label> {{util.getString('Order ID')}} </ion-label>
       <ion-label class="values">{{id}}</ion-label>
     </div>
@@ -89,7 +77,16 @@
       <ion-label class="values"> {{datetime}} </ion-label>
     </div>
 
-
+    <div class="flex_div">
+      <ion-label> {{util.getString('Deliver to')}} </ion-label>
+      <ion-label class="values">{{orderAt}}</ion-label>
+    </div>
+    <div class="flex_div" *ngIf="orderAt ==='home'">
+      <ion-label class="values">
+        <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> {{address}}
+      </ion-label>
+    </div>
+    
     <ion-label class="titles"> {{util.getString('Order Tracking')}} </ion-label>
 
     <div class="tracking_div">

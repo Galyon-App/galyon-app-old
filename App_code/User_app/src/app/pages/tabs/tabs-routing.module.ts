@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -13,7 +13,7 @@ import { cartGuard } from 'src/app/cartGuard/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: 'user',
     component: TabsPage,
     children: [
       {
@@ -57,7 +57,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'chats',
+        path: 'message',
         children: [
           {
             path: '',
@@ -167,14 +167,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/home',
+        redirectTo: '/user/home',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: '/user/home',
     pathMatch: 'full'
   }
 ];

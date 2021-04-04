@@ -15,7 +15,13 @@
     <div class="form_div">
       <ion-label class="main_head"> {{util.getString('Sign Up')}} </ion-label>
 
+      <ion-input type="text" [placeholder]="util.getString('First Name')" [(ngModel)]="fname">
+        <ion-icon name="person" slot="icon-only"></ion-icon>
+      </ion-input>
 
+      <ion-input type="text" [placeholder]="util.getString('Last Name')" [(ngModel)]="lname">
+        <ion-icon name="person" slot="icon-only"></ion-icon>
+      </ion-input>
 
       <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email">
         <ion-icon name="mail" slot="icon-only"></ion-icon>
@@ -25,20 +31,13 @@
         <ion-icon name="key" slot="icon-only"></ion-icon>
       </ion-input>
 
-      <ion-input type="text" [placeholder]="util.getString('First Name')" [(ngModel)]="fname">
-        <ion-icon name="person" slot="icon-only"></ion-icon>
-      </ion-input>
-
-      <ion-input type="text" [placeholder]="util.getString('Last Name')" [(ngModel)]="lname">
-        <ion-icon name="person" slot="icon-only"></ion-icon>
-      </ion-input>
-
       <ion-input [placeholder]="util.getString('Select your Country')" type="text" (ionChange)="onCountryInput($event)"
-        [(ngModel)]="cc">
+        [(ngModel)]="cc"> 
       </ion-input>
       <div *ngFor="let item of countries" class="cCode" (click)="selectedCC(item)">
         <p class="ccLbl">+{{item.dialling_code}} {{item.country_name}}</p>
       </div>
+      
       <ion-input type="number" [placeholder]="util.getString('Mobile')" [(ngModel)]="mobile">
         <ion-icon name="call" slot="icon-only"></ion-icon>
       </ion-input>
@@ -54,12 +53,10 @@
       </ion-item>
 
       <div class="div_chk">
-        <ion-checkbox [checked]="check" [(ngModel)]="check" color="light" class="chk"></ion-checkbox>
+        <ion-checkbox [checked]="check" [(ngModel)]="check" color="light" class="chk" style="--size: 30px;"></ion-checkbox>
         <ion-label class="lbl_police"><span class="span_term">
             {{util.getString('By clicking on the I agree button click, download or if you use the Application, you agree to be bound by the')}}
           </span>
-          <u> <a style="color: white;" (click)="open('eula')"> {{util.getString('EULA certificate')}} </a> </u>
-          {{util.getString('and')}}
           <u> <a style="color: white;" (click)="open('privacy')"> {{util.getString('Privacy Policy')}} </a> </u>
           {{util.getString('of this app')}}.
         </ion-label>

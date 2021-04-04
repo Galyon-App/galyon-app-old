@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UtilService } from '../../services/util.service';
@@ -413,11 +413,11 @@ export class HomePage implements OnInit {
       }
     };
 
-    this.router.navigate(['tabs/home/product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   goToCatrgory() {
-    this.router.navigate(['/tabs/categories']);
+    this.router.navigate(['/user/categories']);
   }
 
   subCate(item) {
@@ -427,7 +427,7 @@ export class HomePage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['tabs/home/sub-category'], param);
+    this.router.navigate(['user/home/sub-category'], param);
   }
 
   changeCity() {
@@ -451,7 +451,7 @@ export class HomePage implements OnInit {
           name: cateName
         }
       };
-      this.router.navigate(['tabs/home/sub-category'], param);
+      this.router.navigate(['user/home/sub-category'], param);
     } else if (item.type === '1') {
       // product
       console.log('open product');
@@ -461,7 +461,7 @@ export class HomePage implements OnInit {
         }
       };
 
-      this.router.navigate(['tabs/home/product'], param);
+      this.router.navigate(['user/home/product'], param);
     } else {
       // link
       console.log('open link');
@@ -477,7 +477,7 @@ export class HomePage implements OnInit {
         from: 'home'
       }
     }
-    this.router.navigate(['/tabs/home/products'], navData);
+    this.router.navigate(['/user/home/products'], navData);
   }
 
   onSearchChange(event) {
@@ -525,11 +525,11 @@ export class HomePage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['tabs/home/store'], param);
+    this.router.navigate(['user/home/store'], param);
   }
 
   topicked() {
-    this.router.navigate(['/tabs/home/top-picked']);
+    this.router.navigate(['/user/home/top-picked']);
   }
 
   topStores() {

@@ -103,11 +103,11 @@ export class DeliveryOptionsPage implements OnInit {
         }
       };
       this.cart.calcuate();
-      this.router.navigate(['tabs/cart/address'], param)
+      this.router.navigate(['user/cart/address'], param)
     } else {
       console.log('payment');
       this.cart.calcuate();
-      this.router.navigate(['tabs/cart/payment']);
+      this.router.navigate(['user/cart/payment']);
     }
   }
 }

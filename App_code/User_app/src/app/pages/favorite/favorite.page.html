@@ -13,7 +13,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{util.getString('Your Favourite')}} </ion-title>
+    <ion-title class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Your Favourite')}} </ion-title>
   </ion-toolbar>
   <ion-searchbar mode="ios" *ngIf="haveSearch" (ionCancel)="search()" [placeholder]="util.getString('Search')"
     type="text" (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="always">

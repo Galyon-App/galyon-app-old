@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 
 import { NgModule } from '@angular/core';
@@ -39,6 +39,12 @@ import { SortPageModule } from './pages/sort/sort.module';
 import { VerifyPageModule } from './pages/verify/verify.module';
 import { SelectCountryPageModule } from './pages/select-country/select-country.module';
 import { ComponentsModule } from './components/components.module';
+import { environment } from 'src/environments/environment';
+
+// 1. Import the libs you need
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [AppComponent],
@@ -58,6 +64,11 @@ import { ComponentsModule } from './components/components.module';
     FormsModule,
     SelectCountryPageModule,
     ComponentsModule,
+
+    // 3. Initialize
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule, // auth
+    AngularFireAnalyticsModule // analytics
   ],
   providers: [
     StatusBar,

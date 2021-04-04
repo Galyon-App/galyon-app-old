@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
@@ -26,7 +26,7 @@ export class cartGuard implements CanActivate {
         if (this.cart.cart && this.cart.cart.length) {
             return true;
         }
-        this.navCtrl.navigateRoot(['/tabs/cart']);
+        this.navCtrl.navigateRoot(['/user/cart']);
         return false;
     }
 }

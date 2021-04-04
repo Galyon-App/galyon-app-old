@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
@@ -87,7 +87,7 @@ export class AddressPage implements OnInit {
       console.log('item', item);
       this.cart.deliveryAddress = item;
       this.cart.calcuate();
-      this.router.navigate(['/tabs/cart/payment']);
+      this.router.navigate(['/user/cart/payment']);
     }
   }
 

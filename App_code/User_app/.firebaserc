@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "galyon-app"
+  },
+  "targets": {
+    "galyon-app": {
+      "hosting": {
+        "galyon-user-app": [
+          "galyon-app"
+        ]
+      }
+    }
+  }
+}

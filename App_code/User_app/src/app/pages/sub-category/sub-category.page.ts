@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -188,7 +188,7 @@ export class SubCategoryPage implements OnInit {
       }
     };
 
-    this.router.navigate(['tabs/home/product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   back() {
@@ -214,7 +214,7 @@ export class SubCategoryPage implements OnInit {
       }
     };
 
-    this.router.navigate(['tabs/home/product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   loadData(event) {
@@ -230,7 +230,7 @@ export class SubCategoryPage implements OnInit {
       }
     };
 
-    this.router.navigate(['tabs/home/product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   async variant(item, indeX) {

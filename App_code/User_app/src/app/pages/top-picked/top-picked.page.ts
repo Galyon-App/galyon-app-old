@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NavigationExtras, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -242,7 +242,7 @@ export class TopPickedPage implements OnInit {
       }
     };
 
-    this.router.navigate(['/tabs/categories/product'], param);
+    this.router.navigate(['/user/categories/product'], param);
   }
   updateFilter() {
     switch (this.selectedFilterID) {

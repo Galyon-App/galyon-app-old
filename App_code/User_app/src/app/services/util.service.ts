@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 
 import { Injectable } from '@angular/core';
@@ -1234,21 +1234,21 @@ export class UtilService {
     this.appPage = [
       {
         title: 'Home',
-        url: 'tabs/home',
+        url: 'user/home',
         icon: 'assets/sidemenu/home.png',
         icon2: 'assets/sidemenu/home2.png',
         icn: 'home-outline'
       },
       {
         title: 'History',
-        url: 'tabs/orders',
+        url: 'user/orders',
         icon: 'assets/sidemenu/home.png',
         icon2: 'assets/sidemenu/home2.png',
         icn: 'document-text-outline'
       },
       {
         title: 'Profile',
-        url: 'tabs/account',
+        url: 'user/account',
         icon: 'assets/sidemenu/user.png',
         icon2: 'assets/sidemenu/user2.png',
         icn: 'person-outline'
@@ -1262,28 +1262,28 @@ export class UtilService {
       },
       {
         title: 'About',
-        url: 'tabs/account/about',
+        url: 'user/account/about',
         icon: 'assets/sidemenu/info.png',
         icon2: 'assets/sidemenu/info2.png',
         icn: 'alert-circle-outline'
       },
       {
         title: 'Contact us',
-        url: 'tabs/account/contacts',
+        url: 'user/account/contacts',
         icon: 'assets/sidemenu/contact.png',
         icon2: 'assets/sidemenu/contact2.png',
         icn: 'mail-outline'
       },
       {
         title: 'FAQs',
-        url: 'tabs/account/faqs',
+        url: 'user/account/faqs',
         icon: 'assets/sidemenu/contact.png',
         icon2: 'assets/sidemenu/contact2.png',
         icn: 'flag-outline'
       },
       {
         title: 'Help',
-        url: 'tabs/account/help',
+        url: 'user/account/help',
         icon: 'assets/sidemenu/contact.png',
         icon2: 'assets/sidemenu/contact2.png',
         icn: 'help-circle-outline'

@@ -21,8 +21,6 @@
   </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content>
   <div class="flx">
     <ion-searchbar [placeholder]="util.getString('Search  products')" [(ngModel)]="terms" inputmode="text" type="search"
@@ -87,9 +85,9 @@
             <div class="back_image"
               [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}"
               (click)="openLink(item)">
-              <div class="overlay_div" *ngIf="item.message">
+              <!-- <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
-              </div>
+              </div> -->
             </div>
           </div>
         </ion-slide>
@@ -329,7 +327,8 @@
       </ion-row>
     </div>
 
-    <div *ngFor="let item of categories" class="catess">
+    <!-- Infinite Scrolling of Products -->
+    <!-- <div *ngFor="let item of categories" class="catess">
       <p class="cateName">{{item.name}}</p>
       <ion-row>
         <ion-col size="4" *ngFor="let sub of item.subCates" class="bgColor" (click)="goToProductList(sub)">
@@ -338,7 +337,7 @@
           <p class="subCateName"> {{sub.name}} </p>
         </ion-col>
       </ion-row>
-    </div>
+    </div> -->
 
   </div>
 
