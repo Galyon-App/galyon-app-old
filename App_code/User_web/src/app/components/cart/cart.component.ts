@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -54,7 +54,7 @@ export class CartComponent implements OnInit {
     },
     'modal': {},
     'theme': {
-      'color': '#45C261'
+      'color': '#00cdcb'
     }
   };
   public payPalConfig?: IPayPalConfig;
@@ -124,6 +124,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
   private smoothScrollTop(): void {
     let pos = window.pageYOffset;
     console.log('position', pos);
@@ -133,7 +134,6 @@ export class CartComponent implements OnInit {
   goToCheckout() {
     this.router.navigate(['/checkout']);
   }
-
 
   getPayments() {
     this.api.get('payments').then((data: any) => {
@@ -280,7 +280,6 @@ export class CartComponent implements OnInit {
     });
     handler.openIframe();
   }
-
 
   initRazor() {
     this.razorpayService
@@ -539,14 +538,12 @@ export class CartComponent implements OnInit {
     razorpay.open();
   }
 
-
   public razorPaySuccessHandler(response) {
     console.log('->', response);
     this.payId = response.razorpay_payment_id;
     this.createOrder('razor', this.payId);
     this.cd.detectChanges();
   }
-
 
   async createOrder(payMethod, payKey) {
     //////////// new
@@ -613,7 +610,6 @@ export class CartComponent implements OnInit {
     });
   }
 
-
   haveSigned() {
     const uid = localStorage.getItem('uid');
     if (uid && uid != null && uid !== 'null') {
@@ -632,7 +628,6 @@ export class CartComponent implements OnInit {
     };
     this.myaddress = [];
     this.api.post('address/getByUid', param).then((data: any) => {
-      console.log('addreess------------', data);
       if (data && data.status === 200 && data.data.length) {
         this.myaddress = data.data;
       }
@@ -644,10 +639,6 @@ export class CartComponent implements OnInit {
 
   getStoreList() {
     const info = [...new Set(this.cart.cart.map(item => item.store_id))];
-    console.log('store iddss==================>>', info);
-    // test
-    // info.push(10, 17);
-    // test
     const param = {
       id: info.join()
     };
@@ -668,7 +659,6 @@ export class CartComponent implements OnInit {
       this.util.errorMessage(this.util.translate('Something went wrong'));
     }));
   }
-
 
   add(product, index) {
     if (this.cart.cart[index].quantiy > 0) {
@@ -737,13 +727,10 @@ export class CartComponent implements OnInit {
   }
 
   addNewAddress() {
-    ///
-    // this.newAddress.show();
     this.editClicked = false;
     if (window.navigator && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
         position => {
-          console.log(position);
           this.addressSelected = false;
           this.addressFromMap.show();
           this.getAddressFromMaps(position.coords.latitude, position.coords.longitude);
@@ -772,8 +759,6 @@ export class CartComponent implements OnInit {
     const geocoder = new google.maps.Geocoder();
     const location = new google.maps.LatLng(lat, lng);
     geocoder.geocode({ 'location': location }, (results, status) => {
-      console.log(results);
-      console.log('status', status);
       if (results && results.length) {
         this.address = results[0].formatted_address;
         this.cd.detectChanges();
@@ -804,13 +789,13 @@ export class CartComponent implements OnInit {
       center: location,
       mapTypeControl: false,
       mapTypeControlOptions: {
-        mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'Foodies by bytescrafter']
+        mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'Galyon by BytesCrafter']
       }
     };
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     const mapType = new google.maps.StyledMapType(style, { name: 'Grayscale' });
-    this.map.mapTypes.set('Foodies by bytescrafter', mapType);
-    this.map.setMapTypeId('Foodies by bytescrafter');
+    this.map.mapTypes.set('Galyon by BytesCrafter', mapType);
+    this.map.setMapTypeId('Galyon by BytesCrafter');
     this.cd.detectChanges();
     this.addMarker(location);
   }
@@ -821,6 +806,7 @@ export class CartComponent implements OnInit {
       scaledSize: new google.maps.Size(50, 50), // scaled size
     };
     this.marker = new google.maps.Marker({
+      draggable: true,
       position: location,
       map: this.map,
       icon: dot

@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { ActivatedRoute, Router, NavigationExtras, NavigationEnd, Event } from '@angular/router';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -41,15 +41,12 @@ export class SettingsComponent implements OnInit {
   map: any;
   marker: any;
 
-  // autocomplete1: { 'query': string };
   query: any = '';
   autocompleteItems1: any = [];
   GoogleAutocomplete;
   geocoder: any;
   addressSelected: boolean;
-
   editClicked: boolean;
-
   editProfileClick: boolean;
 
   first_name: any = '';
@@ -86,10 +83,8 @@ export class SettingsComponent implements OnInit {
       this.router.navigate(['']);
     }
     this.router.events.subscribe((data: Event) => {
-
       if (data instanceof NavigationEnd) {
         this.tabId = this.route.snapshot.paramMap.get('from');
-        console.log('router event', this.tabId);
         if (this.tabId === 'order') {
           this.getMyOrders('', false);
         } else if (this.tabId === 'address') {
@@ -183,7 +178,6 @@ export class SettingsComponent implements OnInit {
       id: localStorage.getItem('uid')
     };
     this.api.post('address/getByUid', param).then((data) => {
-      console.log(data);
       this.dummyAddress = [];
       if (data && data.status === 200 && data.data.length > 0) {
         this.myaddress = data.data;
@@ -201,13 +195,10 @@ export class SettingsComponent implements OnInit {
   }
 
   addNewAddress() {
-    ///
-    // this.newAddress.show();
     this.editClicked = false;
     if (window.navigator && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
         position => {
-          console.log(position);
           this.addressSelected = false;
           this.addressFromMap.show();
           this.getAddressFromMaps(position.coords.latitude, position.coords.longitude);
@@ -236,13 +227,10 @@ export class SettingsComponent implements OnInit {
     const geocoder = new google.maps.Geocoder();
     const location = new google.maps.LatLng(lat, lng);
     geocoder.geocode({ 'location': location }, (results, status) => {
-      console.log(results);
-      console.log('status', status);
       if (results && results.length) {
         this.address = results[0].formatted_address;
         this.chmod.detectChanges();
         this.loadMap(lat, lng);
-
       }
     });
   }
@@ -277,6 +265,24 @@ export class SettingsComponent implements OnInit {
     this.map.setMapTypeId('Foodies by bytescrafter');
     this.chmod.detectChanges();
     this.addMarker(location);
+    this.map.addListener("click", (mapsMouseEvent) => {
+      var geocoordinates = mapsMouseEvent.latLng.toJSON();
+
+      this.marker.setVisible(false);
+      this.marker.setPosition(mapsMouseEvent.latLng);
+      this.marker.setVisible(true);
+
+      //Set or Save GeoCoordinate
+      this.lat = geocoordinates.lat;
+      this.lng = geocoordinates.lng;
+    });
+    google.maps.event.addListener(this.marker, 'dragend', function(location) {
+      var geocoordinates = location.latLng.toJSON();
+
+      //Set or Save GeoCoordinate
+      this.lat = geocoordinates.lat;
+      this.lng = geocoordinates.lng;
+    });
   }
 
   addMarker(location) {
@@ -285,6 +291,7 @@ export class SettingsComponent implements OnInit {
       scaledSize: new google.maps.Size(50, 50), // scaled size
     };
     this.marker = new google.maps.Marker({
+      draggable: true,
       position: location,
       map: this.map,
       icon: dot
@@ -332,78 +339,75 @@ export class SettingsComponent implements OnInit {
   }
 
   chooseFromMaps() {
-    // console.log(this.mapElement);
     this.addressSelected = true;
     document.getElementById('map').style.height = '150px';
+    //this.util.toast('error', this.util.translate('Error'), this.util.translate('All Fields are required'));
   }
 
   addAddress() {
     this.addressFromMap.hide();
-    if (this.address === '' || this.landmark === '' || this.house === '' || this.pincode === '') {
-      // this.util.toast('error', this.util.translate('Error'), this.util.translate('All Fields are required'));
+    if (this.house === '' || this.address === '' || this.lat === '' || this.lng === '') {
       this.util.errorMessage(this.util.translate('All Fields are required'));
       return false;
     }
-    const geocoder = new google.maps.Geocoder;
+
+    const param = {
+      uid: localStorage.getItem('uid'),
+      address: this.address,
+      lat: this.lat,
+      lng: this.lng,
+      title: this.title,
+      house: this.house,
+      landmark: this.landmark,
+      pincode: this.pincode
+    };
+
     this.util.start();
-    geocoder.geocode({ address: this.house + ' ' + this.landmark + ' ' + this.address + ' ' + this.pincode }, (results, status) => {
-      console.log(results, status);
-      if (status === 'OK' && results && results.length) {
-        this.lat = results[0].geometry.location.lat();
-        this.lng = results[0].geometry.location.lng();
-        console.log('----->', this.lat, this.lng);
-        console.log('call api');
-        const param = {
-          uid: localStorage.getItem('uid'),
-          address: this.address,
-          lat: this.lat,
-          lng: this.lng,
-          title: this.title,
-          house: this.house,
-          landmark: this.landmark,
-          pincode: this.pincode
-        };
-
-        this.api.post('address/save', param).then((data: any) => {
-          this.util.stop();
-          if (data && data.status === 200) {
-            // this.navCtrl.back();
-            this.getAddress();
-            // this.util.showToast('Address added', 'success', 'bottom');
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'bottom-end',
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              onOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-              }
-            });
-
-            Toast.fire({
-              icon: 'success',
-              title: this.util.translate('Address added')
-            });
-          } else {
-            this.util.errorMessage(this.util.translate('Something went wrong'));
+    this.api.post('address/save', param).then((data: any) => {
+      this.util.stop();
+      if (data && data.status === 200) {
+        this.getAddress();
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'bottom-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          onOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
           }
-        }, error => {
-          console.log(error);
-          this.util.stop();
-          this.util.errorMessage(this.util.translate('Something went wrong'));
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: this.util.translate('Address added')
         });
       } else {
-        this.util.stop();
         this.util.errorMessage(this.util.translate('Something went wrong'));
-        return false;
       }
+    }, error => {
+      console.log(error);
+      this.util.stop();
+      this.util.errorMessage(this.util.translate('Something went wrong'));
     });
+
+    // const geocoder = new google.maps.Geocoder;
+    // geocoder.geocode({ address: this.house + ' ' + this.address + ' ' + this.pincode + ' ' + this.landmark }, (results, status) => {
+    //   if (status === 'OK' && results && results.length) {
+
+    //     this.lat = results[0].geometry.location.lat();
+    //     this.lng = results[0].geometry.location.lng();
+
+    //   } else {
+    //     this.util.stop();
+    //     this.util.errorMessage(this.util.translate('Something went wrong'));
+    //     return false;
+    //   }
+    // });
   }
 
   onSearchChange(event) {
-    console.log(event);
     if (this.query === '') {
       this.autocompleteItems1 = [];
       return;
@@ -415,22 +419,18 @@ export class SettingsComponent implements OnInit {
     }
 
     this.GoogleAutocomplete.getPlacePredictions({ input: this.query }, (predictions, status) => {
-      console.log(predictions);
       if (predictions && predictions.length > 0) {
         this.autocompleteItems1 = predictions;
-        console.log(this.autocompleteItems1);
       }
     });
   }
 
   selectSearchResult1(item) {
-    console.log('select', item);
     localStorage.setItem('addsSelected', 'true');
     this.autocompleteItems1 = [];
     this.query = item.description;
     this.geocoder.geocode({ placeId: item.place_id }, (results, status) => {
       if (status === 'OK' && results[0]) {
-        console.log(status);
         this.address = this.query;
         this.lat = results[0].geometry.location.lat();
         this.lng = results[0].geometry.location.lng();
@@ -443,7 +443,6 @@ export class SettingsComponent implements OnInit {
   }
 
   editAddress(item) {
-    console.log(item);
     this.editClicked = true;
     this.address = item.address;
     this.lat = item.lat;
@@ -454,71 +453,71 @@ export class SettingsComponent implements OnInit {
     this.title = item.title;
     this.address_id = item.id;
     this.addressFromMap.show();
-    this.getAddressFromMaps(this.lat, this.lng);
+    this.loadMap(this.lat, this.lng);
+    //this.getAddressFromMaps(this.lat, this.lng);
     this.chooseFromMaps();
   }
 
   editMyAddress() {
     this.addressFromMap.hide();
-    if (this.address === '' || this.landmark === '' || this.house === '' || !this.pincode || this.pincode === '') {
+    if (this.house === '' || this.address === '') {
       this.util.errorMessage(this.util.translate('All Fields are required'));
       return false;
     }
-    const geocoder = new google.maps.Geocoder;
+
+    const param = {
+      id: this.address_id,
+      uid: localStorage.getItem('uid'),
+      address: this.address,
+      lat: this.lat,
+      lng: this.lng,
+      title: this.title,
+      house: this.house,
+      landmark: this.landmark,
+      pincode: this.pincode
+    };
+
     this.util.start();
-    geocoder.geocode({ address: this.house + ' ' + this.landmark + ' ' + this.address + ' ' + this.pincode }, (results, status) => {
-      console.log(results, status);
-      if (status === 'OK' && results && results.length) {
-        this.lat = results[0].geometry.location.lat();
-        this.lng = results[0].geometry.location.lng();
-        console.log('----->', this.lat, this.lng);
-        const param = {
-          id: this.address_id,
-          uid: localStorage.getItem('uid'),
-          address: this.address,
-          lat: this.lat,
-          lng: this.lng,
-          title: this.title,
-          house: this.house,
-          landmark: this.landmark,
-          pincode: this.pincode
-        };
-
-        this.api.post('address/editList', param).then((data: any) => {
-          this.util.stop();
-          this.chmod.detectChanges();
-          if (data && data.status === 200) {
-            this.getAddress();
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'bottom-end',
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              onOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer);
-                toast.addEventListener('mouseleave', Swal.resumeTimer);
-              }
-            });
-
-            Toast.fire({
-              icon: 'success',
-              title: this.util.translate('Address updated')
-            });
-          } else {
-            this.util.errorMessage(this.util.translate('Something went wrong'));
+    this.api.post('address/editList', param).then((data: any) => {
+      this.util.stop();
+      this.chmod.detectChanges();
+      if (data && data.status === 200) {
+        this.getAddress();
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'bottom-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          onOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
           }
-        }, error => {
-          console.log(error);
-          this.util.stop();
-          this.util.errorMessage(this.util.translate('Something went wrong'));
+        });
+
+        Toast.fire({
+          icon: 'success',
+          title: this.util.translate('Address updated')
         });
       } else {
-        this.util.stop();
-        this.util.errorMessage(this.util.translate('Something went wrong'));
-        return false;
+        this.util.errorMessage(this.util.translate('Something went wrong1' + JSON.stringify(data)));
       }
+    }, error => {
+      this.util.stop();
+      this.util.errorMessage(this.util.translate('Something went wrong2'));
     });
+
+    // const geocoder = new google.maps.Geocoder;
+    // geocoder.geocode({ address: this.house + ' ' + this.address + ' ' + this.pincode + ' ' + this.landmark }, (results, status) => {
+    //   if (status === 'OK' && results && results.length) {
+    //     this.lat = results[0].geometry.location.lat();
+    //     this.lng = results[0].geometry.location.lng();
+    //   } else {
+    //     this.util.stop();
+    //     this.util.errorMessage(this.util.translate('Something went wrong'));
+    //     return false;
+    //   }
+    // });
   }
 
   updateProfile() {
@@ -536,7 +535,6 @@ export class SettingsComponent implements OnInit {
     this.util.start();
     this.api.post('users/edit_profile', param).then((data: any) => {
       this.util.stop();
-      console.log(data);
       this.getProfileInfo();
     }, error => {
       this.util.stop();
@@ -552,7 +550,6 @@ export class SettingsComponent implements OnInit {
     this.util.start();
     this.api.post('users/getById', param).then((data: any) => {
       this.util.stop();
-      console.log('user info=>', data);
       if (data && data.status === 200 && data.data && data.data.length) {
         const info = data.data[0];
         this.util.userInfo = info;
@@ -565,7 +562,6 @@ export class SettingsComponent implements OnInit {
   }
 
   preview_banner(files) {
-    console.log('fle', files);
     if (files.length === 0) {
       return;
     }
@@ -575,13 +571,11 @@ export class SettingsComponent implements OnInit {
     }
 
     if (files) {
-      console.log('ok');
       this.util.start();
       this.api.uploadFile(files).subscribe((data: any) => {
         console.log('==>>', data);
         this.util.stop();
         if (data && data.status === 200 && data.data) {
-          // this.coverImage = data.data;
           const param = {
             cover: data.data,
             id: localStorage.getItem('uid')
@@ -589,7 +583,6 @@ export class SettingsComponent implements OnInit {
           this.util.start();
           this.api.post('users/edit_profile', param).then((update: any) => {
             this.util.stop();
-            console.log(update);
             this.getProfileInfo();
           }, error => {
             this.util.stop();

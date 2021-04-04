@@ -2,6 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  "defaultProject": "galyon-user-web",
   "projects": {
     "galyon-user-web": {
       "projectType": "application",
@@ -140,9 +141,12 @@
               "devServerTarget": "galyon-user-web:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
-  },
-  "defaultProject": "galyon-user-web"
+  }
 }

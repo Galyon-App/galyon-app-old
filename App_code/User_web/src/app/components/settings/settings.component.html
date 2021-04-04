@@ -1,10 +1,8 @@
 <!--
-
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
-
+  Created : 01-Jan-2021
  -->
 <div mdbModal #addressFromMap="mdbModal" class="modal fade center" id="frameModalTop" tabindex="-1" role="dialog"
   aria-labelledby="myModalLabel" aria-hidden="true" style="z-index: 9999;">
@@ -16,7 +14,7 @@
       <div class="modal-body">
         <div #map id="map" class="map"></div>
         <div>
-          <h3>{{util.translate('Set your delivery location')}}</h3>
+          <h4>{{util.translate('Set your delivery location')}}</h4>
           <p>{{util.translate('DELIVERY AREA')}}</p>
           <div class="borders">
             <p class="address">
@@ -39,7 +37,7 @@
             <div class="md-form">
               <input id="pincode" style="height: auto !important;" [(ngModel)]="pincode" class="form-control"
                 type="text" mdbInput>
-              <label for="pincode"> {{util.translate('Pincode')}} </label>
+              <label for="pincode"> {{util.translate('Zipcode')}} </label>
             </div>
             <div class="md-form">
               <select class="browser-default custom-select" [(ngModel)]="title">

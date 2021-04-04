@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
@@ -12,6 +12,18 @@ export const environment = {
   production: false,
   baseURL: 'https://api.galyon.dev/',
   mediaURL: 'https://api.galyon.dev/uploads/',
+  firebase: {
+    apiKey: "AIzaSyDBieOxlT1pfwVwU1aAwNAVrIJgdul6uRc",
+    authDomain: "galyon-app.firebaseapp.com",
+    projectId: "galyon-app",
+    storageBucket: "galyon-app.appspot.com",
+    messagingSenderId: "601855270346",
+    appId: "1:601855270346:web:5c5ec298508dcac324c333",
+    measurementId: "G-SX0P87PDN1"
+  },
+  google: {
+    mapApi: "AIzaSyDuek6Uyv1OVdrNb75jAiWE6u89YU5W0CY"
+  },
   onesignal: {
     appId: 'YOUR_APP_ID',
     googleProjectNumber: 'YOUR_PROJECT_ID',
@@ -24,9 +36,9 @@ export const environment = {
   authToken: '123456789',
   social: {
     fb: 'https://www.facebook.com/bytescrafter/',
-    insta: 'https://www.instagram.com/bytescrafter/?hl=en',
-    twitter: 'https://twitter.com/bytescrafter?lang=en',
-    linkedIn: 'https://in.linkedin.com/company/bytescrafter'
+    twitter: 'https://twitter.com/bytescrafter',
+    youtube: 'https://www.youtube.com/channel/UCHXZUImmr9aSKmYpKXqN9vQ',
+    playstore: 'https://play.google.com/store/apps/dev?id=5394145917362507576'
   }
 };
 

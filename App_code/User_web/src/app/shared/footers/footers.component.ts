@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { environment } from 'src/environments/environment';
 import { Component, OnInit } from '@angular/core';
@@ -18,9 +18,9 @@ import { ApiService } from 'src/app/services/api.service';
 export class FootersComponent implements OnInit {
 
   fb: any = '';
-  insta: any = '';
   twitter: any = '';
-  ll: any = '';
+  youtube: any = '';
+  playstore: any = '';
   email: any = '';
 
   year: any;
@@ -29,9 +29,9 @@ export class FootersComponent implements OnInit {
     public util: UtilService,
     private api: ApiService) {
     this.fb = environment.social.fb;
-    this.insta = environment.social.insta;
     this.twitter = environment.social.twitter;
-    this.ll = environment.social.linkedIn;
+    this.youtube = environment.social.youtube;
+    this.playstore = environment.social.playstore;
     this.year = moment().format('YYYY');
 
   }

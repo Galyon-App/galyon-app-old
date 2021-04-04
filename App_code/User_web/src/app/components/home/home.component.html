@@ -1,10 +1,8 @@
 <!--
-
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
-
+  Created : 01-Jan-2021
  -->
 <div mdbModal #basicModal="mdbModal" class="modal fade bottom" tabindex="-1" role="dialog"
   aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: true}">
@@ -322,7 +320,6 @@
     <label class="view_lbl" (click)="homeProducts('best-deals')">{{util.translate('View All')}}</label>
   </div>
 
-
   <owl-carousel [options]="myCarouselOptions" [items]="offers" [carouselClasses]="['owl-theme', 'row', 'sliding']">
     <ng-container *ngFor="let item of offers; index as i" style="margin-right: 30px;">
       <div id='product' class="card border-0 text-center">
@@ -471,7 +468,7 @@
     </div>
   </div>
 
-  <div class="btm_category" *ngFor="let item of bottomcategory">
+  <!-- <div class="btm_category" *ngFor="let item of bottomcategory">
     <h3 class="cate_title" *ngIf="item.subCates.length">{{item.name}} </h3>
     <div class="row" *ngIf="item.subCates.length">
       <div class="col-6 col-md-2" *ngFor="let sub of item.subCates" (click)="subItems(item,sub)">
@@ -481,7 +478,7 @@
         <p class="cate_name">{{ sub.name }}</p>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="row offers_div">
     <div class="col-lg-6 col-md-12 col-sm-12" style="padding-left: 0px;margin-bottom: 10px;"

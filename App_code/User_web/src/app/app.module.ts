@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -31,6 +31,11 @@ import { HeadlineComponent } from './shared/headline/headline.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { LeaveGuard } from './leaved/leaved.guard';
 
+// 1. Import the libs you need
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +60,12 @@ import { LeaveGuard } from './leaved/leaved.guard';
     NgOtpInputModule,
     IvyCarouselModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    NgbModule
+    NgbModule,
+
+    // 3. Initialize
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule, // auth
+    AngularFireAnalyticsModule // analytics
   ],
   providers: [LeaveGuard],
   bootstrap: [AppComponent]

@@ -1,8 +1,8 @@
 {
-  "name": "galyon-user-web",
-  "short_name": "galyon",
-  "theme_color": "#45C261",
-  "background_color": "#45C261",
+  "name": "Galyon Shop",
+  "short_name": "galyon-user-web",
+  "theme_color": "#00cdcb",
+  "background_color": "#00cdcb",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

@@ -1,10 +1,8 @@
 <!--
-
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
-
+  Created : 01-Jan-2021
  -->
 <!-- Footer -->
 <footer class="page-footer">
@@ -13,7 +11,7 @@
     <div class="row mt-3 dark-grey-text">
 
       <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
-        <img src="assets/imgs/logo.png" style="margin-bottom: 10px;">
+        <img src="assets/imgs/logo.png" style="margin-bottom: 10px; width: inherit;">
         <label class="simple_lbl">{{util.translate('Address')}}: {{util.general && util.general.address ?
           util.general.address:'' }}</label>
         <label class="simple_lbl">{{util.translate('Phone')}}: +{{util.general && util.general.mobile ?
@@ -23,10 +21,7 @@
       </div>
 
       <div class="col-md-6 col-lg-2 col-xl-2 mx-auto mb-4">
-        <h6 class="footer_lbl">{{util.translate('Useful Links')}}</h6>
-        <div class="link_lbl" (click)="goToAccount()">
-          <a class="dark-grey-text">{{util.getString('Your Account')}} </a>
-        </div>
+        <h6 class="footer_lbl">{{util.translate('About Company')}}</h6>
         <div class="link_lbl" (click)="goToPrivacy()">
           <a class="dark-grey-text">{{util.getString('Privacy & Terms')}}
           </a>
@@ -35,23 +30,25 @@
           <a class="dark-grey-text">{{util.getString('Refund Policy')}}
           </a>
         </div>
+        <div class="link_lbl" (click)="goToContact()">
+          <a class="dark-grey-text">{{util.getString('Contact')}} </a>
+        </div>
         <div class="link_lbl" (click)="about()">
           <a class="dark-grey-text">{{util.getString('About')}} </a>
         </div>
         <div class="link_lbl" (click)="goToHelp()">
           <a class="dark-grey-text">{{util.getString('Help')}} </a>
         </div>
-        <div class="link_lbl" (click)="goToContact()">
-          <a class="dark-grey-text">{{util.getString('Contact')}} </a>
-        </div>
       </div>
 
       <div class="col-md-6 col-lg-2 col-xl-2 mx-auto mb-4">
-        <h6 class="footer_lbl">{{util.translate('Useful Links')}}</h6>
+        <h6 class="footer_lbl">{{util.translate('Customer Care')}}</h6>
         <div class="link_lbl" (click)="goToHome()">
           <a class="dark-grey-text">{{util.getString('Home')}} </a>
         </div>
-
+        <div class="link_lbl" (click)="goToAccount()">
+          <a class="dark-grey-text">{{util.getString('Account')}} </a>
+        </div>
         <div class="link_lbl" (click)="goToOrders()">
           <a class="dark-grey-text">{{util.getString('Orders')}} </a>
         </div>
@@ -75,14 +72,14 @@
           <a class="icn_box" [href]="fb" target="_blank">
             <mdb-icon fab icon="facebook-f"></mdb-icon>
           </a>
-          <a class="icn_box" [href]="insta" target="_blank">
-            <mdb-icon fab icon="instagram"></mdb-icon>
-          </a>
           <a class="icn_box" [href]="twitter" target="_blank">
             <mdb-icon fab icon="twitter"></mdb-icon>
           </a>
-          <a class="icn_box" [href]="ll" target="_blank">
-            <mdb-icon fab icon="linkedin"></mdb-icon>
+          <a class="icn_box" [href]="youtube" target="_blank">
+            <mdb-icon fab icon="youtube"></mdb-icon>
+          </a>
+          <a class="icn_box" [href]="playstore" target="_blank">
+            <mdb-icon fab icon="google-play"></mdb-icon>
           </a>
         </div>
 
@@ -97,14 +94,14 @@
       <div class="row">
         <div class="col-lg-6" style="display: flex;align-items: center;">
           <label style="color: #6f6f6f;font-size: 12px;">
-            {{util.translate('Copyright')}} © {{year}} {{util.translate('All rights reserved | This app is made with')}}
-            <i class="fa fa-heart" aria-hidden="true"></i>
-            {{util.translate('by')}} <a href="https://bytescrafter.net" style="color: blue;">BytesCrfater</a>
+            {{util.translate('Copyright')}} © {{year}} {{util.translate('All rights reserved | ')}}
+            <a href="https://bytescrafter.net" style="color: blue;">BytesCrfater</a>
           </label>
         </div>
         <div class="col-lg-6 payment_div">
-          <img src="assets/imgs/american.png">
+          <img src="assets/imgs/visa.png">
           <img src="assets/imgs/mastercard.png">
+          <img src="assets/imgs/paypal.png">
         </div>
       </div>
     </div>
