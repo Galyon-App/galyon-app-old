@@ -1,14 +1,14 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 .main_content_div{
     width: 100%;
-    padding: 20px;
+    padding: 0 20px 20px;
     .card_div{
-        padding: 20px;
+        padding: 0 20px;
 
         .resto_detail{
             display: flex;
@@ -107,7 +107,7 @@
     .titles{
         font-size: 15px;
         font-weight: bold;
-        margin: 20px 0px;
+        margin: 15px 0px;
         border-bottom: 1px solid lightgray;
         padding-bottom: 10px;
     }
@@ -125,7 +125,7 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
-                font-size: 12px;
+                font-size: 18px;
                 font-weight: bold;
                 padding-bottom: 5px;
                 border-bottom: .5px dashed lightgray;
@@ -150,10 +150,9 @@
         align-items: center;
         justify-content: space-between;
         // height: 40px;
-        font-size: 12px;
+        font-size: 18px;
         padding-bottom: 10px;
         .values{
-            font-weight: bold;
             text-transform: capitalize;
         }
     }
@@ -265,7 +264,7 @@
         --background:var(--ion-color-danger);
     }
     .accept{
-        --background: var(--ion-color-primary);;
+        --background: var(--ion-color-primary);
     }
 }
 
@@ -275,18 +274,20 @@
     padding-left: 20px;
     padding-right: 20px;
     align-items: center;
+    height: 70px;
 
     ion-select{
-        border: 1px solid lightgray;
+        border: 1px solid var(--ion-color-primary);
         border-radius: 5px;
-        --padding-top: 3px;
-        --padding-bottom :3px;
+        text-align: center;
+        padding: 10px;
         width: 100%;
     }
 
     ion-button{
         font-weight: 600;
         --border-radius: 5px;
+        height: 40px;
     }
 }
 

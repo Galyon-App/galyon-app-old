@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
@@ -53,14 +53,14 @@ export class AccountPage implements OnInit {
   }
 
   goToContact() {
-    this.router.navigate(['tabs/tab2/contact']);
+    this.router.navigate(['driver/account/contact']);
   }
 
   goToSupport() {
     const param: NavigationExtras = {
       queryParams: {
         id: 0,
-        name: 'Support'
+        name: 'Technical Support'
       }
     };
     this.router.navigate(['inbox'], param);
@@ -75,7 +75,7 @@ export class AccountPage implements OnInit {
   }
 
   getEmail() {
-    return this.util.userInfo ? this.util.userInfo.email : 'info@app.com';
+    return this.util.userInfo ? this.util.userInfo.email : 'support@bytescrafter.net';
   }
 
   getCover() {
@@ -83,14 +83,14 @@ export class AccountPage implements OnInit {
   }
 
   goToAbout() {
-    this.router.navigate(['tabs/tab2/about']);
+    this.router.navigate(['about']);
   }
 
   goFaqs() {
-    this.router.navigate(['tabs/tab2/faqs']);
+    this.router.navigate(['faqs']);
   }
 
   goHelp() {
-    this.router.navigate(['tabs/tab2/help']);
+    this.router.navigate(['help']);
   }
 }

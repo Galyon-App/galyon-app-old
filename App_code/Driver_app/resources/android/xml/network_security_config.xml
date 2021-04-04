@@ -7,6 +7,7 @@
    </base-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain>localhost</domain>
-        <domain includeSubdomains="true">162.241.85.201</domain>
+        <domain includeSubdomains="true">galyon.dev</domain>
+        <domain includeSubdomains="true">galyon.app</domain>
     </domain-config>
 </network-security-config>

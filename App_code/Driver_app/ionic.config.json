@@ -1,7 +1,13 @@
 {
-  "name": "galyon-driver-app",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
+  "defaultProject": "galyon-driver-app",
+  "projects": {
+    "galyon-driver-app": {
+      "name": "galyon-driver-app",
+      "integrations": {
+        "cordova": {},
+        "capacitor": {}
+      },
+      "type": "angular"
+    }
+  }
 }

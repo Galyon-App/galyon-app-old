@@ -336,4 +336,24 @@ export class DirectionPage implements OnInit {
 
   ngOnInit() {
   }
+
+  startDriving() {
+    var travel = {
+      origin: {
+        lat: 14.3206155,
+        lng: 121.0481855
+      },
+      distination: {
+        lat: 14.3432755,
+        lng: 121.0550281
+      }
+    };
+
+    const googleMapUrl ='https://google.com/maps/dir/?api=1&origin='
+      +travel.origin.lat+','+travel.origin.lng+'&destination='
+      +travel.distination.lat+','+travel.distination.lng+'&travelmode=driving&dir_action=navigate';
+    window.open(googleMapUrl);
+
+    //https://google.com/maps/dir/?api=1&origin=14.3432755,121.0550281&destination=43.5184049,-79.8473993&travelmode=driving&dir_action=navigate
+  }
 }

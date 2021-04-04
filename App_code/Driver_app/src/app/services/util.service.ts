@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Injectable } from '@angular/core';
 import { LoadingController, AlertController, ToastController, NavController, MenuController } from '@ionic/angular';
@@ -1218,57 +1218,71 @@ export class UtilService {
   ) {
     this.appPage = [
       {
-        title: 'Home',
-        url: 'tabs/tab1',
+        title: 'Orders',
+        url: 'home',
         icon: 'assets/sidemenu/home.png',
         icon2: 'assets/sidemenu/home2.png',
         icn: 'home-outline'
       },
       {
-        title: 'History',
-        url: 'tabs/tab1',
+        title: 'Message',
+        url: 'message',
+        icon: 'assets/sidemenu/home.png',
+        icon2: 'assets/sidemenu/home2.png',
+        icn: 'document-text-outline'
+      },
+      {
+        title: 'Reviews',
+        url: 'reviews',
+        icon: 'assets/sidemenu/home.png',
+        icon2: 'assets/sidemenu/home2.png',
+        icn: 'document-text-outline'
+      },
+      {
+        title: 'Accounts',
+        url: 'account',
         icon: 'assets/sidemenu/home.png',
         icon2: 'assets/sidemenu/home2.png',
         icn: 'document-text-outline'
       },
       {
         title: 'Profile',
-        url: 'tabs/tab2/edit-profile',
+        url: 'account/edit-profile',
         icon: 'assets/sidemenu/user.png',
         icon2: 'assets/sidemenu/user2.png',
         icn: 'person-outline'
       },
       {
         title: 'Language',
-        url: 'tabs/tab2/languages',
+        url: 'account/languages',
         icon: 'assets/sidemenu/language.png',
         icon2: 'assets/sidemenu/language2.png',
         icn: 'language-outline'
       },
       {
         title: 'About',
-        url: 'tabs/tab2/about',
+        url: 'account/about',
         icon: 'assets/sidemenu/info.png',
         icon2: 'assets/sidemenu/info2.png',
         icn: 'alert-circle-outline'
       },
       {
         title: 'Contact us',
-        url: 'tabs/tab2/contact',
+        url: 'account/contact',
         icon: 'assets/sidemenu/contact.png',
         icon2: 'assets/sidemenu/contact2.png',
         icn: 'mail-outline'
       },
       {
         title: 'FAQs',
-        url: 'tabs/tab2/faqs',
+        url: 'account/faqs',
         icon: 'assets/sidemenu/contact.png',
         icon2: 'assets/sidemenu/contact2.png',
         icn: 'flag-outline'
       },
       {
         title: 'Help',
-        url: 'tabs/tab2/help',
+        url: 'account/help',
         icon: 'assets/sidemenu/contact.png',
         icon2: 'assets/sidemenu/contact2.png',
         icn: 'help-circle-outline'

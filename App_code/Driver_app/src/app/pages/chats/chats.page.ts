@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
@@ -25,17 +25,15 @@ export class ChatsPage implements OnInit {
     private router: Router,
     private navCtrl: NavController
   ) {
-    this.getChats();
+    this.getChats(null);
   }
 
-
-  getChats() {
+  getChats(event) {
     const param = {
       id: localStorage.getItem('uid')
     };
     this.dummy = Array(10);
     this.api.post('chats/getByGroup', param).subscribe((data: any) => {
-      console.log(data);
       if (data && data.status === 200) {
         const info = [];
         data.data.forEach(element => {
@@ -63,11 +61,17 @@ export class ChatsPage implements OnInit {
       } else {
         this.dummy = [];
       }
+      if(event != null) {
+        event.target.complete();
+      }
     }, error => {
-      console.log(error);
+      if(event != null) {
+        event.target.complete();
+      }
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
   }
+
   ngOnInit() {
   }
 

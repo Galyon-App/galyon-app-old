@@ -2,7 +2,13 @@
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-button (click)="navCtrl.back()">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center"> {{util.getString('Navigation')}} </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="startDriving()">
+        <ion-icon slot="icon-only" name="map"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -14,6 +20,7 @@
     <div class="upper_div">
       <div #map id="map" class="map"></div>
     </div>
+
     <div class="lower_div" *ngIf="who==='user' && userInfo && userInfo.cover">
       <div class="driver_detail_div">
         <div class="back_image"
@@ -32,7 +39,7 @@
 
         </div>
       </div>
-      <p class="order_detail"><span style="color: var(--ion-color-primary);">
+      <!-- <p class="order_detail"><span style="color: var(--ion-color-primary);">
           {{util.getString('Grand Total')}}
           <span>
             {{grandTotal}} {{util.currecny}}
@@ -43,9 +50,7 @@
         <span class="order_status">
           {{payMethod}}
         </span>
-      </p>
-
-
+      </p> -->
     </div>
 
     <div class="lower_div" *ngIf="who === 'store' && storeInfo && storeInfo.cover">
@@ -62,7 +67,7 @@
           </ion-label>
         </div>
       </div>
-      <p class="order_detail"><span style="color: var(--ion-color-primary);">
+      <!-- <p class="order_detail"><span style="color: var(--ion-color-primary);">
           {{util.getString('Grand Total')}}
           <span>
             {{grandTotal}} {{util.currecny}}
@@ -73,7 +78,7 @@
         <span class="order_status">
           {{payMethod}}
         </span>
-      </p>
+      </p> -->
     </div>
     <!-- <div class="classdata">
       

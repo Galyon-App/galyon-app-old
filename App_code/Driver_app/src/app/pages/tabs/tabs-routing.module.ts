@@ -1,32 +1,33 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ErrorsComponent } from '../errors/errors.component';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: 'driver',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'home',
         loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
       },
       {
-        path: 'tab3',
+        path: 'message',
         loadChildren: () => import('../chats/chats.module').then(m => m.ChatsPageModule)
       },
       {
-        path: 'tab4',
+        path: 'reviews',
         loadChildren: () => import('../reviews/reviews.module').then(m => m.ReviewsPageModule)
       },
       {
-        path: 'tab2',
+        path: 'account',
         children: [
           {
             path: '',
@@ -50,27 +51,25 @@ const routes: Routes = [
           },
           {
             path: 'faqs',
-            loadChildren: () =>
-              import('../faqs/faqs.module').then(m => m.FaqsPageModule)
+            loadChildren: () => import('../faqs/faqs.module').then(m => m.FaqsPageModule)
           },
           {
             path: 'help',
-            loadChildren: () =>
-              import('../help/help.module').then(m => m.HelpPageModule)
+            loadChildren: () => import('../help/help.module').then(m => m.HelpPageModule)
           }
         ]
 
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/driver/home',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/driver/home',
     pathMatch: 'full'
   }
 ];

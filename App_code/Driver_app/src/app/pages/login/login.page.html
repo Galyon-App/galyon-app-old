@@ -10,10 +10,10 @@
   <div class="main_content_div">
 
     <div class="iconDiv">
-      <img src="assets/imgs/icon.png" alt="" class="icon">
+      <img src="assets/imgs/logo.png" alt="" class="icon" style="width: 185px;">
     </div>
     <div class="form_div" *ngIf="util.user_login ==='0'">
-      <ion-label class="main_head"> {{util.getString('Sign in')}} </ion-label>
+      <ion-label class="main_head"> {{util.getString('Sign ins')}} </ion-label>
       <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email">
         <ion-icon name="mail" slot="icon-only"></ion-icon>
       </ion-input>

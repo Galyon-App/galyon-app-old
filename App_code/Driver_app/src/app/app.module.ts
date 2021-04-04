@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,6 +27,12 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { SelectCountryPageModule } from './pages/select-country/select-country.module';
+import { environment } from 'src/environments/environment';
+
+// 1. Import the libs you need
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,7 +46,12 @@ import { SelectCountryPageModule } from './pages/select-country/select-country.m
     HttpClientModule,
     ComponentsModule,
     VerifyPageModule,
-    SelectCountryPageModule
+    SelectCountryPageModule,
+
+    // 3. Initialize
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule, // auth
+    AngularFireAnalyticsModule // analytics
   ],
   providers: [
     StatusBar,

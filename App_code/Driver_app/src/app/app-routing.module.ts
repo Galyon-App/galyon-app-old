@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
@@ -15,8 +15,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
+    path: 'message',
+    loadChildren: () => import('./pages/chats/chats.module').then(m => m.ChatsPageModule)
+  },
+  {
+    path: 'reviews',
+    loadChildren: () => import('./pages/reviews/reviews.module').then(m => m.ReviewsPageModule)
   },
   {
     path: 'account',
@@ -29,10 +33,6 @@ const routes: Routes = [
   {
     path: 'reset',
     loadChildren: () => import('./pages/reset/reset.module').then(m => m.ResetPageModule)
-  },
-  {
-    path: 'reviews',
-    loadChildren: () => import('./pages/reviews/reviews.module').then(m => m.ReviewsPageModule)
   },
   {
     path: 'languages',
@@ -50,7 +50,6 @@ const routes: Routes = [
     path: 'order-details',
     loadChildren: () => import('./pages/order-details/order-details.module').then(m => m.OrderDetailsPageModule)
   },
-
   {
     path: 'inbox',
     loadChildren: () => import('./pages/inbox/inbox.module').then(m => m.InboxPageModule)

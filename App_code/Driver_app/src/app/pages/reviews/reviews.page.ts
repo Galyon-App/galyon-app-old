@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
@@ -23,13 +23,13 @@ export class ReviewsPage implements OnInit {
     public util: UtilService,
     private navCtrl: NavController
   ) {
-    this.getReviews();
+    this.getReviews(null);
   }
 
   ngOnInit() {
   }
 
-  getReviews() {
+  getReviews(event) {
     const param = {
       id: localStorage.getItem('uid'),
       where: 'did = ' + localStorage.getItem('uid')
@@ -37,13 +37,17 @@ export class ReviewsPage implements OnInit {
     this.dummy = Array(10);
     this.api.post('rating/getFromIDs', param).subscribe((data: any) => {
       this.dummy = [];
-      console.log(data);
       if (data && data.status === 200) {
         this.reviews = data.data;
       }
+      if(event != null) {
+        event.target.complete();
+      }
     }, error => {
-      console.log(error);
       this.dummy = [];
+      if(event != null) {
+        event.target.complete();
+      }
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
   }

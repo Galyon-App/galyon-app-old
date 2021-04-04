@@ -1,18 +1,18 @@
 .main_content_div{
     width: 100%;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     .upper_div{
-        height: 60vh;
+        height: 75vh;
         #map{
             width: 100%;
             height: 100%;
         }
     }
     .lower_div{
-        height: 40vh;
+        height: 17vh;
         padding: 20px;
         ion-label {
             display: block;
@@ -24,7 +24,6 @@
         }
 
         .driver_detail_div{
-            margin-top: 20px;
             display: flex;
             flex-direction: row;
             align-items: center;

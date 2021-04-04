@@ -13,13 +13,12 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{util.getString('Order Details')}} </ion-title>
-
+    <ion-title class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Order Details')}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+  <div *ngIf="!loaded" style="display: flex; flex-direction: column; justify-content: center;align-items: center;">
     <ion-spinner color="primary" name="crescent"></ion-spinner>
   </div>
   <div class="main_content_div" *ngIf="loaded">
@@ -59,8 +58,6 @@
 
       </div>
     </div>
-
-
 
     <ion-label class="titles"> {{util.getString('Orders')}} </ion-label>
     <div class="desc_div">
@@ -144,18 +141,17 @@
       </ion-label>
     </div>
 
-
+    <div class="hr_line_div" *ngIf="storeInfo"></div>
     <div class="flex_div" *ngIf="storeInfo">
       <ion-label> {{util.getString('Pick up from')}} </ion-label>
       <ion-label class="values"> {{util.getString('Store')}} </ion-label>
     </div>
-
     <div class="flex_div" *ngIf="storeInfo">
       <ion-label class="values">
         <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> {{storeInfo.address}}
       </ion-label>
-
     </div>
+
     <div class="hr_line_div" *ngIf="storeInfo"></div>
     <div class="flex_div">
       <ion-label> {{util.getString('Deliver to')}} </ion-label>
@@ -165,7 +161,6 @@
       <ion-label class="values">
         <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> {{address}}
       </ion-label>
-
     </div>
 
     <ion-label class="titles"> {{util.getString('Basic Details')}} </ion-label>
@@ -189,31 +184,38 @@
       <ion-label class="values"> {{status}}</ion-label>
     </div>
 
-    <div class="hr_line_div" *ngIf="userInfo && userInfo.mobile"></div>
-
-    <div class="card_div2" *ngIf="userInfo && userInfo.mobile">
-      <div class="personal_detail">
-        <div style="display: flex;">
-          <ion-icon name="call"></ion-icon>&nbsp;&nbsp;
-          <ion-label class="res_name">{{userInfo.mobile}}</ion-label>
-        </div>
-        <div>
-          <ion-button (click)="call()" size="small" fill="outline"> {{util.getString('Call')}} </ion-button>
-        </div>
-      </div>
-    </div>
-    <div class="hr_line_div" *ngIf="userInfo && userInfo.email"></div>
-
-    <div class="card_div2" *ngIf="userInfo && userInfo.email">
-      <div class="personal_detail">
-        <div style="display: flex;">
-          <ion-icon name="mail"></ion-icon>&nbsp;&nbsp;
-          <ion-label class="res_name">{{userInfo.email}}</ion-label>
-        </div>
-        <div>
-          <ion-button (click)="email()" size="small" fill="outline"> {{util.getString('Email')}} </ion-button>
-        </div>
-      </div>
+    <ion-label class="titles"> {{util.getString("Customer's Contact")}} </ion-label>
+    <div class="flex_div">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="card_div2" *ngIf="userInfo && userInfo.mobile">
+              <div class="personal_detail">
+                <div style="display: flex;">
+                  <ion-icon name="call"></ion-icon>&nbsp;&nbsp;
+                  <ion-label class="res_name">+63{{userInfo.mobile}}</ion-label>
+                </div>
+                <div>
+                  <ion-button (click)="call()" size="small" fill="outline"> {{util.getString('Call')}} </ion-button>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="card_div2" *ngIf="userInfo && userInfo.email">
+              <div class="personal_detail">
+                <div style="display: flex;">
+                  <ion-icon name="mail"></ion-icon>&nbsp;&nbsp;
+                  <ion-label class="res_name">{{userInfo.email}}</ion-label>
+                </div>
+                <div>
+                  <ion-button (click)="email()" size="small" fill="outline"> {{util.getString('Email')}} </ion-button>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
 
     <ion-label class="titles"> {{util.getString('Order Tracking')}} </ion-label>
@@ -258,10 +260,10 @@
           <ion-select-option value="delivered"> {{util.getString('Delivered')}} </ion-select-option>
         </ion-select>
       </div>
-
       <div>
         <ion-button (click)="changeOrderStatus()" size="small">
-          {{util.getString('Update Status')}}
+          <ion-icon name="save" style="margin-right: 10px;"></ion-icon>
+          {{util.getString('Save Status')}}
         </ion-button>
       </div>
     </div>

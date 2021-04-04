@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component } from '@angular/core';
 import { ActionSheetController, NavController, Platform } from '@ionic/angular';
@@ -40,14 +40,13 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.show();
+      //this.statusBar.styleDefault();
       this.splashScreen.hide();
       if (this.platform.is('cordova')) {
-        console.log('platform is okk');
         setTimeout(async () => {
           await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
           this.oneSignal.getIds().then((data) => {
-            console.log('-----------------------------------', data);
             localStorage.setItem('fcm', data.userId);
             const uid = localStorage.getItem('uid');
             if (uid && uid !== null && uid !== 'null') {
@@ -56,7 +55,7 @@ export class AppComponent {
                 fcm_token: data.userId
               };
               this.api.post('drivers/edit_profile', param).subscribe((data: any) => {
-                console.log('user info=>', data);
+                //console.log('user info=>', data);
               }, error => {
                 console.log(error);
               });
@@ -67,14 +66,13 @@ export class AppComponent {
         }, 1000);
 
         this.nativeAudio.preloadSimple('audio', 'assets/alert.mp3').then((data: any) => {
-          console.log('dupletx', data);
+          //console.log('dupletx', data);
         }, error => {
           console.log(error);
         }).catch(error => {
           console.log(error);
         });
         this.oneSignal.handleNotificationReceived().subscribe(data => {
-          console.log('got order', data);
           this.nativeAudio.play('audio', () => console.log('audio is done playing')).catch(error => console.log(error));
           this.nativeAudio.setVolumeForComplexAsset('audio', 1);
           this.presentActionSheet();
@@ -86,7 +84,6 @@ export class AppComponent {
       const lng = localStorage.getItem('language');
       if (!lng || lng === null) {
         this.api.get('users/getDefaultSettings').subscribe((data: any) => {
-          console.log('get default settings', data);
           if (data && data.status === 200 && data.data) {
             const manage = data.data.manage;
             const language = data.data.lang;
@@ -126,12 +123,10 @@ export class AppComponent {
             }
 
             const general = data.data.general;
-            console.log('generalllll============================>', general)
             if (general && general.length > 0) {
               const info = general[0];
               this.util.general = info;
             }
-            console.log('app is closed', this.util.appClosed);
           }
 
           console.log(this.util.translations);
@@ -196,7 +191,6 @@ export class AppComponent {
             }
           }
         }, error => {
-          console.log('default settings by id', error);
           this.util.appClosed = false;
           this.util.direction = 'ltr';
           this.util.cside = 'right';
@@ -221,7 +215,6 @@ export class AppComponent {
       }
 
       this.platform.backButton.subscribe(async () => {
-        console.log('asd', this.router.url, 'ad', this.router.isActive('/tabs/', true));
         if (this.router.url.includes('/tabs/') || this.router.url.includes('/login')) {
           navigator['app'].exitApp();
         }
@@ -237,7 +230,6 @@ export class AppComponent {
         text: this.util.getString('OK'),
         icon: 'volume-mute',
         handler: () => {
-          console.log('Delete clicked');
           this.nativeAudio.stop('audio').then(() => console.log('done'), () => console.log('error'));
         }
       }, {
@@ -245,7 +237,6 @@ export class AppComponent {
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
           this.nativeAudio.stop('audio').then(() => console.log('done'), () => console.log('error'));
         }
       }]
