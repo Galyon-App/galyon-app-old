@@ -2,7 +2,7 @@
   "hosting": [
     {
       "public": "dist",
-      "site": "galyon-store",
+      "site": "galyon-merchant",
       "ignore": [
         "firebase.json",
         "**/.*",
@@ -16,7 +16,7 @@
       ]
     },
     {
-      "target": "galyon-store-web",
+      "target": "galyon-merchant",
       "public": "dist",
       "ignore": [
         "firebase.json",
