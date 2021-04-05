@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
@@ -25,9 +25,9 @@ export const environment = {
     mapApi: "AIzaSyDuek6Uyv1OVdrNb75jAiWE6u89YU5W0CY"
   },
   onesignal: {
-    appId: 'YOUR_APP_ID',
-    googleProjectNumber: 'YOUR_PROJECT_ID',
-    restKey: 'YOUR_PROJECT_REST_KEY'
+    appId: '87415a2c-b322-4d70-909f-a3e387c27c8b',
+    googleProjectNumber: '601855270346',
+    restKey: 'MTU0ZDkxMDctZTk0YS00ZmM2LWIxYmYtNDA1YmU0NWFmNjcz'
   },
   general: {
     symbol: '$',

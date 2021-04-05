@@ -1,8 +1,8 @@
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
 import { ApisService } from 'src/app/services/apis.service';
@@ -146,7 +146,6 @@ export class ManageBannersComponent implements OnInit {
     });
   }
 
-
   error(message) {
     const toastOptions: ToastOptions = {
       title: this.api.translate('Error'),
@@ -182,7 +181,6 @@ export class ManageBannersComponent implements OnInit {
     // Add see all possible types in one shot
     this.toastyService.success(toastOptions);
   }
-
 
   searchCate(str) {
     console.log(str);
@@ -257,9 +255,7 @@ export class ManageBannersComponent implements OnInit {
   }
 
   create() {
-    console.log('create');
-    if (!this.position || this.position === '' || !this.type || this.type === '' || !this.link || this.link === '' ||
-      !this.message || this.message === '') {
+    if (!this.position || this.position === '' || !this.type || this.type === '' || !this.link || this.link === '' ) {
       this.error('All Fields are required');
       return false;
     }
@@ -268,7 +264,7 @@ export class ManageBannersComponent implements OnInit {
       this.error(this.api.translate('Please add image'));
       return false;
     }
-    console.log('ok');
+
     const param = {
       cover: this.coverImage,
       position: this.position,
@@ -300,10 +296,8 @@ export class ManageBannersComponent implements OnInit {
   }
 
   update() {
-    console.log('update');
-    console.log('create');
-    if (!this.position || this.position === '' || !this.type || this.type === '' || !this.link || this.link === '' ||
-      !this.message || this.message === '') {
+
+    if (!this.position || this.position === '' || !this.type || this.type === '' || !this.link || this.link === '' ) {
       this.error('All Fields are required');
       return false;
     }
@@ -312,7 +306,7 @@ export class ManageBannersComponent implements OnInit {
       this.error(this.api.translate('Please add image'));
       return false;
     }
-    console.log('ok');
+
     const param = {
       cover: this.coverImage,
       position: this.position,

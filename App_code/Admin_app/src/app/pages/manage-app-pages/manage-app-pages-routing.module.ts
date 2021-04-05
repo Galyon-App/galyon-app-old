@@ -1,9 +1,9 @@
 import { ManageAppPagesComponent } from './manage-app-pages.component';
 /*
+  Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
-  App Name : Galyon App
-  Created : 01-Sep-2020
+  Created : 01-Jan-2021
 */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
