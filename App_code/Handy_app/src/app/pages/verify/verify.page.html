@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Verify')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="otpContainer">
+    <h2 class="headerText"> {{util.getString('Verification')}} </h2>
+    <p class="subTitleText">{{util.getString('We texted you a code to verify')}}
+      <br> {{util.getString('Phone Number')}} {{mobile}}
+    </p>
+    <div class="otpInputs">
+      <ng-otp-input (onInputChange)="onOtpChange($event)"
+        [config]="{length:6,inputStyles:{'width': '30px','height': '30px'}}">
+      </ng-otp-input>
+    </div>
+    <ion-button class="btn_class" (click)="continue()" type="submit" expand="block">{{util.getString('Continue')}}
+    </ion-button>
+
+    <ion-button (click)="resend()" *ngIf="resendCode" type="submit" expand="block" fill="clear">
+      {{util.getString('Resend code')}}
+    </ion-button>
+  </div>
+</ion-content>

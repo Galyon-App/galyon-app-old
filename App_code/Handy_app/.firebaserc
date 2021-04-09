@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "galyon-handy"
+  },
+  "hosting": {
+    "site": "galyon-handy",
+    "public": "dist"
+  }
+}

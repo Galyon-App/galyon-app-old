@@ -1,0 +1,33 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+
+    <ion-tab-button tab="home">
+      <ion-icon name="construct"></ion-icon>
+      <ion-label> {{util.getString('Jobs')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="message">
+      <ion-icon name="chatbubble-ellipses"></ion-icon>
+      <ion-label> {{util.getString('Message')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="reviews">
+      <ion-icon name="star"></ion-icon>
+      <ion-label> {{util.getString('Review')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="account">
+      <ion-icon name="person"></ion-icon>
+      <ion-label> {{util.getString('Account')}} </ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>

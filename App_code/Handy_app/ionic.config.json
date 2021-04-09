@@ -1,0 +1,13 @@
+{
+  "defaultProject": "galyon-handy-app",
+  "projects": {
+    "galyon-handy-app": {
+      "name": "galyon-handy-app",
+      "integrations": {
+        "cordova": {},
+        "capacitor": {}
+      },
+      "type": "angular"
+    }
+  }
+}
