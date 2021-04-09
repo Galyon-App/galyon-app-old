@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "galyon-handy"
+    "default": "galyon-handy",
+    "staging": "galyon-app"
   },
   "hosting": {
     "site": "galyon-handy",

@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "galyon-store"
+    "default": "galyon-store",
+    "staging": "galyon-app"
   },
   "targets": {
     "galyon-app": {

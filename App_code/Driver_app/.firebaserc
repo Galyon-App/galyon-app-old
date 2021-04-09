@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "galyon-app"
+    "default": "galyon-app",
+    "staging": "galyon-app"
   }
 }

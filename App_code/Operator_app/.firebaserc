@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "galyon-operator"
+    "default": "galyon-operator",
+    "staging": "galyon-app"
   },
   "hosting": {
     "site": "galyon-operator",
