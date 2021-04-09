@@ -1,0 +1,13 @@
+{
+  "defaultProject": "galyon-operator-app",
+  "projects": {
+    "galyon-operator-app": {
+      "name": "galyon-operator-app",
+      "integrations": {
+        "cordova": {},
+        "capacitor": {}
+      },
+      "type": "angular"
+    }
+  }
+}

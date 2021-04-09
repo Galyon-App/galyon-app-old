@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "galyon-operator"
+  },
+  "hosting": {
+    "site": "galyon-operator",
+    "public": "dist"
+  }
+}

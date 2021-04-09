@@ -1,0 +1,20 @@
+/*
+  Name: Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2021
+*/
+.main_div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%,-50%);
+    .imgs{
+        height: 100px;
+        width: 100px;
+    }
+    .message{
+        font-weight: bold;
+    }
+}

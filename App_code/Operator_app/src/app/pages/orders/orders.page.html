@@ -1,0 +1,25 @@
+<!-- 
+  Name : Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2020
+ -->
+
+<ion-header>
+  
+  <div class="segment_div">
+    <ion-label style="padding: 0 20px 10px;">
+      <img class="tabheaderImage" src="assets/imgs/logo.png" onError="this.src='assets/imgs/logo.png'" alt="">
+    </ion-label>
+    <ion-label [class.active]="segment == 1" (click)="onClick(1)"> {{util.getString('Realtime')}} </ion-label>
+    <ion-label [class.active]="segment == 2" (click)="onClick(2)"> {{util.getString('Stores')}} </ion-label>
+    <ion-label [class.active]="segment == 3" (click)="onClick(3)"> {{util.getString('Drivers')}} </ion-label>
+  </div>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div #map id="map"></div>
+</ion-content>

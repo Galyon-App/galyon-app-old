@@ -1,0 +1,32 @@
+{
+  "appId": "app.galyon.operator",
+  "appName": "Galyon Operator",
+  "bundledWebRuntime": true,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#7e6bfa",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  },
+  "cordova": {
+    "preferences": {
+      "ScrollEnabled": "false",
+      "android-minSdkVersion": "22",
+      "BackupWebStorage": "none",
+      "SplashMaintainAspectRatio": "true",
+      "FadeSplashScreenDuration": "300",
+      "SplashShowOnlyFirstTime": "false",
+      "SplashScreen": "screen",
+      "SplashScreenDelay": "3000",
+      "loadUrlTimeoutValue": "700000",
+      "CordovaWebViewEngine": "CDVWKWebViewEngine",
+      "WKWebViewOnly": "true"
+    }
+  }
+}
