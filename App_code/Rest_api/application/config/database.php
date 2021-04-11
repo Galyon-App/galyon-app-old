@@ -85,7 +85,7 @@ $db['default'] = array(
 
 	'username' => 'admin',
 	'password' => 'admin',
-	'database' => 'tindaapp',
+	'database' => 'galyon',
 	
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
