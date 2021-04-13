@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Galyon User</string>
-    <string name="title_activity_main">Galyon User</string>
+    <string name="app_name">BSEI Shop</string>
+    <string name="title_activity_main">BSEI Shop</string>
     <string name="package_name">app.galyon.user</string>
     <string name="custom_url_scheme">app.galyon.user</string>
 </resources>
