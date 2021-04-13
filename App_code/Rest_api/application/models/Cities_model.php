@@ -31,7 +31,6 @@ class Cities_model extends Main_model
         return $this->update($this->table_name,$data,$where);
     }
 
-
     public function deleteList($id){
         $where = "id =".$id;
         return $this->delete($this->table_name,$where);
@@ -45,6 +44,11 @@ class Cities_model extends Main_model
 
     public function get_all(){
         $data = $this->get($this->table_name);
+        return $data;
+    }
+
+    public function get_all_active(){
+        $data = $this->get($this->table_name, array( "status" => "1" ), "result");
         return $data;
     }
     

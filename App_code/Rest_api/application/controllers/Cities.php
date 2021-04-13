@@ -46,7 +46,7 @@ class Cities extends CI_Controller{
         $this->Cities_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
         if($auth && $auth == $this->config->item('encryption_key')){
-            $data = $this->Cities_model->get_all();
+            $data = $this->Cities_model->get_all_active();
             if($data != null){
                 echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
             }else{
