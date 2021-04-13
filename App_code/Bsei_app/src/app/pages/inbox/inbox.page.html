@@ -1,0 +1,61 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center" style="padding-right: 50px;"> {{name}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="getChats($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <ion-spinner color="primary" name="crescent"></ion-spinner>
+  </div>
+  <div class="main_content_div" *ngIf="loaded">
+
+    <span *ngFor="let item of messages">
+      <div class="left_div" *ngIf="item.from_id != uid">
+        <div class="inner_div">
+          <div class="msg_div">
+            <ion-label>{{item.message}}</ion-label>
+          </div>
+        </div>
+      </div>
+
+      <div class="right_div" *ngIf="item.from_id == uid">
+        <div class="inner_div">
+          <div class="msg_div">
+            <ion-label>{{item.message}}</ion-label>
+          </div>
+        </div>
+
+      </div>
+    </span>
+  </div>
+  <div *ngIf="!yourMessage && loaded" style="display: flex;flex-direction: row-reverse;padding: 20px;">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div class="footer_div">
+    <ion-input type="text" [(ngModel)]="msg" (keyup.enter)="sendMessage()"
+      [placeholder]="util.getString('Type Here..')"></ion-input>
+    <div class="chat_div" (click)="sendMessage()">
+      <ion-icon name="send"></ion-icon>
+    </div>
+  </div>
+</ion-footer>

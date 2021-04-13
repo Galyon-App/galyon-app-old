@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Filter</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="filterItems">
+    <ion-item lines="none">
+      <ion-label>Price</ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-range [min]="min" mode="md" pin [(ngModel)]="priceFilter" color="dark" dualKnobs="true" [max]="max"
+        color="secondary">
+        <ion-label slot="start">{{min}} </ion-label>
+        <ion-label slot="end">{{max}}</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Discount</ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-button (click)="discount('10')" expand="block" [fill]="discountValue ==='10' ? 'solid':'outline'"
+        shape="round" size="small">
+        10% Off or more
+      </ion-button>
+      <ion-button (click)="discount('25')" expand="block" [fill]="discountValue ==='25' ? 'solid':'outline'"
+        shape="round" size="small">
+        25% Off or more
+      </ion-button>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-button (click)="discount('35')" expand="block" [fill]="discountValue ==='35' ? 'solid':'outline'"
+        shape="round" size="small">
+        35% Off or more
+      </ion-button>
+      <ion-button (click)="discount('50')" expand="block" [fill]="discountValue ==='50' ? 'solid':'outline'"
+        shape="round" size="small">
+        50% Off or more
+      </ion-button>
+    </ion-item>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        Clear Filters
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="apply()">
+        Apply
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

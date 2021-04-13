@@ -1,0 +1,13 @@
+{
+  "defaultProject": "galyon-user-app",
+  "projects": {
+    "galyon-user-app": {
+      "name": "galyon-user-app",
+      "integrations": {
+        "cordova": {},
+        "capacitor": {}
+      },
+      "type": "angular"
+    }
+  }
+}
