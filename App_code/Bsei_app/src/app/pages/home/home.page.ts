@@ -128,6 +128,7 @@ export class HomePage implements OnInit {
       console.log(error);
     });
   }
+  
   getInit() {
     this.getCity();
     this.dummyCates = Array(5);
