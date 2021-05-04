@@ -250,7 +250,7 @@ export class ResetComponent implements OnInit {
   }
 
   sendOTP2() {
-    const message = 'Your Grocecryee app verification code : ';
+    const message = 'Your Galyon app verification code : ';
     const param = {
       msg: message,
       to: '+' + this.cc + this.phone

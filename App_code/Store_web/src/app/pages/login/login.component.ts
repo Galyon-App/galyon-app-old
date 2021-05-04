@@ -247,7 +247,7 @@ export class LoginComponent implements OnInit {
   }
 
   sendOTP() {
-    const message = 'Your Grocecryee app verification code : ';
+    const message = 'Your Galyon app verification code : ';
     const param = {
       msg: message,
       to: '+' + this.mobileCcode + this.mobileNumber

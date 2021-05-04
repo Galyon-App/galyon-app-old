@@ -995,7 +995,7 @@ export class AppComponent {
   }
 
   sendOTP() {
-    const message = 'Your Grocecryee app verification code : ';
+    const message = 'Your Galyon app verification code : ';
     const param = {
       msg: message,
       to: '+' + this.registerForm.cc + this.registerForm.mobile
@@ -1016,7 +1016,7 @@ export class AppComponent {
   }
 
   sendOTP2() {
-    const message = 'Your Grocecryee app verification code : ';
+    const message = 'Your Galyon app verification code : ';
     const param = {
       msg: message,
       to: '+' + this.mobileLogin.ccCode + this.mobileLogin.phone
@@ -1377,7 +1377,7 @@ export class AppComponent {
   }
 
   sendOTPForReset() {
-    const message = 'Your Grocecryee app verification code : ';
+    const message = 'Your Galyon app verification code : ';
     const param = {
       msg: message,
       to: '+' + this.reset_cc + this.reset_phone

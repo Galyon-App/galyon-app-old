@@ -35,7 +35,7 @@ export class VerifyPage implements OnInit {
     this.mobile = this.navParam.get('code') + this.navParam.get('phone');
     console.log('send on this number------<<<<<<<', this.mobile);
     console.log(this.mobile);
-    const message = 'Your Grocecryee app verification code : ';
+    const message = 'Your Galyon app verification code : ';
     const param = {
       msg: message,
       to: this.mobile
