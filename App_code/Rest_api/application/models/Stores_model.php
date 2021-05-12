@@ -27,9 +27,17 @@ class Stores_model extends Main_model
         return $data;
     }
 
+    public function getByStatus($status){
+        $status = $status ? '1' : '0';
+        $cur_time = date("H:i:s");
+        $where = "isClosed = $status AND open_time <= '$cur_time' AND close_time >= '$cur_time'";
+        $data = $this->get($this->table_name, $where, 'results');
+        return $data;
+    }
+
     public function getByUid($id){
         $where = 'uid = '.$id;
-        $data = $this->get($this->table_name,$where,'results');
+        $data = $this->get($this->table_name, $where, 'results');
         return $data;
     }
 
