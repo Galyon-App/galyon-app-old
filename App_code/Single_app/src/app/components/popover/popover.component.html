@@ -1,0 +1,16 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<ion-list lines="none">
+  <ion-item (click)="select('edit')">
+    <ion-label color="secondary"> {{util.getString('EDIT')}} </ion-label>
+  </ion-item>
+  <ion-item (click)="select('delete')">
+    <ion-label color="danger"> {{util.getString('DELETE')}} </ion-label>
+  </ion-item>
+</ion-list>

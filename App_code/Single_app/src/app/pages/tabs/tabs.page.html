@@ -1,0 +1,37 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<ion-tabs>
+  <ion-tab-bar slot="bottom" class="ion-no-border">
+    <ion-tab-button tab="home">
+      <ion-icon name="home"></ion-icon>
+      <ion-label> {{util.getString('Home')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="message">
+      <ion-icon name="chatbubble"></ion-icon>
+      <ion-label> {{util.getString('Message')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="cart">
+      <ion-icon name="basket"></ion-icon>
+      <ion-label> {{util.getString('Cart')}} </ion-label>
+      <ion-badge color="danger" *ngIf="cart.cart?.length"> {{cart.cart.length}} </ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="orders">
+      <ion-icon name="receipt"></ion-icon>
+      <ion-label> {{util.getString('Orders')}} </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="account">
+      <ion-icon name="person"></ion-icon>
+      <ion-label> {{util.getString('Account')}} </ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

@@ -1,0 +1,41 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Add New Card')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="inputType">
+    <ion-input type="email" [placeholder]="util.getString('Email address')" [(ngModel)]="email"></ion-input>
+  </div>
+  <div class="inputType">
+    <ion-input type="number" [placeholder]="util.getString('Card Number')" [(ngModel)]="cnumber"></ion-input>
+  </div>
+  <div class="inputType">
+    <ion-input type="text" [placeholder]="util.getString('Card Holder Name')" [(ngModel)]="cname"></ion-input>
+  </div>
+  <div class="inputType">
+    <ion-input type="password" [placeholder]="util.getString('CVC')" [(ngModel)]="cvc"></ion-input>
+  </div>
+  <div class="inputType">
+    <ion-datetime [min]="minStartDate()" [max]="getMaxDate()" display-format="MM/YYYY" [(ngModel)]="date"
+      placeholder="MM/YYYY">
+    </ion-datetime>
+  </div>
+
+  <ion-button expand="full" color="primary" class="btn_addcard" (click)="addcard()">{{util.getString('Add Card')}}
+  </ion-button>
+</ion-content>
