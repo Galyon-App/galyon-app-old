@@ -51,6 +51,11 @@ class Cities_model extends Main_model
         $data = $this->get($this->table_name, array( "status" => "1" ), "result");
         return $data;
     }
+
+    public function get_all_inactive(){
+        $data = $this->get($this->table_name, array( "status" => "0" ), "result");
+        return $data;
+    }
     
     public function saveUserLogs($data){
         $data = $this->saveLogs($data);

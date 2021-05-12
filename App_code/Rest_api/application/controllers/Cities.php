@@ -29,14 +29,16 @@ class Cities extends CI_Controller{
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, Basic");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header("Content-Type: application/json");
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method == "OPTIONS") {
             die();
         }
     }
-    
-    public function index()
+
+    public function check()
 	{
+        //Logging of this request.
         $agent = $this->input->request_headers();
         $saveLogInfo = array(
             'url' => $this->uri->uri_string(),
@@ -44,18 +46,53 @@ class Cities extends CI_Controller{
             'datetime' => date('Y-m-d h:i:s') 
         );
         $this->Cities_model->saveUserLogs($saveLogInfo);
+
+        //Check if encryption key is same. TODO: jwt
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
-            $data = $this->Cities_model->get_all_active();
-            if($data != null){
-                echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
-            }else{
-                echo $this->json->response($this->db->error(),$this->_Errmessage,$this->_statusErr);
-            }
-        }else{
+        if(!$auth && $auth != $this->config->item('encryption_key')){
             echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
+            exit;
         }
     }
+
+    public function index()
+	{
+        self::check();
+
+        $data = $this->Cities_model->get_all();
+        if($data != null){
+            echo $this->json->response($this->_statusOK, $this->_OKmessage, $data);
+        } else {
+            echo $this->json->response($this->_statusErr, $this->db->error(), $this->_Errmessage);
+        }
+    }
+    
+    public function active()
+	{
+        self::check();
+
+        $data = $this->Cities_model->get_all_active();
+        if($data != null){
+            echo $this->json->response($this->_statusOK, $this->_OKmessage, $data);
+            exit;
+        } else {
+            echo $this->json->response($this->_statusErr, $this->db->error(), $this->_Errmessage);
+            exit;
+        }
+    }
+
+    public function inactive()
+	{
+        self::check();
+
+        $data = $this->Cities_model->get_all_inactive();
+        if($data != null){
+            echo $this->json->response($this->_statusOK, $this->_OKmessage, $data);
+        } else {
+            echo $this->json->response($this->_statusErr, $this->db->error(), $this->_Errmessage);
+        }
+    }
+    
     
     // get request
     public function getById(){
@@ -84,7 +121,6 @@ class Cities extends CI_Controller{
         }
     }
 
- 
     public function editList(){
         $agent = $this->input->request_headers();
         $saveLogInfo = array(
@@ -114,7 +150,6 @@ class Cities extends CI_Controller{
             echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
         }
     }
-
 
     public function check_array_values($array,$table_array){
         if(isset($array) && !empty($array)){
@@ -198,7 +233,6 @@ class Cities extends CI_Controller{
             echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
         }
     }
-
 
     public function check_params($data,$array_compare){
          $items = array();
