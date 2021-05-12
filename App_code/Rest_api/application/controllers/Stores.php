@@ -31,6 +31,7 @@ class Stores extends CI_Controller{
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, Basic");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header("Content-Type: application/json");
         $method = $_SERVER['REQUEST_METHOD'];
         if ($method == "OPTIONS") {
             die();
@@ -50,6 +51,28 @@ class Stores extends CI_Controller{
             $data = $this->Stores_model->get_all();
             if($data != null){
                 echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
+            }else{
+                echo $this->json->response($this->db->error(),$this->_Errmessage,$this->_statusErr);
+            }
+        }else{
+            echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
+        }
+    }
+
+    public function getByStatus($status = null){
+        $agent = $this->input->request_headers();
+        $saveLogInfo = array(
+            'url' => $this->uri->uri_string(),
+            'agent' => json_encode($agent),
+            'datetime' => date('Y-m-d h:i:s') 
+        );
+        $this->Stores_model->saveUserLogs($saveLogInfo);
+
+        $auth  = $this->input->get_request_header('Basic');
+        if($auth && $auth == $this->config->item('encryption_key')){
+            $data = $this->Stores_model->getByStatus($status == 'active');
+            if($data){
+                echo $this->json->response($data, $this->_OKmessage,$this->_statusOK);
             }else{
                 echo $this->json->response($this->db->error(),$this->_Errmessage,$this->_statusErr);
             }
@@ -341,6 +364,7 @@ class Stores extends CI_Controller{
             echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
         }
     }
+
     public function getStoresIds(){
 
         // $agent = $this->input->request_headers();
