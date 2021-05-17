@@ -7,7 +7,7 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users extends CI_Controller{
+class Users extends MY_Controller{
     
     public $_statusOK = 200;
     public $_statusErr = 500;
@@ -38,16 +38,10 @@ class Users extends CI_Controller{
         $this->load->model('Stores_model');
         $this->load->library('encryption');
         $this->load->library('email');
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, Basic");
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-        $method = $_SERVER['REQUEST_METHOD'];
-        if ($method == "OPTIONS") {
-            die();
-        }
     }
     
     public function getDefaultSettings(){
+
         $agent = $this->input->request_headers();
         $saveLogInfo = array(
             'url' => $this->uri->uri_string(),
@@ -74,8 +68,11 @@ class Users extends CI_Controller{
             }
             $langName;
             if($haveFile){
-                $json = file_get_contents('uploads/'.$lang[0]->file);
-                $fileName = $lang[0]->file;
+                //$json = file_get_contents('uploads/'.$lang[0]->file);
+                //$fileName = $lang[0]->file;
+                $file = 'en.json';
+                $json = file_get_contents(APPPATH.'/language/english/'.$file);
+                $fileName = $file;
                 $obj  = json_decode($json);
             }else{
                 $obj = false;

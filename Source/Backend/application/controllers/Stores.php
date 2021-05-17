@@ -21,6 +21,7 @@ class Stores extends CI_Controller{
     public $required = ['id'];
 
     public $cityRequired = ['cid'];
+    
     public function __construct(){
 		parent ::__construct();
         $this->load->library('session');
@@ -28,13 +29,6 @@ class Stores extends CI_Controller{
 		$this->load->database();
         $this->load->helper('url');
         $this->load->model('Stores_model');
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, Basic");
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-        $method = $_SERVER['REQUEST_METHOD'];
-        if ($method == "OPTIONS") {
-            die();
-        }
     }
     
     public function index(){

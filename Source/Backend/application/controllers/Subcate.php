@@ -18,6 +18,7 @@ class Subcate extends CI_Controller{
     public $_table_column_array = ['name','cover','status','cate_id'];
     public $_table_column_edit = ['id','name','cover','status','cate_id'];
     public $required = ['id'];
+    
     public function __construct(){
 		parent ::__construct();
         $this->load->library('session');
@@ -25,13 +26,6 @@ class Subcate extends CI_Controller{
 		$this->load->database();
         $this->load->helper('url');
         $this->load->model('Subc_model');
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, Basic");
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-        $method = $_SERVER['REQUEST_METHOD'];
-        if ($method == "OPTIONS") {
-            die();
-        }
     }
 
     public function index()
