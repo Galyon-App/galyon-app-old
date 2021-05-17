@@ -8,7 +8,7 @@
 require_once(APPPATH."libraries/paytm/config_paytm.php");
 require_once(APPPATH."libraries/paytm/encdec_paytm.php");
 
-class Paytm extends CI_Controller
+class Paytm extends MY_Controller
 {
     public $_statusOK = 200;
     public $_statusErr = 500;

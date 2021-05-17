@@ -7,7 +7,7 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Rating extends CI_Controller{
+class Rating extends MY_Controller{
     
     public $_statusOK = 200;
     public $_statusErr = 500;

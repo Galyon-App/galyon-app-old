@@ -7,7 +7,7 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Banners extends CI_Controller{
+class Banners extends MY_Controller{
     
     public $_statusOK = 200;
     public $_statusErr = 500;

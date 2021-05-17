@@ -7,7 +7,7 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Chats extends CI_Controller{
+class Chats extends MY_Controller{
     
     public $_statusOK = 200;
     public $_statusErr = 500;

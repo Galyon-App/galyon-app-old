@@ -5,7 +5,7 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */ defined('BASEPATH') OR exit('No direct script access allowed');
-class Flutterwave extends CI_Controller
+class Flutterwave extends MY_Controller
 {
     function  __construct() {
         parent::__construct();
