@@ -10,16 +10,16 @@
 
 export const environment = {
   production: false,
-  baseURL: 'https://api.galyon.dev/',
-  mediaURL: 'https://api.galyon.dev/uploads/',
+  baseURL: 'https://brilliant.dev/',
+  mediaURL: 'https://brilliant.dev/uploads/',
   firebase: {
-    apiKey: "AIzaSyDBieOxlT1pfwVwU1aAwNAVrIJgdul6uRc",
-    authDomain: "galyon-app.firebaseapp.com",
-    projectId: "galyon-app",
-    storageBucket: "galyon-app.appspot.com",
-    messagingSenderId: "601855270346",
-    appId: "1:601855270346:web:5c5ec298508dcac324c333",
-    measurementId: "G-SX0P87PDN1"
+    apiKey: "AIzaSyCmJaB6O6et28ChK2yACmGEjV-i0f3UbN4",
+    authDomain: "spartan-figure-294709.firebaseapp.com",
+    projectId: "spartan-figure-294709",
+    storageBucket: "spartan-figure-294709.appspot.com",
+    messagingSenderId: "101960398024",
+    appId: "1:101960398024:web:8e1e8238771766b56761fd",
+    measurementId: "G-TM037WR38V"
   },
   google: {
     mapApi: "AIzaSyDuek6Uyv1OVdrNb75jAiWE6u89YU5W0CY"
@@ -30,8 +30,8 @@ export const environment = {
     restKey: 'MTU0ZDkxMDctZTk0YS00ZmM2LWIxYmYtNDA1YmU0NWFmNjcz'
   },
   general: {
-    symbol: '$',
-    code: 'USD'
+    symbol: '₱',
+    code: 'PHP'
   },
   authToken: '123456789'
 };

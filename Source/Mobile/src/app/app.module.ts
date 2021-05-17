@@ -23,10 +23,9 @@ import { PipeModule } from './pipes/pipe.module';
 import { Camera } from '@ionic-native/camera/ngx';
 import { FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -74,7 +73,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     StatusBar,
     SplashScreen,
     HTTP,
-    OneSignal,
     Camera,
     FileTransferObject,
     AndroidPermissions,

@@ -188,7 +188,7 @@ export class SubCategoryPage implements OnInit {
       }
     };
 
-    this.router.navigate(['user/home/product'], param);
+    this.router.navigate(['home/product'], param);
   }
 
   back() {
@@ -214,7 +214,7 @@ export class SubCategoryPage implements OnInit {
       }
     };
 
-    this.router.navigate(['user/home/product'], param);
+    this.router.navigate(['home/product'], param);
   }
 
   loadData(event) {
@@ -230,7 +230,7 @@ export class SubCategoryPage implements OnInit {
       }
     };
 
-    this.router.navigate(['user/home/product'], param);
+    this.router.navigate(['home/product'], param);
   }
 
   async variant(item, indeX) {

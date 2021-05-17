@@ -18,16 +18,15 @@ import { CityGuard } from './CityGuard/city.guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [CityGuard]
+    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'categories',
@@ -44,7 +43,6 @@ const routes: Routes = [
   {
     path: 'cart',
     loadChildren: () => import('./pages/cart/cart.module').then(m => m.CartPageModule),
-    canActivate: [AuthGuard]
   },
   {
     path: 'account',
@@ -187,7 +185,10 @@ const routes: Routes = [
     path: 'direction',
     loadChildren: () => import('./pages/direction/direction.module').then( m => m.DirectionPageModule)
   },
-
+  {
+    path: 'notfound',
+    loadChildren: () => import('./pages/notfound/notfound.module').then( m => m.NotfoundPageModule)
+  },
 ];
 @NgModule({
   imports: [

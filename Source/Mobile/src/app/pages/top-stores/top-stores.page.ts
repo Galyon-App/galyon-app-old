@@ -56,7 +56,7 @@ export class TopStoresPage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['user/home/store'], param);
+    this.router.navigate(['home/store'], param);
   }
 
 

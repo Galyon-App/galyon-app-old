@@ -268,7 +268,7 @@ export class ProductPage implements OnInit {
         name: this.storeName
       }
     };
-    this.router.navigate(['user/home/store'], param);
+    this.router.navigate(['home/store'], param);
   }
 
   add() {
@@ -360,7 +360,7 @@ export class ProductPage implements OnInit {
       }
     };
 
-    this.router.navigate(['/user/categories/product'], param);
+    this.router.navigate(['/categories/product'], param);
   }
 
   productRating() {
@@ -372,7 +372,7 @@ export class ProductPage implements OnInit {
       }
     }
 
-    this.router.navigate(['/user/home/ratings'], param);
+    this.router.navigate(['/home/ratings'], param);
   }
 
   async variants() {

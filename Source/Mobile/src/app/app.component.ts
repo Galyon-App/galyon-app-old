@@ -8,7 +8,6 @@ import { Component } from '@angular/core';
 import { IonRouterOutlet, MenuController, NavController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { environment } from 'src/environments/environment';
 import { ApiService } from './services/api.service';
 import { UtilService } from './services/util.service';
@@ -39,7 +38,6 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private navCtrl: NavController,
-    private oneSignal: OneSignal,
     private api: ApiService,
     public util: UtilService,
     public cart: CartService,
@@ -168,29 +166,29 @@ export class AppComponent {
           document.documentElement.dir = this.util.direction;
         });
       }
-      if (this.platform.is('cordova')) {
-        setTimeout(async () => {
-          await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
-          this.oneSignal.getIds().then((data) => {
-            localStorage.setItem('fcm', data.userId);
+      // if (this.platform.is('cordova')) {
+      //   setTimeout(async () => {
+      //     await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
+      //     this.oneSignal.getIds().then((data) => {
+      //       localStorage.setItem('fcm', data.userId);
 
-            const uid = localStorage.getItem('uid');
-            if (uid && uid !== null && uid !== 'null') {
-              const param = {
-                id: uid,
-                fcm_token: data.userId
-              };
-              this.api.post('users/edit_profile', param).subscribe((data: any) => {
-                //console.log('user info=>', data);
-              }, error => {
-                console.log(error);
-              });
-            }
+      //       const uid = localStorage.getItem('uid');
+      //       if (uid && uid !== null && uid !== 'null') {
+      //         const param = {
+      //           id: uid,
+      //           fcm_token: data.userId
+      //         };
+      //         this.api.post('users/edit_profile', param).subscribe((data: any) => {
+      //           //console.log('user info=>', data);
+      //         }, error => {
+      //           console.log(error);
+      //         });
+      //       }
 
-          });
-          await this.oneSignal.endInit();
-        }, 1000);
-      }
+      //     });
+      //     await this.oneSignal.endInit();
+      //   }, 1000);
+      // }
       const uid = localStorage.getItem('uid');
       if (uid && uid !== null && uid !== 'null') {
         const param = {
@@ -224,11 +222,11 @@ export class AppComponent {
       }
 
       this.platform.backButton.subscribe(async () => {
-        if (this.router.url === '/user/categories' || this.router.url === '/user/cart' ||
-          this.router.url === '/user/orders' || this.router.url === '/user/account'
+        if (this.router.url === '/categories' || this.router.url === '/cart' ||
+          this.router.url === '/orders' || this.router.url === '/account'
           || this.router.url === '/login') {
-          this.navCtrl.navigateRoot(['/user/home']);
-        } else if (this.router.url === '/user/home' || this.router.url === '/cities') {
+          this.navCtrl.navigateRoot(['/home']);
+        } else if (this.router.url === '/home' || this.router.url === '/cities') {
           navigator['app'].exitApp();
         }
       });

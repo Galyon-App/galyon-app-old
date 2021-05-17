@@ -59,7 +59,7 @@ export class AllOffersPage implements OnInit {
           name: 'Category'
         }
       };
-      this.router.navigate(['user/home/sub-category'], param);
+      this.router.navigate(['home/sub-category'], param);
     } else if (item.type === '1') {
       // product
       console.log('open product');
@@ -69,7 +69,7 @@ export class AllOffersPage implements OnInit {
         }
       };
 
-      this.router.navigate(['user/categories/product'], param);
+      this.router.navigate(['categories/product'], param);
     } else {
       // link
       // console.log('open link');

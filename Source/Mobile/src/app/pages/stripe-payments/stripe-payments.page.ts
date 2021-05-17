@@ -148,7 +148,7 @@ export class StripePaymentsPage implements OnInit {
       this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
-      this.navCtrl.navigateRoot(['/user/orders']);
+      this.navCtrl.navigateRoot(['/orders']);
     }, error => {
       console.log(error);
       this.util.hide();
@@ -157,7 +157,7 @@ export class StripePaymentsPage implements OnInit {
   }
 
   onAdd() {
-    this.router.navigate(['user/cart/add-card']);
+    this.router.navigate(['cart/add-card']);
   }
 
   back() {

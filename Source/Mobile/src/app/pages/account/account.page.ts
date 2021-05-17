@@ -46,11 +46,11 @@ export class AccountPage implements OnInit {
     this.cart.coupon = null;
     this.cart.discount = null;
     this.util.clearKeys('cart');
-    this.navCtrl.navigateRoot(['/user/home']);
+    this.navCtrl.navigateRoot(['/home']);
   }
 
   orders() {
-    this.router.navigate(['/user/orders']);
+    this.router.navigate(['/orders']);
   }
 
   goToFav() {

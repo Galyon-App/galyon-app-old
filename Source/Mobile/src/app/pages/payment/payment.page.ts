@@ -191,7 +191,7 @@ export class PaymentPage implements OnInit {
   }
 
   openStripe() {
-    this.router.navigate(['user/cart/stripe-payments']);
+    this.router.navigate(['cart/stripe-payments']);
   }
 
   goToSucess() {
@@ -257,7 +257,7 @@ export class PaymentPage implements OnInit {
       this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
-      this.navCtrl.navigateRoot(['/user/orders'], { replaceUrl: true, skipLocationChange: true });
+      this.navCtrl.navigateRoot(['/orders'], { replaceUrl: true, skipLocationChange: true });
     }, error => {
       console.log(error);
       this.util.hide();
@@ -316,7 +316,7 @@ export class PaymentPage implements OnInit {
       this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
-      this.navCtrl.navigateRoot(['/user/orders'], { replaceUrl: true, skipLocationChange: true });
+      this.navCtrl.navigateRoot(['/orders'], { replaceUrl: true, skipLocationChange: true });
     }, error => {
       console.log(error);
       this.util.hide();

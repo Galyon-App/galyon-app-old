@@ -71,7 +71,7 @@ export class CartPage implements OnInit {
       this.util.errorToast(this.util.getString('Minimum order amount must be') + text + this.util.getString('or more'));
       return false;
     }
-    this.router.navigate(['/user/cart/delivery-options']);
+    this.router.navigate(['/cart/delivery-options']);
   }
 
   back() {

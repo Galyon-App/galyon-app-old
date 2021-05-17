@@ -342,7 +342,7 @@ export class StorePage implements OnInit {
       }
     };
 
-    this.router.navigate(['/user/home/product'], param);
+    this.router.navigate(['/home/product'], param);
   }
 
   async priceFilter() {

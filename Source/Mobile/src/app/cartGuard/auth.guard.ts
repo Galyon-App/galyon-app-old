@@ -26,7 +26,7 @@ export class cartGuard implements CanActivate {
         if (this.cart.cart && this.cart.cart.length) {
             return true;
         }
-        this.navCtrl.navigateRoot(['/user/cart']);
+        this.navCtrl.navigateRoot(['/cart']);
         return false;
     }
 }

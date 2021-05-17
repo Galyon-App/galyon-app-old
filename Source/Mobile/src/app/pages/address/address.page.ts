@@ -87,7 +87,7 @@ export class AddressPage implements OnInit {
       console.log('item', item);
       this.cart.deliveryAddress = item;
       this.cart.calcuate();
-      this.router.navigate(['/user/cart/payment']);
+      this.router.navigate(['/cart/payment']);
     }
   }
 

@@ -418,7 +418,7 @@ export class HomePage implements OnInit {
       }
     };
 
-    this.router.navigate(['user/home/product'], param);
+    this.router.navigate(['home/product'], param);
   }
 
   goToCatrgory() {
@@ -432,7 +432,7 @@ export class HomePage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['user/home/sub-category'], param);
+    this.router.navigate(['home/sub-category'], param);
   }
 
   changeCity() {
@@ -456,7 +456,7 @@ export class HomePage implements OnInit {
           name: cateName
         }
       };
-      this.router.navigate(['user/home/sub-category'], param);
+      this.router.navigate(['home/sub-category'], param);
     } else if (item.type === '1') {
       // product
       console.log('open product');
@@ -466,7 +466,7 @@ export class HomePage implements OnInit {
         }
       };
 
-      this.router.navigate(['user/home/product'], param);
+      this.router.navigate(['home/product'], param);
     } else {
       // link
       console.log('open link');
@@ -482,7 +482,7 @@ export class HomePage implements OnInit {
         from: 'home'
       }
     }
-    this.router.navigate(['/user/home/products'], navData);
+    this.router.navigate(['/home/products'], navData);
   }
 
   onSearchChange(event) {
@@ -530,11 +530,11 @@ export class HomePage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['user/home/store'], param);
+    this.router.navigate(['/home/store'], param);
   }
 
   topicked() {
-    this.router.navigate(['/user/home/top-picked']);
+    this.router.navigate(['/home/top-picked']);
   }
 
   topStores() {
