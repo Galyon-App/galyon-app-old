@@ -38,7 +38,7 @@
     "jquery-sparkline": "^2.4.0",
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.5.3",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "ng-click-outside": "^3.2.0",
     "ng-multiselect-dropdown": "^0.2.10",

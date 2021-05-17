@@ -6,16 +6,16 @@
 */
 export const environment = {
   production: true,
-  baseURL: 'https://api.galyon.app/',
-  mediaURL: 'https://api.galyon.app/uploads/',
+  baseURL: 'https://shop.brilliantskinessentialsinc.com/',
+  mediaURL: 'https://shop.brilliantskinessentialsinc.com/uploads/',
   firebase: {
-    apiKey: "AIzaSyDBieOxlT1pfwVwU1aAwNAVrIJgdul6uRc",
-    authDomain: "galyon-app.firebaseapp.com",
-    projectId: "galyon-app",
-    storageBucket: "galyon-app.appspot.com",
-    messagingSenderId: "601855270346",
-    appId: "1:601855270346:web:5c5ec298508dcac324c333",
-    measurementId: "G-SX0P87PDN1"
+    apiKey: "AIzaSyCmJaB6O6et28ChK2yACmGEjV-i0f3UbN4",
+    authDomain: "spartan-figure-294709.firebaseapp.com",
+    projectId: "spartan-figure-294709",
+    storageBucket: "spartan-figure-294709.appspot.com",
+    messagingSenderId: "101960398024",
+    appId: "1:101960398024:web:8b75e71979f9f3d36761fd",
+    measurementId: "G-TLMX17W0EF"
   },
   google: {
     mapApi: "AIzaSyAJqQislvovvHN9aLGtmkhXiDtM1Yyvmko"
