@@ -24,6 +24,9 @@ import { LeaveGuard } from './leaved/leaved.guard';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+//import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+//import { NgxSpinnerModule } from 'ngx-spinner';
+//import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     TitleComponent,
     BreadcrumbsComponent,
     AuthComponent,
-
+    
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     AppRoutingModule,
     SharedModule,
     HttpClientModule,
+    //CKEditorModule,
+    //FormsModule,
+    //NgxSpinnerModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
     // 3. Initialize
