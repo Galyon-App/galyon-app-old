@@ -25,7 +25,7 @@ import { FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IonicStorageModule } from '@ionic/storage-angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -41,9 +41,9 @@ import { ComponentsModule } from './components/components.module';
 import { environment } from 'src/environments/environment';
 
 // 1. Import the libs you need
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+// import { AngularFireModule } from '@angular/fire';
+// import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+// import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [AppComponent],
@@ -65,9 +65,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     ComponentsModule,
 
     // 3. Initialize
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule, // auth
-    AngularFireAnalyticsModule // analytics
+    // AngularFireModule.initializeApp(environment.firebase),
+    // AngularFireAuthModule, // auth
+    // AngularFireAnalyticsModule // analytics
   ],
   providers: [
     StatusBar,

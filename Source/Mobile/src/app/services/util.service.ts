@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { LoadingController, AlertController, ToastController, NavController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { Storage } from '@ionic/storage-angular';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
