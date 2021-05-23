@@ -10,8 +10,8 @@
 
 export const environment = {
   production: false,
-  baseURL: 'https://api.galyon.dev/',
-  mediaURL: 'https://api.galyon.dev/uploads/',
+  baseURL: 'http://localhost:8000/',
+  mediaURL: 'http://localhost:8000/uploads/',
   firebase: {
     apiKey: "AIzaSyDBieOxlT1pfwVwU1aAwNAVrIJgdul6uRc",
     authDomain: "galyon-app.firebaseapp.com",
