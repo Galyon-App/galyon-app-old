@@ -10,8 +10,8 @@
 
 export const environment = {
   production: false,
-  baseURL: 'https://brilliant.dev/',
-  mediaURL: 'https://brilliant.dev/uploads/',
+  baseURL: 'http://localhost:8000/',
+  mediaURL: 'http://localhost:8000/uploads/',
   firebase: {
     apiKey: "AIzaSyCmJaB6O6et28ChK2yACmGEjV-i0f3UbN4",
     authDomain: "spartan-figure-294709.firebaseapp.com",
