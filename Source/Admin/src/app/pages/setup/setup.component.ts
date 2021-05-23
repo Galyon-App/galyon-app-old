@@ -47,10 +47,11 @@ export class SetupComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
   login() {
-    console.log('mobileCcode ', this.mobileCcode);
+
     if (!this.first_name || !this.last_name || this.first_name === '' || this.last_name === ''
-      || !this.email || this.email === '' || !this.password || this.password === '' || !this.mobile || this.mobile === '') {
+      || !this.email || this.email === '' || !this.password || this.password === '') {
       this.error('All Fields are required');
       return false;
     }

@@ -19,7 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalAnimationComponent } from './modal-animation/modal-animation.component';
 import { ModalBasicComponent } from './modal-basic/modal-basic.component';
 import { ToastyModule } from 'ng2-toasty';
-import { SimpleNotificationsModule } from 'angular2-notifications';
+//import { SimpleNotificationsModule } from 'angular2-notifications';
 import { AnimatorModule } from 'css-animator';
 import { DataFilterPipe } from './elements/data-filter.pipe';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
@@ -28,7 +28,7 @@ import { TodoService } from './todo/todo.service';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { NotificationsService } from 'angular2-notifications';
+//import { NotificationsService } from 'angular2-notifications';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -46,7 +46,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ReactiveFormsModule,
     NgbModule,
     ToastyModule.forRoot(),
-    SimpleNotificationsModule.forRoot(),
+    //SimpleNotificationsModule.forRoot(),
     AnimatorModule,
     ScrollToModule.forRoot(),
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyCE0nvTeHBsiQIrbpMVTe489_O5mwyqofk' }),
@@ -86,7 +86,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ModalBasicComponent,
     ModalAnimationComponent,
     ToastyModule,
-    SimpleNotificationsModule,
+    //SimpleNotificationsModule,
     AnimatorModule,
     DataFilterPipe,
     ScrollToModule,
@@ -100,7 +100,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   providers: [
     MenuItems,
     TodoService,
-    NotificationsService,
+    //NotificationsService,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

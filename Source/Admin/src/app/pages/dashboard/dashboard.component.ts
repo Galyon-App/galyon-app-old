@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
       localStorage.removeItem('uid');
       this.router.navigate(['login']);
     });
-    this.getData();
+    //this.getData();
   }
 
   getData() {
