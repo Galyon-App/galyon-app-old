@@ -21,9 +21,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { LeaveGuard } from './leaved/leaved.guard';
 
 // 1. Import the libs you need
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+// import { AngularFireModule } from '@angular/fire';
+// import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+// import { AngularFireAuthModule } from '@angular/fire/auth';
 //import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 //import { NgxSpinnerModule } from 'ngx-spinner';
 //import { FormsModule } from '@angular/forms';
@@ -35,7 +35,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     TitleComponent,
     BreadcrumbsComponent,
     AuthComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -43,15 +42,13 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     AppRoutingModule,
     SharedModule,
     HttpClientModule,
-    //CKEditorModule,
-    //FormsModule,
-    //NgxSpinnerModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+
+    // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
     // 3. Initialize
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule, // auth
-    AngularFireAnalyticsModule // analytics
+    // AngularFireModule.initializeApp(environment.firebase),
+    // AngularFireAuthModule, // auth
+    // AngularFireAnalyticsModule // analytics
   ],
   providers: [LeaveGuard],
   bootstrap: [AppComponent]
