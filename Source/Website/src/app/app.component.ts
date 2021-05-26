@@ -163,9 +163,7 @@ export class AppComponent {
     this.loaded = false;
     this.initializeApp();
     this.util.getPriceOfCart().subscribe(() => {
-      console.log('*************************************');
       // this.initializeApp();
-      console.log('*************************************');
     });
     this.router.events.subscribe((e: RouterEvent) => {
       this.navigationInterceptor(e);
@@ -184,8 +182,8 @@ export class AppComponent {
       window.scrollTo({ top: 0 });
       const data = this.getTitle(this.router.routerState, this.router.routerState.root);
       console.log('--->>navigation data', data);
-      this.titleService.setTitle(data && data[0] ? this.util.translate(data[0]) + ' | Galyon By bytescrafter' :
-        this.util.translate('Home') + ' | Galyon By bytescrafter');
+      this.titleService.setTitle(data && data[0] ? this.util.translate(data[0]) + ' | BSEI Shop' :
+        this.util.translate('Home') + ' | BSEI Shop');
     }
 
     if (event instanceof NavigationCancel) {
@@ -249,7 +247,6 @@ export class AppComponent {
         const lng = localStorage.getItem('language');
         if (!lng || lng === null) {
           this.api.get('users/getDefaultSettings').then((data: any) => {
-            console.log('----------------- app setting', data);
             if (data && data.status === 200 && data.data) {
               const manage = data.data.manage;
               const language = data.data.lang;
@@ -279,8 +276,8 @@ export class AppComponent {
                 this.util.translations = language;
                 localStorage.setItem('language', data.data.file);
                 const trl = this.getTitle(this.router.routerState, this.router.routerState.root);
-                this.titleService.setTitle(trl && trl[0] ? this.util.translate(trl[0]) + ' | Galyon By bytescrafter' :
-                  this.util.translate('Home') + ' | Galyon By bytescrafter');
+                this.titleService.setTitle(trl && trl[0] ? this.util.translate(trl[0]) + ' | BSEI Shop' :
+                  this.util.translate('Home') + ' | BSEI Shop');
               }
               const settings = data.data.settings;
               if (settings && settings.length > 0) {
@@ -362,8 +359,8 @@ export class AppComponent {
               if (language) {
                 this.util.translations = language;
                 const trl = this.getTitle(this.router.routerState, this.router.routerState.root);
-                this.titleService.setTitle(trl && trl[0] ? this.util.translate(trl[0]) + ' | Galyon By bytescrafter' :
-                  this.util.translate('Home') + ' | Galyon By bytescrafter');
+                this.titleService.setTitle(trl && trl[0] ? this.util.translate(trl[0]) + ' | BSEI Shop' :
+                  this.util.translate('Home') + ' | BSEI Shop');
               }
               const settings = data.data.settings;
               if (settings && settings.length > 0) {
@@ -1464,9 +1461,6 @@ export class AppComponent {
       this.util.errorMessage(this.util.translate('Something went wrong'));
     });
   }
-  // reset password
-  // login system
-
 
   getContent() {
     return 'By clicking on the I agree button click, download or if you use the Application, you agree to be bound by the';
