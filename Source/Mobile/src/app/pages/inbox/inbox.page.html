@@ -53,7 +53,7 @@
 <ion-footer>
   <div class="footer_div">
     <ion-input type="text" [(ngModel)]="msg" (keyup.enter)="sendMessage()"
-      [placeholder]="util.getString('Type Here..')"></ion-input>
+      [placeholder]="util.getString('Type Here..')" style="color: var(--ion-color-dark);"></ion-input>
     <div class="chat_div" (click)="sendMessage()">
       <ion-icon name="send"></ion-icon>
     </div>

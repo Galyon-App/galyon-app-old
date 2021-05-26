@@ -8,11 +8,14 @@
  -->
 <ion-header class="ion-no-border">
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title> {{util.getString('Categories')}} </ion-title>
   </ion-toolbar>
 </ion-header>
-
-
 
 <ion-content class="ion-padding">
   <ion-item *ngFor="let item of dummy">
@@ -35,7 +38,7 @@
 
     <div class="flex_main" *ngFor="let item of categories">
       <div class="flex_div" (click)="change(item.id)">
-        <img [src]="api.mediaURL+ item.cover" alt="" class="cateIcon">
+        <div class="cateIcon" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"></div>
         <div class="detail_div">
           <ion-label class="title_name" [class.boldFont]="selectedIndex === item.id">{{item.name}}</ion-label>
         </div>

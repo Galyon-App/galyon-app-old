@@ -39,20 +39,21 @@ export class CartService {
     public api: ApiService,
     public util: UtilService
   ) {
-    this.util.getKeys('cart').then((data: any) => {
-      if (data && data !== null && data !== 'null') {
-        const userCart = JSON.parse(data);
-        if (userCart && userCart.length > 0) {
-          this.cart = userCart;
-          this.itemId = [...new Set(this.cart.map(item => item.id))];
-          this.calcuate();
+    this.util.getKeys('cart')
+      .then((data: any) => {
+        if (data && data !== null && data !== 'null') {
+          const userCart = data;
+          if (userCart && userCart.length > 0) {
+            this.cart = userCart;
+            this.itemId = [...new Set(this.cart.map(item => item.id))];
+            this.calcuate();
+          } else {
+            this.calcuate();
+          }
         } else {
           this.calcuate();
         }
-      } else {
-        this.calcuate();
-      }
-    });
+      });
   }
   clearCart() {
     this.cart = [];
@@ -217,7 +218,7 @@ export class CartService {
     }
 
     this.util.clearKeys('cart');
-    this.util.setKeys('cart', JSON.stringify(this.cart));
+    this.util.setKeys('cart', this.cart);
     // this.createBulkOrder();
   }
 

@@ -4,7 +4,7 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, MenuController, NavController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -14,12 +14,14 @@ import { UtilService } from './services/util.service';
 import { CartService } from './services/cart.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public appPages: any[] = [];
   selectedIndex: any;
 
@@ -43,18 +45,26 @@ export class AppComponent {
     public cart: CartService,
     private router: Router,
     private menuCtrl: MenuController,
+    private storage: Storage
   ) {
     this.selectedIndex = 0;
     this.initializeApp();
     this.menuCtrl.enable(false, 'menu1');
   }
 
-  initializeApp() {
+  async ngOnInit() {
+    await this.storage.create();
+  }
+
+  async initializeApp() {
     this.platform.ready().then(() => {
+      console.log('%c Copyright 2021 © BytesCrafter', 'background: #222; color: #bada55');
+
       this.statusBar.show();
-      console.log('%c Copyright © 2021 Galyon. ', 'background: #222; color: #bada55');
       this.appPages = this.util.appPage;
       const lng = localStorage.getItem('language');
+      document.body.setAttribute('color-theme', 'light');
+
       if (!lng || lng === null) {
         this.api.get('users/getDefaultSettings').subscribe((data: any) => {
           if (data && data.status === 200 && data.data) {
@@ -166,6 +176,7 @@ export class AppComponent {
           document.documentElement.dir = this.util.direction;
         });
       }
+
       // if (this.platform.is('cordova')) {
       //   setTimeout(async () => {
       //     await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
@@ -189,6 +200,7 @@ export class AppComponent {
       //     await this.oneSignal.endInit();
       //   }, 1000);
       // }
+
       const uid = localStorage.getItem('uid');
       if (uid && uid !== null && uid !== 'null') {
         const param = {

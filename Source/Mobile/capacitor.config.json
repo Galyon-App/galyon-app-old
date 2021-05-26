@@ -1,6 +1,6 @@
 {
   "appId": "app.galyon.user",
-  "appName": "Galyon User",
+  "appName": "BSEI Shop",
   "bundledWebRuntime": true,
   "npmClient": "npm",
   "webDir": "dist",

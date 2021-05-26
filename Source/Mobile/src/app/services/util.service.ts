@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { LoadingController, AlertController, ToastController, NavController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { Storage } from '@ionic/storage-angular';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -129,10 +129,6 @@ export class UtilService {
       },
     ];
   }
-  /*
-  Start Loader
-  Call this method to Start your Loader
-  */
 
   publishAddress(data: any) {
     this.address.next(data);
@@ -222,14 +218,10 @@ export class UtilService {
     this.menuCtrl.toggle();
   }
 
-  getKeys(key): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this.storage.get(key).then((data) => {
-        resolve(data);
-      }).catch(error => {
-        reject(error);
-      });
-    });
+  async getKeys(key) {
+    await this.storage.create();
+    const returning = await this.storage.get(key);
+    return returning;
   }
 
   clearKeys(key) {
@@ -238,17 +230,20 @@ export class UtilService {
 
   setKeys(key, value): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.storage.set(key, value).then((data) => {
-        resolve(data);
-      }).catch(error => {
-        reject(error);
-      });
+      this.storage.set(key, value)
+        .then((data) => {
+          resolve(data);
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   }
 
   gerOrder() {
     return this.orders;
   }
+
   async show(msg?) {
     this.isLoading = true;
     return await this.loadingCtrl.create({

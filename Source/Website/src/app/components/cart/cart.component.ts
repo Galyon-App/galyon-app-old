@@ -54,7 +54,7 @@ export class CartComponent implements OnInit {
     },
     'modal': {},
     'theme': {
-      'color': '#00cdcb'
+      'color': '#CD0090'
     }
   };
   public payPalConfig?: IPayPalConfig;

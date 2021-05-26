@@ -9,6 +9,7 @@ import { UtilService } from '../../services/util.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-categories',
@@ -25,7 +26,8 @@ export class CategoriesPage implements OnInit {
     public util: UtilService,
     private cat: CategoryService,
     private router: Router,
-    public api: ApiService
+    public api: ApiService,
+    private navCtrl: NavController,
   ) {
     this.getCates();
   }
@@ -96,6 +98,10 @@ export class CategoriesPage implements OnInit {
       }
     }
     this.router.navigate(['products'], navData);
+  }
+
+  back() {
+    this.navCtrl.back();
   }
 
 }

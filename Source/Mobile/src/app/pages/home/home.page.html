@@ -202,7 +202,7 @@
               <div class="small_flex">
                 <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.in_stoke === '1'">
                   <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
-                    {{util.getString('Add')}}
+                    {{util.getString('Add to Cart')}}
                     <ion-ripple-effect></ion-ripple-effect>
                   </div>
                 </div>
@@ -354,7 +354,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-infinite-scroll *ngIf="haveStores !== false">
+    <ion-infinite-scroll *ngIf="false">
       <ion-infinite-scroll-content
         loadingSpinner="bubbles"
         loadingText="Loading…">

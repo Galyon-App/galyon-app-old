@@ -24,7 +24,7 @@
     <div class="content_div">
 
       <div class="card_div" *ngFor="let item of cart.cart;let i = index">
-        <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+item.cover+')'">
+        <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}">
           <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
           <div *ngIf="item.in_stoke === '0'" class="notInStoke">
             <ion-label class="text"> {{util.getString('Out of Stoke')}} </ion-label>

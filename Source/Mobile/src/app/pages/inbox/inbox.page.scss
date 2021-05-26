@@ -107,12 +107,12 @@ ion-footer{
         justify-content: space-between;
         align-items: center;
         padding: 15px 20px;
-        background-color: var(--ion-border-color);
+        background-color: var(--ion-color-primary-contrast);
     }
     ion-input{
-        border-radius: 25px;
+        border-radius: 10px;
         border: 1px solid lightgray;
-        padding: 7px 15px !important;
+        padding: 3px 15px !important;
     }
     .chat_div{
         border-radius: 50%;

@@ -121,7 +121,7 @@ export class RegisterPage implements OnInit {
       this.util.showToast(this.util.getString('Please accept terms and conditions'), 'dark', 'bottom');
       return false;
     }
-    if (!this.fname || !this.lname || !this.mobile || !this.email || !this.password || this.ccCode === '' || !this.ccCode) {
+    if (!this.fname || !this.lname || !this.mobile || !this.email || !this.password ) {
       this.util.showToast(this.util.getString('All Fields are required'), 'dark', 'bottom');
       return false;
     }

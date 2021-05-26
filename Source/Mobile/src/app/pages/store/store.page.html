@@ -24,7 +24,7 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-searchbar mode="ios" *ngIf="haveSearch" (ionCancel)="search()" [placeholder]="util.getString('Search')"
-    type="text" (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="always">
+    type="text" (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="always" style="background-color: var(--ion-color-light);">
   </ion-searchbar>
   <div class="topHeader" *ngIf="products?.length">
     <p class="itemsFound">

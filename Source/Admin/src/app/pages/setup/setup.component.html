@@ -14,13 +14,13 @@
                 <div class="login-card card-body auth-body">
                     <form class="md-float-material">
                         <div class="text-center">
-                            <img src="assets/images/big.png" style="width:150px;height:50px" alt="logo.png">
+                            <img src="assets/images/big.png" style="width:auto;height:100px" alt="logo.png">
                         </div>
                         <div class="auth-box">
                             <div class="row m-b-20">
                                 <div class="col-md-12">
-                                    <h3 class="text-left txt-primary">Welcome to Setup Wizard</h3>
-                                    <p class="text-left txt-primary">Create Admin Profile</p>
+                                    <h3 class="text-left txt-primary">Setup Wizard</h3>
+                                    <p class="text-left txt-primary">Create Admin</p>
                                 </div>
                             </div>
                             <hr />
@@ -37,7 +37,7 @@
                             </div>
 
                             <div class="input-group">
-                                <input type="email" class="form-control" placeholder="Your Email Address"
+                                <input type="email" class="form-control" placeholder="Email Address"
                                     [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
                                 <span class="md-line"></span>
                             </div>
@@ -46,27 +46,6 @@
                                 <input type="password" class="form-control" placeholder="Password"
                                     [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
                                 <span class="md-line"></span>
-                            </div>
-
-                            <div class="input-group">
-                                <div class="row">
-                                    <div class="col-3">
-                                        <select name="select" class="form-control" [(ngModel)]="mobileCcode">
-                                            <option *ngFor="let item of util.countrys;" [value]="item.dialling_code">
-                                                {{item.country_name}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="number" class="form-control"
-                                            [placeholder]="api.translate('Mobile Number')" [(ngModel)]="mobile"
-                                            [ngModelOptions]="{standalone: true}">
-                                        <span class="md-line"></span>
-                                    </div>
-                                </div>
-                                <!-- <input type="number" class="form-control" placeholder="Mobile number"
-                                    [(ngModel)]="mobile" [ngModelOptions]="{standalone: true}">
-                                <span class="md-line"></span> -->
                             </div>
 
                             <div class="row m-t-30">

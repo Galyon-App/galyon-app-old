@@ -25,7 +25,6 @@ import { FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IonicStorageModule } from '@ionic/storage-angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -39,6 +38,9 @@ import { VerifyPageModule } from './pages/verify/verify.module';
 import { SelectCountryPageModule } from './pages/select-country/select-country.module';
 import { ComponentsModule } from './components/components.module';
 import { environment } from 'src/environments/environment';
+
+import { Drivers, Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 // 1. Import the libs you need
 import { AngularFireModule } from '@angular/fire';
@@ -54,7 +56,10 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     AppRoutingModule,
     HttpClientModule,
     PipeModule,
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '__bseishop',
+      driverOrder: [ Drivers.IndexedDB, Drivers.LocalStorage]
+    }),
     StoreRatingPageModule,
     ProductRatingPageModule,
     DriverRatingPageModule,
