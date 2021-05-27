@@ -20,7 +20,8 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-searchbar mode="ios" *ngIf="haveSearch" (ionCancel)="search()" [placeholder]="util.getString('Search')"
+  <ion-searchbar mode="ios" *ngIf="haveSearch" (ionCancel)="search()" [placeholder]="util.getString('Search')" 
+    style="background-color: var(--ion-color-light); color: var(--ion-color-dark);"
     type="text" (ionChange)="onSearchChange($event)" [debounce]="250" showCancelButton="always">
   </ion-searchbar>
   <div class="topHeader" *ngIf="products?.length">
@@ -151,7 +152,7 @@
             </div>
             <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stoke === '1'">
               <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
-                {{util.getString('Add')}}
+                {{util.getString('Add to Cart')}}
                 <ion-ripple-effect></ion-ripple-effect>
               </div>
             </div>

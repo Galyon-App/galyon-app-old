@@ -46,7 +46,6 @@ export class DeliveryOptionsPage implements OnInit {
     this.navCtrl.back();
   }
 
-
   getStoreList() {
     const info = [...new Set(this.cart.cart.map(item => item.store_id))];
     console.log('store iddss==================>>', info);
@@ -103,11 +102,11 @@ export class DeliveryOptionsPage implements OnInit {
         }
       };
       this.cart.calcuate();
-      this.router.navigate(['cart/address'], param)
+      this.router.navigate(['address'], param)
     } else {
       console.log('payment');
       this.cart.calcuate();
-      this.router.navigate(['cart/payment']);
+      this.router.navigate(['payment']);
     }
   }
 }

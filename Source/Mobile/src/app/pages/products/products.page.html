@@ -151,7 +151,7 @@
             </div>
             <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stoke === '1'">
               <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
-                {{util.getString('Add')}}
+                {{util.getString('Add to Cart')}}
                 <ion-ripple-effect></ion-ripple-effect>
               </div>
             </div>

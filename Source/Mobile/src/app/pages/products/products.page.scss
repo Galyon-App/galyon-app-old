@@ -166,14 +166,15 @@
                 }
             }
            .btnBtm{
-               display: flex;
+               display: block;
                flex-direction: row-reverse;
                .ripple-parent {
                     position: relative;
                     overflow: hidden;
                     padding: 5px;
                     color: white;
-                    background: #f27474;
+                    text-align: center;
+                    background: var(--ion-color-primary);
                     border-radius: 5px;
                 }
            }
@@ -182,7 +183,7 @@
                 flex-direction: row;
                 justify-content: flex-end;
                 .abs_add{
-                    width: 100px;
+                    width: -webkit-fill-available;
                     background: var(--ion-color-primary);
                     height: 30px;
                     border-radius: 15px;
@@ -249,7 +250,7 @@
             width: 25px;
             background: red;
             left: 5px;
-            top: 2px;
+            top: 5px;
             line-height: 25px;
             border-radius: 50%;
             text-align: center;
@@ -263,17 +264,17 @@
            position: relative;
            width: 100%;
             .kind{
-                height: 15px;
-                width: 15px;
+                height: 20px;
+                width: 20px;
                 position: absolute;
                 right: 0px;
                 top: 0px;
             }
             .offer{
-                height: 15px;
-                width: 15px;
+                height: 20px;
+                width: 20px;
                 position: absolute;
-                right: 20px;
+                right: 25px;
                 top: 0px;
             }
            .price_lbl{

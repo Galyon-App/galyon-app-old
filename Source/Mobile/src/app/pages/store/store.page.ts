@@ -278,7 +278,7 @@ export class StorePage implements OnInit {
         name: this.name
       }
     };
-    this.router.navigate(['inbox'], param);
+    this.router.navigate(['chat'], param);
   }
 
   add(product, index) {
@@ -342,7 +342,7 @@ export class StorePage implements OnInit {
       }
     };
 
-    this.router.navigate(['/home/product'], param);
+    this.router.navigate(['product'], param);
   }
 
   async priceFilter() {

@@ -313,13 +313,13 @@
 
     <!-- Start All Store -->
     <div class="cateLbl" *ngIf="haveStores && stores?.length">
-      <ion-label class="all"> {{util.getString('Open Stores')}} </ion-label>
-      <ion-label class="view" (click)="topStores()">{{util.getString('View All')}}
+      <ion-label class="all"> {{util.getString('All Stores')}} </ion-label>
+      <!-- <ion-label class="view" (click)="topStores()">{{util.getString('View All')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
         </div>
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
-      </ion-label>
+      </ion-label> -->
     </div>
 
     <ion-list *ngIf="haveStores && stores?.length">

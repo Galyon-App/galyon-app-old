@@ -28,6 +28,7 @@ export class OrdersPage implements OnInit {
   ionViewWillEnter() {
     this.getOrders('', false);
   }
+
   getOrders(event, haveRefresh) {
     this.dummy = Array(15);
     this.orders = [];
@@ -45,11 +46,11 @@ export class OrdersPage implements OnInit {
             element.orders = JSON.parse(element.orders);
             element.date_time = moment(element.date_time).format('dddd, MMMM Do YYYY');
             element.orders.forEach(order => {
-              console.log(element.id, '=>', order.variations);
+              //console.log(element.id, '=>', order.variations);
               if (order.variations && order.variations !== '' && typeof order.variations === 'string') {
-                console.log('strings', element.id);
+                //console.log('strings', element.id);
                 order.variations = JSON.parse(order.variations);
-                console.log(order['variant']);
+                //console.log(order['variant']);
                 if (order["variant"] === undefined) {
                   order['variant'] = 0;
                 }
@@ -62,7 +63,7 @@ export class OrdersPage implements OnInit {
         if (haveRefresh) {
           event.target.complete();
         }
-        console.log('orderss==>?', this.orders);
+        //console.log('orderss==>?', this.orders);
       }
     }, error => {
       console.log(error);

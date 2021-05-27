@@ -214,9 +214,9 @@ export class AddAddressPage implements OnInit {
   }
 
   addAddress() {
-    if (this.address === '' || this.landmark === '' || this.house === '' || this.pincode === '') {
+    if (this.address === '' || this.house === '') {
 
-      this.util.errorToast(this.util.getString('All Fields are required'));
+      this.util.errorToast(this.util.getString('House address is required!'));
       return false;
     }
     const geocoder = new google.maps.Geocoder;

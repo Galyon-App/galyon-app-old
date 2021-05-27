@@ -418,11 +418,11 @@ export class HomePage implements OnInit {
       }
     };
 
-    this.router.navigate(['home/product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   goToCatrgory() {
-    this.router.navigate(['categories']);
+    this.router.navigate(['user/home/categories']);
   }
 
   subCate(item) {
@@ -432,7 +432,7 @@ export class HomePage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['home/sub-category'], param);
+    this.router.navigate(['user/home/sub-category'], param);
   }
 
   changeCity() {
@@ -456,7 +456,7 @@ export class HomePage implements OnInit {
           name: cateName
         }
       };
-      this.router.navigate(['home/sub-category'], param);
+      this.router.navigate(['user/home/sub-category'], param);
     } else if (item.type === '1') {
       // product
       console.log('open product');
@@ -466,7 +466,7 @@ export class HomePage implements OnInit {
         }
       };
 
-      this.router.navigate(['home/product'], param);
+      this.router.navigate(['user/home/product'], param);
     } else {
       // link
       console.log('open link');
@@ -482,7 +482,7 @@ export class HomePage implements OnInit {
         from: 'home'
       }
     }
-    this.router.navigate(['/home/products'], navData);
+    this.router.navigate(['user/home/products'], navData);
   }
 
   onSearchChange(event) {
@@ -530,21 +530,20 @@ export class HomePage implements OnInit {
         name: item.name
       }
     };
-    this.router.navigate(['/home/store'], param);
+    this.router.navigate(['user/home/store'], param);
   }
 
   topicked() {
-    this.router.navigate(['/home/top-picked']);
+    this.router.navigate(['user/home/top-picked']);
   }
 
   topStores() {
-    this.router.navigate(['top-stores']);
+    this.router.navigate(['user/home/top-stores']);
   }
 
   allOffers() {
-    this.router.navigate(['all-offers']);
+    this.router.navigate(['user/home/all-offers']);
   }
-
 
   search(event: string) {
     console.log(event);

@@ -1,0 +1,94 @@
+<!-- 
+  Name : Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2020
+ -->
+ <ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center"> {{util.getString('Analytics')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label> {{util.getString('From Date')}} </ion-label>
+    <ion-datetime display-format="YYYY-MM-DD" mode="md" [(ngModel)]="from"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label> {{util.getString('To Date')}} </ion-label>
+    <ion-datetime display-format="YYYY-MM-DD" mode="md" [(ngModel)]="to"></ion-datetime>
+  </ion-item>
+  <ion-row>
+    <ion-col size="6">
+      <ion-button (click)="getStats()" expand="block" fill="outline" size="small">
+        {{util.getString('Get Stats')}}
+      </ion-button>
+    </ion-col>
+    <ion-col size="6" *ngIf="from && to && storeOrder?.length">
+      <ion-button (click)="print()" expand="block" fill="outline" size="small">
+        {{util.getString('Print')}}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="from && to && storeOrder?.length && apiCalled" #invoiceTicket>
+    <h4 style="text-align: center;color: #7ec6aa; font-size: 20px; font-weight: bold; margin-top: 30px;">Galyon</h4>
+    <p style="text-align: center; margin: 0px !important; font-size: 12px;">support@galyon.app</p>
+    <p style="text-align: center; margin: 0px !important; font-size: 12px;">09294294225</p>
+    <p style="text-align: center;color: #ED7669; font-size: 12px; margin: 25px 0;">{{getDate(from)}} to {{getDate(to)}}</p>
+
+    <table class="table" style="font-size: 12px; width: 100%;text-align: center;">
+      <thead>
+        <tr class="text-uppercase" style="font-size: 15px; height: 35px;">
+          <th> {{util.getString('Ordered on')}} </th>
+          <th> {{util.getString('Items')}} </th>
+          <th> {{util.getString('Total')}} </th>
+          <th> {{util.getString('Commission')}} </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of storeOrder" style="height: 30px;">
+          <td>{{item.date_time}}</td>
+          <td>
+            <div style="width: 120px !important; white-space: pre-wrap;">
+              <span *ngFor="let orders of item.orders;let i =index;">
+                {{orders.name}} <span *ngIf="item.orders.length -1 !== i">,</span>
+              </span>
+            </div>
+          </td>
+
+          <td style="font-weight: bold;"> {{util.currecny}} {{item.grand_total}}</td>
+          <td style="font-weight: bold;">{{util.currecny}}{{getCommisions(item.grand_total)}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ion-row>
+      <ion-col size="3"></ion-col>
+      <ion-col size="5">
+        <p style="text-align: right; margin: 5px 0px !important; font-size: 15px;">{{util.getString('Total Earnings')}}</p>
+        <p style="text-align: right; margin: 5px 0px !important; font-size: 15px;"> {{util.getString('Commissions')}}</p>
+        <p style="text-align: right; margin: 7px 0px !important; font-size: 15px; font-weight: bold;">{{util.getString('Amount to Pay')}}</p>
+         <!-- <p
+          style="text-align: right;font-weight: bold;margin: 0px !important;color: #7EC6AA;font-size: 12px;font-weight: bold;;">
+          {{util.getString('Requested on')}}
+        </p> -->
+      </ion-col>
+      <ion-col size="4">
+        <p style="text-align: right; margin: 5px 0px !important; font-size: 15px;">
+          {{util.currecny}}
+          {{totalAmount}}
+        </p>
+        <p style="text-align: right; margin: 5px 0px !important; font-size: 15px;">
+          {{util.currecny}}
+          {{commisionAmount}}
+        </p>
+        <p style="text-align: right; margin: 7px 0px !important; font-size: 15px; font-weight: bold;">
+          {{util.currecny}}
+          {{toPay}}</p>
+          <!-- <p style="color: black !important;margin: 0px !important;text-align: right;font-size: 12px;font-weight: bold;">
+          {{today()}}</p> -->
+      </ion-col>
+    </ion-row>
+
+  </div>
+</ion-content>

@@ -242,7 +242,7 @@ export class TopPickedPage implements OnInit {
       }
     };
 
-    this.router.navigate(['/categories/product'], param);
+    this.router.navigate(['user/categories/product'], param);
   }
   updateFilter() {
     switch (this.selectedFilterID) {

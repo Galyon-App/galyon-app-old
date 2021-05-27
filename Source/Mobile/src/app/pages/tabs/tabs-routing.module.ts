@@ -13,17 +13,11 @@ import { cartGuard } from 'src/app/cartGuard/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'user',
     component: TabsPage,
     children: [
       {
-        path: '',
-        redirectTo: 'home',
-        //pathMatch: 'full'
-      },
-      {
         path: 'home',
-        canActivate: [CityGuard],
         children: [
           {
             path: '',
@@ -31,14 +25,29 @@ const routes: Routes = [
               import('../home/home.module').then(m => m.HomePageModule)
           },
           {
-            path: 'sub-category',
+            path: 'top-stores',
             loadChildren: () =>
-              import('../sub-category/sub-category.module').then(m => m.SubCategoryPageModule)
+              import('../top-stores/top-stores.module').then(m => m.TopStoresPageModule)
           },
           {
             path: 'store',
             loadChildren: () =>
               import('../store/store.module').then(m => m.StorePageModule)
+          },
+          {
+            path: 'categories',
+            loadChildren: () =>
+              import('../categories/categories.module').then(m => m.CategoriesPageModule)
+          },
+          {
+            path: 'sub-category',
+            loadChildren: () =>
+              import('../sub-category/sub-category.module').then(m => m.SubCategoryPageModule)
+          },
+          {
+            path: 'all-offers',
+            loadChildren: () =>
+              import('../all-offers/all-offers.module').then(m => m.AllOffersPageModule)
           },
           {
             path: 'top-picked',
@@ -60,7 +69,8 @@ const routes: Routes = [
             loadChildren: () =>
               import('../product/product.module').then(m => m.ProductPageModule)
           }
-        ]
+        ],
+        canActivate: [CityGuard]
       },
       {
         path: 'message',
@@ -71,7 +81,7 @@ const routes: Routes = [
               import('../chats/chats.module').then(m => m.ChatsPageModule)
           },
           {
-            path: 'message',
+            path: 'chat',
             loadChildren: () =>
               import('../inbox/inbox.module').then(m => m.InboxPageModule)
           },
@@ -171,8 +181,11 @@ const routes: Routes = [
         ],
         canActivate: [AuthGuard]
       },
-      
-    ]
+      {
+        path: '',
+        redirectTo: '/home',
+      },
+    ],
   },
   {
     path: 'login',
@@ -193,6 +206,11 @@ const routes: Routes = [
   {
     path: 'notfound',
     loadChildren: () => import('../notfound/notfound.module').then( m => m.NotfoundPageModule)
+  },
+  {
+    path: '',
+    redirectTo: '/user/home',
+    pathMatch: 'full'
   },
   // {
   //   path: '**',

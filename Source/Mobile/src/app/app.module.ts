@@ -42,6 +42,9 @@ import { environment } from 'src/environments/environment';
 import { Drivers, Storage } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
+import { Printer } from '@ionic-native/printer/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
+
 // 1. Import the libs you need
 // import { AngularFireModule } from '@angular/fire';
 // import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
@@ -79,10 +82,12 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     SplashScreen,
     HTTP,
     Camera,
+    Printer,
     FileTransferObject,
     AndroidPermissions,
     Diagnostic,
     Geolocation,
+    NativeAudio,
     InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

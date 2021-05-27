@@ -18,6 +18,14 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class AccountPage implements OnInit {
 
+  get hasStore(): boolean {
+    return localStorage.getItem('suid') != null && localStorage.getItem('suid') != '';
+  }
+
+  manageStore() {
+    this.router.navigate(['/merchant/orders']);
+  }
+
   constructor(
     private router: Router,
     private navCtrl: NavController,
@@ -46,27 +54,7 @@ export class AccountPage implements OnInit {
     this.cart.coupon = null;
     this.cart.discount = null;
     this.util.clearKeys('cart');
-    this.navCtrl.navigateRoot(['/home']);
-  }
-
-  orders() {
-    this.router.navigate(['/orders']);
-  }
-
-  goToFav() {
-    this.router.navigate(['/favorite']);
-  }
-
-  goToMethods() {
-    this.router.navigate(['/payment-method']);
-  }
-
-  goToHistory() {
-    this.router.navigate(['/payment-history']);
-  }
-
-  goToAbout() {
-    this.router.navigate(['/about']);
+    this.navCtrl.navigateRoot(['user/home']);
   }
 
   editProfile() {
@@ -98,16 +86,14 @@ export class AccountPage implements OnInit {
     this.router.navigate(['address'], param);
   }
 
-  goToContact() {
-    this.router.navigate(['contacts']);
-  }
+  
 
   reset() {
     this.router.navigate(['reset-password']);
   }
 
-  goToChats() {
-    this.router.navigate(['chats']);
+  goToFav() {
+    this.router.navigate(['/favorite']);
   }
 
   goToSupport() {
@@ -117,7 +103,15 @@ export class AccountPage implements OnInit {
         name: 'Support'
       }
     };
-    this.router.navigate(['inbox'], param);
+    this.router.navigate(['chat'], param);
+  }
+
+  goToContact() {
+    this.router.navigate(['contacts']);
+  }
+
+  goToAbout() {
+    this.router.navigate(['about']);
   }
 
   goFaqs() {

@@ -288,7 +288,7 @@ export class FavoritePage implements OnInit {
       }
     };
 
-    this.router.navigate(['/categories/product'], param);
+    this.router.navigate(['product'], param);
   }
 
   async priceFilter() {

@@ -36,7 +36,8 @@
       <div scrollY="true" class="menu-content">
         <ion-row *ngFor="let item of subCates" [class.mnu-selected]="item.id == tabSelected" id="mnu_{{item.id}}">
           <ion-col size="12" class="side_col" (click)="onMenuClick(item.id)">
-            <div class="icon-menu" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"></div>
+            <div class="icon-menu" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/category.png)'}" 
+              style="background-size: cover; background-repeat: no-repeat;"></div>
             <ion-label class="menutext">{{item.name}}</ion-label>
           </ion-col>
         </ion-row>
@@ -160,7 +161,7 @@
               </div>
               <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stoke === '1'">
                 <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
-                  {{util.getString('Add')}}
+                  {{util.getString('Add to Cart')}}
                   <ion-ripple-effect></ion-ripple-effect>
                 </div>
               </div>

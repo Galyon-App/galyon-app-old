@@ -99,6 +99,6 @@ export class ChatsPage implements OnInit {
         uid: localStorage.getItem('uid')
       }
     };
-    this.router.navigate(['inbox'], param);
+    this.router.navigate(['chat'], param);
   }
 }

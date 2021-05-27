@@ -38,7 +38,8 @@
 
     <div class="flex_main" *ngFor="let item of categories">
       <div class="flex_div" (click)="change(item.id)">
-        <div class="cateIcon" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"></div>
+        <div class="cateIcon" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/category.png)'}" 
+          style="background-size: cover; background-repeat: no-repeat;"></div>
         <div class="detail_div">
           <ion-label class="title_name" [class.boldFont]="selectedIndex === item.id">{{item.name}}</ion-label>
         </div>

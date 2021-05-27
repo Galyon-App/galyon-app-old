@@ -155,14 +155,15 @@ ion-label {
     }
 }
  .btnBtm{
-    display: flex;
+    display: block;
     flex-direction: row-reverse;
+    margin-top: 5px;
     .ripple-parent {
         position: relative;
         overflow: hidden;
         padding: 5px;
         color: white;
-        background: #f27474;
+        background: var(--ion-color-primary);
         border-radius: 5px;
         text-align: center;
         font-size: 10px;
@@ -173,7 +174,7 @@ ion-label {
     flex-direction: row;
     justify-content: flex-end;
     .abs_add{
-        width: 100px;
+        width: -webkit-fill-available;
         background: var(--ion-color-primary);
         height: 30px;
         border-radius: 15px;

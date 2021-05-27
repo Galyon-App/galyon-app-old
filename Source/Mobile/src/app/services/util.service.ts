@@ -44,7 +44,7 @@ export class UtilService {
   public favIds: any[] = [];
 
   public general: any;
-
+  public store: any;
 
   public twillo: any;
   public logo: any;
@@ -61,6 +61,9 @@ export class UtilService {
   public user_login: any = '0';
   public reset_pwd: any = '0';
   public active_store: any[] = [];
+
+  private orderChange = new Subject<any>();
+  
   constructor(
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
@@ -128,6 +131,10 @@ export class UtilService {
         icn: 'help-circle-outline'
       },
     ];
+  }
+
+  refreshOrder() {
+    this.orderChange.next();
   }
 
   publishAddress(data: any) {

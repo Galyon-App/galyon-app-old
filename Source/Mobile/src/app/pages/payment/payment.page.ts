@@ -201,14 +201,12 @@ export class PaymentPage implements OnInit {
   back() {
     this.navCtrl.back();
   }
+
   openCoupon() {
     this.router.navigate(['offers']);
   }
 
-
   async createOrder() {
-    //////////// new
-    //////////// new
 
     const storeId = [...new Set(this.cart.cart.map(item => item.store_id))];
     const orderStatus = [];
@@ -248,8 +246,6 @@ export class PaymentPage implements OnInit {
       extra: JSON.stringify(this.cart.userOrderTaxByStores)
     }
 
-    console.log('param----->', param);
-
     this.util.show();
     this.api.post('orders/save', param).subscribe((data: any) => {
       console.log(data);
@@ -257,7 +253,7 @@ export class PaymentPage implements OnInit {
       this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
-      this.navCtrl.navigateRoot(['/orders'], { replaceUrl: true, skipLocationChange: true });
+      this.navCtrl.navigateRoot(['user/orders'], { replaceUrl: true, skipLocationChange: true });
     }, error => {
       console.log(error);
       this.util.hide();

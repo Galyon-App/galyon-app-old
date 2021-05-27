@@ -1,0 +1,62 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+ -->
+ <ion-content>
+
+  <div class="main_div">
+    <ion-row>
+      <ion-col size="4">
+        <img [src]="getCover()" alt="" class="profilePic" onError="this.src='assets/imgs/user.png'">
+      </ion-col>
+      <ion-col size="8">
+        <p class="username">{{getName()}}</p>
+        <p class="email">{{getEmail()}}</p>
+        <ion-button (click)="logout()" shape="round" size="small" color="light"> {{util.getString('EXIT STORE')}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div class="options">
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="getProducts()">
+      <ion-icon name="file-tray-stacked-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('Manage Products')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToSupport()">
+      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('Technical Support')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToContact()">
+      <ion-icon name="mail-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('Contact Us')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToAbout()">
+      <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+      <ion-label>{{util.getString('About Us')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goFaqs()">
+      <ion-icon name="flag-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('FAQs')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goHelp()">
+      <ion-icon name="help-circle-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('Help')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+  </div>
+</ion-content>

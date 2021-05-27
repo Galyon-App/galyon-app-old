@@ -61,8 +61,7 @@
 
       <ion-col size="6" *ngFor="let item of products;let i = index;">
         <div style="border: 1px solid lightgray;">
-          <div class="back_image"
-            [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
+          <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
             (click)="singleProduct(item)">
             <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
             <div *ngIf="item.in_stoke === '0'" class="notInStoke">
@@ -179,7 +178,7 @@
     </ion-row>
     <div *ngIf="mode ==='list'">
       <div class="card_div" *ngFor="let item of products;let i = index">
-        <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+item.cover+')'"
+        <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
           (click)="singleProduct(item)">
           <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
           <div *ngIf="item.in_stoke === '0'" class="notInStoke">
@@ -274,7 +273,7 @@
           <div class="btnBtm"
             *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stoke === '1' && storeIsActive === true">
             <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
-              {{util.getString('Add')}}
+              {{util.getString('Add to Cart')}}
               <ion-ripple-effect></ion-ripple-effect>
             </div>
           </div>

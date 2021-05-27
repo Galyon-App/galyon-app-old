@@ -21,7 +21,7 @@ import { VerifyPage } from '../verify/verify.page';
 export class LoginPage implements OnInit {
   email: any = '';
   password: any = '';
-  loggedIn: boolean;
+  isBusy: boolean;
 
   mobileccCode: any = '';
   mobileNumber: any = '';
@@ -43,26 +43,26 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    console.log('login');
     if (!this.email || !this.password) {
       this.util.showToast(this.util.getString('All Fields are required'), 'dark', 'bottom');
       return false;
     }
+
     const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailfilter.test(this.email)) {
       this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
       return false;
     }
-    this.loggedIn = true;
+
+    this.isBusy = true;
     const param = {
       email: this.email,
       password: this.password
     };
     this.api.post('users/login', param).subscribe((data: any) => {
-      this.loggedIn = false;
-      console.log(data);
+      this.isBusy = false;
       if (data && data.status === 200) {
-        if (data && data.data && data.data.type === 'user') {
+        if (data && data.data) {
           if (data.data.status === '1') {
             localStorage.setItem('uid', data.data.id);
             this.util.userInfo = data.data;
@@ -100,6 +100,27 @@ export class LoginPage implements OnInit {
             });
 
             this.navCtrl.navigateRoot(['']);
+
+            if(data.data.type === 'user') {
+              localStorage.setItem('uid', data.data.id);
+              localStorage.setItem('name', data.data.first_name + ' ' + data.data.last_name);
+              localStorage.setItem('email', data.data.email);
+              localStorage.setItem('cover', data.data.cover);
+              const store = {
+                  id: data.data.id
+              };
+              this.api.post('stores/getByUid', store).subscribe((data: any) => {
+                  if (data && data.status === 200 && data.data && data.data.length) {
+                      this.util.store = data.data[0];
+                      localStorage.setItem('suid', data.data[0].id);
+                      //this.menuController.enable(true);
+                      this.navCtrl.navigateRoot(['']);
+                  }
+              }, error => {
+                  this.util.errorToast(this.util.getString('Something went wrong'));
+                  console.log(error);
+              });
+            }
           } else {
             console.log('not valid');
             Swal.fire({
@@ -127,7 +148,7 @@ export class LoginPage implements OnInit {
             });
           }
         } else {
-          this.util.errorToast(this.util.getString('Not valid user'));
+          this.util.errorToast(this.util.getString('Server did not respond'));
           this.email = '';
           this.password = '';
         }
@@ -138,7 +159,7 @@ export class LoginPage implements OnInit {
       }
     }, error => {
       console.log(error);
-      this.loggedIn = false;
+      this.isBusy = false;
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
 
@@ -180,9 +201,9 @@ export class LoginPage implements OnInit {
       mobile: this.mobileNumber,
       password: this.mobilePassword
     };
-    this.loggedIn = true;
+    this.isBusy = true;
     this.api.post('users/loginWithPhoneAndPassword', param).subscribe((data: any) => {
-      this.loggedIn = false;
+      this.isBusy = false;
       console.log(data);
       if (data && data.status === 200) {
         if (data && data.data && data.data.type === 'user') {
@@ -259,7 +280,7 @@ export class LoginPage implements OnInit {
       }
     }, error => {
       console.log(error);
-      this.loggedIn = false;
+      this.isBusy = false;
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
 
@@ -276,9 +297,9 @@ export class LoginPage implements OnInit {
       mobile: this.mobileNumber,
       cc: this.mobileccCode
     };
-    this.loggedIn = true;
+    this.isBusy = true;
     this.api.post('users/checkMobileNumber', param).subscribe((data: any) => {
-      this.loggedIn = false;
+      this.isBusy = false;
       console.log(data);
       if (data && data.status === 200) {
         console.log('open modal');
@@ -290,7 +311,7 @@ export class LoginPage implements OnInit {
       }
     }, error => {
       console.log(error);
-      this.loggedIn = false;
+      this.isBusy = false;
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
   }
