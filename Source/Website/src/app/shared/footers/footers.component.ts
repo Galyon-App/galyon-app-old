@@ -21,6 +21,7 @@ export class FootersComponent implements OnInit {
   twitter: any = '';
   youtube: any = '';
   playstore: any = '';
+  appstore: any = '';
   email: any = '';
 
   year: any;
@@ -32,6 +33,7 @@ export class FootersComponent implements OnInit {
     this.twitter = environment.social.twitter;
     this.youtube = environment.social.youtube;
     this.playstore = environment.social.playstore;
+    this.appstore = environment.social.appstore;
     this.year = moment().format('YYYY');
 
   }

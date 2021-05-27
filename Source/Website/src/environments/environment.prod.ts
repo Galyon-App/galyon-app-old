@@ -34,6 +34,7 @@ export const environment = {
     fb: 'https://www.facebook.com/bytescrafter/',
     twitter: 'https://twitter.com/bytescrafter',
     youtube: 'https://www.youtube.com/channel/UCHXZUImmr9aSKmYpKXqN9vQ',
-    playstore: 'https://play.google.com/store/apps/dev?id=5394145917362507576'
+    playstore: 'https://play.google.com/store/apps/dev?id=5394145917362507576',
+    appstore: 'https://www.apple.com/app-store/'
   }
 };
