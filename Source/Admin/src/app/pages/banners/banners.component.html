@@ -77,7 +77,7 @@
                                 *ngFor="let item of banners | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
                                 <td><a href="javascript:;"><img class="img-responsive"
                                             style="height: 100px;width: 100px;" [src]="api.mediaURL + item.cover"
-                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
+                                            onError="this.src='assets/images/store.png'" alt="chat-user"></a>
                                 </td>
                                 <td>
                                     <span *ngIf="item.position === '0'">Top</span>

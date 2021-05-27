@@ -215,7 +215,7 @@ export class ManageStoresComponent implements OnInit {
   }
 
   getImage(cover) {
-    return cover ? cover : 'assets/icon.png';
+    return cover ? cover : 'assets/images/store.png';
   }
   getDate(date) {
     return moment(date).format('llll');

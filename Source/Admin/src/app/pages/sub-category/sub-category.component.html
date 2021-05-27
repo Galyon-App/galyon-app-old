@@ -67,7 +67,7 @@
                                 *ngFor="let item of sub | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
                                 <td><a href="javascript:;"><img class="img-responsive"
                                             style="height: 50px;width: 70px;border-radius: 10px;"
-                                            [src]="api.mediaURL + item.cover" onError="this.src='assets/icon.png'"
+                                            [src]="api.mediaURL + item.cover" onError="this.src='assets/images/category.png'"
                                             alt="chat-user"></a>
                                 </td>
                                 <td>{{item.name}}</td>
