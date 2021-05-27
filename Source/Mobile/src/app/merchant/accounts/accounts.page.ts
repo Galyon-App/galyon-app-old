@@ -43,7 +43,7 @@ export class AccountsPage implements OnInit {
         name: 'Technical Support'
       }
     };
-    this.router.navigate(['inbox'], param);
+    this.router.navigate(['chat'], param);
   }
 
 
