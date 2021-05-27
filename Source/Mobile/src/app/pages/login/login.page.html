@@ -20,11 +20,11 @@
       <ion-input type="password" [placeholder]="util.getString('Password')" [(ngModel)]="password">
         <ion-icon name="key" slot="icon-only"></ion-icon>
       </ion-input>
-      <ion-label class="forgot" *ngIf="!loggedIn" (click)="reset()"> {{util.getString('Forgot Password ?')}}
+      <ion-label class="forgot" *ngIf="!isBusy" (click)="reset()"> {{util.getString('Forgot Password ?')}}
       </ion-label>
-      <ion-button expand="block" [disabled]="loggedIn" (click)="login()">
-        <span *ngIf="!loggedIn"> {{util.getString('SIGN IN')}} </span>
-        <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+      <ion-button expand="block" [disabled]="isBusy" (click)="login()">
+        <span *ngIf="!isBusy"> {{util.getString('SIGN IN')}} </span>
+        <ion-spinner name="circular" *ngIf="isBusy"></ion-spinner>
       </ion-button>
 
       <ion-label class="lbl" (click)="create()"> {{util.getString("Don't have an account ?")}} <span
@@ -50,11 +50,11 @@
       <ion-input [(ngModel)]="mobilePassword" name="password" [placeholder]="util.getString('Password')"
         type="password">
       </ion-input>
-      <ion-label class="forgot" *ngIf="!loggedIn" (click)="reset()"> {{util.getString('Forgot Password ?')}}
+      <ion-label class="forgot" *ngIf="!isBusy" (click)="reset()"> {{util.getString('Forgot Password ?')}}
       </ion-label>
-      <ion-button expand="block" [disabled]="loggedIn" (click)="onPhoneLogin()">
-        <span *ngIf="!loggedIn"> {{util.getString('SIGN IN')}} </span>
-        <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+      <ion-button expand="block" [disabled]="isBusy" (click)="onPhoneLogin()">
+        <span *ngIf="!isBusy"> {{util.getString('SIGN IN')}} </span>
+        <ion-spinner name="circular" *ngIf="isBusy"></ion-spinner>
       </ion-button>
 
       <ion-label class="lbl" (click)="create()"> {{util.getString("Don't have an account ?")}} <span
@@ -79,11 +79,11 @@
         </ion-col>
       </ion-row>
 
-      <ion-label class="forgot" *ngIf="!loggedIn" (click)="reset()"> {{util.getString('Forgot Password ?')}}
+      <ion-label class="forgot" *ngIf="!isBusy" (click)="reset()"> {{util.getString('Forgot Password ?')}}
       </ion-label>
-      <ion-button expand="block" [disabled]="loggedIn" (click)="onOTPLogin()">
-        <span *ngIf="!loggedIn"> {{util.getString('SIGN IN')}} </span>
-        <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+      <ion-button expand="block" [disabled]="isBusy" (click)="onOTPLogin()">
+        <span *ngIf="!isBusy"> {{util.getString('SIGN IN')}} </span>
+        <ion-spinner name="circular" *ngIf="isBusy"></ion-spinner>
       </ion-button>
 
       <ion-label class="lbl" (click)="create()"> {{util.getString("Don't have an account ?")}} <span
