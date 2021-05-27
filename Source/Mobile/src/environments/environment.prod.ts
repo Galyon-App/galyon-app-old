@@ -18,7 +18,7 @@ export const environment = {
     measurementId: "G-TM037WR38V"
   },
   google: {
-    mapApi: "AIzaSyAJqQislvovvHN9aLGtmkhXiDtM1Yyvmko"
+    mapApi: "AIzaSyACzCWr1IagoMb1lJuu798DrUCMVM5utpM"
   },
   onesignal: {
     appId: '87415a2c-b322-4d70-909f-a3e387c27c8b',
