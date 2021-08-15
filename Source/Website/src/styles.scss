@@ -177,14 +177,14 @@ body {
       padding-right: 20px;
       .discount_badge {
         position: absolute;
-        left: 10px;
+        left: 15px;
         color: white;
-        background-color: #f6601f;
-        padding: 5px;
+        background-color: #cd00909d;
+        padding: 10px;
         border-radius: 5px;
-        font-size: 10px;
-        line-height: 10px;
-        top: 5px;
+        font-size: 15px;
+        line-height: 15px;
+        top: 15px;
       }
       .notInStoke {
         position: absolute;
@@ -203,12 +203,11 @@ body {
         }
       }
       .kind {
-        height: 15px;
-        width: 15px;
+        height: 45px;
+        width: auto;
         position: absolute;
-        right: 20px;
-        top: 5px;
-        background-color: white;
+        right: 12px;
+        top: 12px;
       }
     }
     .product-overlay {

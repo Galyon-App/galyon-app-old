@@ -16,8 +16,8 @@
       <div class="card_div">
         <div class="image_div" (click)="openStore(item)"
           [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/user.png)'}">
-          <img src="assets/imgs/open.png" class="isOpen" alt="Veg" *ngIf="item.isOpen && item.isClosed ==='1'">
-          <img src="assets/imgs/close.png" class="isOpen" alt="Non Veg" *ngIf="!item.isOpen || item.isClosed === '0'">
+          <img src="assets/imgs/open.png" class="isOpen" alt="Hot" *ngIf="item.isOpen && item.isClosed ==='1'">
+          <img src="assets/imgs/close.png" class="isOpen" alt="Non" *ngIf="!item.isOpen || item.isClosed === '0'">
         </div>
         <div class="desc_div" (click)="openStore(item)">
           <p class="pro_name">
