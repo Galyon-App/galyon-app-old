@@ -51,8 +51,7 @@ export class UsersComponent implements OnInit {
   }
 
   getUsers() {
-    this.api.get('users/getUsers').then((data: any) => {
-      console.log('users', data);
+    this.api.get('users/getAllUsers').then((data: any) => {
       this.dummy = [];
       if (data && data.status === 200 && data.data.length) {
         this.users = data.data;

@@ -214,6 +214,23 @@ class Users extends MY_Controller{
         }
     }
 
+    public function getAllUsers(){
+        $auth  = $this->input->get_request_header('Basic');
+        if($auth && $auth == $this->config->item('encryption_key')){
+             $data = $this->Users_model->getAllUsers();
+                foreach($data as $keys){
+                    $keys->password = null;
+                }
+                if($data != null){
+                    echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
+                }else{
+                echo $this->json->response($this->db->error(),$this->_Errmessage,$this->_statusErr);
+            }
+        }else{
+            echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
+        }
+    }
+
     public function sendEmail(){
         $agent = $this->input->request_headers();
         $saveLogInfo = array(

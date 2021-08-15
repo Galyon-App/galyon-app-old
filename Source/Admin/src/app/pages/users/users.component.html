@@ -28,12 +28,18 @@
                                 <th>Cover</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Type</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of dummy ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
                                 <td>
                                     <ngx-skeleton-loader count="1"
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
@@ -72,6 +78,9 @@
                                 </td>
                                 <td>
                                     {{item.email}}
+                                </td>
+                                <td>
+                                    {{item.type}}
                                 </td>
                                 <td><button type="button" [className]="getClass(item.status)"
                                         (click)="changeStatus(item)">{{item.status === '1' ? 'Active' :'Deactive'}}</button>

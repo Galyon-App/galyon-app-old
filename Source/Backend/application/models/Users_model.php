@@ -155,6 +155,12 @@ class Users_model extends Main_model
         return $data;
     }
 
+    public function getAllUsers(){
+        $where = "type != 'admin'";
+        $data = $this->get($this->table_name, $where, 'results');
+        return $data;
+    }
+
     public function allEmails(){
         $sql = "SELECT group_concat(email separator ',') as email FROM `users`";
         $query = $this->db->query($sql);
