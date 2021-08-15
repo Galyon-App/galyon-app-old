@@ -49,8 +49,16 @@ class Cities extends MY_Controller{
             echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
         }
     }
+
+    public function all() {
+        $data = $this->Cities_model->get_all();
+        if($data != null) {
+            echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
+        } else {
+            echo $this->json->response($this->db->error(),$this->_Errmessage,$this->_statusErr);
+        }
+    }
     
-    // get request
     public function getById(){
         $agent = $this->input->request_headers();
         $saveLogInfo = array(
@@ -76,7 +84,6 @@ class Cities extends MY_Controller{
             echo $this->json->response('No Token Found',$this->_Errmessage,$this->_statusErr);
         }
     }
-
  
     public function editList(){
         $agent = $this->input->request_headers();
@@ -108,7 +115,6 @@ class Cities extends MY_Controller{
         }
     }
 
-
     public function check_array_values($array,$table_array){
         if(isset($array) && !empty($array)){
             $keys = [];
@@ -134,7 +140,6 @@ class Cities extends MY_Controller{
         }
     }
 
-    // post request
     public function save(){
         $agent = $this->input->request_headers();
         $saveLogInfo = array(
@@ -192,7 +197,6 @@ class Cities extends MY_Controller{
         }
     }
 
-
     public function check_params($data,$array_compare){
          $items = array();
           foreach($data as $key=>$value){
@@ -201,5 +205,5 @@ class Cities extends MY_Controller{
            $result=array_diff($items,$array_compare);
            return $result;
     }
- 
+
 }

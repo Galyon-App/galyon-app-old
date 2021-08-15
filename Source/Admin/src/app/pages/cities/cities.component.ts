@@ -52,7 +52,7 @@ export class CitiesComponent implements OnInit {
   getCategory() {
     this.cities = [];
     this.dummy = Array(10);
-    this.api.get('cities').then((datas: any) => {
+    this.api.get('cities/all').then((datas: any) => {
       console.log(datas);
       this.dummy = [];
       if (datas && datas.data.length) {
