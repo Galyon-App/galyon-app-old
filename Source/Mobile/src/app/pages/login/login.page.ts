@@ -412,6 +412,6 @@ export class LoginPage implements OnInit {
   }
 
   goback() {
-    this.router.navigate(['home']);
+    this.router.navigate(['user/home']);
   }
 }
