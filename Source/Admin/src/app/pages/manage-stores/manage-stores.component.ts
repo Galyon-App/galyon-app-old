@@ -246,10 +246,7 @@ export class ManageStoresComponent implements OnInit {
 
   updateVenue() {
 
-    console.log(this.name, this.address, this.descritions, this.time,
-      this.openTime, this.closeTime);
-    if (this.name === '' || this.address === '' || this.descritions === '' || this.openTime === '' || this.closeTime === ''
-      || !this.openTime || !this.closeTime) {
+    if (this.name === '' || this.address === '' || this.openTime === '' || this.closeTime === '' || !this.openTime || !this.closeTime) {
       this.error(this.api.translate('All Fields are required'));
       return false;
     }
@@ -284,7 +281,7 @@ export class ManageStoresComponent implements OnInit {
       id: this.id,
       commission: this.commission
     };
-    console.log('param', param);
+    
     this.spinner.show();
     this.api.post('stores/editList', param).then((datas: any) => {
       console.log(datas);
@@ -295,7 +292,6 @@ export class ManageStoresComponent implements OnInit {
         this.spinner.hide();
         this.error(this.api.translate('Something went wrong'));
       }
-
     }, error => {
       this.spinner.hide();
       console.log(error);
