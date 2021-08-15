@@ -28,10 +28,10 @@
       <mdb-carousel class="carousel slide carousel-fade" [animation]="'fade'">
         <mdb-carousel-item *ngFor="let item of banners " (click)="openLink(item)">
           <div class="view w-100 banner_back" mdbWavesEffect
-            [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.png)'}">
+            [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/placeholder.png)'}" style="background-position-y: top; height: 512px;">
           </div>
           <div class="carousel-caption">
-            <p>{{item.message}}</p>
+            <!-- <p>{{item.message}}</p> -->
           </div>
         </mdb-carousel-item>
       </mdb-carousel>
