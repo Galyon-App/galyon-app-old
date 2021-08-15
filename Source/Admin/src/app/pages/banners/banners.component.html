@@ -13,13 +13,10 @@
     </div>
     <div class="col-md-12">
         <div class="card">
-            <div class="card-body">
-                <h5>All Banners </h5>
-            </div>
-
             <div class="card-body reset-table p-t-0">
-                <div class="form-group row">
+                <div class="form-group row" style="margin: 2em 0;">
                     <div class="col-sm-4">
+                        <h5>All Banners </h5>
                     </div>
                     <div class="col-sm-4">
                     </div>
@@ -35,7 +32,7 @@
                                 <th>Cover</th>
                                 <th>Position</th>
                                 <th>Type</th>
-                                <th>Value</th>
+                                <th>Redirect</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -76,7 +73,7 @@
                             <tr
                                 *ngFor="let item of banners | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
                                 <td><a href="javascript:;"><img class="img-responsive"
-                                            style="height: 100px;width: 100px;" [src]="api.mediaURL + item.cover"
+                                            style="height: 100px; width: auto;" [src]="api.mediaURL + item.cover"
                                             onError="this.src='assets/images/store.png'" alt="chat-user"></a>
                                 </td>
                                 <td>
