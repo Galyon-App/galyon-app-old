@@ -140,8 +140,8 @@ export class HomeComponent implements OnInit {
     this.products = [];
     this.bottomcategory = [];
     this.dummyBottomCates = Array(2);
-    const city = localStorage.getItem('city');
-    console.log('city', localStorage.getItem('city'));
+    const city = localStorage.getItem('website-current-city');
+    console.log('city', localStorage.getItem('website-current-city'));
     if (city && city != null && city !== 'null') {
       this.haveCity = true;
       this.getInit();
@@ -226,7 +226,7 @@ export class HomeComponent implements OnInit {
     this.topProducts = [];
     this.products = [];
     const param = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('website-current-city')
     };
     this.api.post('stores/getByCity', param).then((stores: any) => {
       console.log('stores by city', stores);

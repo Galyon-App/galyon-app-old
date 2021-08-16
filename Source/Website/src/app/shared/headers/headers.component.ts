@@ -183,10 +183,10 @@ export class HeadersComponent implements OnInit {
     } else if (action === 'faqs') {
       this.router.navigate(['faq']);
     } else {
-      const city = localStorage.getItem('city');
+      const city = localStorage.getItem('website-current-city');
       localStorage.clear();
       this.util.userInfo = null;
-      localStorage.setItem('city', city);
+      localStorage.setItem('website-current-city', city);
       this.router.navigate(['']);
     }
   }
@@ -197,7 +197,7 @@ export class HeadersComponent implements OnInit {
       this.dummy = [];
       if (data && data.status === 200 && data.data && data.data.length) {
         this.cities = data.data.filter(x => x.status === '1');
-        const id = localStorage.getItem('city');
+        const id = localStorage.getItem('website-current-city');
         if (id && id !== null && id !== 'null') {
           this.cityId = id;
           const city = this.cities.filter(x => x.id === this.cityId);
@@ -267,7 +267,7 @@ export class HeadersComponent implements OnInit {
     console.log('id', this.cityId);
     this.cityId = item.id;
 
-    localStorage.setItem('city', this.cityId);
+    localStorage.setItem('website-current-city', this.cityId);
     const city = this.cities.filter(x => x.id === this.cityId);
     this.util.city = city[0];
     this.cityName = city[0].name;
@@ -317,7 +317,7 @@ export class HeadersComponent implements OnInit {
     console.log(event);
     if (event && event !== '') {
       const param = {
-        id: localStorage.getItem('city'),
+        id: localStorage.getItem('website-current-city'),
         search: event
       };
       this.util.start();

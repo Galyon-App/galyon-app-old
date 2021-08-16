@@ -157,14 +157,14 @@ export class CategoriesComponent implements OnInit {
 
   getProducts() {
     const stores = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('website-current-city')
     };
     this.api.post('stores/getByCity', stores).then((stores: any) => {
       if (stores && stores.status === 200 && stores.data && stores.data.length) {
         this.util.active_store = [...new Set(stores.data.map(item => item.uid))];
         const param = {
           id: this.catID,
-          cid: localStorage.getItem('city'),
+          cid: localStorage.getItem('website-current-city'),
           sid: this.subId,
           limit: this.limit * 12
         };

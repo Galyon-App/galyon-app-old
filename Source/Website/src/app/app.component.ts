@@ -237,10 +237,10 @@ export class AppComponent {
       console.log(data);
       if (data && data.status === 200 && data.data && data.data.length) {
         const cities = data.data.filter(x => x.status === '1');
-        const id = localStorage.getItem('city');
+        const id = localStorage.getItem('website-current-city');
         if (id && id !== null && id !== 'null') {
         } else {
-          localStorage.setItem('city', cities[0].id);
+          localStorage.setItem('website-current-city', cities[0].id);
           this.util.publishCity('push');
         }
         this.chmod.detectChanges();

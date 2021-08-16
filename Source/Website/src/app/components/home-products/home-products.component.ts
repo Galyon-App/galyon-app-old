@@ -47,7 +47,7 @@ export class HomeProductsComponent implements OnInit {
 
   getTop() {
     const storesparma = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('website-current-city')
     };
     this.api.post('stores/getByCity', storesparma).then((stores: any) => {
       console.log('stores', stores)
@@ -57,7 +57,7 @@ export class HomeProductsComponent implements OnInit {
         this.util.active_store = [...new Set(this.stores.map(item => item.uid))];
 
         const param = {
-          id: localStorage.getItem('city'),
+          id: localStorage.getItem('website-current-city'),
           limit: this.limit * 12
         };
         this.api.post('products/getTopRatedAll', param).then((data: any) => {
@@ -150,7 +150,7 @@ export class HomeProductsComponent implements OnInit {
   getOffers() {
 
     const storesparma = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('website-current-city')
     };
     this.api.post('stores/getByCity', storesparma).then((stores: any) => {
       this.stores = [];
@@ -159,7 +159,7 @@ export class HomeProductsComponent implements OnInit {
         this.util.active_store = [...new Set(this.stores.map(item => item.uid))];
 
         const param = {
-          id: localStorage.getItem('city'),
+          id: localStorage.getItem('website-current-city'),
           limit: this.limit * 12
         };
         this.api.post('products/getOffersList', param).then((data: any) => {

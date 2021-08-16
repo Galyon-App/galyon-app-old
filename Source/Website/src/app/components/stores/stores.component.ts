@@ -33,7 +33,7 @@ export class StoresComponent implements OnInit {
 
   getStore() {
     const param = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('website-current-city')
     };
     this.api.post('stores/getByCity', param).then((stores: any) => {
       console.log('stores by city', stores);

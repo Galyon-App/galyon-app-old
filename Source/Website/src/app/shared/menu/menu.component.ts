@@ -46,7 +46,7 @@ export class MenuComponent implements OnInit {
       if (data && data.status === 200 && data.data.length) {
         this.cities = data.data.filter(x => x.status === '1');;
         console.log('active cities', this.cities);
-        const selected = this.cities.filter(x => x.id === localStorage.getItem('city'));
+        const selected = this.cities.filter(x => x.id === localStorage.getItem('website-current-city'));
         if (selected && selected.length > 0) {
           this.seletectCities = selected[0].name;
         }
@@ -81,7 +81,7 @@ export class MenuComponent implements OnInit {
 
   selectedCity(item) {
     console.log(item);
-    localStorage.setItem('city', item.id);
+    localStorage.setItem('website-current-city', item.id);
     window.location.reload();
   }
 
@@ -89,7 +89,7 @@ export class MenuComponent implements OnInit {
     console.log(event);
     if (this.terms && this.terms !== '') {
       const param = {
-        id: localStorage.getItem('city'),
+        id: localStorage.getItem('website-current-city'),
         search: this.terms
       };
       this.util.start();

@@ -319,7 +319,7 @@ export class ProductComponent implements OnInit {
     const param = {
       id: this.subId,
       limit: 5,
-      cid: localStorage.getItem('city')
+      cid: localStorage.getItem('website-current-city')
     };
     this.related = [];
     this.dummyTopProducts = Array(5);
