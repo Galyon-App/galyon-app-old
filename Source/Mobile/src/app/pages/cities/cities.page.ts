@@ -27,7 +27,7 @@ export class CitiesPage implements OnInit {
     public cart: CartService
   ) {
     this.clicked = false;
-    const id = localStorage.getItem('city');
+    const id = localStorage.getItem('mobile-current-city');
     if (id && id !== null && id !== 'null') {
       this.id = id;
     }
@@ -60,7 +60,7 @@ export class CitiesPage implements OnInit {
   selected() {
     console.log('id', this.id);
     this.clicked = true;
-    localStorage.setItem('city', this.id);
+    localStorage.setItem('mobile-current-city', this.id);
     const city = this.cities.filter(x => x.id === this.id);
     this.util.city = city[0];
     this.util.publishCity(city);

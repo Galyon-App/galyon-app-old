@@ -144,7 +144,7 @@ export class HomePage implements OnInit {
     this.topProducts = [];
     this.products = [];
     const param = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('mobile-current-city')
     }
     this.api.post('stores/getByCity', param).subscribe((stores: any) => {
       console.log('stores by city', stores);
@@ -493,7 +493,7 @@ export class HomePage implements OnInit {
   }
 
   getCity() {
-    const city = localStorage.getItem('city');
+    const city = localStorage.getItem('mobile-current-city');
     console.log('selected city===>>', city);
     if (city && city !== null && city !== 'null') {
       const param = {
@@ -549,7 +549,7 @@ export class HomePage implements OnInit {
     console.log(event);
     if (event && event !== '') {
       const param = {
-        id: localStorage.getItem('city'),
+        id: localStorage.getItem('mobile-current-city'),
         search: event
       };
       this.util.show();

@@ -63,7 +63,7 @@ export class SubCategoryPage implements OnInit {
         this.subCates = data.data.filter(x => x.status === '1');
         this.tabSelected = this.subCates[0].id;
         const param = {
-          id: localStorage.getItem('city')
+          id: localStorage.getItem('mobile-current-city')
         }
         this.api.post('stores/getByCity', param).subscribe((stores: any) => {
           if (stores && stores.status === 200 && stores.data && stores.data.length) {
@@ -89,7 +89,7 @@ export class SubCategoryPage implements OnInit {
   getSubProducts(limit, event) {
     const city = {
       id: this.id,
-      cid: localStorage.getItem('city'),
+      cid: localStorage.getItem('mobile-current-city'),
       sid: this.tabSelected,
       limit: this.limit * 10
     }

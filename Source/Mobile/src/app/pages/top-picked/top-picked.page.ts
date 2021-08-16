@@ -115,7 +115,7 @@ export class TopPickedPage implements OnInit {
 
   getProducts() {
     const param = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('mobile-current-city')
     };
     this.api.post('stores/getByCity', param).subscribe((stores: any) => {
       if (stores && stores.status === 200 && stores.data && stores.data.length) {

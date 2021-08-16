@@ -68,7 +68,7 @@ export class TopStoresPage implements OnInit {
 
   getStores() {
     const param = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('mobile-current-city')
     }
     this.api.post('stores/getByCity', param).subscribe((stores: any) => {
       console.log('stores by city', stores);

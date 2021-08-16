@@ -203,7 +203,7 @@ export class ProductsPage implements OnInit {
   getProducts(limit, event) {
 
     const stores = {
-      id: localStorage.getItem('city')
+      id: localStorage.getItem('mobile-current-city')
     };
     this.api.post('stores/getByCity', stores).subscribe((stores: any) => {
       if (stores && stores.status === 200 && stores.data && stores.data.length) {
@@ -211,7 +211,7 @@ export class ProductsPage implements OnInit {
         const param = {
           id: this.id,
           limit: this.limit * 10,
-          cid: localStorage.getItem('city')
+          cid: localStorage.getItem('mobile-current-city')
         };
 
         this.api.post('products/getBySid', param).subscribe((data: any) => {

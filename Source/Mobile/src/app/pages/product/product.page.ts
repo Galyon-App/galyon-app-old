@@ -113,7 +113,7 @@ export class ProductPage implements OnInit {
     const param = {
       id: this.subId,
       limit: 5,
-      cid: localStorage.getItem('city')
+      cid: localStorage.getItem('mobile-current-city')
     };
     this.related = [];
     this.api.post('products/getRelated', param).subscribe((data: any) => {

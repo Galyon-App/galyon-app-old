@@ -21,8 +21,8 @@ export class CityGuard implements CanActivate {
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        const city = localStorage.getItem('city');
-        console.log('city', localStorage.getItem('city'));
+        const city = localStorage.getItem('mobile-current-city');
+        console.log('city', localStorage.getItem('mobile-current-city'));
         if (city && city != null && city !== 'null') {
             this.menuController.enable(true);
             return true;
