@@ -1140,7 +1140,7 @@
 
 .md-tabs .nav-link {
   &.active {
-    border-bottom: 4px solid #0073aa;
+    border-bottom: 4px solid #df1c77;
   }
   transition: all 0.4s ease-in-out;
   border-bottom: 4px solid transparent;
@@ -1157,9 +1157,9 @@
 }
 
 .md-tabs .nav-link.active {
-  border-bottom: 4px solid #0073aa;
+  border-bottom: 4px solid #df1c77;
   &:focus, &:hover {
-    border-bottom: 4px solid #0073aa;
+    border-bottom: 4px solid #df1c77;
   }
 }
 
@@ -1215,10 +1215,10 @@
 .md-tabs {
   .nav-link {
     &.active {
-      border-bottom: 4px solid #0073aa;
-      border-bottom: 4px solid #0073aa;
+      border-bottom: 4px solid #df1c77;
+      border-bottom: 4px solid #df1c77;
       &:focus, &:hover {
-        border-bottom: 4px solid #0073aa;
+        border-bottom: 4px solid #df1c77;
       }
     }
     transition: all 0.4s ease-in-out;
@@ -1238,11 +1238,11 @@
     }
     .nav-link {
       &.active {
-        border-top: 4px solid #0073aa;
-        border-top: 4px solid #0073aa;
+        border-top: 4px solid #df1c77;
+        border-top: 4px solid #df1c77;
         border-bottom: 0px solid transparent;
         &:focus, &:hover {
-          border-top: 4px solid #0073aa;
+          border-top: 4px solid #df1c77;
           border-bottom: 0px solid transparent;
         }
       }
@@ -1255,7 +1255,7 @@
         border-bottom: 0px solid transparent;
       }
       &.active:hover {
-        border-top: 4px solid #0073aa;
+        border-top: 4px solid #df1c77;
       }
     }
   }
@@ -1272,21 +1272,21 @@
       }
     }
     .nav-link.active {
-      border-left: 4px solid #0073aa;
+      border-left: 4px solid #df1c77;
       border-bottom: 0px solid transparent;
       &:focus, &:hover {
-        border-left: 4px solid #0073aa;
+        border-left: 4px solid #df1c77;
         border-bottom: 0px solid transparent;
       }
     }
     .nav-item .nav-link.active {
       border: 0px solid transparent;
-      border-left: 4px solid #0073aa;
+      border-left: 4px solid #df1c77;
     }
     .nav-tabs {
       .nav-link {
         &.active:hover {
-          border-left: 4px solid #0073aa;
+          border-left: 4px solid #df1c77;
         }
         &:hover {
           border: 0px solid transparent;
@@ -1319,21 +1319,21 @@
       }
     }
     .nav-link.active {
-      border-right: 4px solid #0073aa;
+      border-right: 4px solid #df1c77;
       border-bottom: 0px solid transparent;
       &:focus, &:hover {
-        border-right: 4px solid #0073aa;
+        border-right: 4px solid #df1c77;
         border-bottom: 0px solid transparent;
       }
     }
     .nav-item .nav-link.active {
       border: 0px solid transparent;
-      border-right: 4px solid #0073aa;
+      border-right: 4px solid #df1c77;
     }
     .nav-tabs {
       .nav-link {
         &.active:hover {
-          border-right: 4px solid #0073aa;
+          border-right: 4px solid #df1c77;
         }
         &:hover {
           border: 0px solid transparent;
@@ -1363,7 +1363,7 @@
     }
     img {
       width: 100px;
-      border: 4px solid #0073aa;
+      border: 4px solid #df1c77;
       + .quote {
         position: absolute;
         height: 25px;
@@ -1439,8 +1439,8 @@
 }
 
 .ng2-tag-input {
-  border-bottom: 1px solid #0073aa !important;
-  border: 1px solid #0073aa;
+  border-bottom: 1px solid #df1c77 !important;
+  border: 1px solid #df1c77;
   padding: 5px !important;
 }
 
@@ -1471,7 +1471,7 @@ delete-icon:hover {
 }
 
 .bootstrap tag {
-  background: #0073aa !important;
+  background: #df1c77 !important;
 }
 
 /* components/forms/advance-validations */
@@ -1651,7 +1651,7 @@ delete-icon:hover {
 ng-select.ng-select > div {
   border: none;
   > div.single {
-    background-color: #0073aa;
+    background-color: #df1c77;
     color: #fff;
     padding: 8px 30px 8px 20px;
     border-radius: 4px;
@@ -1679,7 +1679,7 @@ ng-select.ng-select > div {
 }
 
 .ng-select select-dropdown .highlighted {
-  background-color: #0073aa;
+  background-color: #df1c77;
 }
 
 .famfamfam-flags {
@@ -1701,8 +1701,8 @@ ng-select.ng-select > div > div {
         font-weight: bold;
         margin-right: 2px;
       }
-      background-color: #0073aa !important;
-      border: 1px solid #0073aa !important;
+      background-color: #df1c77 !important;
+      border: 1px solid #df1c77 !important;
       padding: 5px 15px !important;
       color: #fff !important;
       margin: 0 2px 2px !important;
@@ -1832,7 +1832,7 @@ ngx-datatable.data-table {
         background-color: transparent !important;
       }
       &.active a {
-        background-color: #0073AA;
+        background-color: #df1c77;
         color: #fff;
       }
     }
@@ -1912,13 +1912,13 @@ ngx-datatable.data-table {
 
 .ngx-datatable.data-table {
   &.single-selection .datatable-body-row.active:hover .datatable-row-group, &.multi-selection .datatable-body-row.active:hover .datatable-row-group, &.single-selection .datatable-body-row.active .datatable-row-group, &.multi-selection .datatable-body-row.active .datatable-row-group {
-    background: #0073aa !important;
+    background: #df1c77 !important;
     color: #FFF !important;
   }
 }
 
 .selection-cell .datatable-body-cell.active {
-  background: #0073aa !important;
+  background: #df1c77 !important;
   color: #FFF !important;
 }
 
@@ -2103,7 +2103,7 @@ agm-map, vector_map {
   .table {
     td.active, tr.active {
       box-shadow: 0 0 0 rgba(0, 0, 0, 0.87) inset;
-      background: #0073aa !important;
+      background: #df1c77 !important;
       color: #fff !important;
       /*border-radius: 5px;*/
     }
@@ -2162,12 +2162,12 @@ agm-map, vector_map {
     &.day {
       td {
         &:first-child, &:last-child {
-          color: #ff4040;
+          color: #f51f83;
         }
       }
       th {
         &:first-child, &:last-child {
-          color: #ff4040;
+          color: #f51f83;
         }
       }
     }
@@ -2187,7 +2187,7 @@ agm-map, vector_map {
   table tbody tr:last-child td.today {
     width: 20%;
     border-radius: 6px;
-    background-color: #0073aa !important;
+    background-color: #df1c77 !important;
   }
 }
 
@@ -2220,7 +2220,7 @@ agm-map, vector_map {
       color: #fff !important;
     }
     > li.active > a {
-      background-color: #0073aa !important;
+      background-color: #df1c77 !important;
       color: #fff !important;
     }
     .pcoded-hasmenu .pcoded-submenu li:hover > a {
