@@ -27,24 +27,7 @@ export class SendEmailComponent implements OnInit {
     private navCtrl: Location,
     private router: Router
   ) {
-    const param = {
-      id: localStorage.getItem('uid')
-    }
-    this.api.auth(param).then((data) => {
-      console.log('auth data->>', data);
-      if (data !== true) {
-        localStorage.removeItem('uid');
-        this.router.navigate(['login']);
-      }
-    }, error => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    }).catch((error) => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    });
+    
   }
 
   ngOnInit(): void {

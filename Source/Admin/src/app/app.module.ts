@@ -4,21 +4,25 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminComponent } from './layouts/admin/admin.component';
-import { TitleComponent } from './layouts/admin/title/title.component';
-import { BreadcrumbsComponent } from './layouts/admin/breadcrumbs/breadcrumbs.component';
+import { MerchantComponent } from './layouts/merchant/merchant.component';
+import { TitleComponent } from './components/title/title.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { AuthComponent } from './layouts/auth/auth.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { LeaveGuard } from './leaved/leaved.guard';
+import { LeaveGuard } from './guard/leaved.guard';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 // 1. Import the libs you need
 // import { AngularFireModule } from '@angular/fire';
@@ -32,9 +36,10 @@ import { LeaveGuard } from './leaved/leaved.guard';
   declarations: [
     AppComponent,
     AdminComponent,
+    MerchantComponent,
+    AuthComponent,
     TitleComponent,
     BreadcrumbsComponent,
-    AuthComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +55,11 @@ import { LeaveGuard } from './leaved/leaved.guard';
     // AngularFireAuthModule, // auth
     // AngularFireAnalyticsModule // analytics
   ],
-  providers: [LeaveGuard],
+  providers: [
+    //LeaveGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

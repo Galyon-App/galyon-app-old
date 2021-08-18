@@ -61,23 +61,6 @@ export class ManageStoresComponent implements OnInit {
     private router: Router,
     public util: UtilService
   ) {
-    const param = {
-      id: localStorage.getItem('uid')
-    }
-    this.api.auth(param).then((data) => {
-      if (data !== true) {
-        localStorage.removeItem('uid');
-        this.router.navigate(['login']);
-      }
-    }, error => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    }).catch((error) => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    });
     this.getCity();
   }
 

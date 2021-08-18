@@ -28,24 +28,7 @@ export class StoresComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private toastyService: ToastyService,
   ) {
-    const param = {
-      id: localStorage.getItem('uid')
-    }
-    this.api.auth(param).then((data) => {
-      console.log('auth data->>', data);
-      if (data !== true) {
-        localStorage.removeItem('uid');
-        this.router.navigate(['login']);
-      }
-    }, error => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    }).catch((error) => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    });
+    
     this.getCategory();
   }
 

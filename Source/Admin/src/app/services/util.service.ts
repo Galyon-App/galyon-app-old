@@ -7,18 +7,38 @@
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ToastData, ToastOptions, ToastyService } from 'ng2-toasty';
+import { ApisService } from 'src/app/services/apis.service';
+import { JwtHelperService } from "@auth0/angular-jwt";
+
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
 
   report: any;
+  storeInfo: any;
   private ejectMessages = new Subject<any>();
-  private langs = new Subject<any>();
+  public translations: any[] = [];
+
+  public appClosed: boolean;
+
+  public appClosedMessage: any = '';
+
+  public direction: any;
+  public currecny: any = '₱';
+  public cside: any = 'right';
+
+  public appPages: any[] = [];
+
+  public store: any;
+
   public general: any;
   public languages: any[] = [];
-  public currecny: any = '$';
-  public cside: any = 'right';
+  public user_login: any = '0';
+  public reset_pwd: any = '0';
+
+  private langs = new Subject<any>();
   public countrys = [
     {
       country_code: 'PH',
@@ -27,7 +47,8 @@ export class UtilService {
     },
   ];
   constructor(
-
+    private toastyService: ToastyService,
+    public api: ApisService,
   ) { }
 
 
@@ -61,5 +82,59 @@ export class UtilService {
 
   getCurrecySymbol() {
     return environment.general.symbol;
+  }
+
+  error(message) {
+    const toastOptions: ToastOptions = {
+      title: this.api.translate('Error'),
+      msg: this.api.translate(message),
+      showClose: true,
+      timeout: 2000,
+      theme: 'default',
+      onAdd: (toast: ToastData) => {
+        console.log('Toast ' + toast.id + ' has been added: '+message);
+      },
+      onRemove: () => {
+        console.log('Toast  has been removed!');
+      }
+    };
+    // Add see all possible types in one shot
+    this.toastyService.error(toastOptions);
+  }
+
+  success(message) {
+    const toastOptions: ToastOptions = {
+      title: this.api.translate('Success'),
+      msg: this.api.translate(message),
+      showClose: true,
+      timeout: 2000,
+      theme: 'default',
+      onAdd: (toast: ToastData) => {
+        console.log('Toast ' + toast.id + ' has been added: '+message);
+      },
+      onRemove: () => {
+        console.log('Toast  has been removed!');
+      }
+    };
+    // Add see all possible types in one shot
+    this.toastyService.success(toastOptions);
+  }
+
+  changeLng(item) {
+    console.log(item);
+    localStorage.setItem('language', item.file);
+    window.location.reload();
+  }
+
+  jwtDecode(token: string) {
+    const jwt = new JwtHelperService();
+    return jwt.decodeToken(token);
+  }
+
+  getString(str) {
+    // if (this.translations[str]) {
+    //   return this.translations[str];
+    // }
+    return str;
   }
 }

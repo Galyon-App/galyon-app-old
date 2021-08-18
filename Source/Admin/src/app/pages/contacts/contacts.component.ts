@@ -7,7 +7,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ViewChildren, QueryList, OnDestroy } from '@angular/core';
 import { ApisService } from 'src/app/services/apis.service';
 import * as moment from 'moment';
-import { ComponentCanDeactivate } from 'src/app/leaved/leaved.guard';
+import { ComponentCanDeactivate } from 'src/app/guard/leaved.guard';
 import { HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { UtilService } from 'src/app/services/util.service';
@@ -42,23 +42,6 @@ export class ContactsComponent implements ComponentCanDeactivate {
     private util: UtilService,
     private router: Router
   ) {
-    const param2 = {
-      id: localStorage.getItem('uid')
-    }
-    this.api.auth(param2).then((data) => {
-      if (data !== true) {
-        localStorage.removeItem('uid');
-        this.router.navigate(['login']);
-      }
-    }, error => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    }).catch((error) => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    });
     const param = {
       id: 0
     };

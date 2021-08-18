@@ -9,6 +9,7 @@
   [attr.vertical-nav-type]="verticalNavType" [attr.vertical-effect]="verticalEffect" vnavigation-view="view1">
   <div class="pcoded-overlay-box"></div>
   <div class="pcoded-container navbar-wrapper">
+
     <nav class="navbar header-navbar pcoded-header" header-theme="theme4" pcoded-header-position="fixed">
       <div class="navbar-wrapper">
         <div class="navbar-logo" navbar-theme="theme4">
@@ -51,7 +52,7 @@
               <li class="user-profile header-notification">
                 <a [routerLink]="['/']">
                   <img src="assets/images/user.png" alt="User-Profile-Image" class="user-profile-img">
-                  <span>Store Admin</span>
+                  <span>System Admin</span>
                   <i class="ti-angle-down"></i>
                 </a>
                 <ul class="show-notification profile-notification">
@@ -68,7 +69,6 @@
       </div>
     </nav>
 
-
     <!-- rightbar chat end-->
     <div class="pcoded-main-container" style="margin-top: 56px;">
       <div class="pcoded-wrapper">
@@ -79,29 +79,28 @@
           <div class="pcoded-inner-navbar main-menu" appAccordion>
             <perfect-scrollbar [style.max-width]="'100%'" [style.max-height]="'calc(100vh - 56px)'" [config]="config">
               <div>
-                <div *ngFor="let asideItems of menuItems.getAll()">
+                <div *ngFor="let asideItems of menuItems.getAdminItems()">
                   <div class="pcoded-navigatio-lavel" menu-title-theme="theme5">{{getName(asideItems.label)}} </div>
                   <ul class="pcoded-item pcoded-left-item" item-border="none" item-border-style="solid"
                     subitem-border="solid" *ngFor="let asideItem of asideItems.main" appAccordionLink
                     group="{{asideItem.state}}">
+
                     <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'external'" appAccordionLink
                       group="{{asideItem.state}}">
-
                     </li>
-
                     <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'link'" appAccordionLink
                       group="{{asideItem.state}}">
                       <a [routerLink]="['/', asideItem.main_state, asideItem.state]"
                         target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle
                         *ngIf="asideItem.main_state; else: mainContent">
                         <span class="pcoded-micon"><i class="{{ asideItem.icon }}"></i></span>
-                        <span class="pcoded-mtext">{{ asideItem.name }} </span>
+                        <span class="pcoded-mtext">{{ asideItem.name }}</span>
                         <span *ngFor="let asideBadge of asideItem.badge"
                           class="pcoded-badge label label-{{ asideBadge.type }}">{{asideBadge.value}}</span>
                         <span class="pcoded-mcaret"></span>
                       </a>
                       <ng-template #mainContent>
-                        <a [routerLink]="['/', asideItem.state]" target="{{asideItem.target ? '_blank' : '_self'}}"
+                        <a [routerLink]="['/admin', asideItem.state]" target="{{asideItem.target ? '_blank' : '_self'}}"
                           appAccordionToggle>
                           <span class="pcoded-micon"><i class="{{ asideItem.icon }}"></i></span>
                           <span class="pcoded-mtext">{{getName(asideItem.name)}} </span>

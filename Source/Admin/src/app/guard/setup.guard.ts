@@ -5,11 +5,12 @@ import { ApisService } from '../services/apis.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SetupAuthGuard implements CanActivate {
+export class SetupGuard implements CanActivate {
 
   constructor(
     public api: ApisService,
-    private router: Router) { }
+    private router: Router
+  ) { }
 
   canActivate(route: ActivatedRouteSnapshot): any {
     return this.api.get('users/get_admin').then((user: any) => {

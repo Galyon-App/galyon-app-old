@@ -1,22 +1,45 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, CanLoad, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ApisService } from '../services/apis.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate, CanLoad {
 
-    constructor(private authServ: ApisService, private router: Router) { }
+    constructor(
+        private router: Router,
+        private authServ: AuthService, 
+    ) { }
 
-    canActivate(route: ActivatedRouteSnapshot): any {
-        ///// Less Secure but faster
-        const uid = localStorage.getItem('uid');
-        if (uid && uid != null && uid !== 'null') {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        const user = this.authServ.userValue;
+        
+        if (user) {
+            // check if route is restricted by role
+            if (route.data.roles && route.data.roles.indexOf(user.role) === -1) {
+                // role not authorised so redirect to home page
+                this.router.navigate(['/']);
+                return false;
+            }
+
+            // authorised so return true
             return true;
         }
-        this.router.navigate(['/login']);
+
+        // not logged in so redirect to login page with the return url
+        this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
         return false;
     }
+
+    canLoad(route: Route): boolean {
+        const user = this.authServ.userValue;
+        console.log(user);
+        if (user) {
+            return true; 
+        }
+        
+        return false; 
+      }
 }

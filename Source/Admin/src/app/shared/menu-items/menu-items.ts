@@ -35,7 +35,7 @@ export interface Menu {
   main: MainMenuItems[];
 }
 
-const MENUITEMS = [
+const ADMIN_ITEMS = [
   {
     label: 'Main',
     main: [
@@ -209,10 +209,58 @@ const MENUITEMS = [
 
 ];
 
+const MERCHANT_ITEMS = [
+  {
+    label: 'Main',
+    main: [
+      {
+        state: 'dashboard',
+        name: 'Dashboard',
+        type: 'link',
+        icon: 'ti-home'
+      },
+      {
+        state: 'products',
+        name: 'Products',
+        type: 'link',
+        icon: 'ti-envelope'
+      },
+      {
+        state: 'reviews',
+        name: 'Reviews',
+        type: 'link',
+        icon: 'ti-face-smile'
+      }
+    ],
+  },
+  {
+    label: 'Manage',
+    main: [
+      {
+        state: 'stats',
+        name: 'Store Stats',
+        type: 'link',
+        icon: 'ti-stats-up'
+      },
+      {
+        state: 'contacts',
+        name: 'Support',
+        type: 'link',
+        icon: 'ti-comments-smiley'
+      },
+    ]
+  },
+
+];
+
 @Injectable()
 export class MenuItems {
-  getAll(): Menu[] {
-    return MENUITEMS;
+  getAdminItems(): Menu[] {
+    return ADMIN_ITEMS;
+  }
+
+  getMerchantItems(): Menu[] {
+    return MERCHANT_ITEMS;
   }
 
   /*add(menu: Menu) {

@@ -30,8 +30,8 @@ export const environment = {
     restKey: 'MTU0ZDkxMDctZTk0YS00ZmM2LWIxYmYtNDA1YmU0NWFmNjcz'
   },
   general: {
-    symbol: '$',
-    code: 'USD'
+    symbol: '₱',
+    code: 'PHP'
   },
   authToken: '123456789'
 };

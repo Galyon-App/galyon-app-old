@@ -8,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ApisService } from './services/apis.service';
 import { UtilService } from './services/util.service';
+import { AuthService } from './services/auth.service';
+import { Role } from './models/role.model';
+import { User } from './models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +19,24 @@ import { UtilService } from './services/util.service';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  user: User;
 
   constructor(
     private router: Router,
     public api: ApisService,
-    public util: UtilService
+    public util: UtilService,
+    private auth: AuthService
   ) {
+    this.auth.user.subscribe(x => this.user = x);
     this.initializeApp();
+  }
+
+  get isAdmin() {
+    return this.user && this.user.role === Role.Admin;
+  }
+
+  logout() {
+      this.auth.logout();
   }
 
   ngOnInit() {

@@ -1,7 +1,7 @@
 {
   "name": "BSEI Admin",
   "short_name": "galyon-admin",
-  "theme_color": "#ff384c",
+  "theme_color": "#CD0090",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

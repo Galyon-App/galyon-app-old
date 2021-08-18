@@ -47,23 +47,6 @@ export class ManageOrdersComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private router: Router
   ) {
-    const param = {
-      id: localStorage.getItem('uid')
-    }
-    this.api.auth(param).then((data) => {
-      if (data !== true) {
-        localStorage.removeItem('uid');
-        this.router.navigate(['login']);
-      }
-    }, error => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    }).catch((error) => {
-      console.log(error);
-      localStorage.removeItem('uid');
-      this.router.navigate(['login']);
-    });
     this.route.queryParams.subscribe((data) => {
       console.log(data);
       if (data && data.id) {

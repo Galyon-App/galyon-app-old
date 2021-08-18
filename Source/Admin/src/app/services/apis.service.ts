@@ -112,31 +112,31 @@ export class ApisService {
     });
   }
 
-  public auth(body): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      const header = {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-          .set('Basic', `${environment.authToken}`)
-      };
-      const param = this.JSON_to_URLEncoded(body);
-      console.log(param);
-      this.http.post(this.baseUrl + 'users/getById', param, header).subscribe((data: any) => {
-        console.log(data);
-        if (data && data.status === 200 && data.data && data.data.length) {
-          if (data && data.data[0] && data.data[0].type && data.data[0].type === 'admin') {
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        } else {
-          resolve(false);
-        }
-      }, error => {
-        resolve(error);
-      });
-    });
-  }
+  // public auth(body): Promise<any> {
+  //   return new Promise<any>((resolve, reject) => {
+  //     const header = {
+  //       headers: new HttpHeaders()
+  //         .set('Content-Type', 'application/x-www-form-urlencoded')
+  //         .set('Basic', `${environment.authToken}`)
+  //     };
+  //     const param = this.JSON_to_URLEncoded(body);
+  //     console.log(param);
+  //     this.http.post(this.baseUrl + 'users/getById', param, header).subscribe((data: any) => {
+  //       console.log(data);
+  //       if (data && data.status === 200 && data.data && data.data.length) {
+  //         if (data && data.data[0] && data.data[0].type && data.data[0].type === 'admin') {
+  //           resolve(true);
+  //         } else {
+  //           resolve(false);
+  //         }
+  //       } else {
+  //         resolve(false);
+  //       }
+  //     }, error => {
+  //       resolve(error);
+  //     });
+  //   });
+  // }
 
   public get(url): Promise<any> {
     return new Promise<any>((resolve, reject) => {
