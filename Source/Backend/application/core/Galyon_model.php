@@ -21,7 +21,7 @@ class Galyon_model extends CI_Model
 	 * @param  mixed $result
 	 * @return object
 	 */
-	public function get($table, $field = "*", $where = NULL, $result = 'row') {
+	public function get($table, $field = "*", $where = NULL, $whereOr = NULL, $result = 'row') {
 		if($where == NULL) {
 			$this->db->select($field);
 			$this->db->from($table);
@@ -30,6 +30,9 @@ class Galyon_model extends CI_Model
 			$this->db->select($field);
 			$this->db->from($table);
 			$this->db->where($where);
+			if($whereOr != NULL) {
+				$this->db->or_where($whereOr);
+			}
 			if($result == 'row') {
 				return $this->db->get()->row();
 			} else {
