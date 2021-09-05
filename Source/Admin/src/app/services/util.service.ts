@@ -17,7 +17,6 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 export class UtilService {
 
   report: any;
-  storeInfo: any;
   private ejectMessages = new Subject<any>();
   public translations: any[] = [];
 
@@ -30,8 +29,6 @@ export class UtilService {
   public cside: any = 'right';
 
   public appPages: any[] = [];
-
-  public store: any;
 
   public general: any;
   public languages: any[] = [];

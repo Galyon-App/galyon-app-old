@@ -1,0 +1,100 @@
+<!--
+  Name: Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2021
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>Manage Banner</h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+
+                <div class="form-group row">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <img [src]="api.mediaURL+ coverImage" alt="" style="height: auto; width: 100%; max-width: 720px; padding: 10px 20px;" onError="this.src='assets/images/banner.png'">
+                    </div>
+                    <div class="col-sm-3"></div>
+                    <div class="col-md-6" style="padding-top: 20px;">
+                        <input (change)="preview_banner($event.target.files)" type="file" class="form-control" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Message</label>
+                        <input type="text" [(ngModel)]="message" class="form-control" placeholder="Message">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Positions</label>
+                        <select name="select" [(ngModel)]="position" class="form-control">
+                            <option value="0">Top</option>
+                            <option value="1">Bottom</option>
+                            <option value="2">Between</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <label>Target</label>
+                        <select name="select" [(ngModel)]="type" class="form-control" (change)="changeType()">
+                            <option value="0">Category</option>
+                            <option value="1">Product</option>
+                            <option value="2">External</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="type ==='0'">
+                    <div class="col-sm-12">
+                        <label>Search category</label>
+                        <input type="text" [(ngModel)]="search" (input)="searchCate($event.target.value)"
+                            class="form-control" placeholder="Search category">
+                        <div *ngFor="let item of cate" (click)="selectCate(item)">
+                            <div class="selectItem">
+                                <img [src]="api.mediaURL+item.cover" alt="" class="imgs">
+                                <p class="name">{{item.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="type ==='1'">
+                    <div class="col-sm-12">
+                        <label>Search product</label>
+                        <input type="text" [(ngModel)]="search" (input)="searchProduct($event.target.value)"
+                            class="form-control" placeholder="Search product">
+                        <div *ngFor="let item of products" (click)="selectProduct(item)">
+                            <div class="selectItem">
+                                <img [src]="api.mediaURL+item.cover" alt="" class="imgs">
+                                <p class="name">{{item.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="type ==='2'">
+                    <div class="col-sm-12">
+                        <label>External Link</label>
+                        <input type="text" [(ngModel)]="link" class="form-control" placeholder="External">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary btn-round float-right" *ngIf="!edit" (click)="create()">Submit</button>
+                        <button class="btn btn-primary btn-round float-right" *ngIf="edit" (click)="update()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

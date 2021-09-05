@@ -1,0 +1,97 @@
+<!--
+  Name: Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2021
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-sm-12">
+
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>All Coupons </h5>
+                <button style="float: right;" type="button" (click)="createNew()" class="btn btn-danger btn-round">CREATE</button>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>COUPEN CODE</th>
+                                <th>DISCOUNT</th>
+                                <th>EXPIRE</th>
+                                <th>Description</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dummy  ">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                            </tr>
+                            <tr
+                                *ngFor="let item of list | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+
+                                <td>
+                                    <label style="font-weight: bold;">
+                                        {{item.name}}
+                                    </label>
+                                </td>
+                                <td>
+                                    {{item.type === 'fixed' ? api.getCurrecySymbol() : ''}}
+                                    {{item.off}} {{item.type === 'percent' ? '%' : ''}}
+                                    {{item.off}} {{item.type === 'delivery' ? 'FREE DELIVERY' : ''}}
+                                </td>
+                                <td>
+                                    {{getDate(item.date_time)}}
+                                </td>
+                                <td style="width: 150px;white-space: pre-wrap;">
+                                    {{item.descriptions}}
+                                </td>
+                                <td>
+                                    <button type="button" (click)="open(item)" [className]="getClass(item.status)">
+                                        {{item.status === '1' ? 'Active':'Inactive'}}</button>
+                                </td>
+                                <td>
+                                    <button type="button" (click)="manage(item)" class="btn btn-info btn-round btn-outline-info">Manage</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="has-text-centered">
+                    <pagination-controls id="pagin1" (pageChange)="page = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

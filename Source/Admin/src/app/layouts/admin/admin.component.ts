@@ -81,7 +81,7 @@ export class AdminComponent implements OnInit {
     this.windowWidth = window.innerWidth;
     this.setMenuAttributs(this.windowWidth);
     const selected = this.util.languages.filter(x => x.file === localStorage.getItem('language'));
-    console.log('selected language name', selected);
+    //console.log('selected language name', selected);
     if (selected && selected.length > 0) {
       this.selectedName = selected[0].name;
       this.selectedFlag = selected[0].cover;

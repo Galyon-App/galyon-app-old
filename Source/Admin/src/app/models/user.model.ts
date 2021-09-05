@@ -2,11 +2,7 @@ import { Role } from "./role.model";
 
 export class User {
     uuid: string;
-    uname: string;
     email: string;
-    phone: string;
-    fname: string;
-    lname: string;
+    logged_in: boolean;
     role: Role;
-    token?: string;
 }

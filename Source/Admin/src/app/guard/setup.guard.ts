@@ -13,8 +13,8 @@ export class SetupGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot): any {
-    return this.api.get('users/get_admin').then((user: any) => {
-      if (user && user.status === 200 && user.data.id && user.data.type === 'admin') {
+    return this.api.get('galyon/v1/settings/initialize/verify').then((response: any) => {
+      if (response && response.success == true && response.data ) {
         return true;
       } else {
         this.router.navigate(['/setup']);

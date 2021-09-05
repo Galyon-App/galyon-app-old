@@ -5,6 +5,7 @@ import { MenuItems } from '../../shared/menu-items/menu-items';
 import { ApisService } from 'src/app/services/apis.service';
 import { Router } from '@angular/router';
 import { UtilService } from 'src/app/services/util.service';
+import { StoresService } from 'src/app/services/stores.service';
 
 @Component({
   selector: 'app-admin',
@@ -71,7 +72,8 @@ export class MerchantComponent implements OnInit {
     public menuItems: MenuItems,
     public api: ApisService,
     private router: Router,
-    public util: UtilService
+    public util: UtilService,
+    public storeServ: StoresService
   ) {
     const scrollHeight = window.screen.height - 150;
     this.innerHeight = scrollHeight + 'px';
@@ -166,14 +168,13 @@ export class MerchantComponent implements OnInit {
   onScroll(event) {
     this.isScrolled = false;
   }
+
   logout() {
-    const lng = localStorage.getItem('lng');
     localStorage.clear();
-    localStorage.setItem('lng', lng);
     this.router.navigate(['/login']);
   }
+
   getName(name) {
     return this.util.getString(name);
-    // return name;
   }
 }

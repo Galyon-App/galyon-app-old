@@ -1,0 +1,56 @@
+<!--
+  Name: Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2021
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>Manage Category </h5>
+            </div>
+            <div class="card-body reset-table p-t-0">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-12" style="text-align: center; padding: 20px;">
+                                <img [src]="coverImage" alt="" style="height: auto; width: 300px; border: #dbdbdb solid 1px;"
+                                    onError="this.src='assets/images/category.png'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-12" style="padding-top: 15px; padding-right: 50px;">
+                                <label>Select Parent</label>
+                                <select name="select" [(ngModel)]="cateId" class="form-control">
+                                    <option *ngFor="let item of categories" [value]="item.uuid">{{item.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12" style="padding-top: 15px; padding-right: 50px;">
+                                <label>Category Name</label>
+                                <input type="text" [(ngModel)]="name" class="form-control" placeholder="Ex: Food & Beverages">
+                            </div>
+                            <div class="col-md-12" style="padding-top: 15px; padding-right: 50px;">
+                                <label>Upload Cover</label>
+                                <input (change)="preview_banner($event.target.files)" type="file" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-danger btn-round float-right" style="padding-right: 15px;" *ngIf="id == ''" (click)="create()">Submit</button>
+                        <button class="btn btn-danger btn-round float-right" style="padding-right: 15px;" *ngIf="id != ''" (click)="update()">Update</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<ng2-toasty></ng2-toasty>

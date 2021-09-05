@@ -11,6 +11,7 @@ import { UtilService } from './services/util.service';
 import { AuthService } from './services/auth.service';
 import { Role } from './models/role.model';
 import { User } from './models/user.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit {
     private auth: AuthService
   ) {
     this.auth.user.subscribe(x => this.user = x);
-    this.initializeApp();
+    this.initialize();
   }
 
   get isAdmin() {
@@ -48,83 +49,22 @@ export class AppComponent implements OnInit {
     });
   }
 
-  initializeApp() {
-    const lng = localStorage.getItem('language');
-    if (!lng || lng === null) {
-      this.api.get('users/getDefaultSettings').then((data: any) => {
-        if (data && data.status === 200 && data.data) {
-          const manage = data.data.manage;
-          const language = data.data.lang;
+  initialize() {
+    this.api.get('galyon/v1/settings/initialize').then((response: any) => {
+      if (response && response.success == true && response.data) {
+        //const manage = response.data.manage;
+        this.api.translations = response.data.lang;
+        localStorage.setItem('language', response.data.file);
 
-          if (language) {
-            this.api.translations = language;
-            localStorage.setItem('language', data.data.file);
-          }
-          const settings = data.data.settings;
-          if (settings && settings.length > 0) {
-            const info = settings[0];
-            this.util.cside = info.currencySide;
-            this.util.currecny = info.currencySymbol;
-          } else {
-            this.util.cside = 'right';
-            this.util.currecny = '$';
-          }
-          const general = data.data.general;
-          if (general && general.length > 0) {
-            const info = general[0];
-            this.util.general = info;
-          }
-        }
-      }, error => {
-        console.log('default settings', error);
-      });
-    } else {
-      const param = {
-        id: localStorage.getItem('language')
-      };
-      this.api.post('users/getDefaultSettingsById', param).then((data: any) => {
-        if (data && data.status === 200 && data.data) {
-          const manage = data.data.manage;
-          const language = data.data.lang;
-
-          if (language) {
-            this.api.translations = language;
-          }
-          const settings = data.data.settings;
-          if (settings && settings.length > 0) {
-            const info = settings[0];
-            this.util.cside = info.currencySide;
-            this.util.currecny = info.currencySymbol;
-
-          } else {
-            this.util.cside = 'right';
-            this.util.currecny = '$';
-          }
-          const general = data.data.general;
-          if (general && general.length > 0) {
-            const info = general[0];
-            this.util.general = info;
-
-          }
-        }
-      }, error => {
-        console.log('default settings by id', error);
-        this.util.cside = 'right';
-        this.util.currecny = '$';
-      });
-    }
-    this.getLangs();
-  }
-
-  getLangs() {
-    this.api.get('lang').then((data: any) => {
-      if (data && data.status === 200) {
-        const info = data.data.filter(x => x.status === '1');
-        this.util.languages = info;
-        this.util.ejectLangs();
+        const settings = response.data.settings;
+        this.util.currecny = settings.currencySymbol;
+        this.util.cside = settings.currencySide;
+          
+        const general = response.data.general;
+        this.util.general = general;
       }
     }, error => {
-      console.log(error);
+      console.log('app init error', error);
     });
   }
 }

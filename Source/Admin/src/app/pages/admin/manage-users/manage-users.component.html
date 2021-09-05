@@ -1,0 +1,267 @@
+<!--
+  Name: Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2021
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5>Manage User</h5>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="user-card-body ">
+                        <div class="card-body">
+                            <div class="top-card text-center">
+                                <img [src]="photo" style="object-fit: cover; width: 220px; height: 220px;"
+                                    onError="this.src='assets/images/user.png'" class="img-responsive" alt="">
+                            </div>
+                            <div class="card-contain text-center p-t-40">
+                                <h5 class="text-capitalize p-b-10">{{fname}} {{lname}}</h5>
+                                <p class="text-muted" style="margin-bottom: 5px;">{{email}}</p>
+                                <p class="text-muted">Since: {{joined}}</p>
+                            </div>
+                            <div class="card-data">
+                                <div class="row">
+
+                                    <div class="col-4 b-r-default text-center">
+                                        <p class="text-muted">Orders</p>
+                                        <span>{{myOrders.length}}</span>
+                                    </div>
+                                    <div class="col-4 b-r-default text-center">
+                                        <p class="text-muted">Address</p>
+                                        <span>{{myaddress.length}}</span>
+                                    </div>
+                                    <div class="col-4 b-r-default text-center">
+                                        <p class="text-muted">Reviews</p>
+                                        <span>{{reviews.length}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="user-card-body">
+                        <div class="card-body">
+                            <ngb-tabset>
+                                <ngb-tab title="Profile">
+                                    <ng-template ngbTabContent>
+                                        <div class="profile">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" style="padding-top: 20px;">
+                                                    {{api.translate('Upload Photo')}}
+                                                </label>
+                                                <div class="col-sm-6" style="padding-top: 20px;">
+                                                    <input (change)="preview_banner($event.target.files)" type="file" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-6" style="padding-top: 20px;">
+                                                    <label>First Name</label>
+                                                    <input type="text" [(ngModel)]="fname" class="form-control" placeholder="First Name">
+                                                </div>
+                                                <div class="col-sm-6" style="padding-top: 20px;">
+                                                    <label>Last Name</label>
+                                                    <input type="text" [(ngModel)]="lname" class="form-control" placeholder="Last Name">
+                                                </div>
+                                                <div class="col-sm-6" style="padding-top: 20px;">
+                                                    <label>Phone Number</label>
+                                                    <input type="number" class="form-control" [placeholder]="api.translate('Mobile Number')"
+                                                        [(ngModel)]="mobile" [ngModelOptions]="{standalone: true}">
+                                                    <span class="md-line"></span>
+                                                </div>
+
+                                                <div class="col-sm-6" style="padding-top: 20px;">
+                                                    <label>Select Gender</label>
+                                                    <select name="select" [(ngModel)]="gender" class="form-control">
+                                                        <option value='male'>Male</option>
+                                                        <option value='female'>Female</option>
+                                                        <option value=''>Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <button class="btn btn-primary btn-round float-right" (click)="updateProfile()">Update</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab title="Orders">
+                                    <ng-template ngbTabContent>
+                                        <div class="orders">
+                                            <div class="card_div" *ngFor="let item of myOrders">
+
+                                                <div class="resto_detail">
+                                                    <div class="back_image"
+                                                        [style.backgroundImage]="'url('+api.mediaURL+item.orders[0].cover+')'">
+                                                    </div>
+                                                    <div style="margin-left: 20px;">
+                                                        <p class="res_name">Ordered {{item.store_id.length}} stores </p>
+                                                        <p class="res_location" *ngIf="item.address">
+                                                            {{item.address.address}}
+                                                        </p>
+                                                        <p class="res_location" *ngIf="!item.address"> At Store </p>
+                                                    </div>
+                                                </div>
+                                                <div class="line_div"></div>
+                                                <div class="order_detail">
+                                                    <p class="head_gray">ITEMS</p>
+                                                    <div class="small_lbl">
+                                                        <span *ngFor="let order of item.orders;let ol = index">
+                                                            <div class="border_bottom">
+                                                                <span *ngIf="!order.size">{{order.name}} -
+                                                                    <span *ngIf="order.have_gram === '1'">
+                                                                        {{order.gram}} grams </span>
+                                                                    <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg
+                                                                    </span>
+                                                                    <span *ngIf="order.have_liter ==='1'">
+                                                                        {{order.liter}} ltr </span>
+                                                                    <span *ngIf="order.have_ml ==='1'"> {{order.ml}}
+                                                                        ml</span>
+                                                                    <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                                        pcs </span>
+                                                                    <span>
+                                                                        $
+                                                                        {{order.discount ==='0' ? order.original_price :
+                                                                        order.sell_price}}
+                                                                    </span>
+
+                                                                </span>
+                                                                <span *ngIf="order.size ==='0'">{{order.name}} -
+                                                                    <span *ngIf="order.have_gram === '1'">
+                                                                        {{order.gram}} grams </span>
+                                                                    <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg
+                                                                    </span>
+                                                                    <span *ngIf="order.have_liter ==='1'">
+                                                                        {{order.liter}} ltr </span>
+                                                                    <span *ngIf="order.have_ml ==='1'"> {{order.ml}}
+                                                                        ml</span>
+                                                                    <span *ngIf="order.have_pcs === '1'"> {{order.pcs}}
+                                                                        pcs </span>
+                                                                </span>
+                                                                <span *ngIf="order.size ==='1'">
+                                                                    {{order.name}} -
+                                                                    <span>
+                                                                        {{order.variations[0].items[order.variant].title}}
+                                                                        <span>
+                                                                            $
+                                                                            {{order.variations[0].items[order.variant].discount
+                                                                            &&
+                                                                            order.variations[0].items[order.variant].discount
+                                                                            !==0 &&
+                                                                            order.variations[0].items[order.variant].discount
+                                                                            !=='0' ?
+                                                                            order.variations[0].items[order.variant].discount
+                                                                            :
+                                                                            order.variations[0].items[order.variant].price
+                                                                            }}
+                                                                        </span>
+
+                                                                    </span>
+                                                                </span>
+                                                                <span *ngIf="order.size ==='0'">
+                                                                    <span>
+                                                                        $
+                                                                        {{order.discount ==='0' ? order.original_price :
+                                                                        order.sell_price}}
+                                                                    </span>
+
+                                                                </span>
+                                                                <span>X {{order.quantiy}}</span>
+                                                            </div>
+
+
+                                                        </span>
+                                                    </div>
+                                                    <p class="head_gray">ORDERED ON</p>
+                                                    <p class="small_lbl">{{getDate(item.time)}} </p>
+                                                    <p class="head_gray" *ngIf="item.coupon_code">
+                                                        Discount</p>
+                                                    <p class="small_lbl" *ngIf="item.coupon_code">
+                                                        ${{item.discount}}
+                                                    </p>
+                                                    <p class="head_gray">TOTAL AMOUNT</p>
+                                                    <p class="small_lbl">${{item.grand_total}}</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab title="Address">
+                                    <ng-template ngbTabContent>
+                                        <div class="address">
+                                            <div class="list" *ngFor="let item of myaddress">
+                                                <p class="title">{{item.type}}</p>
+                                                <p class="name">{{item.house}} {{item.landmark}} {{item.address}}</p>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab title="Reviews">
+                                    <ng-template ngbTabContent>
+                                        <div class="review">
+                                            <div class="row" *ngFor="let item of reviews"
+                                                style="border-bottom: 1px solid lightgray;padding: 10px;">
+                                                <div class="col-md-10">
+                                                    <p><strong>{{item.title}}: </strong>{{item.msg}}</p>
+                                                    {{item.timestamp}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab *ngIf="role == 'driver' || vehicles.length > 0" title="Vehicles">
+                                    <ng-template ngbTabContent>
+                                        <div class="vehicles">
+                                            <div class="form-group row" style="padding: 20px;">
+                                                <label class="col-md-3">Select City: </label>
+                                                <div class="col-md-6">
+                                                    <select name="select" [(ngModel)]="city" class="form-control">
+                                                        <option *ngFor="let item of cities" [value]="item.id">{{item.name}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button class="btn btn-primary float-right">Update</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab *ngIf="role == 'store' || stores.length > 0" title="Stores">
+                                    <ng-template ngbTabContent>
+                                        <div class="stores">
+                                            <div class="row" style="padding: 10px;">
+                                                <div class="col-md-10">
+                                                    <p style="text-align: center; padding: 100px;">Coming Soon!</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ngb-tab>
+                            </ngb-tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End-->
+
+        </div>
+    </div>
+</div>
+
+
+<ng2-toasty></ng2-toasty>

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { ApisService } from './apis.service';
 import { UtilService } from './util.service';
+import { Store } from '../models/store.model';
+import { StoresService } from './stores.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,9 +17,9 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private http: HttpClient,
     private api: ApisService,
-    private util: UtilService
+    private util: UtilService,
+    private storeService: StoresService
   ) {
     const _token = localStorage.getItem('access-token');
     let _user = this.util.jwtDecode(_token);
@@ -28,7 +29,7 @@ export class AuthService {
   }
 
   public get userValue(): User {
-      return this.userSubject.value;
+    return this.userSubject.value;
   }
 
   login(username: string, password: string, callback) {
@@ -36,12 +37,18 @@ export class AuthService {
       uname: username,
       pword: password
     }).then((res: any) => {
-      if(res && res.success === true) {
+      if(res && res.success == true && res.data) {
         localStorage.setItem('access-token', res.data);
+        let decoded = this.util.jwtDecode(res.data);
+        this.userSubject.next(decoded);
+        if(decoded.role == 'store') {
+          this.storeService.getStoreByOwner(decoded.uuid);
+        }
+        callback({ success: res.success, data: decoded });
+      } else {
+        callback({ success: res.success, message: res.message });
       }
-      let decoded = this.util.jwtDecode(res.data);
-      this.userSubject.next(decoded);
-      callback({ success: res.success, data: res.success ? decoded : null, message: res.success ? null : res.message });
+      
     }).catch(error => {
       console.log('error', error);
       callback({ success: false, message: 'Something went wrong!' });

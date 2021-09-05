@@ -37,7 +37,7 @@ export interface Menu {
 
 const ADMIN_ITEMS = [
   {
-    label: 'Main',
+    label: 'General',
     main: [
       {
         state: 'dashboard',
@@ -46,8 +46,14 @@ const ADMIN_ITEMS = [
         icon: 'ti-home'
       },
       {
+        state: 'orders',
+        name: 'Orders',
+        type: 'link',
+        icon: 'ti-shopping-cart'
+      },
+      {
         state: 'city',
-        name: 'Available Cities',
+        name: 'Cities',
         type: 'link',
         icon: 'ti-location-pin'
       },
@@ -58,34 +64,10 @@ const ADMIN_ITEMS = [
         icon: 'ti-notepad'
       },
       {
-        state: 'users',
-        name: 'Users',
-        type: 'link',
-        icon: 'ti-user'
-      },
-      {
-        state: 'drivers',
-        name: 'Drivers',
-        type: 'link',
-        icon: 'ti-truck'
-      },
-      {
-        state: 'orders',
-        name: 'Orders',
-        type: 'link',
-        icon: 'ti-shopping-cart'
-      },
-      {
         state: 'category',
         name: 'Categories',
         type: 'link',
         icon: 'ti-layout-grid2'
-      },
-      {
-        state: 'sub-category',
-        name: 'Sub Categories',
-        type: 'link',
-        icon: 'ti-layout-grid2-thumb'
       },
       {
         state: 'products',
@@ -94,22 +76,16 @@ const ADMIN_ITEMS = [
         icon: 'ti-envelope'
       },
       {
-        state: 'payment',
-        name: 'Payments',
+        state: 'users',
+        name: 'Users',
         type: 'link',
-        icon: 'ti-money'
-      }
+        icon: 'ti-user'
+      },
     ],
   },
   {
-    label: 'Manage',
-    main: [
-      {
-        state: 'languages',
-        name: 'Languages',
-        type: 'link',
-        icon: 'ti-world'
-      },
+    label: 'Content',
+    main: [      
       {
         state: 'banners',
         name: 'Banners',
@@ -121,19 +97,30 @@ const ADMIN_ITEMS = [
         name: 'Coupons',
         type: 'link',
         icon: 'ti-medall'
+      },      
+      {
+        state: 'manage-popup',
+        name: 'Popups',
+        type: 'link',
+        icon: 'ti-quote-right'
       },
       {
-        state: 'notifications',
-        name: 'Notification',
+        state: 'pages',
+        name: 'Pages',
         type: 'link',
-        icon: 'ti-bell'
+        icon: 'ti-blackboard'
       },
       {
-        state: 'contacts',
-        name: 'Support',
+        state: 'manage-website',
+        name: 'Featured',
         type: 'link',
-        icon: 'ti-comments-smiley'
-      },
+        icon: 'ti-layout-width-default'
+      }   
+    ]
+  },
+  {
+    label: 'Support',
+    main: [ 
       {
         state: 'emails',
         name: 'Contacts',
@@ -141,38 +128,50 @@ const ADMIN_ITEMS = [
         icon: 'ti-email'
       },
       {
-        state: 'stats',
-        name: 'Store Stats',
+        state: 'contacts',
+        name: 'Chat Support',
         type: 'link',
-        icon: 'ti-stats-up'
-      },
-
+        icon: 'ti-comments-smiley'
+      }, 
+    ]
+  },
+  {
+    label: 'Marketing',
+    main: [  
       {
-        state: 'driver-stats',
-        name: 'Drivers Stats',
+        state: 'notifications',
+        name: 'Notification',
         type: 'link',
-        icon: 'ti-stats-up'
-      },
-
-
-      {
-        state: 'manage-app',
-        name: 'Manage App',
-        type: 'link',
-        icon: 'ti-lock'
-      },
+        icon: 'ti-bell'
+      }, 
       {
         state: 'send-mail',
         name: 'Send Emails',
         type: 'link',
         icon: 'ti-email'
       },
+    ]
+  },
+  {
+    label: 'Reports',
+    main: [
       {
-        state: 'app-settings',
-        name: 'App Settings',
+        state: 'stats',
+        name: 'Store Stats',
         type: 'link',
-        icon: 'ti-desktop'
+        icon: 'ti-stats-up'
       },
+      {
+        state: 'driver-stats',
+        name: 'Drivers Stats',
+        type: 'link',
+        icon: 'ti-stats-up'
+      },
+    ]
+  },
+  {
+    label: 'System',
+    main: [
       {
         state: 'general',
         name: 'General',
@@ -180,33 +179,31 @@ const ADMIN_ITEMS = [
         icon: 'ti-settings'
       },
       {
-        state: 'app-pages',
-        name: 'App Pages',
+        state: 'payment',
+        name: 'Payments',
         type: 'link',
-        icon: 'ti-blackboard'
+        icon: 'ti-money'
       },
       {
-        state: 'manage-popup',
-        name: 'Manage Popup',
+        state: 'maintainance',
+        name: 'Maintainance',
         type: 'link',
-        icon: 'ti-quote-right'
+        icon: 'ti-lock'
       },
       {
-        state: 'administrantor',
-        name: 'Administrator',
+        state: 'settings',
+        name: 'Settings',
         type: 'link',
-        icon: 'ti-id-badge'
+        icon: 'ti-desktop'
       },
-      {
-        state: 'manage-website',
-        name: 'Manage Websites',
-        type: 'link',
-        icon: 'ti-layout-width-default'
-      }
-
+      // { //Dynamically add / edit language translation data.
+      //   state: 'languages',
+      //   name: 'Languages',
+      //   type: 'link',
+      //   icon: 'ti-world'
+      // },
     ]
-  },
-
+  }
 ];
 
 const MERCHANT_ITEMS = [

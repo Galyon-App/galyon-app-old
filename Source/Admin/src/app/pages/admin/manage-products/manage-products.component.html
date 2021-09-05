@@ -1,0 +1,382 @@
+<!--
+  Name: Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2021
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+   <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+<ng-template #content let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Select Category')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.getString('Select Category')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="cateString"
+               (ngModelChange)="searchCates($event)" type="text" class="form-control" placeholder="Search Category">
+         </div>
+      </div>
+
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <div *ngFor="let item of category" (click)="cateId = item.uuid"
+               style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
+               <p style="margin: 0px;"> {{item.name}}</p>
+               <i class="ti-check-box" *ngIf="item.uuid === cateId"></i>
+            </div>
+         </div>
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<ng-template #contentSub let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Select Sub Category')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.getString('Select Sub Category')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="subString"
+               (ngModelChange)="searchSubCate($event)" type="text" class="form-control" placeholder="Search Category">
+         </div>
+      </div>
+
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <div *ngFor="let item of subCates" (click)="uuid = item.subId"
+               style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
+               <p style="margin: 0px;"> {{item.name}}</p>
+               <i class="ti-check-box" *ngIf="item.uuid === subId"></i>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close2()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<ng-template #contentStore let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Select Store')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.getString('Select Store')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="storeString"
+               (ngModelChange)="searchStore($event)" type="text" class="form-control" placeholder="Search Store">
+         </div>
+      </div>
+
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <div *ngFor="let item of stores" (click)="storeId = item.uuid"
+               style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
+               <p style="margin: 0px;"> {{item.name}}</p>
+               <i class="ti-check-box" *ngIf="item.uuid === storeId"></i>
+            </div>
+         </div>
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close4()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<ng-template #contentVarient let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Add item to variations')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label> {{util.getString('Add-ons name')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_title" type="text"
+               class="form-control" [placeholder]="util.getString('Add-ons name')">
+         </div>
+
+         <div class="col-sm-12">
+            <label>{{util.getString('Add-ons price')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_price" type="number"
+               class="form-control" [placeholder]="util.getString('Add-ons price')">
+         </div>
+
+         <div class="col-sm-12">
+            <label>{{util.getString('Add-ons discount')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="variant_discount" type="number"
+               class="form-control" [placeholder]="util.getString('Add-ons discount')">
+         </div>
+
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close3()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-body">
+            <h5>{{util.getString('Manage Product')}} </h5>
+         </div>
+         <div class="card-body reset-table p-t-0">
+
+            <div class="form-group row" style="width: -webkit-fill-available; display: block; padding: 0 15px;">
+               <ul style="display: -webkit-box; overflow-x: auto; background-color: #f8f8f8;">
+                  <li>
+                     <div class="form-group row" style="margin: auto; padding: 10px; width: min-content;">
+                        <div class="col-md-12" style="text-align: center;">
+                           <img [src]="api.mediaURL+ coverImage" alt="" style="object-fit: cover; height: 250px; width: 250px; padding: 5px;"
+                              onError="this.src='assets/images/product.png'">
+                        </div>
+                        <div class="col-md-12" style="width: auto; padding-top: 20px;">
+                           <input (change)="displayPreview($event.target.files)" type="file" class="form-control" accept="image/*">
+                           <button type="button" (click)="addPreview()" class="btn btn-primary btn-md btn-block waves-effect text-center" 
+                              style="margin: 15px 0; padding: 5px;">Add Preview</button>
+                        </div>
+                     </div>
+                  </li>
+                  <li *ngFor="let image of images; let pos = index">
+                     <div class="form-group row" style="margin: 0 10px; padding: 20px; width: min-content;">
+                        <div class="col-md-12" style="text-align: center;">
+                           <img [src]="api.mediaURL+image" alt="" style="object-fit: cover; height: 200px; width: 200px;"
+                              onError="this.src='assets/images/product.png'">
+                        </div>
+                        <div class="col-md-12" style="width: auto; padding-top: 20px;">
+                           <input (change)="displayPreview($event.target.files, pos)" type="file" class="form-control" accept="image/*">
+                           <button type="button" (click)="removePreview(pos)" class="btn btn-danger btn-md btn-block waves-effect text-center" 
+                              style="margin: 15px 0; padding: 5px;">Remove</button>
+                        </div>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-12" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Name')}} </label>
+                  <input type="text" [(ngModel)]="name" class="form-control" [placeholder]="util.getString('Name')">
+               </div>
+               <div class="col-sm-6" (click)="openStore()" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Select Store')}} </label>
+                  <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="storeName"
+                     class="form-control" [placeholder]="util.getString('Select Store')">
+               </div>
+               <div class="col-sm-3" (click)="openCate()" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Select Category')}} </label>
+                  <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="cateName"
+                     class="form-control" [placeholder]="util.getString('Select Category')">
+               </div>
+               <div class="col-sm-3" (click)="openSub()" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Select Sub-Category')}} </label>
+                  <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="subName"
+                     class="form-control" [placeholder]="util.getString('Select Sub Category')">
+               </div>
+               <div class="col-sm-12" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Descriptions')}} </label>
+                  <textarea rows="3" cols="3" [(ngModel)]="description" class="form-control"
+                     [placeholder]="util.getString('Descriptions')"></textarea>
+               </div>
+               <div class="col-sm-12" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Features')}} </label>
+                  <textarea rows="3" cols="3" [(ngModel)]="key_features" class="form-control"
+                     [placeholder]="util.getString('Key feature')"></textarea>
+               </div>
+               <div class="col-sm-12" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Disclaimer')}} </label>
+                  <textarea rows="3" cols="3" [(ngModel)]="disclaimer" class="form-control"
+                     [placeholder]="util.getString('Disclaimer')"></textarea>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-4">
+                  <label> {{util.getString('Status')}}</label>
+                  <select name="select" [(ngModel)]="status" class="form-control">
+                     <option value='0'>{{util.getString('Unavailable')}} </option>
+                     <option value='1'>{{util.getString('Available')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-4">
+                  <label>{{util.getString('In Stock')}} </label>
+                  <select name="select" [(ngModel)]="in_stock" class="form-control">
+                     <option value='1'>{{util.getString('In Stock')}} </option>
+                     <option value='0'>{{util.getString('Out Of Stock')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-4">
+                  <label>{{util.getString('Featured')}} </label>
+                  <select name="select" [(ngModel)]="is_featured" class="form-control">
+                     <option value='0'>{{util.getString('Regular')}} </option>
+                     <option value='1'>{{util.getString('Featured')}} </option>
+                  </select>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6" style="margin-bottom: 12px;">
+                  <label> {{util.getString('Real price')}} </label>
+                  <input type="text" [(ngModel)]="realPrice" (ngModelChange)="onRealPrice($event)" class="form-control"
+                     [placeholder]="util.getString('Real price')">
+               </div>
+               <div class="col-sm-6" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Sell price')}} </label>
+                  <input type="text" [(ngModel)]="sellPrice" disabled="true" class="form-control"
+                     [placeholder]="util.getString('Sell price')">
+               </div>
+               <div class="col-sm-6" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Discount Type')}} </label>
+                  <select name="select" [(ngModel)]="discount_type" class="form-control">
+                     <option value='fixed'>{{util.getString('Fixed')}} </option>
+                     <option value='percent'>{{util.getString('Percent')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Discount Amount')}} </label>
+                  <input type="text" [(ngModel)]="discount" (ngModelChange)="onDicount($event)" class="form-control"
+                     [placeholder]="util.getString('Discount')">
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-4" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have Pieces')}} </label>
+                     <select name="select" [(ngModel)]="have_pcs" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_pcs  ==='1'">
+                     <label>{{util.getString('Pieces')}} </label>
+                     <input type="number" [(ngModel)]="pcs" class="form-control" [placeholder]="util.getString('PCs')">
+                  </div>
+               </div>
+               <div class="col-sm-4" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have KG')}} </label>
+                     <select name="select" [(ngModel)]="have_kg" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_kg  ==='1'">
+                     <label>{{util.getString('Kilogram')}} </label>
+                     <input type="number" [(ngModel)]="kg" class="form-control" [placeholder]="util.getString('KG')">
+                  </div>
+               </div>
+               <div class="col-sm-4" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have Gram')}} </label>
+                     <select name="select" [(ngModel)]="have_gram" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'> {{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_gram  ==='1'">
+                     <label>{{util.getString('Gram')}} </label>
+                     <input type="number" [(ngModel)]="gram" class="form-control" [placeholder]="util.getString('G')">
+                  </div>
+               </div>
+               <div class="col-sm-4" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have Liter')}} </label>
+                     <select name="select" [(ngModel)]="have_liter" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_liter  ==='1'">
+                     <label>{{util.getString('Liter')}} </label>
+                     <input type="number" [(ngModel)]="liter" class="form-control" [placeholder]="util.getString('L')">
+                  </div>
+               </div>
+               <div class="col-sm-4" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have ML')}} </label>
+                     <select name="select" [(ngModel)]="have_ml" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_ml  ==='1'">
+                     <label>{{util.getString('MILLILITER')}} </label>
+                     <input type="number" [(ngModel)]="ml" class="form-control" [placeholder]="util.getString('ML')">
+                  </div>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <div class="col-sm-6">
+                  <label>{{util.getString('Size')}} </label>
+                  <select name="select" (ngModelChange)="changeSize($event)" [(ngModel)]="variations.length" class="form-control">
+                     <option value='0'>{{util.getString('No Variations')}} </option>
+                     <option value='1'>{{util.getString('Have Variations')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-6">
+                  <div *ngFor="let item of variations;let i = index;">
+                     <div
+                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                        <label style="margin: 0px !important;font-weight: bold;">{{item.title}}</label>
+                        <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;" (click)="addItem(i)"></i>
+                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="delete(item)"></i>
+                     </div>
+                     <div *ngFor="let sub of item.items; let j = index"
+                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                        <div
+                           style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                           {{sub.title}} - 
+                           <p *ngIf="sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
+                              <span> {{sub.price}} - </span>
+                           </p>
+                           <p class="price_lbl" style="margin: 0px !important;"
+                              *ngIf="sub.discount !== 0 && sub.discount !=='0'">
+                              <span style="text-decoration:line-through;">{{sub.price}}
+                              </span>
+                              <span class="sell">{{sub.discount}} </span>
+                           </p>
+                        </div>
+
+                        <i class="ti-pencil-alt" style="font-weight: bold;margin: 0px 10px;"
+                           (click)="editSub(i,sub,j)"></i>
+                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="deleteSub(i,sub)"></i>
+                     </div>                     
+                  </div>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <button type="button" (click)="submit()"
+                  class="btn btn-primary btn-md btn-block waves-effect text-center">{{util.getString('Submit')}}
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<ng2-toasty></ng2-toasty>

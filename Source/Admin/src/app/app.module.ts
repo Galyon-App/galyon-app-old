@@ -47,7 +47,6 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     AppRoutingModule,
     SharedModule,
     HttpClientModule,
-
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
     // 3. Initialize
