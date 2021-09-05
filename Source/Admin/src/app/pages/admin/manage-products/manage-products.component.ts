@@ -11,7 +11,7 @@ import { ApisService } from 'src/app/services/apis.service';
 import { UtilService } from 'src/app/services/util.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Console } from 'console';
+
 @Component({
   selector: 'app-manage-products',
   templateUrl: './manage-products.component.html',
