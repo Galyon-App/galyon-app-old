@@ -123,7 +123,7 @@ export class ProductsComponent {
 
     Swal.fire({
       title: this.api.translate('Are you sure?'),
-      text: this.api.translate('To ') + actions + this.api.translate(' this products!'),
+      text: this.api.translate('To ') + actions + this.api.translate(' this product!'),
       icon: 'question',
       showConfirmButton: true,
       confirmButtonText: this.api.translate('Yes'),

@@ -57,7 +57,7 @@
 
       <div class="form-group row">
          <div class="col-sm-12">
-            <div *ngFor="let item of subCates" (click)="uuid = item.subId"
+            <div *ngFor="let item of subCates" (click)="subId = item.uuid"
                style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
                <p style="margin: 0px;"> {{item.name}}</p>
                <i class="ti-check-box" *ngIf="item.uuid === subId"></i>

@@ -102,7 +102,7 @@
                                 </td>
 
                                 <td>
-                                    <button type="button" (click)="update(item,'status')" [className]="getClass(item.status)" 
+                                    <button type="button" (click)="changeStatus(item)" [className]="getClass(item.status)" 
                                         (click)="changeStatus(item)">{{item.status === '1' ? 'Active':'Inactive'}}</button>
                                 </td>
 
