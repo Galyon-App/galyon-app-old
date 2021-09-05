@@ -35,21 +35,48 @@ class Crud_model extends Galyon_model {
     }
   }
 
+  function get_products_with_category() {
+    return $this->get('products', 'uuid, category_id, subcategory_id', null, null, 'result' );
+  }
+
+  function set_product_category_uuid($pid, $catid, $subcatid) {
+    $cat = $this->get('category', 'uuid', "id = '$catid'", null, 'row' );
+    $subcat = $this->get('category', 'uuid', "id = '$subcatid'", null, 'row' );
+
+    $success = $this->update('products', array(
+      "category_id" => $cat->uuid, 
+      "subcategory_id" => $subcat->uuid
+    ), array( "uuid" => $pid ) );
+
+    if($success) {
+      return true;
+    } else {
+      return true;
+    }
+  }
+
   function get_products_with_sid() {
-    return $this->get('products', 'store_id', 'CHAR_LENGTH(store_id) < 36', array('store_id'=>null), 'result' );
+    //return $this->get('products', 'store_id', 'CHAR_LENGTH(store_id) < 36', array('store_id'=>null), 'result' );
+    return $this->get('products', 'id, uuid', null, null, 'result' );
   }
 
   function set_pruduct_store_and_uuid($uid, $uuid) {
-    $store = $this->get('stores', 'uuid', array( "id" => $uid) );
-    if($store) {
-      return $this->update('products', array("uuid" => $uuid, "store_id" => $store->uuid), array( "store_id" => $uid ) );
+    // $store = $this->get('stores', 'uuid', array( "id" => $uid) );
+    // if($store) {
+    //   return $this->update('products', array("uuid" => $uuid, "store_id" => $store->uuid), array( "store_id" => $uid ) );
+    // } else {
+    //   return true;
+    // }
+    $success = $this->update('products', array("uuid" => $uuid), array( "id" => $uid ) );
+    if($success) {
+      return true;
     } else {
       return true;
     }
   }
 
   function get_orders_with_uid() {
-    return $this->get('orders', 'id, uid, store_id, driver_id', 'CHAR_LENGTH(uid) < 36', array('uid'=>null), 'result' );
+    return $this->get('orders', 'id, uid, store_id, driver_id', 'CHAR_LENGTH(uuid) < 36', array('uuid'=>null), 'result' );
   }
 
   function set_order_foreign_and_uuid($order, $uuid) {    
@@ -58,11 +85,15 @@ class Crud_model extends Galyon_model {
       $this->update('orders', array("driver_id" => $driver->uuid), array( "id" => $order->id ) );
     }
     
-    $user = $this->get('users', 'uuid', array( "id" => $order->uid) ) 
-      ? $this->get('users', 'uuid', array( "id" => $order->uid) ) : NULL;
-    $store = $this->get('stores', 'uuid', array( "id" => $order->store_id) )
-      ? $this->get('stores', 'uuid', array( "id" => $order->store_id) ) : NULL;
-    return $this->update('orders', array("uid" => $user->uuid, "store_id" => $store->uuid), array( "id" => $order->id ) );
+    $user = $this->get('users', 'uuid', array( "id" => $order->uid) );
+    $user = $user ? array("uid" => $user->uuid) : NULL;
+    $this->update('orders', $user, array( "id" => $order->id ) );
+
+    $store = $this->get('stores', 'uuid', array( "id" => $order->store_id) );
+    $store = $store ? array("store_id" => $store->uuid) : NULL;
+    $this->update('orders', $store, array( "id" => $order->id ) );
+
+    return $this->update('orders', array("uuid" => $uuid), array( "id" => $order->id ) );
   }
 
   function get_cities_without_uuid() {

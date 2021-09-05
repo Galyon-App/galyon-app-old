@@ -24,10 +24,65 @@ class Galyon_controller extends CI_Controller{
         die();
     }
   }
-
-    
+  
   /**
-   * Check whether the current session is logged in or not.
+   * Authorization checker and blocked if forbidden.
+   *
+   * @param  mixed $force_exit Exit if not authorized.
+   * @return void | jwt token
+   */
+  public function is_authorized($failexit = TRUE) {
+    $bearer = $this->input->get_request_header('Authorization');
+    $token = str_replace("Bearer ", "", $bearer);
+    $user = JWT::decode($token, $this->config->item('jwt_secret_phrase'));
+
+    if($user == false) {
+      $this->json_response(null, false, "Invalid access tokens!");
+      if($exit) {
+        exit;
+      }
+    } 
+
+    $since = $user->expiry;
+    $span = $this->config->item('jwt_expiration');
+    $expiry = (int)$since + (int)$span;
+    $now = strtotime(get_current_utc_time());
+    if($now > $expiry) {
+      $this->json_response(null, false, "You're tokenn is already expired!");
+      if($exit) {
+        exit;
+      }
+    }
+    
+    $current = $this->Crud_model->get('users', 'status, verified_at', array( "uuid" => $user->uuid ), null, 'row' );
+
+    if(!$current) {
+      $this->json_response(null, false, "Encountered problem with the account!");
+      if($exit) {
+        exit;
+      }
+    }
+
+    if($current->status == "0") {
+      $this->json_response(null, false, "You're account is deactivated!");
+      if($exit) {
+        exit;
+      }
+    }
+    
+    if($current->verified_at == null) {
+      $this->json_response(null, false, "You're account is not yet verified!");
+      if($exit) {
+        exit;
+      }
+    }
+
+    return $user;
+  }
+
+  /**
+   * TODO: JWT Check whether the current session is logged in or not.
+   * Check on database if jwt hash is valid and still session is on database.
    *
    * @return boolean
    */
@@ -38,7 +93,6 @@ class Galyon_controller extends CI_Controller{
       return false;
     }
   }
-
     
   /**
    * Check whether the request and required fields is provided else return fields that is not found.
@@ -51,7 +105,7 @@ class Galyon_controller extends CI_Controller{
     if(isset($request) && !empty($request)) {
         $keys = [];
         foreach($request as $key => $value) {
-            array_push($keys, $key);
+          array_push($keys, $key);
         }
         $data = array_diff($fields, $keys);
 
@@ -84,12 +138,14 @@ class Galyon_controller extends CI_Controller{
         )
       );
     } else {
-      echo json_encode(
-        array(
-          "success" => false,
-          "message" => $message
-        )
+      $response = array(
+        "success" => false,
+        "message" => $message
       );
+      if($data != null) {
+        $response['data'] = $data;
+      }
+      echo json_encode($response);
       if($failexit) {
         exit;
       }

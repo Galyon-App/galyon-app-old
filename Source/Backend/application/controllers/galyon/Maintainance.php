@@ -27,6 +27,8 @@ class Maintainance extends Galyon_controller
         $cities_uuid = $this->update_cities_uuid();
         $categories_uuid = $this->update_categories_uuid();
 
+        //$product_category = $this->update_products_category();
+
         //TODO: save utc datetime on setting as last check and fix.
         $this->json_response(array(
             "user_uuid" => $user_uuid,
@@ -36,6 +38,8 @@ class Maintainance extends Galyon_controller
             "addresses_uuid" => $addresses_uuid,
             "cities_uuid" => $cities_uuid,
             "categories_uuid" => $categories_uuid,
+
+            //"product_categories" => $product_category
         ));
     }
 
@@ -87,12 +91,24 @@ class Maintainance extends Galyon_controller
         $pruducts = $this->Crud_model->get_products_with_sid();
 
         foreach($pruducts as $pruduct) {
-            $uuid = $this->uuid->v4();
-            $this->Crud_model->set_pruduct_store_and_uuid($pruduct->store_id, $uuid);
+            //$uuid = $this->uuid->v4();
+            //$this->Crud_model->set_pruduct_store_and_uuid($pruduct->store_id, $uuid);
+            //$this->Crud_model->set_pruduct_store_and_uuid($pruduct->id, $uuid);
         }
 
         return count($pruducts);
     }
+
+    protected function update_products_category() {
+        $pruducts = $this->Crud_model->get_products_with_category();
+
+        foreach($pruducts as $pruduct) {
+            $this->Crud_model->set_product_category_uuid($pruduct->uuid, $pruduct->category_id, $pruduct->subcategory_id);
+        }
+
+        return count($pruducts);
+    }
+    
 
     protected function update_store_owner_uuid() {
         $stores = $this->Crud_model->get_stores_with_uid();

@@ -6,14 +6,47 @@
   Created : 01-Jan-2021
 */
 require_once APPPATH.'/core/Main_model.php';
-class Order_model extends Main_model
-{
+class Order_model extends Main_model {
+    
     public $table_name = "orders";
+
 	public function __construct(){
 		parent::__construct();
         $this->load->library('upload','encrypt');
         $this->load->helper('string');
-        
+    }
+
+    public function getByStoreUuid($uuid){
+        $this->db->select('
+            order.uid as uid, 
+            order.address as address, 
+            order.assignee as assignee, 
+            order.coupon_code as coupon_code, 
+            order.date_time as date_time, 
+            order.delivery_charge as delivery_charge, 
+            order.discount as discount, 
+            order.driver_id as driver_id, 
+            order.grand_total as grand_total, 
+            order.id as id,order.notes as notes, 
+            order.order_to as order_to, 
+            order.orders as orders, 
+            order.paid_method as paid_method, 
+            order.pay_key as pay_key, 
+            order.status as status, 
+            order.store_id as store_id, 
+            order.tax as tax, 
+            order.total as total, 
+            user.cover as cover, 
+            user.first_name as first_name, 
+            user.last_name as last_name
+        ');
+        $this->db->from("orders as order");
+        $this->db->join('users as user','order.uid = user.id');
+        $this->db->where("FIND_IN_SET(".$uuid.",store_id) >", 0);
+        $this->db->order_by("id", "desc");
+        // $this->db->limit(10);
+        $data = $this->db->get()->result();
+        return $data;
     }
 
     public function getById($id){

@@ -6,15 +6,7 @@
   Created : 01-Jan-2021
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>403 Forbidden</title>
-</head>
-<body>
 
-<p>Directory access is forbidden.</p>
+$config['jwt_secret_phrase'] = 'e8277e879e3e5dc49a60b75addac2e71';
 
-</body>
-</html>
+$config['jwt_expiration'] = 43200;
