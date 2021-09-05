@@ -4,6 +4,7 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
+
 import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, MenuController, NavController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -22,19 +23,18 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
+
   public appPages: any[] = [];
   selectedIndex: any;
-
   discountValue: any;
-
   min: any;
   max: any;
-
   priceFilter = {
     lower: 10,
     upper: 500
   };
   fromFilter: any;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     private storage: Storage
   ) {
     this.selectedIndex = 0;
-    this.initializeApp();
+    this.initialize();
     this.menuCtrl.enable(false, 'menu1');
   }
 
@@ -56,126 +56,49 @@ export class AppComponent implements OnInit {
     await this.storage.create();
   }
 
-  async initializeApp() {
+  async initialize() {
     this.platform.ready().then(() => {
       console.log('%c Copyright 2021 © BytesCrafter', 'background: #222; color: #bada55');
-
       this.statusBar.show();
       this.appPages = this.util.appPage;
-      const lng = localStorage.getItem('language');
       document.body.setAttribute('color-theme', 'light');
 
-      if (!lng || lng === null) {
-        this.api.get('users/getDefaultSettings').subscribe((data: any) => {
-          if (data && data.status === 200 && data.data) {
-            const manage = data.data.manage;
-            const language = data.data.lang;
-            if (manage && manage.length > 0) {
-              if (manage[0].app_close === 0 || manage[0].app_close === '0') {
-                this.util.appClosed = true;
-                this.util.appClosedMessage = manage[0].message;
-              } else {
-                this.util.appClosed = false;
-              }
-            } else {
-              this.util.appClosed = false;
-            }
-            if (language) {
-              this.util.translations = language;
-              localStorage.setItem('language', data.data.file);
-            }
-            const settings = data.data.settings;
-            if (settings && settings.length > 0) {
-              const info = settings[0];
-              this.util.direction = info.appDirection;
-              this.util.cside = info.currencySide;
-              this.util.currecny = info.currencySymbol;
-              this.util.logo = info.logo;
-              this.util.twillo = info.twillo;
-              this.util.delivery = info.delivery;
-              this.util.user_login = info.user_login;
-              this.util.reset_pwd = info.reset_pwd;
-              document.documentElement.dir = this.util.direction;
-            } else {
-              this.util.direction = 'ltr';
-              this.util.cside = 'right';
-              this.util.currecny = '$';
-              document.documentElement.dir = this.util.direction;
-            }
+      this.api.gets('galyon/v1/settings/initialize').then((response: any) => {
+        if (response && response.success == true && response.data) {
+          //const manage = response.data.manage;
+          this.util.translations = response.data.lang;
+          localStorage.setItem('language', response.data.file);
 
-            const general = data.data.general;
-            if (general && general.length > 0) {
-              const info = general[0];
-              this.util.general = info;
-              this.cart.minOrderPrice = parseFloat(info.min);
-              this.cart.shipping = info.shipping;
-              this.cart.shippingPrice = parseFloat(info.shippingPrice);
-              this.cart.orderTax = parseFloat(info.tax);
-              this.cart.freeShipping = parseFloat(info.free);
-            }
+          const manage = response.data.manage;
+          if (manage.app_close === 0 || manage.app_close === '0') {
+            this.util.appClosed = true;
+            this.util.appClosedMessage = manage.app_close_message;
+          } else {
+            this.util.appClosed = false;
           }
-        }, error => {
-          console.log('default settings', error);
-        });
-      } else {
-        const param = {
-          id: localStorage.getItem('language')
-        };
-        this.api.post('users/getDefaultSettingsById', param).subscribe((data: any) => {
-          if (data && data.status === 200 && data.data) {
-            const manage = data.data.manage;
-            const language = data.data.lang;
-            if (manage && manage.length > 0) {
-              if (manage[0].app_close === 0 || manage[0].app_close === '0') {
-                this.util.appClosed = true;
-                this.util.appClosedMessage = manage[0].message;
-              } else {
-                this.util.appClosed = false;
-              }
-            } else {
-              this.util.appClosed = false;
-            }
-            if (language) {
-              this.util.translations = language;
-            }
-            const settings = data.data.settings;
-            if (settings && settings.length > 0) {
-              const info = settings[0];
-              this.util.direction = info.appDirection;
-              this.util.cside = info.currencySide;
-              this.util.currecny = info.currencySymbol;
-              this.util.logo = info.logo;
-              this.util.twillo = info.twillo;
-              this.util.delivery = info.delivery;
-              this.util.user_login = info.user_login;
-              this.util.reset_pwd = info.reset_pwd;
-              document.documentElement.dir = this.util.direction;
-
-            } else {
-              this.util.direction = 'ltr';
-              this.util.cside = 'right';
-              this.util.currecny = '$';
-              document.documentElement.dir = this.util.direction;
-            }
-            const general = data.data.general;
-            if (general && general.length > 0) {
-              const info = general[0];
-              this.util.general = info;
-              this.cart.minOrderPrice = parseFloat(info.min);
-              this.cart.shipping = info.shipping;
-              this.cart.shippingPrice = parseFloat(info.shippingPrice);
-              this.cart.orderTax = parseFloat(info.tax);
-              this.cart.freeShipping = parseFloat(info.free);
-            }
-          }
-        }, error => {
-          this.util.appClosed = false;
-          this.util.direction = 'ltr';
-          this.util.cside = 'right';
-          this.util.currecny = '$';
+  
+          const settings = response.data.settings;
+          this.util.direction = settings.appDirection;
+          this.util.cside = settings.currencySide;
+          this.util.currecny = settings.currencySymbol;
+          this.util.logo = settings.logo;
+          this.util.delivery = settings.delivery;
+          this.util.user_login = settings.user_login;
+          this.util.reset_pwd = settings.reset_pwd;
           document.documentElement.dir = this.util.direction;
-        });
-      }
+            
+          const general = response.data.general;
+          this.util.general = general;
+          this.util.general = general;
+          this.cart.minOrderPrice = parseFloat(general.min);
+          this.cart.shipping = general.shipping;
+          this.cart.shippingPrice = parseFloat(general.shippingPrice);
+          this.cart.orderTax = parseFloat(general.tax);
+          this.cart.freeShipping = parseFloat(general.free);
+        }
+      }, error => {
+        console.log('app init error', error);
+      });
 
       // if (this.platform.is('cordova')) {
       //   setTimeout(async () => {
@@ -195,53 +118,52 @@ export class AppComponent implements OnInit {
       //           console.log(error);
       //         });
       //       }
-
       //     });
       //     await this.oneSignal.endInit();
       //   }, 1000);
       // }
 
-      const uid = localStorage.getItem('uid');
-      if (uid && uid !== null && uid !== 'null') {
-        const param = {
-          id: uid
-        };
-        this.api.post('users/getById', param).subscribe((data: any) => {
-          if (data && data.status === 200 && data.data && data.data.length) {
-            this.util.userInfo = data.data[0];
-          } else {
-            localStorage.removeItem('uid');
-          }
-        }, error => {
-          console.log(error);
-        });
+      // const uid = localStorage.getItem('uid');
+      // if (uid && uid !== null && uid !== 'null') {
+      //   const param = {
+      //     id: uid
+      //   };
+      //   this.api.post('users/getById', param).subscribe((data: any) => {
+      //     if (data && data.status === 200 && data.data && data.data.length) {
+      //       this.util.userInfo = data.data[0];
+      //     } else {
+      //       localStorage.removeItem('uid');
+      //     }
+      //   }, error => {
+      //     console.log(error);
+      //   });
 
-        this.api.post('favourite/getByUid', param).subscribe((data: any) => {
-          if (data && data.status === 200 && data.data.length > 0) {
-            this.util.haveFav = true;
-            try {
-              this.util.favIds = data.data[0].ids.split(',');
-            } catch (error) {
-              console.log('eroor', error);
-            }
-          } else {
-            this.util.haveFav = false;
-          }
-        }, error => {
-          this.util.haveFav = false;
-          console.log('fav error', error);
-        });
-      }
+      //   this.api.post('favourite/getByUid', param).subscribe((data: any) => {
+      //     if (data && data.status === 200 && data.data.length > 0) {
+      //       this.util.haveFav = true;
+      //       try {
+      //         this.util.favIds = data.data[0].ids.split(',');
+      //       } catch (error) {
+      //         console.log('eroor', error);
+      //       }
+      //     } else {
+      //       this.util.haveFav = false;
+      //     }
+      //   }, error => {
+      //     this.util.haveFav = false;
+      //     console.log('fav error', error);
+      //   });
+      // }
 
-      this.platform.backButton.subscribe(async () => {
-        if (this.router.url === '/categories' || this.router.url === '/cart' ||
-          this.router.url === '/orders' || this.router.url === '/account'
-          || this.router.url === '/login') {
-          this.navCtrl.navigateRoot(['/home']);
-        } else if (this.router.url === '/home' || this.router.url === '/cities') {
-          navigator['app'].exitApp();
-        }
-      });
+      // this.platform.backButton.subscribe(async () => {
+      //   if (this.router.url === '/categories' || this.router.url === '/cart' ||
+      //     this.router.url === '/orders' || this.router.url === '/account'
+      //     || this.router.url === '/login') {
+      //     this.navCtrl.navigateRoot(['/home']);
+      //   } else if (this.router.url === '/home' || this.router.url === '/cities') {
+      //     navigator['app'].exitApp();
+      //   }
+      // });
     });
   }
 
@@ -252,13 +174,5 @@ export class AppComponent implements OnInit {
 
   getTranslate(str) {
     return this.util.getString(str);
-  }
-
-  haveSignedIn() {
-    const uid = localStorage.getItem('uid');
-    if (uid && uid != null && uid !== 'null') {
-      return true;
-    }
-    return false;
   }
 }

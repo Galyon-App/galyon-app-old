@@ -29,13 +29,13 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { StoreRatingPageModule } from './pages/store-rating/store-rating.module';
-import { ProductRatingPageModule } from './pages/product-rating/product-rating.module';
-import { DriverRatingPageModule } from './pages/driver-rating/driver-rating.module';
+import { StoreRatingPageModule } from './pages/users/store-rating/store-rating.module';
+import { ProductRatingPageModule } from './pages/users/product-rating/product-rating.module';
+import { DriverRatingPageModule } from './pages/users/driver-rating/driver-rating.module';
 import { FormsModule } from '@angular/forms';
-import { SortPageModule } from './pages/sort/sort.module';
-import { VerifyPageModule } from './pages/verify/verify.module';
-import { SelectCountryPageModule } from './pages/select-country/select-country.module';
+import { SortPageModule } from './pages/users/sort/sort.module';
+import { VerifyPageModule } from './pages/external/verify/verify.module';
+import { SelectCountryPageModule } from './pages/users/select-country/select-country.module';
 import { ComponentsModule } from './components/components.module';
 import { environment } from 'src/environments/environment';
 
@@ -44,6 +44,11 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { Printer } from '@ionic-native/printer/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { AuthComponent } from './components/auth/auth.component';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 // 1. Import the libs you need
 // import { AngularFireModule } from '@angular/fire';
@@ -51,7 +56,10 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
 // import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    AuthComponent,
+  ],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -60,7 +68,7 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
     HttpClientModule,
     PipeModule,
     IonicStorageModule.forRoot({
-      name: '__bseishop',
+      name: '__bseiapp',
       driverOrder: [ Drivers.IndexedDB, Drivers.LocalStorage]
     }),
     StoreRatingPageModule,
@@ -89,7 +97,9 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
     Geolocation,
     NativeAudio,
     InAppBrowser,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

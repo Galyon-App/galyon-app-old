@@ -27,7 +27,6 @@ export class ApiService {
     this.mediaURL = environment.mediaURL;
   }
 
-
   alerts(title, message, type) {
     Swal.fire(
       title,
@@ -97,7 +96,6 @@ export class ApiService {
     return new_list.join('&');
   }
 
-
   post(url, body) {
     const header = {
       headers: new HttpHeaders()
@@ -107,6 +105,23 @@ export class ApiService {
     const param = this.JSON_to_URLEncoded(body);
     console.log(param);
     return this.http.post(this.baseUrl + url, param, header);
+  }
+
+  public posts(url, body): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const header = {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .set('Basic', `${environment.authToken}`)
+      };
+      const param = this.JSON_to_URLEncoded(body);
+      this.http.post(this.baseUrl + url, param, header).subscribe((data) => {
+        resolve(data);
+      }, error => {
+        resolve(error);
+      });
+      // return this.http.post(this.baseUrl + url, param, header);
+    });
   }
 
   externalPost(url, body, key) {
@@ -147,6 +162,22 @@ export class ApiService {
         .set('Basic', `${environment.authToken}`)
     };
     return this.http.get(this.baseUrl + url, header);
+  }
+
+  public gets(url): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const header = {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+          .set('Basic', `${environment.authToken}`)
+        // .set('responseType', 'blob')
+      };
+      this.http.get(this.baseUrl + url, header).subscribe((data) => {
+        resolve(data);
+      }, error => {
+        resolve(error);
+      });
+    });
   }
 
   externalGet(url) {

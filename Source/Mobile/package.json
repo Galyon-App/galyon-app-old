@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~9.1.6",
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
+    "@auth0/angular-jwt": "^5.0.2",
     "@ionic-native/android-permissions": "^5.27.0",
     "@ionic-native/camera": "^5.27.0",
     "@ionic-native/core": "^5.0.7",

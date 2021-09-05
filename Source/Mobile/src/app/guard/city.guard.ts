@@ -7,25 +7,26 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { MenuController } from '@ionic/angular';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class CityGuard implements CanActivate {
     constructor(
         private router: Router,
+        private menuController: MenuController
     ) { }
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        // const uid = localStorage.getItem('uid');
-        // console.log('uid', localStorage.getItem('uid'));
-        // if (uid && uid != null && uid !== 'null') {
-        //     return true;
-        // }
-        // this.router.navigate(['/login']);
-        // return false;
-        return true;
+        const city = localStorage.getItem('mobile-current-city');
+        if (city && city != null && city !== '') {
+            this.menuController.enable(true);
+            return true;
+        }
+        this.menuController.enable(false);
+        this.router.navigate(['/cities']);
     }
 }

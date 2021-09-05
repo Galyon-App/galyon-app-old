@@ -31,10 +31,9 @@ export class CartService {
   public deliveryAddress: any;
   public deliveryPrice: any = 0;
   public stores: any[] = [];
-
   public bulkOrder: any[] = [];
-
   public userOrderTaxByStores: any[] = [];
+  
   constructor(
     public api: ApiService,
     public util: UtilService

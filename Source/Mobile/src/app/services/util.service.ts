@@ -10,6 +10,7 @@ import { LoadingController, AlertController, ToastController, NavController, Men
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Storage } from '@ionic/storage';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Injectable({
   providedIn: 'root'
@@ -404,5 +405,8 @@ export class UtilService {
     return str;
   }
 
-
+  jwtDecode(token: string) {
+    const jwt = new JwtHelperService();
+    return jwt.decodeToken(token);
+  }
 }
