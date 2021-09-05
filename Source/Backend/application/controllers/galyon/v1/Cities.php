@@ -21,15 +21,15 @@ class Cities extends Galyon_controller {
     }
 
     function getAllCities() {
-        $user = $this->is_authorized();
+        // $user = $this->is_authorized(false);
 
-        //TODO: Filter by search using the post key of search.
-        $where = null;
-        if($user) {
-            if($user->role !== "admin") {
-                $where = "status = '1'"; 
-            }
-        }
+        // //TODO: Filter by search using the post key of search.
+        // $where = "status = '1'"; 
+        // if($user && isset($user->role)) {
+        //     if($user->role == "admin") {
+        //         $where = null;
+        //     }
+        // }
 
         $cities = $this->Crud_model->get($this->table_name, $this->public_column, NULL, NULL, 'result' );
         if($cities) {

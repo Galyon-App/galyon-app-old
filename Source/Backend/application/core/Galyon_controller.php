@@ -37,8 +37,8 @@ class Galyon_controller extends CI_Controller{
     $user = JWT::decode($token, $this->config->item('jwt_secret_phrase'));
 
     if($user == false) {
-      $this->json_response(null, false, "Invalid access tokens!");
-      if($exit) {
+      $this->json_response(null, false, "Invalid access token!");
+      if($failexit) {
         exit;
       }
     } 
@@ -49,7 +49,7 @@ class Galyon_controller extends CI_Controller{
     $now = strtotime(get_current_utc_time());
     if($now > $expiry) {
       $this->json_response(null, false, "You're tokenn is already expired!");
-      if($exit) {
+      if($failexit) {
         exit;
       }
     }
@@ -58,21 +58,21 @@ class Galyon_controller extends CI_Controller{
 
     if(!$current) {
       $this->json_response(null, false, "Encountered problem with the account!");
-      if($exit) {
+      if($failexit) {
         exit;
       }
     }
 
     if($current->status == "0") {
       $this->json_response(null, false, "You're account is deactivated!");
-      if($exit) {
+      if($failexit) {
         exit;
       }
     }
     
     if($current->verified_at == null) {
       $this->json_response(null, false, "You're account is not yet verified!");
-      if($exit) {
+      if($failexit) {
         exit;
       }
     }
