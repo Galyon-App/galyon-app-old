@@ -15,13 +15,35 @@
     </ion-buttons>
     <ion-title>{{name}}</ion-title>
   </ion-toolbar>
-  <ion-searchbar *ngIf="subCates?.length" [placeholder]="util.getString('Search')" inputmode="text" mode="ios"
+  <ion-searchbar [placeholder]="util.getString('Search...')" inputmode="text" mode="ios"
     type="text" (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
 </ion-header>
 
 <ion-content>
+  <ion-slides [options]="slideOpts">
+    <ion-slide *ngFor="let item of subCates" [class.mnu-selected]="item.uuid == tabSelected" 
+      id="mnu_{{item.uuid}}" style="max-width: fit-content !important; padding: 10px 20px;">
+      <ion-col class="side_col" (click)="onMenuClick(item.uuid)">
+        <div class="icon-menu" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/category.png)'}" 
+          style="background-size: cover; background-repeat: no-repeat;"></div>
+        <ion-label class="menutext">{{item.name}}</ion-label>
+      </ion-col>
+    </ion-slide>
+    <ion-slide *ngFor="let item of dummyCates" style="max-width: fit-content !important; padding: 10px 20px;">
+      <ion-col class="side_col">
+        <div class="icon-menu">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </div>
+        <ion-label class="menutext">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-label>
+      </ion-col>
+    </ion-slide>
+  </ion-slides>
+
   <p class="ion-text-center" *ngIf="!subCates?.length && !dummyCates?.length && !dummys?.length">
-    {{util.getString('No Product found')}} </p>
+    {{util.getString('No Product found')}}
+  </p>
   <ion-list *ngIf="subCates?.length && allProducts?.length">
     <ion-item *ngFor="let item of allProducts" lines="none" (click)="goToSingleProduct(item)">
       <ion-thumbnail slot="start">
@@ -30,24 +52,11 @@
       <ion-label>{{item.name}}</ion-label>
     </ion-item>
   </ion-list>
-  
-  <ion-row>
+
+  <ion-row style="margin-top: 20px;">
     <ion-col size="3" class="ion-no-padding">
-      <div scrollY="true" class="menu-content">
-        <ion-row *ngFor="let item of subCates" [class.mnu-selected]="item.id == tabSelected" id="mnu_{{item.id}}">
-          <ion-col size="12" class="side_col" (click)="onMenuClick(item.id)">
-            <div class="icon-menu" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/category.png)'}" 
-              style="background-size: cover; background-repeat: no-repeat;"></div>
-            <ion-label class="menutext">{{item.name}}</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngFor="let item of dummyCates">
-          <ion-col size="12" class="side_col">
-            <ion-label class="menutext">
-              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            </ion-label>
-          </ion-col>
-        </ion-row>
+      <div scrollY="false" class="menu-content">
+        
       </div>
     </ion-col>
 
@@ -184,7 +193,6 @@
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>
-
     </ion-col>
   </ion-row>
 </ion-content>

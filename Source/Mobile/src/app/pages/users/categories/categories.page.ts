@@ -22,6 +22,7 @@ export class CategoriesPage implements OnInit {
   dummy = Array(20);
   selectedIndex: any;
   subIndex: any;
+
   constructor(
     public util: UtilService,
     private cat: CategoryService,
@@ -33,51 +34,33 @@ export class CategoriesPage implements OnInit {
   }
 
   ngOnInit() {
+  }  
+
+  getCates() {
+    this.dummy = Array(10);
+    this.categories = [];
+
+    this.api.get('galyon/v1/category/getAllCategorys').subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        let allCategories = response.data;
+        this.categories = allCategories.filter((x) => x.parent_id == null);
+        this.categories.forEach((parent, i) => {
+          this.categories[i].subCates = [];
+          let subcats = allCategories.filter((x) => x.parent_id == parent.uuid);
+          subcats.forEach(child => {
+            this.categories[i].subCates.push(child);
+          });
+        });
+        this.dummy = [];
+      }
+    }, error => {
+      console.log(error);
+      this.util.errorToast(this.util.getString('Something went wrong'));
+    });
   }
 
   openMenu() {
     this.util.openMenu();
-  }
-
-  getCates() {
-    this.categories = [];
-    this.dummy = Array(20);
-    this.api.get('categories').subscribe((datas: any) => {
-      this.dummy = [];
-      if (datas && datas.data && datas.data.length) {
-        datas.data.forEach(element => {
-          if (element.status === '1') {
-            const info = {
-              id: element.id,
-              name: element.name,
-              cover: element.cover,
-              subCates: []
-            }
-            this.categories.push(info);
-          }
-        });
-      }
-      this.api.get('subcate').subscribe((subCates: any) => {
-        console.log('sub cates', subCates);
-        if (subCates && subCates.status === 200 && subCates.data && subCates.data.length) {
-          this.categories.forEach((element, i) => {
-            subCates.data.forEach(sub => {
-              if (sub.status === '1' && element.id === sub.cate_id) {
-                this.categories[i].subCates.push(sub);
-              }
-            });
-          });
-          console.log('=>>', this.categories);
-        }
-      }, error => {
-        console.log(error);
-        this.util.errorToast(this.util.getString('Something went wrong'));
-      });
-    }, error => {
-      console.log(error);
-      this.util.errorToast(this.util.getString('Something went wrong'));
-      this.dummy = [];
-    });
   }
 
   change(id) {

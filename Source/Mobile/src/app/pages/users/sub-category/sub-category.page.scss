@@ -10,7 +10,7 @@ ion-searchbar {
 }
 
 .mnu-selected {
-  border-left: 3px solid var(--ion-color-primary) !important;
+  border-bottom: 3px solid var(--ion-color-primary) !important;
   color: var(--ion-color-primary) !important;
 }
 ion-label {
@@ -30,7 +30,8 @@ ion-label {
   padding-top: 15px;
 }
 .menutext {
-  font-size: 10px;
+  padding-top: 12px;
+  font-size: 12px;
   display: block;
 }
 .productimage {
@@ -207,9 +208,10 @@ ion-label {
 }
 
 .icon-menu {
-    height: 25px;
-    width: 25px;
-    display: inline-block;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .menu-content {

@@ -6,24 +6,24 @@
 */
 ion-title {
    text-align: right !important;
-   padding-inline: 35px;
+   padding-inline: 25px;
 }
 
 ion-thumbnail {
     width: 50vw;
-    height: 65px;
+    height: auto;
 
     img {
         display: block;
         position: relative;
-        height: -webkit-fill-available;
+        height: 70px;
         width: auto;
+        padding: 5px 0 5px 10px;
     }
 }
 
 .menu-logo {
     padding-left: 0px;
-    padding-top: 7px;
     position: absolute;
     height: 35px;
     width: -webkit-fit-content;
@@ -46,16 +46,13 @@ ion-thumbnail {
     width: 100%;
     padding: 16px;
     padding-bottom: 20px;
+    ion-label { display: block; }
 
-    ion-label {
-        display: block;
-    }
-
-    .cateLbl{
+    .segment-title{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 20px 5px;
+        margin: 0 15px 10px;
     
         .all {
             font-weight: bold;
@@ -88,24 +85,22 @@ ion-thumbnail {
                 border-radius: 50%;
                 padding: 5px;
                 line-height: 60px;
-                height: 60px;
-                width: 60px;
+                height: 50px;
+                width: 75px;
                 position: relative;
             }
             .icon{
-                // height: 25px;
                 position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%,-50%);
-                width: 55px;
             }
 
             .name{
-                font-size: 10px;
+                font-size: 12px;
                 font-weight: bold;
                 color: gray;
-                margin: 10px 0px;
+                margin: 15px 0px 10px;
             }
         }
     }
@@ -119,7 +114,7 @@ ion-thumbnail {
             margin-bottom: 10px;
 
             .back_image{
-                height: 120px;
+                height: 140px;
                 width: 100%;
                 background-position: center;
                 background-repeat: no-repeat;
@@ -150,44 +145,19 @@ ion-thumbnail {
     .content_div{
         padding: 10px 0px;
         width: 100%;
+
         .card_div{
-            
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            position: relative;
-            margin-bottom: 16px;
             border: 1px solid lightgray;
             margin-right: 10px;
-            .offer_tag{
-                width: 35px;
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 99;
-            }
-
-            .off_lbl{
-                font-family: muli-bold;
-                position: absolute;
-                width: min-content;
-                font-size: 9px;
-                top: 4px;
-                left: 8px;
-                text-align: center;
-                color: white;
-                z-index: 999;
-            }
 
             .image_div{
-                height: inherit;
-                width: 100px;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                position: relative;
-                border-radius: 5px;
-                margin: 5px;
+                height: 120px;
+                width: 40vw;
+                object-fit: cover;
+                display: table;
+                padding: 5px 10px;
+
                 .kind{
                   height: 15px;
                   width: 15px;
@@ -208,10 +178,32 @@ ion-thumbnail {
                 }
             }
 
+            .offer_tag{
+                width: 35px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 99;
+            }
+
+            .off_lbl{
+                font-family: muli-bold;
+                position: absolute;
+                width: min-content;
+                font-size: 9px;
+                top: 4px;
+                left: 8px;
+                text-align: center;
+                color: white;
+                z-index: 999;
+            }
+
             .desc_div{
                 text-align: right;
                 padding: 10px;
                 font-size: 10px !important;
+                width: 40vw;
+                
                 .variant{
                     .selecter{
                         font-size: 10px;
@@ -329,10 +321,26 @@ ion-thumbnail {
     }
     
     .listView{
-        margin: 10px 0px;
+        .swiper-slide {
+            width: 165px !important;
+        }
         .box{
-            border: 1px solid lightgray;
-            width: 100%;
+            width: max-content;
+            height: max-content;
+            padding: 10px 0;
+            .preview {
+                width: 150px;
+                height: 150px;
+            }
+            .title {
+                margin-top: 10px;
+                width: 100%;
+                height: 15px;
+            }
+            .store {
+                width: 100%;
+                height: 12px;
+            }
             .image_div{
                 height: 80px;
                 width: 95%;
@@ -533,16 +541,14 @@ ion-thumbnail {
     }
 
     .allstore_div{
+        padding: 10px 0px;
         width: 100%;
+
         .card_div{
-            
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            position: relative;
-            margin-bottom: 16px;
             border: 1px solid lightgray;
             margin-right: 10px;
+
             .offer_tag{
                 width: 35px;
                 position: absolute;
@@ -564,14 +570,11 @@ ion-thumbnail {
             }
 
             .image_div{
-                height: inherit;
-                width: 100px;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                position: relative;
-                border-top-left-radius: 5px;
-                border-bottom-left-radius: 5px;
+                height: 120px;
+                width: 40vw;
+                object-fit: cover;
+                display: table;
+                padding: 5px 10px;
                 margin: 5px;
                 .kind{
                   height: 15px;
@@ -597,6 +600,8 @@ ion-thumbnail {
                 text-align: right;
                 padding: 10px;
                 font-size: 10px !important;
+                width: 40vw;
+
                 .variant{
                     .selecter{
                         font-size: 10px;

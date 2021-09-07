@@ -6,31 +6,27 @@
   Created : 01-Sep-2020
 
  -->
+
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" style="background: var(--ion-color-light);">
-    <ion-thumbnail slot="start">
-      <img src="assets/imgs/logo.png" class="menu-logo">
-    </ion-thumbnail>
-    <ion-title slot="end" (click)="changeCity()">
-      <div class="ion-activatable" *ngIf="util && util.city && util.city.name">
-        <ion-icon name="location"></ion-icon>
-        {{ util.city.name }}
-        <ion-ripple-effect type="bounded"></ion-ripple-effect>
+  <ion-toolbar color="primary" style="background: var(--ion-color-light); padding: 5px 15px;">
+      <ion-thumbnail slot="start">
+        <img src="assets/imgs/logo.png" class="menu-logo">
+      </ion-thumbnail>
+      <div slot="end" *ngIf="currentCity" style="width: 50vw;height: auto;">
+        <strong style="padding: 10px;" (click)="changeCity()">
+          {{ currentCity }}
+          <ion-icon  name="location" style="font-size: 1.7em;" ></ion-icon>
+        </strong>
       </div>
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="flx">
-    <ion-searchbar [placeholder]="util.getString('Search  products')" [(ngModel)]="terms" inputmode="text" type="search"
+    <ion-searchbar [placeholder]="util.getString('Search...')" [(ngModel)]="terms" inputmode="text" type="search"
       (keyup.enter)="search(q.value)" (ionChange)="onSearchChange($event)" #q [debounce]="250" mode="ios"
       showCancelButton="never">
     </ion-searchbar>
-    <ion-button (click)="search(terms)" expand="block" fill="clear" size="small">
-      <ion-icon slot="icon-only" name="search"></ion-icon>
-    </ion-button>
-
   </div>
   <div class="searchList" *ngIf="products?.length">
     <ion-item *ngFor="let item of products" (click)="goToSingleProduct(item)">
@@ -38,52 +34,51 @@
       <ion-icon name="arrow-redo-outline" slot="end"></ion-icon>
     </ion-item>
   </div>
+  
   <div class="main_content_div" *ngIf="haveStores === true">
 
-    <div class="cateLbl">
-      <ion-label class="all"> {{util.getString('All Categories')}} </ion-label>
-      <ion-label class="view" (click)="goToCatrgory()">{{util.getString('View All')}}<ion-icon
+    <!-- START CATEGORIES -->
+    <div class="segment-title">
+      <ion-label class="all"> {{util.getString('All Collaborations')}} </ion-label>
+      <ion-label class="view" (click)="viewAllParentCategory()">{{util.getString('View All')}}<ion-icon
           name="chevron-forward-outline" color="primary">
         </ion-icon>
       </ion-label>
     </div>
-
     <div class="sliders">
-      <div class="categoryIcon" *ngFor="let item of allcates" (click)="subCate(item)">
+      <div class="categoryIcon" *ngFor="let item of parentCategories" (click)="viewSubCategories(item)">
         <div class="imgs">
-          <img [src]="api.mediaURL + item.cover" alt="..." (error)="setDefaultCatImg($event)" style="border-radius: 50px;" class="icon">
+          <img [src]="api.mediaURL + item.cover" alt="..." (error)="assets/imgs/category.png" style="border-radius: 50px;" class="icon">
         </div>
-        <ion-label class="name">{{ (item.name.length>10)? (item.name | slice:0:10)+'..':(item.name) }}</ion-label>
+        <ion-label class="name">{{ (item.name.length>15)? (item.name | slice:0:15)+'..':(item.name) }}</ion-label>
       </div>
-
-      <div *ngFor="let item of dummyCates" style="margin: 0px 10px;">
+      <div *ngFor="let item of dummyCates" class="categoryIcon" style="margin: 0px 10px;">
         <ion-skeleton-text animated style="width: 50px;height: 50px;border-radius: 50%;"></ion-skeleton-text>
         <ion-skeleton-text animated style="width: 100%;height:10px;"></ion-skeleton-text>
       </div>
     </div>
+    <!-- END CATEGORIES -->
 
-    <div class="cateLbl" *ngIf="!dummyBanners?.length && banners?.length">
-      <ion-label class="all"> {{util.getString('Exclusive Offers')}} </ion-label>
-      <ion-label class="view" (click)="allOffers()">{{util.getString('View All')}}
+    <!-- START BILLBOARDS -->
+    <div class="segment-title" style="margin-top: 15px;">
+      <ion-label class="all"> {{util.getString('Digital Billboards')}} </ion-label>
+      <ion-label class="view" (click)="allOffers()">{{util.getString('More')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
         </div>
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
       </ion-label>
     </div>
-
-    <!-- Top Banners -->
-    <div class="slider_div" *ngIf="!dummyBanners?.length && banners?.length">
+    <div class="slider_div">
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of dummyBanners">
-          <!-- <div class="card"> -->
-          <ion-skeleton-text animated style="width: 100%;height: 120px;"></ion-skeleton-text>
-          <!-- </div> -->
+          <div class="card">
+            <ion-skeleton-text animated style="width: 100%; height: 150px;"></ion-skeleton-text>
+          </div>
         </ion-slide>
         <ion-slide *ngFor="let item of banners">
           <div class="card">
-            <div class="back_image"
-              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
+            <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
               (click)="openLink(item)">
               <!-- <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
@@ -93,22 +88,26 @@
         </ion-slide>
       </ion-slides>
     </div>
+    <!-- END BILLBOARDS -->
 
-    <div class="cateLbl" *ngIf="!dummyTopProducts?.length && topProducts?.length">
-      <ion-label class="all"> {{util.getString('Top Picked')}} </ion-label>
-      <ion-label class="view" (click)="topicked()">{{util.getString('View All')}}
+    <!-- START TOP PRODUCTS -->
+    <div class="segment-title" style="margin-top: 15px;">
+      <ion-label class="all"> {{util.getString('Trending Products')}} </ion-label>
+      <ion-label class="view" (click)="topicked()">{{util.getString('More')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
         </div>
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
       </ion-label>
     </div>
-
-    <!-- NEW -->
     <div class="listView">
       <ion-slides [options]="slideTops">
         <ion-slide *ngFor="let item of dummyTopProducts">
-          <ion-skeleton-text animated style="width: 100%;height: 120px;"></ion-skeleton-text>
+          <div class="box">
+            <ion-skeleton-text class="preview" animated></ion-skeleton-text>
+            <ion-skeleton-text class="title" animated></ion-skeleton-text>
+            <ion-skeleton-text class="store" animated></ion-skeleton-text>
+          </div>
         </ion-slide>
         <ion-slide *ngFor="let item of topProducts;let i = index;">
           <div class="box">
@@ -218,23 +217,58 @@
         </ion-slide>
       </ion-slides>
     </div>
-    <!-- NEW -->
+    <!-- START TOP PRODUCTS -->
 
-    <!-- Start Top Store -->
-    <div class="cateLbl" *ngIf="haveStores && stores?.length">
-      <ion-label class="all"> {{util.getString('Top Stores')}} </ion-label>
-      <ion-label class="view" (click)="topStores()">{{util.getString('View All')}}
+    <!-- START BETWEEN BANNER -->
+    <div class="slider_div" *ngIf="!betweenDummy?.length && betweenBanners?.length">
+      <ion-slides [options]="slideOpts">
+        <ion-slide *ngFor="let item of betweenDummy">
+          <div class="card">
+            <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
+          </div>
+        </ion-slide>
+        <ion-slide *ngFor="let item of betweenBanners">
+          <div class="card">
+            <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
+              (click)="openLink(item)" style="height: 100px;">
+              <!-- <div class="overlay_div" *ngIf="item.message">
+                <ion-label> {{item.message}} </ion-label>
+              </div> -->
+            </div>
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </div>
+    <!-- END BETWEEN BANNER -->
+
+    <!-- START TOP STORES -->
+    <div class="segment-title" style="margin-top: 15px;">
+      <ion-label class="all"> {{util.getString('Brightest Merchants')}} </ion-label>
+      <ion-label class="view" (click)="topStores()">{{util.getString('More')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
         </div>
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
       </ion-label>
     </div>
-
-    <div class="topProducts" *ngIf="haveStores && stores?.length">
-      <ion-slides [options]="slideOpts">
-
-        <ion-slide *ngFor="let item of stores;let i = index;">
+    <div class="topProducts">
+      <ion-list>
+        <ion-item lines="none" *ngFor="let item of dummyTopStores">
+          <div class="content_div">
+            <div class="card_div">
+              <div class="image_div">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </div>
+              <div class="desc_div">
+                <ion-skeleton-text animated class="pro_name"></ion-skeleton-text>
+                <ion-skeleton-text animated class="pro_detail"></ion-skeleton-text>
+                <ion-skeleton-text animated class="price_lbl"></ion-skeleton-text>
+                <ion-skeleton-text animated class="small_flex"></ion-skeleton-text>
+              </div>
+            </div>
+          </div>
+        </ion-item>
+        <!-- <ion-slide *ngFor="let item of stores;let i = index;">
           <div class="content_div">
             <div class="card_div">
               <div class="image_div" (click)="openStore(item)"
@@ -262,34 +296,12 @@
               </div>
             </div>
           </div>
-        </ion-slide>
-      </ion-slides>
+        </ion-slide> -->
+      </ion-list>
     </div>
-    <!-- End Top Store -->
-
-    <!-- Between Banner -->
-    <div class="slider_div" *ngIf="!betweenDummy?.length && betweenBanners?.length">
-      <ion-slides [options]="slideOpts">
-        <ion-slide *ngFor="let item of betweenDummy">
-          <div class="card">
-            <ion-skeleton-text animated style="width: 100%;height: 120px;"></ion-skeleton-text>
-          </div>
-        </ion-slide>
-        <ion-slide *ngFor="let item of betweenBanners">
-          <div class="card">
-            <div class="back_image"
-              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
-              (click)="openLink(item)">
-              <div class="overlay_div" *ngIf="item.message">
-                <ion-label> {{item.message}} </ion-label>
-              </div>
-            </div>
-          </div>
-        </ion-slide>
-      </ion-slides>
-    </div>
-
-    <!-- Bottom Banner -->
+    <!-- END TOP PRODUCTS -->
+    
+    <!-- START BOTTOM BANNER -->
     <div class="slider_div" *ngIf="!bottomDummy?.length && bottomBanners?.length">
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of bottomDummy">
@@ -299,9 +311,8 @@
         </ion-slide>
         <ion-slide *ngFor="let item of bottomBanners">
           <div class="card">
-            <div class="back_image"
-              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
-              (click)="openLink(item)">
+            <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
+              (click)="openLink(item)" style="height: 100px;">
               <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
               </div>
@@ -310,11 +321,12 @@
         </ion-slide>
       </ion-slides>
     </div>
+    <!-- END BOTTOM BANNER -->
 
-    <!-- Start All Store -->
-    <div class="cateLbl" *ngIf="haveStores && stores?.length">
-      <ion-label class="all"> {{util.getString('All Stores')}} </ion-label>
-      <!-- <ion-label class="view" (click)="topStores()">{{util.getString('View All')}}
+    <!--  START INFINITY STORES -->
+    <div class="segment-title" style="margin-top: 15px;">
+      <ion-label class="all"> {{util.getString('Partner Merchant')}} </ion-label>
+      <!-- <ion-label class="view" (click)="topStores()">{{util.getString('More')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
         </div>
@@ -322,7 +334,23 @@
       </ion-label> -->
     </div>
 
-    <ion-list *ngIf="haveStores && stores?.length">
+    <ion-list>
+      <ion-item lines="none" *ngFor="let item of dummyStores">
+        <div class="allstore_div">
+          <div class="card_div">
+            <div class="image_div">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </div>
+            <div class="desc_div">
+              <ion-skeleton-text animated class="pro_name"></ion-skeleton-text>
+              <ion-skeleton-text animated class="pro_detail"></ion-skeleton-text>
+              <ion-skeleton-text animated class="price_lbl"></ion-skeleton-text>
+              <ion-skeleton-text animated class="small_flex"></ion-skeleton-text>
+            </div>
+          </div>
+        </div>
+        
+      </ion-item>
       <ion-item *ngFor="let item of stores;let i = index;">
         <div class="allstore_div">
           <div class="card_div">
@@ -360,8 +388,9 @@
         loadingText="Loading…">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
+    <!--  END INFINITY STORES -->
 
-  </div>  
+  </div>
 
   <div *ngIf="haveStores === false" class="nothing">
     <img src="assets/imgs/nothing.png" alt="" srcset="" class="imgs">

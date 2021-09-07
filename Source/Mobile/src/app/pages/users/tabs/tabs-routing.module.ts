@@ -17,6 +17,11 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      {
         path: 'home',
         children: [
           {
@@ -69,8 +74,7 @@ const routes: Routes = [
             loadChildren: () =>
               import('../product/product.module').then(m => m.ProductPageModule)
           }
-        ],
-        canActivate: [CityGuard]
+        ]
       },
       {
         path: 'message',
@@ -177,11 +181,12 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       }
     ],
-  },  
+    canActivate: [CityGuard]
+  },
   {
     path: '**',
-    redirectTo: 'notfound'
-  }
+    redirectTo: 'home'
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

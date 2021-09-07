@@ -14,7 +14,7 @@ import { Role } from './models/role.model';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'user/home',
+    redirectTo: 'user',
     pathMatch: 'full'
   },
   {
@@ -76,6 +76,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/external/cities/cities.module').then(m => m.CitiesPageModule)
   },
   {
+    path: 'login',
+    loadChildren: () => import('./pages/external/login/login.module').then(m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/external/register/register.module').then(m => m.RegisterPageModule)
+  },
+  {
+    path: 'reset',
+    loadChildren: () => import('./pages/external/reset/reset-password.module').then(m => m.ResetPasswordPageModule)
+  },
+  {
     path: 'contacts',
     loadChildren: () => import('./pages/external/contacts/contacts.module').then(m => m.ContactsPageModule)
   },
@@ -92,24 +104,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/external/help/help.module').then(m => m.HelpPageModule)
   },
   {
-    path: 'login',
-    loadChildren: () => import('./pages/external/login/login.module').then(m => m.LoginPageModule)
-  },
-  {
-    path: 'register',
-    loadChildren: () => import('./pages/external/register/register.module').then(m => m.RegisterPageModule)
-  },
-  {
-    path: 'reset',
-    loadChildren: () => import('./pages/external/reset/reset-password.module').then(m => m.ResetPasswordPageModule)
-  },
-  {
     path: 'notfound',
     loadChildren: () => import('./pages/external/notfound/notfound.module').then( m => m.NotfoundPageModule)
   },
-
-  // otherwise redirect to home
-  { path: '**', redirectTo: 'user/home' }
+  { 
+    path: '**', 
+    redirectTo: 'notfound'
+  }
 ];
 @NgModule({
   imports: [

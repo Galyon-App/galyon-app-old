@@ -9,6 +9,7 @@ import { NavController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilService } from 'src/app/services/util.service';
 import { CartService } from 'src/app/services/cart.service';
+import { CityService } from 'src/app/services/city.service';
 
 @Component({
   selector: 'app-cities',
@@ -26,16 +27,15 @@ export class CitiesPage {
     public api: ApiService,
     public util: UtilService,
     private navCtrl: NavController,
-    public cart: CartService
+    public cart: CartService,
+    private city: CityService
   ) {
     this.clicked = false;
-    const id = localStorage.getItem('mobile-current-city');
-    if (id && id !== null && id !== 'null') {
+    const id = this.city.activeCity;
+    if (id && id !== null && id !== '') {
       this.id = id;
-      this.navCtrl.navigateRoot(['']);
-    } else {
-      this.getCities();
-    }
+    } 
+    this.getCities();
   }
 
   getCities() {

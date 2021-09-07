@@ -18,6 +18,7 @@ import { CartService } from 'src/app/services/cart.service';
 })
 export class SubCategoryPage implements OnInit {
   @ViewChild('content', { static: false }) private content: any;
+
   id: any;
   name: any;
   subCates: any[] = [];
@@ -27,8 +28,19 @@ export class SubCategoryPage implements OnInit {
   allProducts: any[] = [];
   limit: any;
 
-  dummys = Array(20);
-  dummyCates = Array(10);
+  dummys = Array(10);
+  dummyCates = Array(5);
+
+  slideOpts = {
+    slidesPerView: 3.5,
+    coverflowEffect: {
+      stretch: 0,
+      depth: 100,
+      modifier: 1,
+      slideShadows: true,
+    }
+  };
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -41,47 +53,42 @@ export class SubCategoryPage implements OnInit {
     this.dummys = Array(20);
     this.route.queryParams.subscribe((data) => {
       console.log(data);
-      if (data && data.id) {
-        this.id = data.id;
+      if (data && data.uuid && data.name) {
         this.limit = 1;
+        this.id = data.uuid;
         this.name = data.name ? data.name : 'Top Picked';
         this.getCates();
       }
     });
-
   }
 
   getCates() {
-    const param = {
-      id: this.id
-    };
-    this.subCates = [];
-    this.api.post('subcate/getByCId', param).subscribe((data: any) => {
-      this.dummyCates = [];
-      if (data && data.status === 200 && data.data && data.data.length) {
-        console.log('subcates', data.data);
-        this.subCates = data.data.filter(x => x.status === '1');
-        this.tabSelected = this.subCates[0].id;
-        const param = {
-          id: localStorage.getItem('mobile-current-city')
-        }
-        this.api.post('stores/getByCity', param).subscribe((stores: any) => {
-          if (stores && stores.status === 200 && stores.data && stores.data.length) {
-            this.util.active_store = [...new Set(stores.data.map(item => item.uid))];
-            console.log(this.util.active_store);
-            this.getSubProducts(false, 'none');
-          }
-        })
 
-      } else {
-        this.dummys = [];
+    this.api.post('galyon/v1/category/getChildCategorys', {
+      parent_id: this.id
+    }).subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        
+        this.subCates = response.data;
+        if(this.subCates.length > 0) {
+          this.tabSelected = this.subCates[0].uuid;
+        }
+       
+        // const param = {
+        //   id: localStorage.getItem('mobile-current-city')
+        // }
+        //     this.api.post('stores/getByCity', param).subscribe((stores: any) => {
+        //       if (stores && stores.status === 200 && stores.data && stores.data.length) {
+        //         this.util.active_store = [...new Set(stores.data.map(item => item.uid))];
+        //         console.log(this.util.active_store);
+        //         this.getSubProducts(false, 'none');
+        //        this.dummys = [];
+        //       }
+        //     })        
         this.dummyCates = [];
       }
-
     }, error => {
       console.log(error);
-      this.dummys = [];
-      this.dummyCates = [];
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
   }

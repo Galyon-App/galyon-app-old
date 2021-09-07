@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/services/api.service';
 import Swal from 'sweetalert2';
 import { SelectCountryPage } from '../../users/select-country/select-country.page';
 import { VerifyPage } from '../verify/verify.page';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +31,7 @@ export class LoginPage implements OnInit {
     private router: Router,
     public util: UtilService,
     private navCtrl: NavController,
+    private auth: AuthService,
     private api: ApiService,
     private modalController: ModalController
   ) {
@@ -43,126 +45,25 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    if (!this.email || !this.password) {
-      this.util.showToast(this.util.getString('All Fields are required'), 'dark', 'bottom');
-      return false;
+    if (!this.email || this.email === '' || !this.password || this.password === '') {
+      this.util.showToast('All Fields are required', 'dark', 'bottom');
     }
 
-    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-    if (!emailfilter.test(this.email)) {
-      this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
-      return false;
-    }
-
-    this.isBusy = true;
-    const param = {
-      email: this.email,
-      password: this.password
-    };
-    this.api.post('users/login', param).subscribe((data: any) => {
-      this.isBusy = false;
-      if (data && data.status === 200) {
-        if (data && data.data) {
-          if (data.data.status === '1') {
-            localStorage.setItem('uid', data.data.id);
-            this.util.userInfo = data.data;
-            const fcm = localStorage.getItem('fcm');
-            if (fcm && fcm !== null && fcm !== 'null') {
-              const updateParam = {
-                id: data.data.id,
-                fcm_token: fcm
-              };
-              this.api.post('users/edit_profile', updateParam).subscribe((data: any) => {
-                console.log('user info=>', data);
-              }, error => {
-                console.log(error);
-              });
-            }
-
-            const favParam = {
-              id: data.data.id
-            }
-            this.api.post('favourite/getByUid', favParam).subscribe((data: any) => {
-              console.log('fav data', data);
-              if (data && data.status === 200 && data.data.length > 0) {
-                this.util.haveFav = true;
-                try {
-                  this.util.favIds = data.data[0].ids.split(',');
-                } catch (error) {
-                  console.log('eroor', error);
-                }
-              } else {
-                this.util.haveFav = false;
-              }
-            }, error => {
-              this.util.haveFav = false;
-              console.log('fav error', error);
-            });
-
-            this.navCtrl.navigateRoot(['']);
-
-            if(data.data.type === 'user') {
-              localStorage.setItem('uid', data.data.id);
-              localStorage.setItem('name', data.data.first_name + ' ' + data.data.last_name);
-              localStorage.setItem('email', data.data.email);
-              localStorage.setItem('cover', data.data.cover);
-              const store = {
-                  id: data.data.id
-              };
-              this.api.post('stores/getByUid', store).subscribe((data: any) => {
-                  if (data && data.status === 200 && data.data && data.data.length) {
-                      this.util.store = data.data[0];
-                      localStorage.setItem('suid', data.data[0].id);
-                      //this.menuController.enable(true);
-                      this.navCtrl.navigateRoot(['']);
-                  }
-              }, error => {
-                  this.util.errorToast(this.util.getString('Something went wrong'));
-                  console.log(error);
-              });
-            }
-          } else {
-            console.log('not valid');
-            Swal.fire({
-              title: this.util.getString('Error'),
-              text: this.util.getString('Your are blocked please contact administrator'),
-              icon: 'error',
-              showConfirmButton: true,
-              showCancelButton: true,
-              confirmButtonText: this.util.getString('Need Help?'),
-              backdrop: false,
-              background: 'white'
-            }).then(status => {
-              if (status && status.value) {
-                // localStorage.setItem('helpId', data.data.id);
-                // this.router.navigate(['inbox']);
-                const inboxParam: NavigationExtras = {
-                  queryParams: {
-                    id: 0,
-                    name: 'Support',
-                    uid: data.data.id
-                  }
-                };
-                this.router.navigate(['inbox'], inboxParam);
-              }
-            });
-          }
-        } else {
-          this.util.errorToast(this.util.getString('Server did not respond'));
-          this.email = '';
-          this.password = '';
-        }
-      } else if (data && data.status === 500) {
-        this.util.errorToast(data.data.message);
+    // const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+    // if (!emailfilter.test(this.email)) {
+    //   this.util.error('Please enter valid email');
+    //   return false;
+    // }
+    this.auth.login(this.email, this.password, (response) => {
+      if(response && response.success == true && response.data) {
+        // get return url from query parameters or default to home page
+        //const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        //this.router.navigateByUrl(returnUrl);
+        this.navCtrl.back();
       } else {
-        this.util.errorToast(this.util.getString('Something went wrong'));
+        this.util.showToast( response.message, 'dark', 'bottom');
       }
-    }, error => {
-      console.log(error);
-      this.isBusy = false;
-      this.util.errorToast(this.util.getString('Something went wrong'));
     });
-
   }
 
   create() {
@@ -170,7 +71,7 @@ export class LoginPage implements OnInit {
   }
 
   reset() {
-    this.router.navigate(['reset-password']);
+    this.router.navigate(['reset']);
   }
 
   async openCountry() {
@@ -283,8 +184,6 @@ export class LoginPage implements OnInit {
       this.isBusy = false;
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
-
-
   }
 
   onOTPLogin() {
@@ -412,6 +311,6 @@ export class LoginPage implements OnInit {
   }
 
   goback() {
-    this.router.navigate(['user/home']);
+    this.navCtrl.back();
   }
 }
