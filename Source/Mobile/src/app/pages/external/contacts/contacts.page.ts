@@ -36,7 +36,6 @@ export class ContactsPage implements OnInit {
     public util: UtilService,
     public api: ApiService
   ) {
-    console.log('address-->>', this.util.general);
     if (this.util.general && this.util.general.address) {
       const geocoder = new google.maps.Geocoder;
       geocoder.geocode({

@@ -13,7 +13,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Contact us')}} </ion-title>
+    <ion-title class="ion-text-center"> {{util.getString('Contact us')}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -31,7 +31,7 @@
     </div>
     <div class="flex_box" *ngIf="util.general && util.general.address">
       <ion-icon name="call-outline"></ion-icon>
-      <label> {{util.general.mobile}} </label>
+      <label> {{util.general.phone}} </label>
     </div>
   </div>
   <div class="main_content_div">
@@ -65,7 +65,7 @@
           </div>
         </div>
         
-        <ion-button (click)="submit()" expand="block" fill="clear" shape="round">
+        <ion-button disabled (click)="submit()" expand="block" fill="clear" shape="round">
           {{util.getString('Submit')}}
         </ion-button>
       </div>
