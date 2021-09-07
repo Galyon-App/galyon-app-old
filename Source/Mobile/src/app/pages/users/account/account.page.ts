@@ -10,6 +10,8 @@ import { NavController } from '@ionic/angular';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
 import { CartService } from 'src/app/services/cart.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-account',
@@ -31,8 +33,11 @@ export class AccountPage implements OnInit {
     private navCtrl: NavController,
     public util: UtilService,
     public api: ApiService,
-    public cart: CartService
-  ) { }
+    public cart: CartService,
+    public user: UserService
+  ) { 
+    
+  }
 
   ngOnInit() {
   }
@@ -54,23 +59,11 @@ export class AccountPage implements OnInit {
     this.cart.coupon = null;
     this.cart.discount = null;
     this.util.clearKeys('cart');
-    this.navCtrl.navigateRoot(['user/home']);
+    this.navCtrl.navigateRoot(['']);
   }
 
   editProfile() {
     this.router.navigate(['/profile']);
-  }
-
-  getName() {
-    return this.util.userInfo && this.util.userInfo.first_name ? this.util.userInfo.first_name + ' ' + this.util.userInfo.last_name : 'Galyon';
-  }
-
-  getEmail() {
-    return this.util.userInfo && this.util.userInfo.email ? this.util.userInfo.email : 'support@galyon.app';
-  }
-
-  getProfile() {
-    return this.util.userInfo && this.util.userInfo.cover ? this.api.mediaURL + this.util.userInfo.cover : 'assets/imgs/user.png';
   }
 
   goLangs() {
@@ -86,12 +79,6 @@ export class AccountPage implements OnInit {
     this.router.navigate(['address'], param);
   }
 
-  
-
-  reset() {
-    this.router.navigate(['reset-password']);
-  }
-
   goToFav() {
     this.router.navigate(['/favorite']);
   }
@@ -103,7 +90,14 @@ export class AccountPage implements OnInit {
         name: 'Support'
       }
     };
-    this.router.navigate(['chat'], param);
+    this.router.navigate(['user/chat'], param);
+  }
+
+
+
+
+  reset() {
+    this.router.navigate(['reset']);
   }
 
   goToContact() {

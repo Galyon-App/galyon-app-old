@@ -10,12 +10,12 @@
   <div class="main_div">
     <ion-row>
       <ion-col size="4">
-        <div class="user_img" [ngStyle]="{'background-image':'url('+getProfile()+'),url(assets/imgs/user.png)'}">
+        <div class="user_img" [ngStyle]="{'background-image':'url('+api.mediaURL+user.getCurrent.cover+'),url(assets/imgs/user.png)'}">
         </div>
       </ion-col>
       <ion-col size="8">
-        <p class="username">{{getName()}}</p>
-        <p class="email">{{getEmail()}}</p>
+        <p class="username">{{ user.getCurrent.first_name }} {{ user.getCurrent.last_name }}</p>
+        <p class="email">{{ user.getCurrent.email }}</p>
         <ion-button (click)="logout()" shape="round" size="small" color="light"> {{util.getString('Log out')}}
         </ion-button>
       </ion-col>

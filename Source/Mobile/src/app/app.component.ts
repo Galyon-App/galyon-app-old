@@ -16,6 +16,9 @@ import { CartService } from './services/cart.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { UserService } from './services/user.service';
+import { User } from './models/user.model';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -43,9 +46,11 @@ export class AppComponent implements OnInit {
     private api: ApiService,
     public util: UtilService,
     public cart: CartService,
+    private auth: AuthService,
     private router: Router,
     private menuCtrl: MenuController,
-    private storage: Storage
+    private storage: Storage,
+    private user: UserService
   ) {
     this.selectedIndex = 0;
     this.initialize();
@@ -123,6 +128,17 @@ export class AppComponent implements OnInit {
       //   }, 1000);
       // }
 
+      this.api.posts('galyon/v1/users/getByID', {
+        uuid: this.auth.userToken.uuid
+      }).then((response: any) => {
+        if (response && response.success == true && response.data) {
+          let curUser: User = response.data;
+          this.user.setCurrent(curUser);
+        }
+      }, error => {
+        console.log('app get user error', error);
+      });
+
       // const uid = localStorage.getItem('uid');
       // if (uid && uid !== null && uid !== 'null') {
       //   const param = {
@@ -130,7 +146,7 @@ export class AppComponent implements OnInit {
       //   };
       //   this.api.post('users/getById', param).subscribe((data: any) => {
       //     if (data && data.status === 200 && data.data && data.data.length) {
-      //       this.util.userInfo = data.data[0];
+      //       
       //     } else {
       //       localStorage.removeItem('uid');
       //     }
