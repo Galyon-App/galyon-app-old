@@ -87,10 +87,10 @@ export class AccountPage implements OnInit {
     const param: NavigationExtras = {
       queryParams: {
         id: 0,
-        name: 'Support'
+        name: 'Technical Support'
       }
     };
-    this.router.navigate(['user/chat'], param);
+    this.router.navigate(['user/message/chat'], param);
   }
 
 

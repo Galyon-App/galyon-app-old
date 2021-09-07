@@ -33,7 +33,6 @@ export class InboxPage implements OnInit {
     public util: UtilService
   ) {
     this.route.queryParams.subscribe((data: any) => {
-      console.log(data);
       if (data && data.id && data.name) {
         this.uid = data.uid;
         this.id = data.id;
@@ -43,8 +42,6 @@ export class InboxPage implements OnInit {
         this.interval = setInterval(() => {
           this.getChats(null);
         }, 12000);
-      } else {
-        this.navCtrl.back();
       }
     });
   }
@@ -53,9 +50,8 @@ export class InboxPage implements OnInit {
     console.log('leaae');
     clearInterval(this.interval);
   }
-  // ScrollToBottom() {
+  
 
-  // }
   ngOnInit() {
   }
 

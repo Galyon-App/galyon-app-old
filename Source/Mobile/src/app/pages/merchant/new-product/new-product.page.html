@@ -11,8 +11,8 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="isNew" class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Create Product')}} </ion-title>
-    <ion-title *ngIf="!isNew" class="ion-text-center" style="padding-right: 50px;"> {{util.getString('Update Product')}} </ion-title>
+    <ion-title *ngIf="isNew" class="ion-text-center"> {{util.getString('Create Product')}} </ion-title>
+    <ion-title *ngIf="!isNew" class="ion-text-center"> {{util.getString('Update Product')}} </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="submit()">
         <ion-icon slot="icon-only" name="save"></ion-icon>

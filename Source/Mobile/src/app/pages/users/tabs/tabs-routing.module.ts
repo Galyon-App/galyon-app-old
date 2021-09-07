@@ -157,15 +157,27 @@ const routes: Routes = [
               import('../profile/profile.module').then(m => m.ProfilePageModule),
             canActivate: [AuthGuard]
           },
+
           {
-            path: 'about',
+            path: 'address',
             loadChildren: () =>
               import('../../external/about/about.module').then(m => m.AboutPageModule)
           },
           {
+            path: 'favorites',
+            loadChildren: () =>
+              import('../../external/about/about.module').then(m => m.AboutPageModule)
+          },
+        
+          {
             path: 'contacts',
             loadChildren: () =>
               import('../../external/contacts/contacts.module').then(m => m.ContactsPageModule)
+          },
+          {
+            path: 'about',
+            loadChildren: () =>
+              import('../../external/about/about.module').then(m => m.AboutPageModule)
           },
           {
             path: 'faqs',
