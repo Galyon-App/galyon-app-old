@@ -21,8 +21,22 @@ class Address extends Galyon_controller {
     }
 
     function getByUser() {
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
+        if($user) {
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
+            }
+        }
+
         $user_id = $this->input->post('uuid');
-        $addresses = $this->Crud_model->get($this->table_name, $this->public_column, array( "status" => "1", "uid" => $user_id ), null, 'result' );
+        if($where != null) {
+            $where .= " AND uid = '$user_id'";
+        } else {
+            $where = "uid = '$user_id'";
+        }
+
+        $addresses = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'result' );
 
         if($addresses) {
             $this->json_response($addresses);
@@ -32,14 +46,7 @@ class Address extends Galyon_controller {
     }
     
     function getByStore() {
-        $bearer = $this->input->get_request_header('Authorization');
-        $token = str_replace("Bearer ", "", $bearer);
-        $user = JWT::decode($token, $this->config->item('encryption_key'));
-
-        if($user == false) {
-            $this->json_response(null, false, "Invalid access token!");
-            exit;
-        }
+        $user = $this->is_authorized();
 
         $store = $this->Crud_model->get('stores', '*', array( "owner" => $user->uuid ), null, 'row' );
         if(!$store) {

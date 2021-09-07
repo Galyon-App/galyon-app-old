@@ -21,15 +21,22 @@ class Banners extends Galyon_controller {
     }
 
     function getBannerByID() {
-        $user = $this->is_authorized();
-
-        //TODO: Filter by search using the post key of search.
-        $banner_id = $this->input->post('uuid');
-        $where = "uuid = '$banner_id'";
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role !== "admin") {
-                $where = "status = '1' AND deleted_at IS NULL"; 
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
             }
+        }
+
+        $banner_id = $this->input->post('uuid');
+        if(empty($banner_id)) {
+            $this->json_response(null, false, "Required field cannot be empty");
+        }
+        if($where == null) {
+            $where = "uuid = '$banner_id'";
+        } else {
+            $where .= " AND uuid = '$banner_id'";
         }
         
         $banner = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'row' );
@@ -42,17 +49,24 @@ class Banners extends Galyon_controller {
     }
 
     function getAllBanners() {
-        $user = $this->is_authorized();
-
-        //TODO: Filter by search using the post key of search.
-        $where = null;
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role !== "admin") {
-                $where = "status = '1' AND deleted_at IS NULL"; 
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
             }
         }
 
-        $banners = $this->Crud_model->get($this->table_name, $this->public_column, NULL, NULL, 'result' );
+        $position = $this->input->post('position');
+        if(!empty($position)) {
+            if($where == null) {
+                $where = "position = '$position'";
+            } else {
+                $where .= " AND position = '$position'";
+            }
+        }
+
+        $banners = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
         if($banners) {
             $this->json_response($banners);
         } else {

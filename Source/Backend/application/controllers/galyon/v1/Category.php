@@ -60,13 +60,11 @@ class Category extends Galyon_controller {
     }
 
     function getParentCategorys() {
-        $user = $this->is_authorized();
-
-        //TODO: Filter by search using the post key of search.
-        $where = "parent_id IS NULL";
+        $user = $this->is_authorized(false);
+        $where = "parent_id IS NULL AND status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role !== "admin") {
-                $where .= " AND store_id IS NULL AND status = '1' AND deleted_at IS NULL"; 
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
             }
         }
 
@@ -80,19 +78,19 @@ class Category extends Galyon_controller {
     }
 
     function getChildCategorys() {
-        $user = $this->is_authorized();
-
-        //TODO: Filter by search using the post key of search.
-        $parent_id = $this->input->post('parent_id');
-        if(empty($parent_id)) {
-            $where = "parent_id IS NOT NULL";
-        } else {
-            $where = "parent_id = '$parent_id'";
-        }
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role !== "admin") {
-                $where .= " AND store_id IS NULL AND status = '1' AND deleted_at IS NULL"; 
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
             }
+        }
+
+        $parent_id = $this->input->post('parent_id');
+        if($where != null) {
+            $where .= " AND parent_id = '$parent_id'";
+        } else {
+            $where = "parent_id IS NOT NULL";
         }
 
         $categorys = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
@@ -105,13 +103,11 @@ class Category extends Galyon_controller {
     }
 
     function getAllCategorys() {
-        $user = $this->is_authorized();
-
-        //TODO: Filter by search using the post key of search.
-        $where = null;
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role !== "admin") {
-                $where = "status = '1' AND deleted_at IS NULL"; 
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
             }
         }
 

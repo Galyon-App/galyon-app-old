@@ -74,7 +74,14 @@ class Stores extends Galyon_controller {
     }
 
     function getStoreByCity() {
+        $city_id = $this->input->post('uuid');
+        $stores = $this->Crud_model->get($this->table_name, $this->public_column, array( "city_id" => $city_id ), null, 'result' );
 
+        if($stores) {
+            $this->json_response($stores);
+        } else {
+            $this->json_response(null, false, "No store associated to this city!");
+        }
     }
 
     function getStoreFeatured() {

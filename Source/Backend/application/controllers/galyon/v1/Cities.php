@@ -20,6 +20,20 @@ class Cities extends Galyon_controller {
 		parent::__construct();
     }
 
+    function getCityById() {
+        $uuid = $this->input->post('uuid');
+        if(empty($uuid)) {
+            $this->json_response(null, false, "Required field cannot be empty!");
+        }
+
+        $cities = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$uuid'", NULL, 'row' );
+        if($cities) {
+            $this->json_response($cities);
+        } else {
+            $this->json_response(null, false, "No city was found!");
+        }
+    }
+
     function getAllCities() {
         // $user = $this->is_authorized(false);
 
