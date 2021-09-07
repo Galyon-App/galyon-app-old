@@ -10,6 +10,7 @@ import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
 import { AlertController, NavController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
+import { CityService } from 'src/app/services/city.service';
 
 @Component({
   selector: 'app-sub-category',
@@ -48,7 +49,8 @@ export class SubCategoryPage implements OnInit {
     public api: ApiService,
     private navCtrl: NavController,
     public cart: CartService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private city: CityService
   ) {
     this.dummys = Array(20);
     this.route.queryParams.subscribe((data) => {
@@ -75,7 +77,7 @@ export class SubCategoryPage implements OnInit {
         }
        
         // const param = {
-        //   id: localStorage.getItem('mobile-current-city')
+        //   id: this.city.current.uuid
         // }
         //     this.api.post('stores/getByCity', param).subscribe((stores: any) => {
         //       if (stores && stores.status === 200 && stores.data && stores.data.length) {
@@ -96,7 +98,7 @@ export class SubCategoryPage implements OnInit {
   getSubProducts(limit, event) {
     const city = {
       id: this.id,
-      cid: localStorage.getItem('mobile-current-city'),
+      cid: this.city.current.uuid,
       sid: this.tabSelected,
       limit: this.limit * 10
     }

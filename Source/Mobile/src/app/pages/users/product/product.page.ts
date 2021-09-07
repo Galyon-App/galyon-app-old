@@ -11,6 +11,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 import { CartService } from 'src/app/services/cart.service';
+import { CityService } from 'src/app/services/city.service';
 
 @Component({
   selector: 'app-product',
@@ -83,7 +84,8 @@ export class ProductPage implements OnInit {
     private router: Router,
     public cart: CartService,
     private modalController: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private city: CityService
   ) {
 
     this.route.queryParams.subscribe((data: any) => {
@@ -113,7 +115,7 @@ export class ProductPage implements OnInit {
     const param = {
       id: this.subId,
       limit: 5,
-      cid: localStorage.getItem('mobile-current-city')
+      cid: this.city.current.uuid
     };
     this.related = [];
     this.api.post('products/getRelated', param).subscribe((data: any) => {

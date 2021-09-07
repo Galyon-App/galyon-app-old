@@ -54,6 +54,7 @@ export class CartService {
         }
       });
   }
+  
   clearCart() {
     this.cart = [];
     this.itemId = [];

@@ -476,7 +476,7 @@ export class HomePage {
     console.log(event);
     if (event && event !== '') {
       const param = {
-        id: localStorage.getItem('mobile-current-city'),
+        id: this.city.current.uuid,
         search: event
       };
       this.util.show();

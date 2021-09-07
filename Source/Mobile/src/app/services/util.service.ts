@@ -36,7 +36,6 @@ export class UtilService {
   public cside: any;
   public userInfo: any;
   public selectedCity = new Subject<any>();
-  public city: any;
 
   public stripe: any;
   public stripeCode: any;

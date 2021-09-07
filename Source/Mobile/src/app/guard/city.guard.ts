@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MenuController } from '@ionic/angular';
+import { CityService } from '../services/city.service';
 
 
 @Injectable({
@@ -16,12 +17,13 @@ import { MenuController } from '@ionic/angular';
 export class CityGuard implements CanActivate {
     constructor(
         private router: Router,
-        private menuController: MenuController
+        private menuController: MenuController,
+        private city: CityService
     ) { }
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        const city = localStorage.getItem('mobile-current-city');
+        const city = this.city.activeCity;
         if (city && city != null && city !== '') {
             this.menuController.enable(true);
             return true;

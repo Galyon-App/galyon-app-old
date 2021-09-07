@@ -12,6 +12,7 @@ import { UtilService } from 'src/app/services/util.service';
 import { CartService } from 'src/app/services/cart.service';
 import { FiltersComponent } from 'src/app/components/filters/filters.component';
 import { SortPage } from '../sort/sort.page';
+import { CityService } from 'src/app/services/city.service';
 
 @Component({
   selector: 'app-products',
@@ -49,7 +50,8 @@ export class ProductsPage implements OnInit {
     public cart: CartService,
     private popoverController: PopoverController,
     private modalController: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private city: CityService
   ) {
     this.haveSearch = false;
     this.route.queryParams.subscribe((data) => {
@@ -203,7 +205,7 @@ export class ProductsPage implements OnInit {
   getProducts(limit, event) {
 
     const stores = {
-      id: localStorage.getItem('mobile-current-city')
+      id: this.city.current.uuid
     };
     this.api.post('stores/getByCity', stores).subscribe((stores: any) => {
       if (stores && stores.status === 200 && stores.data && stores.data.length) {
@@ -211,7 +213,7 @@ export class ProductsPage implements OnInit {
         const param = {
           id: this.id,
           limit: this.limit * 10,
-          cid: localStorage.getItem('mobile-current-city')
+          cid: this.city.current.uuid
         };
 
         this.api.post('products/getBySid', param).subscribe((data: any) => {

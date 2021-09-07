@@ -13,9 +13,20 @@ export class CityService {
     return this.cityLocalKey;
   }
 
-  private citySubject: BehaviorSubject<City>;
+  private subject: BehaviorSubject<City>;
+  private observable: Observable<City>;
+
   public get current(): City {
-    return this.citySubject.value;
+    return this.subject.value;
+  }
+
+  public setCurrent = (cur: City) => {
+    console.log('city', cur);
+    this.subject.next(cur);
+  }
+
+  public setActiveCity(uuid: string = '') {
+    localStorage.setItem(this.localKey, uuid);
   }
 
   public get activeCity(): string {
@@ -28,14 +39,18 @@ export class CityService {
 
   constructor(
     private api: ApiService
-  ) { }
+  ) { 
+    let curUser = new City();
+    this.subject = new BehaviorSubject<City>(curUser);
+    this.observable = this.subject.asObservable();
+  }
 
   public getActiveCity(callback) {
     this.api.posts('galyon/v1/cities/getCityById', {
       uuid: this.activeCity,
     }).then((res: any) => {
       if(res && res.success == true && res.data) {
-        this.citySubject = new BehaviorSubject<City>(res.data);
+        this.subject = new BehaviorSubject<City>(res.data);
         callback(res.data);
       } else {
         console.log('error', res.message);

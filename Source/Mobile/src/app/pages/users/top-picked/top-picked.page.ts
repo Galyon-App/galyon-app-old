@@ -12,6 +12,7 @@ import { UtilService } from 'src/app/services/util.service';
 import { CartService } from 'src/app/services/cart.service';
 import { FiltersComponent } from 'src/app/components/filters/filters.component';
 import { SortPage } from '../sort/sort.page';
+import { CityService } from 'src/app/services/city.service';
 @Component({
   selector: 'app-top-picked',
   templateUrl: './top-picked.page.html',
@@ -45,7 +46,8 @@ export class TopPickedPage implements OnInit {
     private router: Router,
     private popoverController: PopoverController,
     private modalController: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private city: CityService
   ) {
     this.getProducts();
   }
@@ -115,7 +117,7 @@ export class TopPickedPage implements OnInit {
 
   getProducts() {
     const param = {
-      id: localStorage.getItem('mobile-current-city')
+      id: this.city.current.uuid
     };
     this.api.post('stores/getByCity', param).subscribe((stores: any) => {
       if (stores && stores.status === 200 && stores.data && stores.data.length) {

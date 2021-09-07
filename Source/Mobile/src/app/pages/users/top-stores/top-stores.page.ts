@@ -10,6 +10,7 @@ import { NavController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilService } from 'src/app/services/util.service';
 import * as moment from 'moment';
+import { CityService } from 'src/app/services/city.service';
 @Component({
   selector: 'app-top-stores',
   templateUrl: './top-stores.page.html',
@@ -24,7 +25,8 @@ export class TopStoresPage implements OnInit {
     private navCtrl: NavController,
     public api: ApiService,
     public util: UtilService,
-    private router: Router
+    private router: Router,
+    private city: CityService
   ) {
     this.haveSearch = false;
     this.getStores();
@@ -68,7 +70,7 @@ export class TopStoresPage implements OnInit {
 
   getStores() {
     const param = {
-      id: localStorage.getItem('mobile-current-city')
+      id: this.city.current.uuid
     }
     this.api.post('stores/getByCity', param).subscribe((stores: any) => {
       console.log('stores by city', stores);

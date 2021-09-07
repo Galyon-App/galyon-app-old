@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { UtilService } from 'src/app/services/util.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CityService } from 'src/app/services/city.service';
+import { City } from 'src/app/models/city.model';
 
 @Component({
   selector: 'app-cities',
@@ -21,7 +22,7 @@ export class CitiesPage {
   id: any;
   clicked: boolean;
   dummy = Array(10);
-  cities: any[] = [];
+  cities: City[] = [];
 
   constructor(
     public api: ApiService,
@@ -59,19 +60,12 @@ export class CitiesPage {
 
   selected() {
     this.clicked = true;
-    localStorage.setItem('mobile-current-city', this.id);
-    const city = this.cities.filter(x => x.uuid === this.id);
-    this.util.city = city[0];
-    this.util.publishCity(city);
+    console.log(this.id);
+    this.city.setActiveCity(this.id);
+    const city: City[] = this.cities.filter(x => x.uuid === this.id);
+    this.city.setCurrent(city[0]);
 
-    this.util.clearKeys('cart');
-    this.cart.cart = [];
-    this.cart.itemId = [];
-    this.cart.totalPrice = 0;
-    this.cart.grandTotal = 0;
-    this.cart.coupon = null;
-    this.cart.discount = null;
-
+    this.cart.clearCart();
     this.navCtrl.navigateRoot(['']);
   }
 }

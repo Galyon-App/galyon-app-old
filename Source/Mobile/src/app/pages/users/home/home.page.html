@@ -14,7 +14,7 @@
       </ion-thumbnail>
       <div slot="end" *ngIf="currentCity" style="width: 50vw;height: auto;">
         <strong style="padding: 10px;" (click)="changeCity()">
-          {{ currentCity }}
+          {{ city.current.name }}
           <ion-icon  name="location" style="font-size: 1.7em;" ></ion-icon>
         </strong>
       </div>
