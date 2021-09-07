@@ -7,7 +7,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { UtilService } from 'src/app/services/util.service';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import Swal from 'sweetalert2';
 import { SelectCountryPage } from '../../users/select-country/select-country.page';
@@ -33,6 +33,7 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private auth: AuthService,
     private api: ApiService,
+    private route: ActivatedRoute,
     private modalController: ModalController
   ) {
     if (!this.util.user_login || this.util.user_login === '') {
@@ -57,9 +58,8 @@ export class LoginPage implements OnInit {
     this.auth.login(this.email, this.password, (response) => {
       if(response && response.success == true && response.data) {
         // get return url from query parameters or default to home page
-        //const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        //this.router.navigateByUrl(returnUrl);
-        this.navCtrl.back();
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.router.navigateByUrl(returnUrl);
       } else {
         this.util.showToast( response.message, 'dark', 'bottom');
       }
