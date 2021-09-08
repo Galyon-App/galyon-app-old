@@ -22,10 +22,15 @@ class Address extends Galyon_controller {
 
     function getByUser() {
         $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
-                $where = null; 
+        $is_mobile = $this->is_basic_header('mobile');
+        $where = null;
+        if($is_mobile) {
+            $where .= "status = '1' AND deleted_at IS NULL";
+        } else {
+            if($user) {
+                if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                    $where = null; 
+                }
             }
         }
 
@@ -46,81 +51,47 @@ class Address extends Galyon_controller {
     }
     
     function getByStore() {
-        $user = $this->is_authorized();
-
-        $store = $this->Crud_model->get('stores', '*', array( "owner" => $user->uuid ), null, 'row' );
-        if(!$store) {
-            $this->json_response(null, false, "No store is currently assigned!");
-            exit;
-        }
-
-        $order_list = $this->Crud_model->get('orders', '*', array( "store_id" => $store->uuid ), null, 'result' );
-
-        if($order_list) {
-            foreach($order_list as $cur_order) {
-                $order_details = unserialize($cur_order->items);
-
-                //Add more product meta foreach order item.
-                foreach($order_details as $cur_items) {
-                    $cur_product = $this->Crud_model->get('products', '*', array( "uuid" => $cur_items['pid'] ), null, 'row' );
-                    if($cur_product) {
-                        $cur_items['name'] = $cur_product->name;
-                    }
-                    $cur_items['name'] = $cur_items['pid'];
-                    print_r(json_encode($cur_items));
-                }
-                
-                
-                $cur_order->items = $order_details;
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
+        if($user) {
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
             }
-            
-            //$this->json_response($order_list);
-        } else {
-            $this->json_response(null, false, "No order found yet!");
         }
+
+        $store_id = $this->input->post('store_id');
+        if($where != null) {
+            $where .= " AND store_id = '$store_id'";
+        } else {
+            $where = "store_id = '$store_id'";
+        }
+
+        //TODO: important
     }
 
     function getByID() {
-        //Get the authorization header.
-        $bearer = $this->input->get_request_header('Authorization');
-        $token = str_replace("Bearer ", "", $bearer);
-        $user = JWT::decode($token, $this->config->item('encryption_key'));
-
-        if($user == false) {
-            $this->json_response(null, false, "Invalid access token!");
-            exit;
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
+        if($user) {
+            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+                $where = null; 
+            }
         }
 
-        $store = $this->Crud_model->get('stores', '*', array( "owner" => $user->uuid ), null, 'row' );
+        $user_id = $this->input->post('user_id');
+        if($where != null) {
+            $where .= " AND owner = '$user_id'";
+        } else {
+            $where = "owner = '$user_id'";
+        }
+
+        $store = $this->Crud_model->get('stores', '*', $where, null, 'row' );
         if(!$store) {
             $this->json_response(null, false, "No store is currently assigned!");
             exit;
         }
 
-        $order_id = $this->input->post('uuid');
-        $order = $this->Crud_model->get('orders', '*', array( "store_id" => $store->uuid, "uuid" => $order_id ), null, 'row' );
-
-        if($order) {
-            //Orders
-            $cur_orders = unserialize($order->orders);
-            foreach($cur_orders as $current) {
-                $product = $this->Crud_model->get('products', '*', array( "uuid" => $current->pid ), null, 'row' );
-                if($product) {
-                    //$fields[$key] = $product;
-                }
-            }
-            //$order->orders = array();
-
-            //Address
-            $address = $this->Crud_model->get('address', '*', array( "uuid" => $order->address_id ), null, 'row' );
-            $order->address = $address;
-            //Extra
-            $order->extra = unserialize($order->extra);
-
-            $this->json_response($order);
-        } else {
-            $this->json_response(null, false, "No order found yet!");
-        }
+        //TODO: Important
     }
 
     function createNewAddress() {
@@ -132,7 +103,13 @@ class Address extends Galyon_controller {
     }
 
     function deleteAddressCurrent() {
-        $cur_user = $this->is_authorized();
+        $user = $this->is_authorized();
+        if($user) {
+            $owner = $this->Crud_model->get($this->table_name, 'id', "uid = '$user->uuid'", null, 'row' );
+            if($user->role !== "admin" && !$owner) {
+                $this->json_response($found, false, "You're not authorized!");
+            }
+        }
 
         $found = $this->validate_request($_POST, $this->required);
         if(count($found)) {
@@ -140,10 +117,11 @@ class Address extends Galyon_controller {
         }
 
         $address_id = $this->input->post('uuid');
-        $is_deleted = $this->Crud_model->delete($this->table_name, array( "uuid" => $address_id ) );
+        $deleted_at = get_current_utc_time();
+        $is_deleted = $this->Crud_model->update($this->table_name, array('deleted_at' => $deleted_at), "uuid = '$address_id'" );
 
         if($is_deleted) {
-            $this->json_response($products);
+            $this->json_response(null);
         } else {
             $this->json_response(null, false, "No store associated to this account!");
         }

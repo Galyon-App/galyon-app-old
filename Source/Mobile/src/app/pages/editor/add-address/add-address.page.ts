@@ -20,6 +20,7 @@ declare var google;
 })
 export class AddAddressPage implements OnInit {
   @ViewChild('map', { static: true }) mapEle: ElementRef;
+
   map: any;
   marker: any;
   lat: any;
@@ -43,19 +44,17 @@ export class AddAddressPage implements OnInit {
     private platform: Platform,
   ) {
     this.gotLatLng = false;
-    this.route.queryParams.subscribe(data => {
-      console.log(data);
-      if (data && data.from) {
+    this.route.queryParams.subscribe(routing => {
+      if (routing && routing.from) {
         this.from = 'edit';
-        const info = JSON.parse(data.data);
-        console.log('da===>', info);
+        const info = JSON.parse(routing.data);
         this.address = info.address;
         this.house = info.house;
         this.id = info.id;
         this.landmark = info.landmark;
         this.lat = info.lat;
         this.lng = info.lng;
-        this.pincode = info.pincode;
+        this.pincode = info.zipcode;
         this.loadmap(this.lat, this.lng, this.mapEle);
       } else {
         this.from = 'new';

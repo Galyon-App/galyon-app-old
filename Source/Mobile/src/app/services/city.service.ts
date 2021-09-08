@@ -21,7 +21,6 @@ export class CityService {
   }
 
   public setCurrent = (cur: City) => {
-    console.log('city', cur);
     this.subject.next(cur);
   }
 

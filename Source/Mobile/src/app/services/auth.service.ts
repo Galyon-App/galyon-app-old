@@ -30,7 +30,23 @@ export class AuthService {
     }
   }
 
+  public get is_authenticated(): boolean {
+    let token = localStorage.getItem(this.userServ.localKey);
+    if(token == null || token == '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   public get userToken(): Token {
+    if(!this.subject.value) {
+      const _token = localStorage.getItem(this.userServ.localKey);
+      if(_token != null && _token != '') {
+        let token = this.util.jwtDecode(_token);
+        this.subject.next(token);
+      }
+    }
     return this.subject.value;
   }
 

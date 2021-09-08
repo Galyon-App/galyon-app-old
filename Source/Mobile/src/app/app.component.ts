@@ -19,6 +19,7 @@ import { Storage } from '@ionic/storage';
 import { UserService } from './services/user.service';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
+import { AddressService } from './services/address.service';
 
 @Component({
   selector: 'app-root',
@@ -50,7 +51,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private menuCtrl: MenuController,
     private storage: Storage,
-    private user: UserService
+    private user: UserService,
+    private address: AddressService
   ) {
     this.selectedIndex = 0;
     this.initialize();
@@ -105,6 +107,12 @@ export class AppComponent implements OnInit {
         console.log('app init error', error);
       });
 
+      if(this.auth.is_authenticated) {
+        this.user.request(this.auth.userToken.uuid);
+        this.address.request(this.auth.userToken.uuid);
+
+      }
+
       // if (this.platform.is('cordova')) {
       //   setTimeout(async () => {
       //     await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
@@ -128,16 +136,7 @@ export class AppComponent implements OnInit {
       //   }, 1000);
       // }
 
-      this.api.posts('galyon/v1/users/getByID', {
-        uuid: this.auth.userToken.uuid
-      }).then((response: any) => {
-        if (response && response.success == true && response.data) {
-          let curUser: User = response.data;
-          this.user.setCurrent(curUser);
-        }
-      }, error => {
-        console.log('app get user error', error);
-      });
+      
 
       // const uid = localStorage.getItem('uid');
       // if (uid && uid !== null && uid !== 'null') {

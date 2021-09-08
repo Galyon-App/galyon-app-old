@@ -12,6 +12,9 @@ import Swal from 'sweetalert2';
 import { ApiService } from 'src/app/services/api.service';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { CartService } from 'src/app/services/cart.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { AddressService } from 'src/app/services/address.service';
+import { Address } from 'src/app/models/address.model';
 
 @Component({
   selector: 'app-address',
@@ -19,11 +22,12 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./address.page.scss'],
 })
 export class AddressPage implements OnInit {
+
   id: any;
-  myaddress: any[] = [];
   from: any;
   selectedAddress: any;
   dummy = Array(10);
+
   constructor(
     private navCtrl: NavController,
     public api: ApiService,
@@ -31,19 +35,21 @@ export class AddressPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private popoverController: PopoverController,
-    public cart: CartService
+    public cart: CartService,
+    private auth: AuthService,
+    private address: AddressService
   ) {
     this.route.queryParams.subscribe(data => {
-      console.log(data);
       if (data && data.from) {
         this.from = data.from;
       }
     });
-    this.getAddress();
-    this.util.subscribeNewAddress().subscribe((data) => {
-      console.log('subscribe master address');
-      this.getAddress();
-    });
+    if(this.auth.is_authenticated) {
+      this.dummy = Array(10);
+      this.address.request(this.auth.userToken.uuid, (success) => {
+        this.dummy = [];
+      });
+    }
   }
 
   ngOnInit() {
@@ -53,36 +59,17 @@ export class AddressPage implements OnInit {
     this.navCtrl.back();
   }
 
-  getAddress() {
-    const param = {
-      id: localStorage.getItem('uid')
-    }
-    this.myaddress = [];
-    this.dummy = Array(10);
-    this.api.post('address/getByUid', param).subscribe((data: any) => {
-      console.log(data);
-      this.dummy = [];
-      if (data && data.status === 200 && data.data.length) {
-        this.myaddress = data.data;
-      }
-    }, error => {
-      console.log(error);
-      this.dummy = [];
-      this.util.errorToast(this.util.getString('Something went wrong'));
-    });
-  }
-
   ionViewWillEnter() {
     // this.getAddress();
   }
 
   addNew() {
-    this.router.navigate(['add-address']);
+    this.router.navigate(['editor/add-address']);
   }
 
   selectAddress() {
     if (this.from === 'cart') {
-      const selecte = this.myaddress.filter(x => x.id === this.selectedAddress);
+      const selecte = this.address.current.filter(x => x.uuid === this.selectedAddress);
       const item = selecte[0];
       console.log('item', item);
       this.cart.deliveryAddress = item;
@@ -107,9 +94,8 @@ export class AddressPage implements OnInit {
               data: JSON.stringify(item)
             }
           };
-          this.router.navigate(['add-address'], navData);
+          this.router.navigate(['editor/add-address'], navData);
         } else if (data.data === 'delete') {
-          console.log(item);
           Swal.fire({
             title: 'Are you sure?',
             text: 'to delete this address',
@@ -121,16 +107,18 @@ export class AddressPage implements OnInit {
             showConfirmButton: true,
             cancelButtonText: 'cancel'
           }).then(data => {
-            console.log(data);
             if (data && data.value) {
               this.util.show();
-              const param = {
-                id: item.id
-              };
-              this.api.post('address/deleteList', param).subscribe(info => {
-                console.log(info);
+              this.api.post('galyon/v1/address/deleteAddressCurrent', {
+                uuid: item.uuid
+              }).subscribe((response: any) => {
+                if(response && response.success && response.data) {
+                  let latest: Address[] = this.address.current.filter(x => x.uuid != item.uuid);
+                  this.address.setCurrent(latest);
+                } else {
+                  this.address.request(this.auth.userToken.uuid);
+                }
                 this.util.hide();
-                this.getAddress();
               }, error => {
                 console.log(error);
                 this.util.hide();

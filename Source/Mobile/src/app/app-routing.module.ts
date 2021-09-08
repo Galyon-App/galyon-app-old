@@ -72,6 +72,16 @@ const routes: Routes = [
     // data: { roles: [Role.User] }
   },
   {
+    path: 'editor',
+    children: [
+      {
+        path: 'add-address',
+        loadChildren: () =>
+          import('./pages/editor/add-address/add-address.module').then(m => m.AddAddressPageModule)
+      },
+    ],
+  },
+  {
     path: 'cities',
     loadChildren: () => import('./pages/external/cities/cities.module').then(m => m.CitiesPageModule)
   },

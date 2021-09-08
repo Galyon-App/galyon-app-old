@@ -26,7 +26,8 @@ export class JwtInterceptor implements HttpInterceptor {
     if (isLoggedIn && isApiUrl) {
         request = request.clone({
             setHeaders: {
-                Authorization: `Bearer ${localStorage.getItem(this.user.localKey)}`
+              Authorization: `Bearer ${localStorage.getItem(this.user.localKey)}`,
+              Basic: 'mobile'
             }
         });
     }

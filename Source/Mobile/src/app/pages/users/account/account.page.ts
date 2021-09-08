@@ -12,6 +12,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { CartService } from 'src/app/services/cart.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { AddressService } from 'src/app/services/address.service';
 
 @Component({
   selector: 'app-account',
@@ -34,7 +36,7 @@ export class AccountPage implements OnInit {
     public util: UtilService,
     public api: ApiService,
     public cart: CartService,
-    public user: UserService
+    public user: UserService,
   ) { 
     
   }
@@ -63,11 +65,7 @@ export class AccountPage implements OnInit {
   }
 
   editProfile() {
-    this.router.navigate(['/profile']);
-  }
-
-  goLangs() {
-    this.router.navigate(['languages']);
+    this.router.navigate(['user/account/profile']);
   }
 
   goToAddress() {
@@ -76,11 +74,11 @@ export class AccountPage implements OnInit {
         from: 'account'
       }
     }
-    this.router.navigate(['address'], param);
+    this.router.navigate(['user/account/address'], param);
   }
 
   goToFav() {
-    this.router.navigate(['/favorite']);
+    this.router.navigate(['user/account/favorite']);
   }
 
   goToSupport() {

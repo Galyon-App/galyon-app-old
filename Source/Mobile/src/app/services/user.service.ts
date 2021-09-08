@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { User } from '../models/user.model';
@@ -31,5 +32,25 @@ export class UserService {
     let curUser = new User();
     this.subject = new BehaviorSubject<User>(curUser);
     this.observable = this.subject.asObservable();
+  }
+
+  public request(uid, callback = null) {
+    this.api.posts('galyon/v1/users/getByID', {
+      uuid: uid
+    }).then((response: any) => {
+      if (response && response.success == true && response.data) {
+        let curUser: User = response.data;
+        this.setCurrent(curUser);
+      }
+      if(callback != null) {
+        callback(response.success);
+      }
+      
+    }, error => {
+      console.log('app get user error', error);
+      if(callback != null) {
+        callback(false);
+      }
+    });
   }
 }

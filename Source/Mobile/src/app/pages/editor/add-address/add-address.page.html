@@ -13,7 +13,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{util.getString('Add New Address')}} </ion-title>
+    <ion-title> {{ this.from == 'edit' ? 'Update Address' : 'New Address' }} </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -25,7 +25,7 @@
       <ion-input [(ngModel)]="address"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked"> {{util.getString('HOUSE / FLAT NO')}} </ion-label>
+      <ion-label position="stacked"> {{util.getString('STREET ADDRESS')}} </ion-label>
       <ion-input [(ngModel)]="house"></ion-input>
     </ion-item>
     <ion-item>
@@ -36,7 +36,7 @@
       <ion-label position="stacked"> {{util.getString('ZIP CODE')}} </ion-label>
       <ion-input type="number" [(ngModel)]="pincode"></ion-input>
     </ion-item>
-    <ion-radio-group [(ngModel)]="title">
+    <ion-radio-group [(ngModel)]="title" style="margin: 30px 0; display: block;">
       <ion-label class="title">
         {{util.getString('SAVE AS')}}
       </ion-label>
@@ -59,7 +59,7 @@
       </ion-item>
     </ion-radio-group>
     <ion-button *ngIf="from ==='new'" (click)="addAddress()" expand="block">
-      {{util.getString('Add')}}
+      {{util.getString('Submit')}}
     </ion-button>
 
     <ion-button *ngIf="from ==='edit'" (click)="updateAddress()" expand="block">

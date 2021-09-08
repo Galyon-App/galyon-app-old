@@ -157,18 +157,16 @@ const routes: Routes = [
               import('../profile/profile.module').then(m => m.ProfilePageModule),
             canActivate: [AuthGuard]
           },
-
           {
             path: 'address',
             loadChildren: () =>
-              import('../../external/about/about.module').then(m => m.AboutPageModule)
+              import('../../users/address/address.module').then(m => m.AddressPageModule)
           },
           {
             path: 'favorites',
             loadChildren: () =>
-              import('../../external/about/about.module').then(m => m.AboutPageModule)
+              import('../../users/favorite/favorite.module').then(m => m.FavoritePageModule)
           },
-        
           {
             path: 'contacts',
             loadChildren: () =>
@@ -191,7 +189,7 @@ const routes: Routes = [
           }
         ],
         canActivate: [AuthGuard]
-      }
+      },
     ],
     canActivate: [CityGuard]
   },

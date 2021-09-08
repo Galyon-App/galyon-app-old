@@ -70,6 +70,20 @@ class Galyon_controller extends CI_Controller{
   }
 
   /**
+   * Check if the query param is present on Basic header.
+   * 
+   * @param  mixed $query
+   * @return boolean
+   */
+  public function is_basic_header($query) {
+    $platform = $this->input->get_request_header('Basic', TRUE);
+    if($platform && $platform == $query) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * TODO: JWT Check whether the current session is logged in or not.
    * Check on database if jwt hash is valid and still session is on database.
    *

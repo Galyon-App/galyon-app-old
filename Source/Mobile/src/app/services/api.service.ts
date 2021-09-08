@@ -100,7 +100,7 @@ export class ApiService {
     const header = {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .set('Basic', `${environment.authToken}`)
+        //.set('Basic', `${environment.authToken}`)
     };
     const param = this.JSON_to_URLEncoded(body);
     return this.http.post(this.baseUrl + url, param, header);
@@ -111,7 +111,7 @@ export class ApiService {
       const header = {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-          .set('Basic', `${environment.authToken}`)
+          //.set('Basic', `${environment.authToken}`)
       };
       const param = this.JSON_to_URLEncoded(body);
       this.http.post(this.baseUrl + url, param, header).subscribe((data) => {
@@ -140,7 +140,7 @@ export class ApiService {
     const header = {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .set('Authorization', authorizationData)
+        //.set('Authorization', authorizationData)
     };
     const order = this.JSON_to_URLEncoded(body);
     console.log(order)
@@ -158,7 +158,7 @@ export class ApiService {
     const header = {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .set('Basic', `${environment.authToken}`)
+        //.set('Basic', `${environment.authToken}`)
     };
     return this.http.get(this.baseUrl + url, header);
   }
@@ -168,7 +168,7 @@ export class ApiService {
       const header = {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-          .set('Basic', `${environment.authToken}`)
+          //.set('Basic', `${environment.authToken}`)
         // .set('responseType', 'blob')
       };
       this.http.get(this.baseUrl + url, header).subscribe((data) => {
@@ -196,7 +196,7 @@ export class ApiService {
   nativePost(url, post) {
     console.log(this.baseUrl + url, post);
     return this.nativeHttp.post(this.baseUrl + url, post, {
-      Basic: `${environment.authToken}`
+      //Basic: `${environment.authToken}`
     });
   }
 }
