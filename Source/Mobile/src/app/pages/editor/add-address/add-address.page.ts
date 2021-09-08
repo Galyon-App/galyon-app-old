@@ -11,6 +11,9 @@ import { UtilService } from 'src/app/services/util.service';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { AuthService } from 'src/app/services/auth.service';
+import { AddressService } from 'src/app/services/address.service';
+import { Address } from 'src/app/models/address.model';
 declare var google;
 
 @Component({
@@ -21,17 +24,18 @@ declare var google;
 export class AddAddressPage implements OnInit {
   @ViewChild('map', { static: true }) mapEle: ElementRef;
 
-  map: any;
-  marker: any;
+  title: any = 'home';
+  address: any = '';
   lat: any;
   lng: any;
-  address: any = '';
   house: any = '';
   landmark: any = '';
-  title: any = 'home';
-  pincode: any = '';
+  zipcode: any = '';
+
   id: any;
   from: any;
+  map: any;
+  marker: any;
 
   gotLatLng: boolean = false;
   constructor(
@@ -39,22 +43,24 @@ export class AddAddressPage implements OnInit {
     private androidPermissions: AndroidPermissions,
     private navCtrl: NavController,
     private api: ApiService,
+    private auth: AuthService,
     public util: UtilService,
     private route: ActivatedRoute,
     private platform: Platform,
+    private addressServ: AddressService
   ) {
     this.gotLatLng = false;
     this.route.queryParams.subscribe(routing => {
       if (routing && routing.from) {
         this.from = 'edit';
         const info = JSON.parse(routing.data);
+        this.id = info.uuid;
         this.address = info.address;
         this.house = info.house;
-        this.id = info.id;
         this.landmark = info.landmark;
         this.lat = info.lat;
         this.lng = info.lng;
-        this.pincode = info.zipcode;
+        this.zipcode = info.zipcode;
         this.loadmap(this.lat, this.lng, this.mapEle);
       } else {
         this.from = 'new';
@@ -178,9 +184,7 @@ export class AddAddressPage implements OnInit {
     this.addMarker(location);
   }
 
-
   addMarker(location) {
-    console.log('location =>', location);
     const icons = {
       url: 'assets/icon/marker.png',
       scaledSize: new google.maps.Size(50, 50), // scaled size
@@ -213,36 +217,35 @@ export class AddAddressPage implements OnInit {
   }
 
   addAddress() {
-    if (this.address === '' || this.house === '') {
-
+    if (this.auth.userToken.uuid === '' || this.title === '' || this.address === '' || 
+    this.house === '' || this.lat === '' || this.lng === '') {
       this.util.errorToast(this.util.getString('House address is required!'));
       return false;
     }
+
     const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({ address: this.house + ' ' + this.landmark + ' ' + this.address + ' ' + this.pincode }, (results, status) => {
-      console.log(results, status);
+    geocoder.geocode({ address: this.house + ' ' + this.landmark + ' ' + this.address + ' ' + this.zipcode }, (results, status) => {
       if (status === 'OK' && results && results.length) {
         this.lat = results[0].geometry.location.lat();
         this.lng = results[0].geometry.location.lng();
-        console.log('----->', this.lat, this.lng);
-        console.log('call api');
         this.util.show();
-        const param = {
-          uid: localStorage.getItem('uid'),
+        this.api.post('galyon/v1/address/createNewAddress', {
+          uid: this.auth.userToken.uuid,
+          type: this.title,
           address: this.address,
-          lat: this.lat,
-          lng: this.lng,
-          title: this.title,
           house: this.house,
           landmark: this.landmark,
-          pincode: this.pincode
-        };
-        this.api.post('address/save', param).subscribe((data: any) => {
+          zipcode: this.zipcode,
+          lat: this.lat,
+          lng: this.lng,
+        }).subscribe((response: any) => {
           this.util.hide();
-          if (data && data.status === 200) {
-            this.util.publishNewAddress();
-            this.navCtrl.back();
-            this.util.showToast('Address added', 'success', 'bottom');
+          if (response && response.success && response.data) {
+            if(response.success) {
+              this.util.showToast('Address added', 'success', 'bottom');
+              this.addressServ.request(this.auth.userToken.uuid, null);
+              this.navCtrl.back();
+            }
           } else {
             this.util.errorToast(this.util.getString('Something went wrong'));
           }
@@ -256,39 +259,38 @@ export class AddAddressPage implements OnInit {
         return false;
       }
     });
-
   }
 
   updateAddress() {
-    if (this.address === '' || this.landmark === '' || this.house === '' || this.pincode === '') {
+    if (this.auth.userToken.uuid === '' || this.title === '' || this.address === '' || 
+    this.house === '' || this.lat === '' || this.lng === '') {
       this.util.errorToast(this.util.getString('All Fields are required'));
       return false;
     }
+
     const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({ address: this.house + ' ' + this.landmark + ' ' + this.address + ' ' + this.pincode }, (results, status) => {
-      console.log(results, status);
+    geocoder.geocode({ address: this.house + ' ' + this.landmark + ' ' + this.address + ' ' + this.zipcode }, (results, status) => {
       if (status === 'OK' && results && results.length) {
         this.lat = results[0].geometry.location.lat();
         this.lng = results[0].geometry.location.lng();
-        console.log('----->', this.lat, this.lng);
-        const param = {
-          id: this.id,
-          uid: localStorage.getItem('uid'),
+
+        this.util.show();
+        this.api.post('galyon/v1/address/editAddresssCurrent', {
+          uuid: this.id,
+          uid: this.auth.userToken.uuid,
+          type: this.title,
           address: this.address,
-          lat: this.lat,
-          lng: this.lng,
-          title: this.title,
           house: this.house,
           landmark: this.landmark,
-          pincode: this.pincode
-        };
-        this.util.show();
-        this.api.post('address/editList', param).subscribe((data: any) => {
+          zipcode: this.zipcode,
+          lat: this.lat,
+          lng: this.lng,
+        }).subscribe((response: any) => {
           this.util.hide();
-          if (data && data.status === 200) {
-            this.util.publishNewAddress();
-            this.navCtrl.back();
+          if (response && response.success && response.data) {
             this.util.showToast('Address updated', 'success', 'bottom');
+            this.addressServ.request(this.auth.userToken.uuid, null);
+            this.navCtrl.back();
           } else {
             this.util.errorToast(this.util.getString('Something went wrong'));
           }

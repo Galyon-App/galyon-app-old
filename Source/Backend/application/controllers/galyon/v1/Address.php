@@ -95,11 +95,83 @@ class Address extends Galyon_controller {
     }
 
     function createNewAddress() {
+        $user = $this->is_authorized();
 
+        $uid = $this->input->post('uid');
+        $type = $this->input->post('type');
+        $address = $this->input->post('address');
+        $house = $this->input->post('house');
+        $landmark = $this->input->post('landmark');
+        $zipcode = $this->input->post('zipcode');
+        $lat = $this->input->post('lat');
+        $lng = $this->input->post('lng');
+
+        if(empty($uid) || empty($type) || empty($address) || empty($house) || empty($lat) || empty($lng)) {
+            $this->json_response(null, false, "Required fields cannot be empty.");
+        }
+
+        $inserted = $this->Crud_model->insert($this->table_name, array( 
+            "uuid" => $this->uuid->v4(), 
+            "uid" => $user->uuid,
+            "type" => $type, 
+            "address" => $address, 
+            "house" => $house,
+            "landmark" => $landmark, 
+            "zipcode" => $zipcode,
+            "lat" => $lat,
+            "lng" => $lng, 
+            "status" => "1",
+        ));
+
+        if($inserted) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "id" => $inserted ), null, 'row' );
+            $this->json_response($current);
+        } else {
+            $this->json_response(null, false, "Address was not saved!");
+        }
     }
 
     function editAddresssCurrent() {
+        $user = $this->is_authorized();
+        if($user) {
+            if($user->role !== "admin") {
+                $this->json_response(null, false, "You are not authorized.");
+            }
+        }
 
+        $uuid = $this->input->post('uuid');
+        $uid = $this->input->post('uid');
+        $type = $this->input->post('type');
+        $address = $this->input->post('address');
+        $house = $this->input->post('house');
+        $landmark = $this->input->post('landmark');
+        $zipcode = $this->input->post('zipcode');
+        $lat = $this->input->post('lat');
+        $lng = $this->input->post('lng');
+
+        if(empty($uuid) || empty($uid) || empty($type) || empty($address) || empty($house) || empty($lat) || empty($lng)) {
+            $this->json_response(null, false, "Required fields cannot be empty.");
+        }
+
+        $latest =  array( 
+            "uid" => $uid,
+            "type" => $type, 
+            "address" => $address, 
+            "house" => $house,
+            "landmark" => $landmark, 
+            "zipcode" => $zipcode,
+            "lat" => $lat,
+            "lng" => $lng,
+        );
+
+        $updated = $this->Crud_model->update($this->table_name, $latest, "uuid = '$uuid'" );
+
+        if($updated) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $uuid ), null, 'row' );
+            $this->json_response($current);
+        } else {
+            $this->json_response(null, false, "Failed to update the address.");
+        }
     }
 
     function deleteAddressCurrent() {
