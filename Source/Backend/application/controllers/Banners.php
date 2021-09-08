@@ -39,7 +39,7 @@ class Banners extends MY_Controller{
         );
        $this->Banner_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->Banner_model->get_all();
             if($data != null){
                 echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
@@ -61,7 +61,7 @@ class Banners extends MY_Controller{
         );
        $this->Banner_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -88,7 +88,7 @@ class Banners extends MY_Controller{
         );
         $this->Banner_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             $param = $this->check_params($_POST,$this->_table_column_edit);
             if(isset($data) && !empty($data)){
@@ -153,7 +153,7 @@ class Banners extends MY_Controller{
         );
         $this->Banner_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             $param = $this->check_params($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -184,7 +184,7 @@ class Banners extends MY_Controller{
         );
         $this->Banner_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);

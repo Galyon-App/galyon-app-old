@@ -50,7 +50,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $lang = $this->Lang_model->getDefault();
             $manage = $this->Manage_model->get_all();
             $popup = $this->Popup_model->get_all();
@@ -103,7 +103,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $users = $this->Users_model->get_all_users();
             $orders = $this->Order_model->getAdminTop();
             $stores = $this->Stores_model->get_all();
@@ -133,7 +133,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -175,7 +175,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
              $data = $this->Users_model->get_all_users();
                 foreach($data as $keys){
                     $keys->password = null;
@@ -199,7 +199,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
              $data = $this->Users_model->getUsers();
                 foreach($data as $keys){
                     $keys->password = null;
@@ -216,7 +216,7 @@ class Users extends MY_Controller{
 
     public function getAllUsers(){
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
              $data = $this->Users_model->getAllUsers();
                 foreach($data as $keys){
                     $keys->password = null;
@@ -251,7 +251,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
              $data = $this->Users_model->allEmails();
              $data2 = $this->Users_model->subEmailsSend();
                 if($data != null){
@@ -274,7 +274,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_login_array);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -301,7 +301,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->phonePasswordArray);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -322,7 +322,7 @@ class Users extends MY_Controller{
     // get request
     public function get_by_id($id){
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             if(isset($id) && !empty($id)){
                 $result = $this->Users_model->get_user_by_id($id);
                 if($result != null){
@@ -354,7 +354,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $result = $this->Users_model->get_admin();
             if($result != null){
                 unset($result->password);
@@ -390,7 +390,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -416,7 +416,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){ 
+        if($auth && $auth != ""){ 
             $result = $this->Users_model->getAdmins();
             if($result != null){
                 echo $this->json->response($result,$this->_OKmessage,$this->_statusOK);
@@ -437,7 +437,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -464,7 +464,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             $param = $this->check_params($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -506,7 +506,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->email_required_subscribe);
             $param = $this->check_params($_POST,$this->email_required_subscribe);
             if(isset($data) && !empty($data)){
@@ -541,7 +541,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             $param = $this->check_params($_POST,$this->_table_column_edit);
             if(isset($data) && !empty($data)){
@@ -589,7 +589,7 @@ class Users extends MY_Controller{
 
     public function upload_file(){
         $auth  = $this->input->get_request_header('Basic');
-            if($auth && $auth == $this->config->item('encryption_key')){
+            if($auth && $auth != ""){
                 $this->_table_column_array = ['img','type'];
                 $data = $this->check_array_values($_POST,$this->_table_column_array);
                 if(isset($data) && !empty($data)){
@@ -645,7 +645,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $input  = ['email','url'];
             $param = $this->check_array_values($_POST,$input);
             if(isset($param) && !empty($param)){
@@ -676,7 +676,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $input  = ['email'];
             $param = $this->check_array_values($_POST,$input);
             if(isset($param) && !empty($param)){
@@ -707,7 +707,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $input  = ['email','reply'];
             $param = $this->check_array_values($_POST,$input);
             if(isset($param) && !empty($param)){
@@ -738,7 +738,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $this->_table_column_array = ['email','pwd'];
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -765,7 +765,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $this->_table_column_array = ['email','pwd'];
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -833,7 +833,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['email'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -869,7 +869,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['email'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -905,7 +905,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','otp'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -1018,7 +1018,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['to','msg'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -1079,7 +1079,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['mobile','cc'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -1106,7 +1106,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required =['email','phone','cc'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -1141,7 +1141,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required =['phone','cc'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -1171,7 +1171,7 @@ class Users extends MY_Controller{
         );
        $this->Users_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $this->_table_column_array = ['phone','pwd'];
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){

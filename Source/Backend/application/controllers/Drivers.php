@@ -38,7 +38,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
              $data = $this->Driver_model->get_all_users();
                 foreach($data as $keys){
                     $keys->password = null;
@@ -62,7 +62,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
              $data = $this->Driver_model->getUsers();
                 foreach($data as $keys){
                     $keys->password = null;
@@ -97,7 +97,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
              $data = $this->Driver_model->allEmails();
                 if($data != null){
                     $send = $this->Driver_model->sendMails($data,$_POST['message'],$_POST['subject']);
@@ -119,7 +119,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_login_array);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -140,7 +140,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
     // get request
     public function get_by_id($id){
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             if(isset($id) && !empty($id)){
                 $result = $this->Driver_model->get_user_by_id($id);
                 if($result != null){
@@ -172,7 +172,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $result = $this->Driver_model->get_admin();
             if($result != null){
                 unset($result->password);
@@ -204,7 +204,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -230,7 +230,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -257,7 +257,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             $param = $this->check_params($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -294,7 +294,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             $param = $this->check_params($_POST,$this->_table_column_edit);
             if(isset($data) && !empty($data)){
@@ -342,7 +342,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
 
     public function upload_file(){
         $auth  = $this->input->get_request_header('Basic');
-            if($auth && $auth == $this->config->item('encryption_key')){
+            if($auth && $auth != ""){
                 $this->_table_column_array = ['img','type'];
                 $data = $this->check_array_values($_POST,$this->_table_column_array);
                 if(isset($data) && !empty($data)){
@@ -398,7 +398,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $input  = ['email','url'];
             $param = $this->check_array_values($_POST,$input);
             if(isset($param) && !empty($param)){
@@ -429,7 +429,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $this->_table_column_array = ['email','pwd'];
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -497,7 +497,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
         $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -523,7 +523,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -549,7 +549,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->phonePasswordArray);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -577,7 +577,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['mobile','cc'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -604,7 +604,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['email'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -640,7 +640,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required =['phone'];
             $data = $this->check_array_values($_POST,$required);
             $param = $this->check_params($_POST,$required);
@@ -670,7 +670,7 @@ public $phonePasswordArray = ['cc','mobile','password'];
         );
        $this->Driver_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $this->_table_column_array = ['phone','pwd'];
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){

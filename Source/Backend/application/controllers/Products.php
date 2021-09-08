@@ -39,7 +39,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->Product_model->get_all();
             if($data != null){
                 echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
@@ -61,7 +61,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -87,7 +87,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             
             // $data = $this->check_array_values($_POST,$required);
             // if(isset($data) && !empty($data)){
@@ -128,7 +128,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             // $result = $this->Product_model->inOffers();
             // if($result != null){
             //     echo $this->json->response($result,$this->_OKmessage,$this->_statusOK);
@@ -161,7 +161,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -189,7 +189,7 @@ class Products extends MY_Controller{
         );
         $this->Stores_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -217,7 +217,7 @@ class Products extends MY_Controller{
         );
         $this->Stores_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','limit'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -246,7 +246,7 @@ class Products extends MY_Controller{
         );
         $this->Stores_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','limit'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -275,7 +275,7 @@ class Products extends MY_Controller{
         );
         $this->Stores_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','limit'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -303,7 +303,7 @@ class Products extends MY_Controller{
         );
         $this->Stores_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -330,7 +330,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','limit'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -357,7 +357,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','cid'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -386,7 +386,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','cid','sid','limit'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -416,7 +416,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','limit','cid'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -444,7 +444,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['cid','id','limit'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -473,7 +473,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             $param = $this->check_params($_POST,$this->_table_column_edit);
             if(isset($data) && !empty($data)){
@@ -538,7 +538,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             $param = $this->check_params($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -569,7 +569,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -597,7 +597,7 @@ class Products extends MY_Controller{
         // );
         // $this->Stores_model->saveUserLogs($saveLogInfo);
         // $auth  = $this->input->get_request_header('Basic');
-        // if($auth && $auth == $this->config->item('encryption_key')){
+        // if($auth && $auth != ""){
         //     $data = $this->check_array_values($_POST,$this->required);
         //     if(isset($data) && !empty($data)){
         //         echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -625,7 +625,7 @@ class Products extends MY_Controller{
         );
         $this->Product_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);

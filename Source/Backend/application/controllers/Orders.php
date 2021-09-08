@@ -39,7 +39,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->Order_model->get_all();
             if($data != null){
                 echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
@@ -61,7 +61,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -87,7 +87,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -113,7 +113,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -140,7 +140,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -166,7 +166,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -192,7 +192,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             $param = $this->check_params($_POST,$this->_table_column_edit);
             if(isset($data) && !empty($data)){
@@ -249,7 +249,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             $param = $this->check_params($_POST,$this->_table_column_edit);
             if(isset($data) && !empty($data)){
@@ -280,7 +280,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
         $required = ['start','end','did'];
         $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -307,7 +307,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
         $required = ['start','end','sid'];
         $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -335,7 +335,7 @@ class Orders extends MY_Controller{
         );
         $this->Order_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);

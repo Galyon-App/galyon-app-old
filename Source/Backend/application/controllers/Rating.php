@@ -38,7 +38,7 @@ class Rating extends MY_Controller{
         );
        $this->Rating_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->Rating_model->get_all();
             if($data != null){
                 echo $this->json->response($data,$this->_OKmessage,$this->_statusOK);
@@ -60,7 +60,7 @@ class Rating extends MY_Controller{
         );
        $this->Rating_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
@@ -86,7 +86,7 @@ class Rating extends MY_Controller{
         );
        $this->Rating_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['id','where'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -113,7 +113,7 @@ class Rating extends MY_Controller{
         );
        $this->Rating_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $required = ['where'];
             $data = $this->check_array_values($_POST,$required);
             if(isset($data) && !empty($data)){
@@ -145,7 +145,7 @@ class Rating extends MY_Controller{
         );
         $this->Rating_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             $param = $this->check_params($_POST,$this->_table_column_edit);
             if(isset($data) && !empty($data)){
@@ -210,7 +210,7 @@ class Rating extends MY_Controller{
         );
         $this->Rating_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->_table_column_array);
             $param = $this->check_params($_POST,$this->_table_column_array);
             if(isset($data) && !empty($data)){
@@ -241,7 +241,7 @@ class Rating extends MY_Controller{
         );
         $this->Rating_model->saveUserLogs($saveLogInfo);
         $auth  = $this->input->get_request_header('Basic');
-        if($auth && $auth == $this->config->item('encryption_key')){
+        if($auth && $auth != ""){
             $data = $this->check_array_values($_POST,$this->required);
             if(isset($data) && !empty($data)){
                 echo $this->json->response($data,$this->_Errmessage,$this->_statusErr);
