@@ -22,7 +22,6 @@
         <ion-icon slot="icon-only" name="checkmark"></ion-icon>
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 
@@ -32,7 +31,7 @@
     <div class="main_div">
 
       <div class="info_div">
-        <div class="user_img" [ngStyle]="{'background-image':'url('+api.mediaURL+cover+'),url(assets/imgs/user.png)'}"
+        <div class="user_img" [ngStyle]="{'background-image':'url('+api.mediaURL+user.getCurrent.cover+'),url(assets/imgs/user.png)'}"
           (click)="updateProfile()">
         </div>
 
@@ -41,9 +40,9 @@
             <ion-icon name="person-outline"></ion-icon>
           </div>
           <div class="content_div">
-            <span>{{util.getString('First name')}} &nbsp;- </span>
+            <span>{{util.getString('First name')}}: </span>
             <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.getString('First name')"
-              [(ngModel)]="fname">
+              [(ngModel)]="user.getCurrent.first_name">
             </ion-input>
           </div>
         </div>
@@ -53,9 +52,9 @@
             <ion-icon name="person-outline"></ion-icon>
           </div>
           <div class="content_div">
-            <span>{{util.getString('Last name')}} &nbsp;- </span>
+            <span>{{util.getString('Last name')}}: </span>
             <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.getString('Last name')"
-              [(ngModel)]="lname">
+              [(ngModel)]="user.getCurrent.last_name">
             </ion-input>
           </div>
         </div>
@@ -65,8 +64,8 @@
             <ion-icon name="mail-outline"></ion-icon>
           </div>
           <div class="content_div">
-            <span>{{util.getString('Email')}} &nbsp;- </span>
-            <ion-input type="text" [disabled]="true" [placeholder]="util.getString('Email')" [(ngModel)]="email">
+            <span>{{util.getString('Email')}}: </span>
+            <ion-input type="text" [disabled]="true" [placeholder]="util.getString('Email')" [(ngModel)]="user.getCurrent.email">
             </ion-input>
           </div>
         </div>
@@ -76,8 +75,8 @@
             <ion-icon name="call-outline"></ion-icon>
           </div>
           <div class="content_div">
-            <span>{{util.getString('Mobile')}} &nbsp;- </span>
-            <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.getString('Mobile')" [(ngModel)]="mobile">
+            <span>{{util.getString('Mobile')}}: </span>
+            <ion-input type="text" [disabled]="edit_flag" [placeholder]="util.getString('Mobile')" [(ngModel)]="user.getCurrent.phone">
             </ion-input>
           </div>
         </div>

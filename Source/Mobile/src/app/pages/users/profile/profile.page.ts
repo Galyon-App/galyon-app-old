@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { UtilService } from 'src/app/services/util.service';
 import { NavController, ActionSheetController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -29,10 +30,10 @@ export class ProfilePage implements OnInit {
     private navCtrl: NavController,
     private actionSheetController: ActionSheetController,
     private camera: Camera,
+    public user: UserService
   ) {
     this.edit_flag = true;
-    console.log(localStorage.getItem('uid'));
-    this.getProfile();
+    //this.getProfile();
   }
 
   ngOnInit() {
@@ -62,7 +63,6 @@ export class ProfilePage implements OnInit {
       this.util.errorToast(this.util.getString('Something went wrong'));
     })
   }
-
 
   async updateProfile() {
     if(this.edit_flag == false) {
