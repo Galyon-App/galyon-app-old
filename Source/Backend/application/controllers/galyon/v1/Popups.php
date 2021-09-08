@@ -27,7 +27,8 @@ class Popups extends Galyon_controller {
         $where = null;
         if($user) {
             if($user->role !== "admin") {
-            $where = "status = '1' AND deleted_at IS NULL"; 
+                $where = "status = '1' AND deleted_at IS NULL"; 
+            }
         }
         
         $popup = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'row' );
@@ -47,7 +48,8 @@ class Popups extends Galyon_controller {
         $where = "uuid = '$popup_id'";
         if($user) {
             if($user->role !== "admin") {
-            $where = "status = '1' AND deleted_at IS NULL"; 
+                $where = "status = '1' AND deleted_at IS NULL"; 
+            }
         }
         
         $popup = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'row' );
@@ -66,7 +68,8 @@ class Popups extends Galyon_controller {
         $where = null;
         if($user) {
             if($user->role !== "admin") {
-            $where = "status = '1' AND deleted_at IS NULL"; 
+                $where = "status = '1' AND deleted_at IS NULL"; 
+            }
         }
 
         $popups = $this->Crud_model->get($this->table_name, $this->public_column, NULL, NULL, 'result' );
@@ -81,7 +84,8 @@ class Popups extends Galyon_controller {
         $user = $this->is_authorized();
         if($user) {
             if($user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
+                $this->json_response(null, false, "You are not authorized.");
+            }
         }
 
         $message = $this->input->post('message');
@@ -107,7 +111,8 @@ class Popups extends Galyon_controller {
         $user = $this->is_authorized();
         if($user) {
             if($user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
+                $this->json_response(null, false, "You are not authorized.");
+            }
         }
 
         $uuid = $this->input->post('uuid');
@@ -138,7 +143,8 @@ class Popups extends Galyon_controller {
         $user = $this->is_authorized();
         if($user) {
             if($user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
+                $this->json_response(null, false, "You are not authorized.");
+            }
         }
 
         $popup_id = $this->input->post('uuid');
@@ -156,7 +162,8 @@ class Popups extends Galyon_controller {
         $user = $this->is_authorized();
         if($user) {
             if($user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
+                $this->json_response(null, false, "You are not authorized.");
+            }
         }
 
         $popup_id = $this->input->post('uuid');
