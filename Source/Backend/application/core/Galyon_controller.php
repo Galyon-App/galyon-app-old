@@ -43,13 +43,13 @@ class Galyon_controller extends CI_Controller{
       }
     } 
 
-    $since = $user->expiry;
-    $span = $this->config->item('jwt_expiration');
-    $expiry = (int)$since + (int)$span;
-    $now = strtotime(get_current_utc_time());
-    if($now > $expiry) {
-      $this->json_response(null, false, "You're tokenn is already expired!", $failexit);
-    }
+    // $since = $user->expiry;
+    // $span = $this->config->item('jwt_expiration');
+    // $expiry = (int)$since + (int)$span;
+    // $now = strtotime(get_current_utc_time());
+    // if($now > $expiry) {
+    //   $this->json_response(null, false, "You're tokenn is already expired!", $failexit);
+    // }
     
     $current = $this->Crud_model->get('users', 'status, verified_at', array( "uuid" => $user->uuid ), null, 'row' );
 
