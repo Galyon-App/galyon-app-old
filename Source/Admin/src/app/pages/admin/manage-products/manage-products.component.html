@@ -124,7 +124,7 @@
          </div>
 
          <div class="col-sm-12">
-            <label>{{util.getString('Add-ons discount')}} </label>
+            <label>{{util.getString('Add-ons discount (%)')}} </label>
             <input style="background: transparent !important;" [(ngModel)]="variant_discount" type="number"
                class="form-control" [placeholder]="util.getString('Add-ons discount')">
          </div>
@@ -133,7 +133,7 @@
 
    </div>
    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="close3()">{{util.getString('Save')}} </button>
+      <button type="button" class="btn btn-outline-dark" (click)="close3()">{{ sub ? 'Save' : 'Add' }} </button>
    </div>
 </ng-template>
 
@@ -215,10 +215,10 @@
 
             <div class="form-group row">
                <div class="col-sm-4">
-                  <label> {{util.getString('Status')}}</label>
-                  <select name="select" [(ngModel)]="status" class="form-control">
-                     <option value='0'>{{util.getString('Unavailable')}} </option>
-                     <option value='1'>{{util.getString('Available')}} </option>
+                  <label>{{util.getString('Featured')}} </label>
+                  <select name="select" [(ngModel)]="is_featured" class="form-control">
+                     <option value='0'>{{util.getString('Regular')}} </option>
+                     <option value='1'>{{util.getString('Featured')}} </option>
                   </select>
                </div>
                <div class="col-sm-4">
@@ -229,33 +229,34 @@
                   </select>
                </div>
                <div class="col-sm-4">
-                  <label>{{util.getString('Featured')}} </label>
-                  <select name="select" [(ngModel)]="is_featured" class="form-control">
-                     <option value='0'>{{util.getString('Regular')}} </option>
-                     <option value='1'>{{util.getString('Featured')}} </option>
+                  <label> {{util.getString('Status')}}</label>
+                  <select name="select" [(ngModel)]="status" class="form-control">
+                     <option value='0'>{{util.getString('Unavailable')}} </option>
+                     <option value='1'>{{util.getString('Available')}} </option>
                   </select>
                </div>
             </div>
 
             <div class="form-group row">
-               <div class="col-sm-6" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <label> {{util.getString('Real price')}} </label>
                   <input type="text" [(ngModel)]="realPrice" (ngModelChange)="onRealPrice($event)" class="form-control"
                      [placeholder]="util.getString('Real price')">
                </div>
-               <div class="col-sm-6" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <label>{{util.getString('Sell price')}} </label>
                   <input type="text" [(ngModel)]="sellPrice" disabled="true" class="form-control"
                      [placeholder]="util.getString('Sell price')">
                </div>
-               <div class="col-sm-6" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <label>{{util.getString('Discount Type')}} </label>
                   <select name="select" [(ngModel)]="discount_type" class="form-control">
+                     <option value='none'>{{util.getString('None')}} </option>
                      <option value='fixed'>{{util.getString('Fixed')}} </option>
                      <option value='percent'>{{util.getString('Percent')}} </option>
                   </select>
                </div>
-               <div class="col-sm-6" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <label>{{util.getString('Discount Amount')}} </label>
                   <input type="text" [(ngModel)]="discount" (ngModelChange)="onDicount($event)" class="form-control"
                      [placeholder]="util.getString('Discount')">
@@ -263,20 +264,7 @@
             </div>
 
             <div class="form-group row">
-               <div class="col-sm-4" style="margin-bottom: 12px;">
-                  <div>
-                     <label>{{util.getString('Have Pieces')}} </label>
-                     <select name="select" [(ngModel)]="have_pcs" class="form-control">
-                        <option value='1'>{{util.getString('Yes')}} </option>
-                        <option value='0'>{{util.getString('No')}} </option>
-                     </select>
-                  </div>
-                  <div *ngIf="have_pcs  ==='1'">
-                     <label>{{util.getString('Pieces')}} </label>
-                     <input type="number" [(ngModel)]="pcs" class="form-control" [placeholder]="util.getString('PCs')">
-                  </div>
-               </div>
-               <div class="col-sm-4" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <div>
                      <label>{{util.getString('Have KG')}} </label>
                      <select name="select" [(ngModel)]="have_kg" class="form-control">
@@ -289,7 +277,7 @@
                      <input type="number" [(ngModel)]="kg" class="form-control" [placeholder]="util.getString('KG')">
                   </div>
                </div>
-               <div class="col-sm-4" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <div>
                      <label>{{util.getString('Have Gram')}} </label>
                      <select name="select" [(ngModel)]="have_gram" class="form-control">
@@ -302,7 +290,7 @@
                      <input type="number" [(ngModel)]="gram" class="form-control" [placeholder]="util.getString('G')">
                   </div>
                </div>
-               <div class="col-sm-4" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <div>
                      <label>{{util.getString('Have Liter')}} </label>
                      <select name="select" [(ngModel)]="have_liter" class="form-control">
@@ -315,7 +303,7 @@
                      <input type="number" [(ngModel)]="liter" class="form-control" [placeholder]="util.getString('L')">
                   </div>
                </div>
-               <div class="col-sm-4" style="margin-bottom: 12px;">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
                   <div>
                      <label>{{util.getString('Have ML')}} </label>
                      <select name="select" [(ngModel)]="have_ml" class="form-control">
@@ -331,41 +319,57 @@
             </div>
 
             <div class="form-group row">
-               <div class="col-sm-6">
-                  <label>{{util.getString('Size')}} </label>
-                  <select name="select" (ngModelChange)="changeSize($event)" [(ngModel)]="variations.length" class="form-control">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have Pieces')}} </label>
+                     <select name="select" [(ngModel)]="have_pcs" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_pcs  ==='1'">
+                     <label>{{util.getString('Pieces')}} </label>
+                     <input type="number" [(ngModel)]="pcs" class="form-control" [placeholder]="util.getString('PCs')">
+                  </div>
+               </div>
+               <div class="col-sm-3">
+                  <label>{{util.getString('Variations')}} </label>
+                  <!-- <select name="select" (ngModelChange)="changeSize($event)" [(ngModel)]="variations.length" class="form-control">
                      <option value='0'>{{util.getString('No Variations')}} </option>
                      <option value='1'>{{util.getString('Have Variations')}} </option>
-                  </select>
+                  </select> -->
+                  <input type="text" [(ngModel)]="curVar" (keyup.enter)="changeSize($event)" class="form-control" [placeholder]="util.getString('Name of Variant')">
                </div>
                <div class="col-sm-6">
-                  <div *ngFor="let item of variations;let i = index;">
-                     <div
-                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                        <label style="margin: 0px !important;font-weight: bold;">{{item.title}}</label>
-                        <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;" (click)="addItem(i)"></i>
-                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="delete(item)"></i>
-                     </div>
-                     <div *ngFor="let sub of item.items; let j = index"
-                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                        <div
-                           style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                           {{sub.title}} - 
-                           <p *ngIf="sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
-                              <span> {{sub.price}} - </span>
-                           </p>
-                           <p class="price_lbl" style="margin: 0px !important;"
-                              *ngIf="sub.discount !== 0 && sub.discount !=='0'">
-                              <span style="text-decoration:line-through;">{{sub.price}}
-                              </span>
-                              <span class="sell">{{sub.discount}} </span>
-                           </p>
+                  <div *ngFor="let item of variations;let i = index;" style="margin-bottom: 15px;">
+                     <div class="var_whole">
+                        <div class="var_title">
+                           <label style="margin: 0px !important;">Name: <strong>{{item.title}}</strong></label>
+                           <i class="ti-minus" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="delete(item)"></i>
+                           <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="addItem(i)"></i>
                         </div>
-
-                        <i class="ti-pencil-alt" style="font-weight: bold;margin: 0px 10px;"
-                           (click)="editSub(i,sub,j)"></i>
-                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="deleteSub(i,sub)"></i>
-                     </div>                     
+                        <div *ngFor="let sub of item.items; let j = index"
+                           style="font-size: 15px; display: flow-root; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                           <div
+                              style="font-size: 15px; display: inline-flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                              * {{sub.title}}&nbsp;&nbsp; = &nbsp;
+                              <p *ngIf="sub.discount_type == 'none' || sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
+                                 <span>{{util.currecny}}{{sub.price}}</span>
+                              </p>
+                              <p class="price_lbl" style="margin: 0px !important;"
+                                 *ngIf="sub.discount !== 0 && sub.discount !=='0'">
+                                 <span style="text-decoration:line-through;">
+                                    {{util.currecny}}{{sub.price}}
+                                 </span>
+                                 <span class="sell">
+                                    &nbsp;- {{util.currecny}}{{sub.discount}}
+                                 </span>
+                              </p>
+                           </div>
+                           <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="deleteSub(i,sub)"></i>
+                           <i class="ti-pencil-alt" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="editSub(i,sub,j)"></i>
+                        </div>  
+                     </div>                   
                   </div>
                </div>
             </div>

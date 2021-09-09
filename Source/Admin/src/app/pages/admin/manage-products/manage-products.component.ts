@@ -392,24 +392,31 @@ export class ManageProductsComponent {
     });
   }
 
+  curVar: any='';
   changeSize(event) {
-    if (this.variations.length == 0) {
-      const items = this.variations.filter(x => x.title === 'size');
-      if (!items.length) {
-        const item = {
-          title: 'size',
-          type: 'radio',
-          items: []
-        };
-        this.variations.push(item);
-      }
+    const items = this.variations.filter(x => x.title === this.curVar);
+    if(items.length === 0) {
+      this.variant_title = '';
+      this.variant_price = 0;
+      this.variant_discount = 0;
+      this.variatIndex = '';
+      const item = {
+        title: this.curVar,
+        type: 'radio',
+        items: []
+      };
+      this.variations.push(item);
     } else {
-      this.variations = this.variations.filter(x => x.title !== 'size');
+      this.util.error(this.util.getString('Variant currently existing'));
     }
   }
+
   async addItem(index) {
     this.sub = false;
-    this.variatIndex = index;
+    this.variant_title = '';
+    this.variant_price = 0;
+    this.variant_discount = 0;
+    this.variatIndex = '';
     try {
       this.modalService.open(this.contentVarient, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
         console.log(result);
@@ -420,15 +427,19 @@ export class ManageProductsComponent {
       console.log(error);
     }
   }
+  
   delete(item) {
-    if (item.title === 'size') {
+    if (item.title === 'variant') {
       this.variations = [];
     }
     this.variations = this.variations.filter(x => x.title !== item.title);
   }
+
   close3() {
     if (this.sub === false) {
-      if (this.variant_title && this.variant_price && this.variant_price !== 0 && this.variant_price > 0) {
+      if (this.variant_title) {
+        this.variant_price = this.variant_price ? this.variant_price : 0;
+        this.variant_discount = this.variant_discount ? this.variant_discount : 0;
         const item = {
           title: this.variant_title,
           price: parseFloat(this.variant_price),
@@ -436,22 +447,20 @@ export class ManageProductsComponent {
         };
         this.variations[this.variatIndex].items.push(item);
         this.modalService.dismissAll();
-        this.variant_title = '';
-        this.variant_price = 0;
-        this.variant_discount = 0;
-        this.variatIndex = '';
       } else {
-        this.util.error(this.util.getString('Please add title and price'));
+        this.util.error(this.util.getString('Please add title'));
       }
     } else {
-      if (this.variant_title && this.variant_price && this.variant_price !== 0 && this.variant_price > 0) {
+      if (this.variant_title) {
+        this.variant_price = this.variant_price ? this.variant_price : 0;
+        this.variant_discount = this.variant_discount ? this.variant_discount : 0;
         this.variations[this.variatIndex].items[this.subIndex].title = this.variant_title;
         this.variations[this.variatIndex].items[this.subIndex].price = parseFloat(this.variant_price),
           this.variations[this.variatIndex].items[this.subIndex].discount =
           this.variant_discount && this.variant_discount ? parseFloat(this.variant_discount) : 0;
         this.modalService.dismissAll();
       } else {
-        this.util.error(this.util.getString('Please add title and price'));
+        this.util.error(this.util.getString('Please add title'));
       }
     }
 
@@ -461,11 +470,12 @@ export class ManageProductsComponent {
     const data = selected.filter(x => x.title !== item.title);
     this.variations[index].items = data;
   }
+
   async editSub(index, items, subIndex) {
     this.sub = true;
     this.variatIndex = index;
     this.subIndex = subIndex;
-    this.variant_title = this.variations[index].title;
+    this.variant_title = this.variations[index].items[subIndex].title;
     this.variant_price = this.variations[index].items[subIndex].price;
     this.variant_discount = this.variations[index].items[subIndex].discount;
     try {

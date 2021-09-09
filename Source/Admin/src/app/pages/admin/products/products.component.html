@@ -31,15 +31,32 @@
                                 <th>Store </th>
                                 <th (click)="sortByName()">Name <i class="ti-angle-down"></i> </th>
                                 <th>Price </th>
-                                <th>In Stock</th>
                                 <th (click)="sortByRating()">Rating <i class="ti-angle-down"></i> </th>
-                                <th (click)="sortByHome()">Featured<i class="ti-angle-down"></i> </th>
+                                <th (click)="sortByHome()">Homepage<i class="ti-angle-down"></i> </th>
+                                <th>Featured</th>
+                                <th>In Stock</th>
+                                <th>Verified</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of dummy;">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
                                 <td>
                                     <ngx-skeleton-loader count="1"
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
@@ -95,17 +112,23 @@
                                 <td> {{item.store_name}}</td>
                                 <td> {{item.name}}</td>
                                 <td> {{item.orig_price}}</td>
-                                <td> {{item.in_stock === '1' ? 'Yes':'No'}}</td>
                                 <td> None</td>
                                 <td>
-                                    <button type="button" [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</button>
+                                    <button disabled type="button" [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</button>
                                 </td>
-
+                                <td>
+                                    <button disabled type="button" [className]="getClass(item.is_featured)">{{item.is_featured === '1' ? 'Yes':'No'}}</button>
+                                </td>
+                                <td>
+                                    <button disabled type="button" [className]="getClass(item.in_stock)">{{item.in_stock === '1' ? 'Yes':'No'}}</button>
+                                </td>
+                                <td>
+                                    <button disabled type="button" [className]="getClass(item.verified_at !== null ? '1' : '0')">{{item.verified_at !== null ? 'Yes':'No'}}</button>
+                                </td>
                                 <td>
                                     <button type="button" (click)="changeStatus(item)" [className]="getClass(item.status)" 
                                         (click)="changeStatus(item)">{{item.status === '1' ? 'Active':'Inactive'}}</button>
                                 </td>
-
                                 <td><button type="button" (click)="manage(item)"
                                         class="btn btn-info btn-round btn-outline-info">Manage</button>
                                 </td>
