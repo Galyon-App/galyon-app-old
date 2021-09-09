@@ -300,9 +300,9 @@
           <div class="card">
             <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
               (click)="openLink(item)" style="height: 100px;">
-              <div class="overlay_div" *ngIf="item.message">
+              <!-- <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
-              </div>
+              </div> -->
             </div>
           </div>
         </ion-slide>
