@@ -36,7 +36,8 @@
                             <tr class="text-uppercase">
                                 <th>Cover</th>
                                 <th>Name</th>
-                                <th>Address</th>
+                                <th>City</th>
+                                <th>Owner</th>
                                 <th>Time</th>
                                 <th>Rating</th>
                                 <th>Status</th>
@@ -45,6 +46,11 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of dummy;">
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
                                 <td>
                                     <ngx-skeleton-loader count="1"
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
@@ -95,7 +101,12 @@
 
                                 <td>
                                     <div style="width: 100px;white-space: pre-wrap;">
-                                        {{item.address}}
+                                        {{item.city_name ? item.city_name : 'None'}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="width: 100px;white-space: pre-wrap;">
+                                        {{item.owner_name ? item.owner_name : 'None'}}
                                     </div>
                                 </td>
                                 <td>{{getTime(item.open_time)}} - {{getTime(item.close_time)}} </td>

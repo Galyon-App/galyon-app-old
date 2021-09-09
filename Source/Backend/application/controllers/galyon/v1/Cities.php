@@ -35,17 +35,16 @@ class Cities extends Galyon_controller {
     }
 
     function getAllCities() {
-        // $user = $this->is_authorized(false);
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
+        if($user) {
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
+                $where = null; 
+            }
+        }
 
-        // //TODO: Filter by search using the post key of search.
-        // $where = "status = '1'"; 
-        // if($user && isset($user->role)) {
-        //     if($user->role == "admin") {
-        //         $where = null;
-        //     }
-        // }
-
-        $cities = $this->Crud_model->get($this->table_name, $this->public_column, NULL, NULL, 'result' );
+        $cities = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
         if($cities) {
             $this->json_response($cities);
         } else {

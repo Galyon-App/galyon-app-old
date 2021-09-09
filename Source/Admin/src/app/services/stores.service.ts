@@ -13,6 +13,13 @@ export class StoresService {
   private storeSubject: BehaviorSubject<Store>;
   public store: Observable<Store>;
 
+  private subjectList: BehaviorSubject<Store[]>;
+  private observableList: Observable<Store[]>;
+
+  public get current(): Store[] {
+    return this.subjectList.value;
+  }
+
   constructor(
     private api: ApisService,
     private authService: AuthService
@@ -35,6 +42,50 @@ export class StoresService {
       }
     }).catch(error => {
       console.log('error', error);
+    });
+  }
+
+  public request(callback = null) {
+    this.api.get('galyon/v1/stores/getAllStores').then((res: any) => {
+      if(res && res.success == true && res.data) {
+        this.subjectList = new BehaviorSubject<Store[]>(res.data);
+        if(callback != null) {
+          callback(res.data);
+        }
+      } else {
+        console.log('error', res.message);
+        if(callback != null) {
+          callback(null);
+        }
+      }
+    }).catch(error => {
+      console.log('error', error);
+      if(callback != null) {
+        callback(null);
+      }
+    });
+  }
+
+  getStoreById(storeId: any = '', callback = null) {
+    this.api.post('galyon/v1/stores/getStoreById', {
+      uuid: storeId
+    }).then((res: any) => {
+      if(res && res.success == true && res.data) {
+        this.subjectList = new BehaviorSubject<Store[]>(res.data);
+        if(callback != null) {
+          callback(res.data);
+        }
+      } else {
+        console.log('error', res.message);
+        if(callback != null) {
+          callback(null);
+        }
+      }
+    }).catch(error => {
+      console.log('error', error);
+      if(callback != null) {
+        callback(null);
+      }
     });
   }
 }

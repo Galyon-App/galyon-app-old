@@ -5,10 +5,11 @@
   Created : 01-Jan-2021
 */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, of } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
 export class AuthInfo {
   constructor(public $uid: string) { }
 
@@ -111,6 +112,63 @@ export class ApisService {
       // return this.http.post(this.baseUrl + url, param, header);
     });
   }
+
+  public autoselect(url, body) {
+    const header = {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .set('Basic', `${environment.authToken}`)
+    };
+    const param = this.JSON_to_URLEncoded(body);
+    return this.http.post(this.baseUrl + url, param, header).pipe(
+      response => response[1]
+    );
+  }
+
+  search(term: string, url: any) {
+    if (term === '') {
+      return of([]);
+    }
+
+    const header = {
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .set('Basic', `${environment.authToken}`)
+    };
+    
+    const param = this.JSON_to_URLEncoded({
+      search: term
+    });
+
+    return this.http
+      .post<any>(this.baseUrl + url, param, header).pipe(
+        map(response => {
+          response.data.forEach(element => {
+            element.cover = environment.mediaURL + element.cover;
+          });
+          return response.data;
+        })
+      );
+  }
+
+  // search(term: string) {
+  //   if (term === '') {
+  //     return of([]);
+  //   }
+
+  //   let PARAMS = new HttpParams({
+  //     fromObject: {
+  //       action: 'opensearch',
+  //       format: 'json',
+  //       origin: '*'
+  //     }
+  //   });
+
+  //   return this.http
+  //     .get<[any, string[]]>('https://en.wikipedia.org/w/api.php', {params: PARAMS.set('search', term)}).pipe(
+  //       map(response => response[1])
+  //     );
+  // }
 
   // public auth(body): Promise<any> {
   //   return new Promise<any>((resolve, reject) => {

@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { City } from '../models/city.model';
-import { ApiService } from './api.service';
+import { ApisService } from './apis.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CityService {
 
-  private cityLocalKey: any = 'mobile-current-city';
+  private cityLocalKey: any = 'admin-current-city';
   public get localKey(): string {
     return this.cityLocalKey;
   }
 
-  private subject: BehaviorSubject<City>;
-  private observable: Observable<City>;
+  private subject: BehaviorSubject<City[]>;
+  private observable: Observable<City[]>;
 
-  public get current(): City {
+  public get current(): City[] {
     return this.subject.value;
   }
 
-  public setCurrent = (cur: City) => {
+  public setCurrent = (cur: City[]) => {
     this.subject.next(cur);
   }
 
@@ -37,27 +37,31 @@ export class CityService {
   }
 
   constructor(
-    private api: ApiService
+    private api: ApisService
   ) { 
-    let curUser = new City();
-    this.subject = new BehaviorSubject<City>(curUser);
+    let curUser: City[] = [];
+    this.subject = new BehaviorSubject<City[]>(curUser);
     this.observable = this.subject.asObservable();
   }
 
-  public getActiveCity(callback = null) {
-    this.api.posts('galyon/v1/cities/getCityById', {
-      uuid: this.activeCity,
-    }).then((res: any) => {
+  public request(callback = null) {
+    this.api.get('galyon/v1/cities/getAllCities').then((res: any) => {
       if(res && res.success == true && res.data) {
-        this.subject = new BehaviorSubject<City>(res.data);
-        callback(res.data);
+        this.subject = new BehaviorSubject<City[]>(res.data);
+        if(callback != null) {
+          callback(res.data);
+        }
       } else {
         console.log('error', res.message);
-        callback(null);
+        if(callback != null) {
+          callback(null);
+        }
       }
     }).catch(error => {
       console.log('error', error);
-      callback(null);
+      if(callback != null) {
+        callback(null);
+      }
     });
   }
 }

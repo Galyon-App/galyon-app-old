@@ -14,7 +14,7 @@ class Users extends Galyon_controller {
 
     private $table_name = 'users';
     private $required = ['uuid'];
-    private $public_column = ['uuid','username','email','phone','cover','first_name','last_name','gender','type','subscriber','status','verified_at','timestamp','updated_at'];
+    private $public_column = ['uuid','username','email','phone','cover','first_name','last_name','gender','type','subscriber','status','verified_at','timestamp','updated_at', 'deleted_at'];
 
     function __construct(){
 		parent::__construct();
@@ -78,14 +78,22 @@ class Users extends Galyon_controller {
     }
 
     function getAll() {
-        //$user = $this->is_authorized();
-        //Add more column if admin.
-
-        //TODO: Filter by search using the post key of search.
-        $where = "uuid != '$user->uuid'";
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role !== "admin") {
-                $where .= " AND type != 'admin'"; 
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
+                $where = null; 
+            }
+        }
+
+        $search = $this->input->post('search');
+        if(!empty($search)) {
+            $searching = "(first_name LIKE '%$search%' OR last_name LIKE '%$search%')";
+            if($where == null) {
+                $where = $searching;
+            } else {
+                $where .= " AND ".$searching;
             }
         }
 

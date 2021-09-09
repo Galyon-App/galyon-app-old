@@ -8,15 +8,20 @@
     <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
 </ngx-spinner>
 
+<ng-template #rt let-r="result" let-t="term">
+    <img [src]="r.cover" class="mr-1" style="width: 25px; border-radius: 50%;">
+    <ngb-highlight [result]="r.first_name +' '+ r.last_name" [term]="t" style="padding-left: 5px;"></ngb-highlight>
+</ng-template>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <p style="color: red;font-size: 1.5rem;">
-                    Stores will be shown to users once Stores add products to his store
-                </p>
-                <h5> <span *ngIf="new">CREATE NEW</span> <span *ngIf="!new">Edit</span>
-                    Store </h5>
+                <h5>
+                    <span *ngIf="new">CREATE</span>
+                    <span *ngIf="!new">EDIT</span>
+                    Store 
+                </h5>
             </div>
             <div class="card-body reset-table p-t-0">
                 <h4 class="sub-title" *ngIf="new">Owner Details</h4>
@@ -65,55 +70,65 @@
                     </div>
                 </div>
 
-
                 <h4 class="sub-title">Stores Details</h4>
                 <div class="form-group row">
-                    <div class="col-sm-12">
-                        <label>Stores Name</label>
-                        <input type="text" [(ngModel)]="name" class="form-control" placeholder="Stores Name">
-                    </div>
-
-                    <div class="col-sm-12">
-                        <label>Address</label>
-                        <input type="text" [(ngModel)]="address" ngx-google-places-autocomplete #placesRef="ngx-places"
-                            (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Address">
-                    </div>
-
-
-                    <div class="col-sm-6">
-                        <label>Opening Time</label>
-                        <input [(ngModel)]="openTime" type="time" class="form-control" placeholder="Opening Time">
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Closing Time</label>
-                        <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Store Commision %</label>
-                        <input [(ngModel)]="commission" type="number" class="form-control"
-                            placeholder="Store commission %">
-                    </div>
-                    <div class="col-sm-12">
-                        <label>Store Description</label>
-                        <textarea [(ngModel)]="descritions" rows="5" cols="5" class="form-control"
-                            placeholder="Store Description"></textarea>
-                    </div>
-                    <div class="col-sm-12">
-                        <label>Select city</label>
-                        <select name="select" [(ngModel)]="city" class="form-control">
-                            <option *ngFor="let item of cities" [value]="item.id">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">{{api.translate('Upload cover image here')}} </label>
                     <div class="col-sm-4">
+                        <img [src]="coverImage" alt="" style="height: 250px; width: 250px; object-fit: cover; padding-bottom: 20px;"
+                            onError="this.src='assets/images/store.png'">
                         <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
                             accept="image/*">
                     </div>
-                    <div class="col-sm-4">
-                        <img [src]="coverImage" alt="" style="height: 100px;width: 100px;float: right;"
-                            onError="this.src='assets/images/store.png'">
+                    <div class="col-sm-8">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <label>Stores Name</label>
+                                <input type="text" [(ngModel)]="name" class="form-control" placeholder="Stores Name">
+                            </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 10px;">Select city</label>
+                                <select name="select" [(ngModel)]="city" class="form-control">
+                                    <option *ngFor="let item of cities" [value]="item.uuid">{{item.name}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 10px;">Opening Time</label>
+                                <input [(ngModel)]="openTime" type="time" class="form-control" placeholder="Opening Time">
+                            </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 10px;">Closing Time</label>
+                                <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
+                            </div>
+                            <div class="col-sm-8">
+                                <label style="margin-top: 10px;">Select owner</label>
+                                <input id="typeahead-basic" type="text" class="form-control" 
+                                [(ngModel)]="searchTerm" [editable]='false' [ngbTypeahead]="search" (keyup.enter)="checkUser()"
+                                [resultFormatter]="resultFormatBandListValue" [inputFormatter]="inputFormatBandListValue" [resultTemplate]="rt"/>
+                            </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 10px;">Store Commision (%)</label>
+                                <input [(ngModel)]="commission" type="number" class="form-control"
+                                    placeholder="Store commission %">
+                            </div>
+                            <div class="col-sm-6">
+                                <label style="margin-top: 10px;">Email Address</label>
+                                <input type="text" [(ngModel)]="store_email" class="form-control" placeholder="Email">
+                            </div>
+                            <div class="col-sm-6">
+                                <label style="margin-top: 10px;">Phone Number</label>
+                                <input [(ngModel)]="store_phone" type="text" class="form-control"
+                                    placeholder="Phone">
+                            </div>
+                            <div class="col-sm-12">
+                                <label style="margin-top: 10px;">Store Description</label>
+                                <textarea [(ngModel)]="descritions" rows="5" cols="5" class="form-control"
+                                    placeholder="Store Description"></textarea>
+                            </div>
+                            <!-- <div class="col-sm-12">
+                                <label>Address</label>
+                                <input type="text" [(ngModel)]="address" ngx-google-places-autocomplete #placesRef="ngx-places"
+                                    (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Address">
+                            </div> -->
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -129,7 +144,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="!new">
+<!-- <div class="row" *ngIf="!new">
     <div class="col-md-4">
         <div class="card">
             <div class="card-body-big card-status">
@@ -267,7 +282,6 @@
             </div>
         </div>
     </div>
-</div>
-
+</div> -->
 
 <ng2-toasty></ng2-toasty>

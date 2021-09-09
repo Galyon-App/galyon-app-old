@@ -11,6 +11,12 @@ import * as moment from 'moment';
 import { ApisService } from 'src/app/services/apis.service';
 import { environment } from 'src/environments/environment';
 import { UtilService } from 'src/app/services/util.service';
+import { CityService } from 'src/app/services/city.service';
+import { StoresService } from 'src/app/services/stores.service';
+import { Observable, of, OperatorFunction } from 'rxjs';
+import {debounceTime, distinctUntilChanged, map, switchMap, catchError, tap} from 'rxjs/operators';
+import { UserService } from 'src/app/services/user.service';
+import { Users } from 'src/app/models/users.model';
 
 declare var google: any;
 @Component({
@@ -18,7 +24,7 @@ declare var google: any;
   templateUrl: './manage-stores.component.html',
   styleUrls: ['./manage-stores.component.scss']
 })
-export class ManageStoresComponent implements OnInit {
+export class ManageStoresComponent {
   @ViewChild('placesRef', { static: false }) placesRef: GooglePlaceDirective;
 
   id: any;
@@ -52,6 +58,60 @@ export class ManageStoresComponent implements OnInit {
   orders: any[] = [];
   mobileCcode: any = '91';
 
+  store_email: any = '';
+  store_phone: any = '';
+  
+  searching = false;
+  searchFailed = false;
+  public searchTerm: any = '';
+  private selectedUserId: any = '';
+  search: OperatorFunction<string, readonly {first_name, cover}[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      tap(() => this.searching = true),
+      switchMap(term =>
+        this.api.search(term, 'galyon/v1/users/getAll').pipe(
+          tap(() => this.searchFailed = false),
+          catchError(() => {
+            this.searchFailed = true;
+            return of([]);
+          }))
+      ),
+      tap(() => this.searching = false)
+    )
+
+  checkUser() {
+    if(typeof this.searchTerm === 'undefined') {
+      this.searchTerm = '';
+    }
+  }
+
+  /**
+   * Used to format the result data from the lookup into the
+   * display and list values. Maps `{name: "band", id:"id" }` into a string
+  */
+  resultFormatBandListValue(value: any) {            
+    return value.first_name + ' ' + value.last_name;
+  } 
+
+  /**
+    * Initially binds the string value and then after selecting
+    * an item by checking either for string or key/value object.
+  */
+  inputFormatBandListValue(value: any)   {
+    if(value.first_name || value.last_name) {
+      localStorage.setItem('store-owner', value.uuid)
+      console.log(localStorage.getItem('store-owner'));
+      return value.first_name + ' ' + value.last_name;
+    }
+    return value;
+  }
+
+  getStates(data) {
+    console.log(data);
+  }
+
   constructor(
     private route: ActivatedRoute,
     public api: ApisService,
@@ -60,20 +120,42 @@ export class ManageStoresComponent implements OnInit {
     private navCtrl: Location,
     private chMod: ChangeDetectorRef,
     private router: Router,
-    public util: UtilService
+    public util: UtilService,
+    private cityServ: CityService,
+    private storeServ: StoresService,
+    private userServ: UserService,
   ) {
-    this.getCity();
-  }
-
-  ngOnInit() {
     this.route.queryParams.subscribe(data => {
       this.new = data.register === 'true' ? true : false;
       
       if (data && data.uuid && data.register) {
         this.id = data.uuid;
+        this.storeServ.getStoreById(data.uuid, (response: any) => {
+          if(response) {
+            this.name = response.name;
+            this.city = response.city_id;
+            this.latitude = response.lat;
+            this.longitude = response.lng;
+            this.fileURL = response.cover;
+            this.coverImage = environment.mediaURL + response.cover;
+            this.descritions = response.descriptions;
+            this.openTime = response.open_time;
+            this.closeTime = response.close_time;
+            this.commission = response.commission;
+            this.store_email = response.email;
+            this.store_phone = response.phone;
+
+            localStorage.setItem('store-owner', response.owner)
+            this.searchTerm = response.owner_name;
+            //this.getOrders();
+          }
+        });
         //this.getVenue();
         //this.getReviews();
       }
+    });
+    this.cityServ.request(activeCities => {
+      this.cities = activeCities;
     });
   }
 
@@ -156,65 +238,12 @@ export class ManageStoresComponent implements OnInit {
     });
   }
 
-  getVenue() {
-    this.spinner.show();
-    const param = {
-      id: this.id
-    };
-    this.api.post('stores/getById', param).then((datas: any) => {
-      console.log(datas);
-      this.spinner.hide();
-      if (datas && datas.status === 200 && datas.data.length) {
-        const info = datas.data[0];
-        console.log('-------->', info);
-        this.city = info.cid;
-        this.name = info.name;
-        this.address = info.address;
-        this.latitude = info.lat;
-        this.longitude = info.lng;
-        this.fileURL = info.cover;
-        this.coverImage = environment.mediaURL + info.cover;
-        this.descritions = info.descriptions;
-        this.openTime = info.open_time;
-        this.closeTime = info.close_time;
-        this.commission = info.commission;
-        this.getOrders();
-      } else {
-        this.spinner.hide();
-        this.util.error(this.api.translate('Something went wrong'));
-      }
-    }, error => {
-      this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    }).catch(error => {
-      this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    });
-  }
-
   getImage(cover) {
     return cover ? cover : 'assets/images/store.png';
   }
 
   getDate(date) {
     return moment(date).format('llll');
-  }
-
-  getCity() {
-    this.api.get('cities').then((datas: any) => {
-      console.log(datas);
-      if (datas && datas.data.length) {
-        this.cities = datas.data;
-      }
-    }, error => {
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    }).catch(error => {
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    });
   }
 
   public handleAddressChange(address: Address) {
@@ -225,62 +254,53 @@ export class ManageStoresComponent implements OnInit {
 
   updateVenue() {
 
-    if (this.name === '' || this.address === '' || this.openTime === '' || this.closeTime === '' || !this.openTime || !this.closeTime) {
+    if (this.name === '' || this.openTime === '' || this.closeTime === '' || !this.openTime || !this.closeTime) {
       this.util.error(this.api.translate('All Fields are required'));
       return false;
     }
 
-    const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({ address: this.address }, (results, status) => {
-      console.log(results, status);
-      if (status === 'OK' && results && results.length) {
-        this.latitude = results[0].geometry.location.lat();
-        this.longitude = results[0].geometry.location.lng();
-        console.log('----->', this.latitude, this.longitude);
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-        return false;
-      }
-    });
+    //TODO: Add Geocoder
+    // const geocoder = new google.maps.Geocoder;
+    // geocoder.geocode({ address: this.address }, (results, status) => {
+    //   console.log(results, status);
+    //   if (status === 'OK' && results && results.length) {
+    //     this.latitude = results[0].geometry.location.lat();
+    //     this.longitude = results[0].geometry.location.lng();
+    //     console.log('----->', this.latitude, this.longitude);
+    //   } else {
+    //     alert('Geocode was not successful for the following reason: ' + status);
+    //     return false;
+    //   }
+    // });
 
-    if (!this.coverImage || this.coverImage === '') {
-      this.util.error(this.api.translate('Please add your cover image'));
-      return false;
-    }
     const param = {
+      uuid: this.id,
       name: this.name,
-      address: this.address,
       descriptions: this.descritions,
-      lat: this.latitude,
-      lng: this.longitude,
       cover: this.fileURL,
       open_time: this.openTime,
       close_time: this.closeTime,
-      cid: this.city,
-      id: this.id,
+      city_id: this.city,
+      owner: localStorage.getItem('store-owner'),
+      email: this.store_email,
+      phone: this.store_phone,
       commission: this.commission
     };
-    
+
     this.spinner.show();
-    this.api.post('stores/editList', param).then((datas: any) => {
-      console.log(datas);
+    this.api.post('galyon/v1/stores/editStoreCurrent', param).then((response: any) => {
       this.spinner.hide();
-      if (datas && datas.status === 200) {
+      if (response && response.success && response.data) {
+        //TODO: Ask to go back!
         this.navCtrl.back();
       } else {
-        this.spinner.hide();
-        this.util.error(this.api.translate('Something went wrong'));
+        this.util.error(response.message);
       }
     }, error => {
       this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    }).catch(error => {
-      this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
+      this.util.error(this.util.getString('Something went wrong'));
+      console.log('error', error);
     });
-
   }
 
   create() {
