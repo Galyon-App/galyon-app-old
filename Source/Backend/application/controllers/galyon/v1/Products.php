@@ -108,6 +108,41 @@ class Products extends Galyon_controller {
         
     }
 
+    function getFeaturedProduct() {
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
+        if($user) {
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
+                $where = null; 
+            }
+        }
+        if($where == null) {
+            $where = " is_featured = '1'";
+        } else {
+            $where .= " AND is_featured = '1'";
+        }
+
+        $products = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        if($products) {
+            foreach($products as $product) {
+                if(isset($product->store_id)) {
+                    $store = $this->Crud_model->get('stores', 'name', "uuid = '$product->store_id'", NULL, 'row' );
+                    if($store) {
+                        $product->{"store_name"} = $store->name;
+                    } else {
+                        $product->{"store_name"} = null;
+                    }
+                } else {
+                    $product->{"store_name"} = null;
+                }
+            }
+            $this->json_response($products);
+        } else {
+            $this->json_response(null, false, "No product was found!");
+        }
+    }
+
     function activate() {
         $user = $this->is_authorized();
         if($user) {
