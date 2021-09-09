@@ -51,7 +51,7 @@ export class ProductPage implements OnInit {
   ml: any;
   exp_date: any;
 
-  in_stoke: any;
+  in_stock: any;
   in_offer: any;
   key_features: any = '';
   disclaimer: any = '';
@@ -168,9 +168,8 @@ export class ProductPage implements OnInit {
         this.pcs = info.pcs;
         this.have_pcs = info.have_pcs;
         this.in_offer = info.in_offer;
-        this.in_stoke = info.in_stoke;
+        this.in_stock = info.in_stock;
         this.is_single = info.is_single;
-        this.veg = info.kind;
         this.realPrice = parseFloat(info.original_price);
         this.sellPrice = parseFloat(info.sell_price);
         this.status = info.status;

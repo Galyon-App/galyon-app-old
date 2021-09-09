@@ -63,11 +63,11 @@
             [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
             (click)="singleProduct(item)">
             <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
-            <div *ngIf="item.in_stoke === '0'" class="notInStoke">
-              <ion-label class="text"> {{util.getString('Out of Stoke')}} </ion-label>
+            <div *ngIf="item.in_stock === '0'" class="notInStock">
+              <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
             </div>
-            <img src="assets/imgs/normal.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
-            <img src="assets/imgs/verified.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+            <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
+          <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
           </div>
           <div class="second_div">
             <ion-label class="name_lbl" (click)="singleProduct(item)">
@@ -150,13 +150,13 @@
 
               </ion-label>
             </div>
-            <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stoke === '1'">
+            <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stock === '1'">
               <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
                 {{util.getString('Add to Cart')}}
                 <ion-ripple-effect></ion-ripple-effect>
               </div>
             </div>
-            <div *ngIf="item.in_stoke !== '1'" style="height:30px"></div>
+            <div *ngIf="item.in_stock !== '1'" style="height:30px"></div>
 
             <div class="cartBtn" *ngIf="cart.itemId.includes(item.id)">
               <div class="abs_add">
@@ -177,16 +177,16 @@
         <div class="back_image" [style.backgroundImage]="'url('+api.mediaURL+item.cover+')'"
           (click)="singleProduct(item)">
           <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
-          <div *ngIf="item.in_stoke === '0'" class="notInStoke">
-            <ion-label class="text"> {{util.getString('Out of Stoke')}} </ion-label>
+          <div *ngIf="item.in_stock === '0'" class="notInStock">
+            <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
           </div>
         </div>
         <div class="second_div">
           <ion-label class="name_lbl">
             {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
           </ion-label>
-          <img src="assets/imgs/normal.png" class="kind" alt="Veg" *ngIf="item.kind === '1'">
-          <img src="assets/imgs/verified.png" class="kind" alt="Non Veg" *ngIf="item.kind === '0'">
+          <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
+          <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
           <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
           <div *ngIf="item.size ==='1'" class="variant" (click)="variant(item,i)">
             <ion-label class="selecter ion-activatable">
@@ -264,7 +264,7 @@
 
             </ion-label>
           </div>
-          <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stoke === '1'">
+          <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stock === '1'">
             <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
               {{util.getString('Add')}}
               <ion-ripple-effect></ion-ripple-effect>

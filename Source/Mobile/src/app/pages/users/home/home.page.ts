@@ -16,6 +16,7 @@ import { AlertController } from '@ionic/angular';
 import { CityService } from 'src/app/services/city.service';
 import { City } from 'src/app/models/city.model';
 import { Store } from 'src/app/models/store.model';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-home',
@@ -89,6 +90,7 @@ export class HomePage {
       });
       this.getAllCategories();
       this.getBanners();
+      this.getFeaturedProducts();
 
 
       //this.getStoreByCity();
@@ -157,25 +159,6 @@ export class HomePage {
       console.log(error);
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
-
-    // this.api.get('galyon/v1/category/getAllCategorys').subscribe((response: any) => {
-    //   if (response && response.success && response.data) {
-
-    //     let cats = this.categories;
-    //     this.categories.forEach((element, i) => {
-    //       let subCates = response.data;
-    //       subCates.data.forEach(sub => {
-    //         if (sub.status === '1' && element.uuid === sub.category_id) {
-    //           this.categories[i].subCates.push(sub);
-    //         }
-    //       });
-    //     });
-    //     this.categories = cats;
-    //   }
-    // }, error => {
-    //   console.log(error);
-    //   this.util.errorToast(this.util.getString('Something went wrong'));
-    // });
   }
 
   viewAllParentCategory() {
@@ -211,7 +194,104 @@ export class HomePage {
     });
   }
 
+  getFeaturedProducts() {
+    this.dummyTopProducts = Array(5);
 
+    this.api.get('galyon/v1/products/getFeaturedProduct').subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        response.data.forEach(element => {
+          if (element.variations && element.variations !== '' && element.variations.length > 0) {
+            if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.variations)) {
+              element.variations = JSON.parse(element.variations);
+              element.variations.forEach(element => {
+                element.current = 0;
+              });
+            } else {
+              element.variations = [];
+            }
+          } else {
+            element.variations = [];
+          }
+          if (this.cart.itemId.includes(element.id)) {
+            const index = this.cart.cart.filter(x => x.id === element.id);
+            element['quantiy'] = index[0].quantiy;
+          } else {
+            element['quantiy'] = 0;
+          }
+          this.topProducts.push(element);
+          // if (this.util.active_store.includes(element.store_id)) {
+          //   this.topProducts.push(element);
+          // }
+        });
+        this.dummyTopProducts = [];
+      }
+    }, error => {
+      console.log(error);
+    });
+
+  }
+
+  /**
+   * Opening of variant and updating the target product variant.
+   * @param item 
+   * @param var_id 
+   */
+  async variant(item, var_id) {
+    const allData = [];
+    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[var_id]) {
+      let variant = item.variations[var_id];
+      variant.items.forEach((element, index) => {
+        let title = '';
+        let discount_type = variant.items[index].discount_type;
+        let discount_amt = variant.items[index].discount;
+        let discount_sfx = discount_type == 'percent' ? '%' : ' off';
+        let discount_text = discount_type != 'none' ? ' ('+discount_amt+discount_sfx+')' : '';
+        if(discount_type == 'none' || discount_amt == '0' || discount_amt == 0) {
+          discount_text = '';
+        }
+        const price = variant.items[index] && variant.items[index].discount ? variant.items[index].discount : variant.items[index].price;
+        if (this.util.cside === 'left') {
+          title = ' * ' +element.title + ' : +' + this.util.currecny + '' + price + discount_text;
+        } else {
+          title = ' * ' +element.title + ' : +' + price + '' + this.util.currecny + discount_text;
+        }
+
+        const data = {
+          name: element.title,
+          type: 'radio',
+          label: title,
+          value: index,
+          checked: variant.current === index
+        };
+        allData.push(data);
+      });      
+
+      const alert = await this.alertCtrl.create({
+        header: item.name + ': ' + variant.title,
+        inputs: allData,
+        buttons: [
+          {
+            text: this.util.getString('Cancel'),
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: this.util.getString('Confirm'),
+            handler: (data) => {
+              console.log('Confirm Ok', data);
+              let prod_index = this.topProducts.indexOf(item);
+              this.topProducts[prod_index].variations[var_id].current = data;
+            }
+          }
+        ]
+      });
+      await alert.present();
+    } else {
+      console.log('none');
+    }
+  }
 
 
 
@@ -244,39 +324,7 @@ export class HomePage {
   
   getInit() {    
 
-    // this.api.post('products/getTopRated', param).subscribe((data: any) => {
-        //   console.log('top products', data);
-        //   this.dummyTopProducts = [];
-        //   if (data && data.status === 200 && data.data && data.data.length) {
-        //     data.data.forEach(element => {
-        //       if (element.variations && element.size === '1' && element.variations !== '') {
-        //         if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.variations)) {
-        //           element.variations = JSON.parse(element.variations);
-        //           element['variant'] = 0;
-        //         } else {
-        //           element.variations = [];
-        //           element['variant'] = 1;
-        //         }
-        //       } else {
-        //         element.variations = [];
-        //         element['variant'] = 1;
-        //       }
-        //       if (this.cart.itemId.includes(element.id)) {
-        //         const index = this.cart.cart.filter(x => x.id === element.id);
-        //         element['quantiy'] = index[0].quantiy;
-        //       } else {
-        //         element['quantiy'] = 0;
-        //       }
-        //       if (this.util.active_store.includes(element.store_id)) {
-        //         this.topProducts.push(element);
-        //       }
-
-        //     });
-        //   }
-        // }, error => {
-        //   console.log(error);
-        //   this.dummyTopProducts = [];
-        // });
+    
 
         // this.api.post('products/getHome', param).subscribe((data: any) => {
         //   console.log('home products', data);
@@ -493,69 +541,4 @@ export class HomePage {
       });
     }
   }
-
-  async variant(item, indeX) {
-    console.log(item);
-    const allData = [];
-    console.log(item && item.variations !== '');
-    console.log(item && item.variations !== '' && item.variations.length > 0);
-    console.log(item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0);
-    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0) {
-      console.log('->', item.variations[0].items);
-      item.variations[0].items.forEach((element, index) => {
-        console.log('OK');
-        let title = '';
-        if (this.util.cside === 'left') {
-          const price = item.variations && item.variations[0] &&
-            item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + this.util.currecny + ' ' + price;
-        } else {
-          const price = item.variations && item.variations[0] && item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + price + ' ' + this.util.currecny;
-        }
-        const data = {
-          name: element.title,
-          type: 'radio',
-          label: title,
-          value: index,
-          checked: item.variant === index
-        };
-        allData.push(data);
-      });
-
-      console.log('All Data', allData);
-      const alert = await this.alertCtrl.create({
-        header: item.name,
-        inputs: allData,
-        buttons: [
-          {
-            text: this.util.getString('Cancel'),
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: () => {
-              console.log('Confirm Cancel');
-            }
-          }, {
-            text: this.util.getString('Ok'),
-            handler: (data) => {
-              console.log('Confirm Ok', data);
-              console.log('before', this.topProducts[indeX].variant);
-              this.topProducts[indeX].variant = data;
-              console.log('after', this.topProducts[indeX].variant);
-            }
-          }
-        ]
-      });
-
-      await alert.present();
-    } else {
-      console.log('none');
-    }
-
-  }
-
 }

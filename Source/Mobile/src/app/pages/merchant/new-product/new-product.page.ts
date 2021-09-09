@@ -56,7 +56,7 @@ export class NewProductPage implements OnInit {
   ml: any = '0';
   exp_date: any;
 
-  in_stoke: any = '1';
+  in_stock: any = '1';
   in_offer: boolean = false;
   key_features: any = '';
   disclaimer: any = '';
@@ -124,9 +124,8 @@ export class NewProductPage implements OnInit {
         this.pcs = info.pcs;
         this.have_pcs = info.have_pcs === '1' ? true : false;
         this.in_offer = info.in_offer === '1' ? true : false;
-        this.in_stoke = info.in_stoke;
+        this.in_stock = info.in_stock;
         this.is_single = info.is_single === '1' ? true : false;
-        this.veg = info.kind === '1' ? true : false;
         this.realPrice = parseFloat(info.original_price);
         this.sellPrice = parseFloat(info.sell_price);
         this.status = info.status;
@@ -280,7 +279,6 @@ export class NewProductPage implements OnInit {
       original_price: this.realPrice,
       sell_price: this.sellPrice ? this.sellPrice : 0,
       discount: this.discount ? this.discount : 0,
-      kind: this.veg ? 1 : 0,
       cate_id: this.cateId,
       sub_cate_id: this.subId,
       have_gram: this.have_gram ? 1 : 0,
@@ -296,7 +294,7 @@ export class NewProductPage implements OnInit {
       descriptions: this.description,
       exp_date: moment(this.exp_date).format('YYYY-MM-DD'),
       type_of: 1,
-      in_stoke: this.in_stoke,
+      in_stock: this.in_stock,
       status: this.status,
       in_offer: this.in_offer ? 1 : 0,
       key_features: this.key_features,
@@ -329,7 +327,6 @@ export class NewProductPage implements OnInit {
   }
   submit() {
     console.log('size-->>', this.size);
-    console.log('submited', this.veg);
     if (!this.cateId || this.cateId === '') {
       this.util.errorToast(this.util.getString('Please select category'));
       return false;
@@ -386,7 +383,6 @@ export class NewProductPage implements OnInit {
       original_price: this.realPrice,
       sell_price: this.sellPrice ? this.sellPrice : 0,
       discount: this.discount ? this.discount : 0,
-      kind: this.veg ? 1 : 0,
       cate_id: this.cateId,
       sub_cate_id: this.subId,
       have_gram: this.have_gram ? 1 : 0,
@@ -402,7 +398,7 @@ export class NewProductPage implements OnInit {
       descriptions: this.description,
       exp_date: moment(this.exp_date).format('YYYY-MM-DD'),
       type_of: 1,
-      in_stoke: this.in_stoke,
+      in_stock: this.in_stock,
       status: this.status,
       in_offer: this.in_offer ? 1 : 0,
       key_features: this.key_features,
