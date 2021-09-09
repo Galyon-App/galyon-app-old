@@ -27,7 +27,8 @@ class Category extends Galyon_controller {
         $category_id = $this->input->post('uuid');
         $where = "uuid = '$category_id'";
         if($user) {
-            if($user->role !== "admin") {
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
                 $where = "status = '1' AND deleted_at IS NULL"; 
             }
         }
@@ -64,7 +65,7 @@ class Category extends Galyon_controller {
         $where = "parent_id IS NULL AND status = '1' AND deleted_at IS NULL";
         if($user) {
             $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") { //TODO: and if this category is owned by a store or operator.
+            if($user->role === "admin" &&  $basic === "") {
                 $where = null; 
             }
         }
@@ -82,7 +83,8 @@ class Category extends Galyon_controller {
         $user = $this->is_authorized(false);
         $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
                 $where = null; 
             }
         }
@@ -107,7 +109,8 @@ class Category extends Galyon_controller {
         $user = $this->is_authorized(false);
         $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
                 $where = null; 
             }
         }
