@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
     public api: ApisService,
     private router: Router
   ) {
-    this.getData();
+    //this.getData();
   }
 
   getData() {

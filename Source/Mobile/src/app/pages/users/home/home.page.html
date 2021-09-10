@@ -186,16 +186,16 @@
                 <span class="quantity" *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
               </ion-label>
               <div class="small_flex">
-                <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.in_stock === '1'">
+                <div class="btnBtm" *ngIf="!cart.itemId.includes(item.uuid) && item.in_stock === '1'">
                   <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
                     {{util.getString('Add to Cart')}}
                     <ion-ripple-effect></ion-ripple-effect>
                   </div>
                 </div>
                 <div *ngIf="item.in_stock !== '1'" style="height:30px"></div>
-                <div class="abs_add" *ngIf="cart.itemId.includes(item.id)">
+                <div class="abs_add" *ngIf="cart.itemId.includes(item.uuid)">
                   <img src="assets/imgs/remove.png" (click)="remove(item,i)">
-                  <ion-label>{{getQuanity(item.id)}}</ion-label>
+                  <ion-label>{{getQuanity(item.uuid)}}</ion-label>
                   <img src="assets/imgs/add.png" (click)="add(item,i)">
                 </div>
               </div>

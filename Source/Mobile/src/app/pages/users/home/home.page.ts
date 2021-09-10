@@ -387,10 +387,8 @@ export class HomePage {
     this.cart.addItem(item);
   }
 
-  
-
   getQuanity(id) {
-    const data = this.cart.cart.filter(x => x.id === id);
+    const data = this.cart.cart.filter(x => x.uuid === id);
     return data[0].quantiy;
   }
 
@@ -401,23 +399,21 @@ export class HomePage {
   }
 
   add(product, index) {
-    console.log(product);
-    this.topProducts[index].quantiy = this.getQuanity(product.id);
+    this.topProducts[index].quantiy = this.getQuanity(product.uuid);
     if (this.topProducts[index].quantiy > 0) {
       this.topProducts[index].quantiy = this.topProducts[index].quantiy + 1;
-      this.cart.addQuantity(this.topProducts[index].quantiy, product.id);
+      this.cart.addQuantity(this.topProducts[index].quantiy, product.uuid);
     }
   }
 
   remove(product, index) {
-    console.log(product, index);
-    this.topProducts[index].quantiy = this.getQuanity(product.id);
+    this.topProducts[index].quantiy = this.getQuanity(product.uuid);
     if (this.topProducts[index].quantiy === 1) {
       this.topProducts[index].quantiy = 0;
-      this.cart.removeItem(product.id)
+      this.cart.removeItem(product.uuid)
     } else {
       this.topProducts[index].quantiy = this.topProducts[index].quantiy - 1;
-      this.cart.addQuantity(this.topProducts[index].quantiy, product.id);
+      this.cart.addQuantity(this.topProducts[index].quantiy, product.uuid);
     }
   }
 

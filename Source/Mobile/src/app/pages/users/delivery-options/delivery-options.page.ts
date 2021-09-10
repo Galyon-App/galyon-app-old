@@ -49,25 +49,31 @@ export class DeliveryOptionsPage implements OnInit {
   getStoreList() {
     const info = [...new Set(this.cart.cart.map(item => item.store_id))];
     console.log('store iddss==================>>', info);
-    // test
-    // info.push(10, 17);
-    // test
-    const param = {
-      id: info.join()
-    };
-    this.api.post('stores/getStoresData', param).subscribe((data: any) => {
-      console.log(data);
-      if (data && data.status === 200 && data.data.length) {
-        this.storeAddress = data.data;
+    
+    this.api.post('galyon/v1/stores/getStoreByIds', {
+      uuids: info.join()
+    }).subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        this.storeAddress = response.data;
         this.cart.stores = this.storeAddress;
-      } else {
-        this.util.showToast(this.util.getString('No Stores Found'), 'danger', 'bottom');
-        this.back();
       }
     }, error => {
-      console.log('error', error);
-      this.util.showToast(this.util.getString('Something went wrong'), 'danger', 'bottom');
+      console.log(error);
+      this.util.errorToast(this.util.getString('Something went wrong'));
     });
+    // this.api.post('stores/getStoreByIds', param).subscribe((data: any) => {
+    //   console.log(data);
+    //   if (data && data.status === 200 && data.data.length) {
+    //     this.storeAddress = data.data;
+    //     this.cart.stores = this.storeAddress;
+    //   } else {
+    //     this.util.showToast(this.util.getString('No Stores Found'), 'danger', 'bottom');
+    //     this.back();
+    //   }
+    // }, error => {
+    //   console.log('error', error);
+    //   this.util.showToast(this.util.getString('Something went wrong'), 'danger', 'bottom');
+    // });
   }
 
   async openTime(ev) {
@@ -95,18 +101,17 @@ export class DeliveryOptionsPage implements OnInit {
     this.cart.deliveryAt = this.deliveryOption;
     this.cart.datetime = this.datetime;
     if (this.deliveryOption === 'home') {
-      console.log('address');
       const param: NavigationExtras = {
         queryParams: {
           from: 'cart'
         }
       };
       this.cart.calcuate();
-      this.router.navigate(['address'], param)
+      this.router.navigate(['user/cart/address'], param)
     } else {
       console.log('payment');
       this.cart.calcuate();
-      this.router.navigate(['payment']);
+      this.router.navigate(['user/cart/payment']);
     }
   }
 }

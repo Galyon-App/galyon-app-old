@@ -17,7 +17,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content class="ion-padding">
   <div class="coupones" (click)="openCoupon()">
     <img src="assets/imgs/discount.png" class="badge" />
@@ -62,7 +61,6 @@
     <div class="singleRow">
       <ion-label class="headerTotal boldClass"> {{util.getString('Grand Total')}} </ion-label>
       <ion-label class="priceTotal boldClass">
-
         <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}}</span>
         <span *ngIf="util.cside ==='right'">{{cart.grandTotal}} {{util.currecny}} </span>
       </ion-label>
@@ -72,13 +70,6 @@
   <div class="header">
     <ion-label class="title"> {{util.getString('Payment with')}} </ion-label>
   </div>
-  <ion-item (click)="openStripe()" lines="none" *ngIf="havePayment && haveStripe">
-    <ion-thumbnail slot="start">
-      <img src="assets/imgs/stripe.png" />
-    </ion-thumbnail>
-    <ion-label> {{util.getString('Pay with Stripe')}} </ion-label>
-    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
-  </ion-item>
 
   <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && haveCOD">
     <ion-thumbnail slot="start">
@@ -96,44 +87,26 @@
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
 
-  <ion-item (click)="paytm()" lines="none" *ngIf="havePayment && havePayTM">
+  <ion-item (click)="openStripe()" lines="none" *ngIf="havePayment && haveStripe">
     <ion-thumbnail slot="start">
-      <img src="assets/imgs/paytm.png" />
+      <img src="assets/imgs/stripe.png" />
     </ion-thumbnail>
-    <ion-label> {{util.getString('Pay with PayTM')}} </ion-label>
+    <ion-label> {{util.getString('Pay with Stripe')}} </ion-label>
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
 
-
-  <ion-item (click)="instaPay()" lines="none" *ngIf="havePayment && haveInstamojo">
+  <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && havePaymongo">
     <ion-thumbnail slot="start">
-      <img src="assets/imgs/instamojoapp.png" />
+      <img src="assets/imgs/paymongo.png" />
     </ion-thumbnail>
-    <ion-label> {{util.getString('Pay with Instamojo')}} </ion-label>
+    <ion-label> {{util.getString('Pay with Paymongo')}} </ion-label>
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
 
-  <ion-item (click)="proceed()" lines="none" *ngIf="havePayment && haveRazor">
+  <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && haveGCash">
     <ion-thumbnail slot="start">
-      <img src="assets/imgs/razor.png" />
+      <img src="assets/imgs/gcash.png" />
     </ion-thumbnail>
-    <ion-label> {{util.getString('Pay with RazorPay')}} </ion-label>
+    <ion-label> {{util.getString('Pay with GCash')}} </ion-label>
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
-
-  <ion-item (click)="paystackPay()" lines="none" *ngIf="havePayment && havepayStack">
-    <ion-thumbnail slot="start">
-      <img src="assets/imgs/paystack.png" />
-    </ion-thumbnail>
-    <ion-label> {{util.getString('Pay with PayStack')}} </ion-label>
-    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
-  </ion-item>
-
-  <ion-item (click)="flutterpay()" lines="none" *ngIf="havePayment && havepayStack">
-    <ion-thumbnail slot="start">
-      <img src="assets/imgs/flutter.png" />
-    </ion-thumbnail>
-    <ion-label> {{util.getString('Pay with Flutterwave')}} </ion-label>
-    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
-  </ion-item>
-</ion-content>

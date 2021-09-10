@@ -16,6 +16,7 @@ export class CartService {
 
   public cart: any[] = [];
   public itemId: any[] = [];
+  
   public totalPrice: any = 0;
   public grandTotal: any = 0;
   public coupon: any;
@@ -44,7 +45,7 @@ export class CartService {
           const userCart = data;
           if (userCart && userCart.length > 0) {
             this.cart = userCart;
-            this.itemId = [...new Set(this.cart.map(item => item.id))];
+            this.itemId = [...new Set(this.cart.map(item => item.uuid))];
             this.calcuate();
           } else {
             this.calcuate();
@@ -55,6 +56,31 @@ export class CartService {
       });
   }
   
+  addItem(item) {
+    this.cart.push(item);
+    this.itemId.push(item.uuid);
+    this.calcuate();
+  }
+
+  addQuantity(quantity, id) {
+    if (quantity < 0) {
+      this.removeItem(id);
+      return false;
+    }
+    this.cart.forEach(element => {
+      if (element.uuid === id) {
+        element.quantiy = quantity;
+      }
+    });
+    this.calcuate();
+  }
+
+  removeItem(id) {
+    this.cart = this.cart.filter(x => x.uuid !== id);
+    this.itemId = this.itemId.filter(x => x !== id);
+    this.calcuate();
+  }
+
   clearCart() {
     this.cart = [];
     this.itemId = [];
@@ -66,33 +92,6 @@ export class CartService {
     this.datetime = undefined;
     this.stores = [];
     this.util.clearKeys('cart');
-  }
-
-  addItem(item) {
-    this.cart.push(item);
-    this.itemId.push(item.id);
-    this.calcuate();
-  }
-
-  addQuantity(quantity, id) {
-    if (quantity < 0) {
-      this.removeItem(id);
-      return false;
-    }
-    this.cart.forEach(element => {
-      if (element.id === id) {
-        element.quantiy = quantity;
-      }
-    });
-    this.calcuate();
-  }
-
-  removeItem(id) {
-    console.log('remove this item from cart');
-    console.log('current cart items', this.cart);
-    this.cart = this.cart.filter(x => x.id !== id);
-    this.itemId = this.itemId.filter(x => x !== id);
-    this.calcuate();
   }
 
   calcuate() {
@@ -161,7 +160,7 @@ export class CartService {
           shipping: this.shipping,
           shippingPrice: this.shippingPrice
         };
-        console.log(extraChargeParam);
+        console.log('extraChargeParam', extraChargeParam);
         this.userOrderTaxByStores.push(extraChargeParam);
       });
       setTimeout(() => {

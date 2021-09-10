@@ -213,6 +213,7 @@ class Settings extends Galyon_controller {
             'manage' => $this->getGroupOptions('app', true),
             'settings' => $this->getGroupOptions('setting', true),
             'general' => $this->getGroupOptions('general', true),
+            'payment' => $this->getGroupOptions('payment', true),
         );
     }
 

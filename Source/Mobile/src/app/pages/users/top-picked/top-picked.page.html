@@ -13,7 +13,7 @@
         <ion-icon slot="icon-only" name="arrow-back-outline" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{util.getString('Top Picked')}} </ion-title>
+    <ion-title> {{util.getString('Trending Products')}} </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="search()">
         <ion-icon slot="icon-only" name="search-outline" color="light"></ion-icon>
@@ -150,7 +150,7 @@
 
               </ion-label>
             </div>
-            <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stock === '1'">
+            <div class="btnBtm" *ngIf="!cart.itemId.includes(item.uuid) && item.quantiy <= 0 && item.in_stock === '1'">
               <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
                 {{util.getString('Add to Cart')}}
                 <ion-ripple-effect></ion-ripple-effect>
@@ -158,7 +158,7 @@
             </div>
             <div *ngIf="item.in_stock !== '1'" style="height:30px"></div>
 
-            <div class="cartBtn" *ngIf="cart.itemId.includes(item.id)">
+            <div class="cartBtn" *ngIf="cart.itemId.includes(item.uuid)">
               <div class="abs_add">
                 <img src="assets/imgs/remove.png" (click)="remove(item,i)">
                 <ion-label *ngIf="item.quantiy !== 0">{{item.quantiy}}</ion-label>
@@ -264,13 +264,13 @@
 
             </ion-label>
           </div>
-          <div class="btnBtm" *ngIf="!cart.itemId.includes(item.id) && item.quantiy <= 0 && item.in_stock === '1'">
+          <div class="btnBtm" *ngIf="!cart.itemId.includes(item.uuid) && item.quantiy <= 0 && item.in_stock === '1'">
             <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
               {{util.getString('Add')}}
               <ion-ripple-effect></ion-ripple-effect>
             </div>
           </div>
-          <div class="cartBtn" *ngIf="cart.itemId.includes(item.id)">
+          <div class="cartBtn" *ngIf="cart.itemId.includes(item.uuid)">
             <div class="abs_add">
               <img src="assets/imgs/remove.png" (click)="remove(item,i)">
               <ion-label>{{item.quantiy}}</ion-label>

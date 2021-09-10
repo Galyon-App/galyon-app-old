@@ -49,7 +49,39 @@ export class TopPickedPage implements OnInit {
     private alertCtrl: AlertController,
     private city: CityService
   ) {
-    this.getProducts();
+    //this.getProducts();
+    this.api.get('galyon/v1/products/getFeaturedProduct').subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        response.data.forEach(element => {
+          if (element.variations && element.variations !== '' && element.variations.length > 0) {
+            if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.variations)) {
+              element.variations = JSON.parse(element.variations);
+              element.variations.forEach(element => {
+                element.current = 0;
+              });
+            } else {
+              element.variations = [];
+            }
+          } else {
+            element.variations = [];
+          }
+          if (this.cart.itemId.includes(element.uuid)) {
+            const index = this.cart.cart.filter(x => x.uuid === element.uuid);
+            element['quantiy'] = index[0].quantiy;
+          } else {
+            element['quantiy'] = 0;
+          }
+          this.products.push(element);
+          this.dummyProduct.push(element);
+          // if (this.util.active_store.includes(element.store_id)) {
+          //   this.topProducts.push(element);
+          // }
+        });
+        this.dummy = [];
+      }
+    }, error => {
+      console.log(error);
+    });
   }
 
   sortFilter() {
@@ -83,7 +115,6 @@ export class TopPickedPage implements OnInit {
   }
 
   onSearchChange(event) {
-    console.log(event.detail.value);
     if (event.detail.value) {
       this.products = this.dummyProduct.filter((item) => {
         return item.name.toLowerCase().indexOf(event.detail.value.toLowerCase()) > -1;
@@ -100,7 +131,7 @@ export class TopPickedPage implements OnInit {
     console.log(product);
     if (this.products[index].quantiy > 0) {
       this.products[index].quantiy = this.products[index].quantiy + 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -108,10 +139,10 @@ export class TopPickedPage implements OnInit {
     console.log(product, index);
     if (this.products[index].quantiy === 1) {
       this.products[index].quantiy = 0;
-      this.cart.removeItem(product.id)
+      this.cart.removeItem(product.uuid)
     } else {
       this.products[index].quantiy = this.products[index].quantiy - 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -141,8 +172,8 @@ export class TopPickedPage implements OnInit {
                 element.variations = [];
                 element['variant'] = 1;
               }
-              if (this.cart.itemId.includes(element.id)) {
-                const index = this.cart.cart.filter(x => x.id === element.id);
+              if (this.cart.itemId.includes(element.uuid)) {
+                const index = this.cart.cart.filter(x => x.uuid === element.uuid);
                 element['quantiy'] = index[0].quantiy;
               } else {
                 element['quantiy'] = 0;
@@ -185,8 +216,8 @@ export class TopPickedPage implements OnInit {
                 element.variations = [];
                 element['variant'] = 1;
               }
-              if (this.cart.itemId.includes(element.id)) {
-                const index = this.cart.cart.filter(x => x.id === element.id);
+              if (this.cart.itemId.includes(element.uuid)) {
+                const index = this.cart.cart.filter(x => x.uuid === element.uuid);
                 element['quantiy'] = index[0].quantiy;
               } else {
                 element['quantiy'] = 0;
@@ -214,8 +245,8 @@ export class TopPickedPage implements OnInit {
     const cart = this.cart.cart;
     if (cart && cart.length) {
       cart.forEach(element => {
-        if (this.cart.itemId && this.cart.itemId.length && this.cart.itemId.includes(element.id)) {
-          const index = this.products.findIndex(x => x.id === element.id);
+        if (this.cart.itemId && this.cart.itemId.length && this.cart.itemId.includes(element.uuid)) {
+          const index = this.products.findIndex(x => x.uuid === element.uuid);
           console.log('index============>', index);
           console.log('???', element.quantiy);
           this.products[index].quantiy = element.quantiy;
@@ -240,7 +271,7 @@ export class TopPickedPage implements OnInit {
   singleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        id: item.uuid
       }
     };
 

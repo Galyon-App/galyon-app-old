@@ -20,6 +20,7 @@ import { UserService } from './services/user.service';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
 import { AddressService } from './services/address.service';
+import { OptionService } from './services/option.service';
 
 @Component({
   selector: 'app-root',
@@ -52,7 +53,8 @@ export class AppComponent implements OnInit {
     private menuCtrl: MenuController,
     private storage: Storage,
     private user: UserService,
-    private address: AddressService
+    private address: AddressService,
+    private optServ: OptionService
   ) {
     this.selectedIndex = 0;
     this.initialize();
@@ -70,13 +72,12 @@ export class AppComponent implements OnInit {
       this.appPages = this.util.appPage;
       document.body.setAttribute('color-theme', 'light');
 
-      this.api.gets('galyon/v1/settings/initialize').then((response: any) => {
-        if (response && response.success == true && response.data) {
-          //const manage = response.data.manage;
-          this.util.translations = response.data.lang;
-          localStorage.setItem('language', response.data.file);
+      this.optServ.request((response) => {
+        if(response) {
+          this.util.translations = response.lang;
+          localStorage.setItem('language', response.file);
 
-          const manage = response.data.manage;
+          const manage = response.manage;
           if (manage.app_close === 0 || manage.app_close === '0') {
             this.util.appClosed = true;
             this.util.appClosedMessage = manage.app_close_message;
@@ -84,7 +85,7 @@ export class AppComponent implements OnInit {
             this.util.appClosed = false;
           }
   
-          const settings = response.data.settings;
+          const settings = response.settings;
           this.util.direction = settings.appDirection;
           this.util.cside = settings.currencySide;
           this.util.currecny = settings.currencySymbol;
@@ -94,7 +95,7 @@ export class AppComponent implements OnInit {
           this.util.reset_pwd = settings.reset_pwd;
           document.documentElement.dir = this.util.direction;
             
-          const general = response.data.general;
+          const general = response.general;
           this.util.general = general;
           this.util.general = general;
           this.cart.minOrderPrice = parseFloat(general.min);
@@ -102,9 +103,9 @@ export class AppComponent implements OnInit {
           this.cart.shippingPrice = parseFloat(general.shippingPrice);
           this.cart.orderTax = parseFloat(general.tax);
           this.cart.freeShipping = parseFloat(general.free);
+        } else {
+          console.log('app init error');
         }
-      }, error => {
-        console.log('app init error', error);
       });
 
       if(this.auth.is_authenticated) {
