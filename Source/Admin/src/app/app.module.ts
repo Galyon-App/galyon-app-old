@@ -24,6 +24,8 @@ import { LeaveGuard } from './guard/leaved.guard';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
+import { AgmCoreModule } from '@agm/core';
+
 // 1. Import the libs you need
 // import { AngularFireModule } from '@angular/fire';
 // import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
@@ -47,6 +49,9 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     AppRoutingModule,
     SharedModule,
     HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.google.mapApi
+    })
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
     // 3. Initialize

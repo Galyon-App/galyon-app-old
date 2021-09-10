@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 
 import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
@@ -31,6 +31,7 @@ export class ManageStoresComponent {
   banner_to_upload: any = '';
   new: boolean;
   address: any = '';
+  storeAddress: any;
   latitude: any;
   longitude: any;
 
@@ -132,6 +133,7 @@ export class ManageStoresComponent {
         this.id = data.uuid;
         this.storeServ.getStoreById(data.uuid, (response: any) => {
           if(response) {
+            this.storeAddress = response.address;
             this.name = response.name;
             this.city = response.city_id;
             this.latitude = response.lat;
@@ -331,7 +333,6 @@ export class ManageStoresComponent {
       if (status === 'OK' && results && results.length) {
         this.latitude = results[0].geometry.location.lat();
         this.longitude = results[0].geometry.location.lng();
-        console.log('----->', this.latitude, this.longitude);
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
         return false;
@@ -453,5 +454,20 @@ export class ManageStoresComponent {
 
   getCurrency() {
     return this.api.getCurrecySymbol();
+  }
+
+  editAddress(address: any) {
+    const navData: NavigationExtras = {
+      queryParams: {
+        uuid: this.id,
+        from: 'store',
+        address_id: address ? address.uuid : null
+      }
+    };
+    this.router.navigate(['admin/manage-address'], navData);
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
 }

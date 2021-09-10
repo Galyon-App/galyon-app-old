@@ -28,10 +28,11 @@ class Stores extends Galyon_controller {
 
         $store = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$uuid'", NULL, 'row' );
         if($store) {
-            $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
-            $store->address = "-";
+            $address = $this->Crud_model->get('address', 'uuid, store_id, type, address, house, landmark, zipcode, lat, lng', 
+                array( "store_id" => $store->uuid, "status" => "1" , "deleted_at" => null ), null, 'row' );
+            $store->address = null;
             if($address){
-                $store->address = $address->house.", ".$address->address;
+                $store->address = $address;
             }
 
             $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
@@ -52,6 +53,47 @@ class Stores extends Galyon_controller {
         }
     }
 
+    function getStoreByIds() {
+        $uuids = $this->input->post('uuids');
+        if(empty($uuids)) {
+            $this->json_response(null, false, "Required field cannot be empty!");
+        }
+        $where = "";
+        $store_ids = explode(',',$uuids);
+        foreach($store_ids as $stid) {
+            if($where != "") {
+                $where .= " OR ";
+            }
+            $where .= "uuid = '$stid'";
+        }
+
+        $stores = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        if($stores) {
+            foreach($stores as $store) {
+                $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
+                $store->address = null;
+                if($address){
+                    $store->address = $address->house.", ".$address->address;
+                }
+
+                $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
+                $store->owner_name = "-";
+                if($owner){
+                    $store->owner_name = $owner->first_name .' '. $owner->last_name;
+                }
+
+                $city = $this->Crud_model->get('cities', 'name', array( "uuid" => $store->city_id ), null, 'row' );
+                $store->city_name = "-";
+                if($city){
+                    $store->city_name = $city->name;
+                }
+            }
+            $this->json_response($stores);
+        } else {
+            $this->json_response(null, false, "No store was found!");
+        }
+    }
+
     function getAllStores() {
         $user = $this->is_authorized(false);
         $where = "status = '1' AND deleted_at IS NULL";
@@ -66,7 +108,7 @@ class Stores extends Galyon_controller {
         if($stores) {
             foreach($stores as $store) {
                 $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
-                $store->address = "-";
+                $store->address = null;
                 if($address){
                     $store->address = $address->house.", ".$address->address;
                 }

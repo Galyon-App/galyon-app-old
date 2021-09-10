@@ -16,6 +16,7 @@ import { LoginComponent } from './pages/admin/login/login.component';
 import { SetupComponent } from './pages/admin/setup/setup.component';
 import { MerchantComponent } from './layouts/merchant/merchant.component';
 import { ResetComponent } from './pages/merchant/reset/reset.component';
+import { ManageAddressModule } from './pages/editor/manage-address/manage-address.module';
 
 const routes: Routes = [
   {
@@ -116,13 +117,10 @@ const routes: Routes = [
           path: 'manage-website',
           loadChildren: () => import('./pages/admin/manage-website/manage-website.module').then(m => m.ManageWebsiteModule)
         },
-
-
-
-
-
-        
-
+        {
+          path: 'manage-address',
+          loadChildren: () => import('./pages/editor/manage-address/manage-address.module').then(m => m.ManageAddressModule)
+        },
         {
           path: 'products',
           loadChildren: () => import('./pages/admin/products/products.module').then(m => m.ProductsModule)
@@ -131,6 +129,12 @@ const routes: Routes = [
           path: 'manage-products',
           loadChildren: () => import('./pages/admin/manage-products/manage-products.module').then(m => m.ManageProductsModule)
         },
+
+
+
+
+        
+
         {
           path: 'orders',
           loadChildren: () => import('./pages/admin/orders/orders.module').then(m => m.OrdersModule)

@@ -73,31 +73,53 @@ class Address extends Galyon_controller {
         $user = $this->is_authorized(false);
         $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
                 $where = null; 
             }
         }
 
-        $user_id = $this->input->post('user_id');
-        if($where != null) {
-            $where .= " AND owner = '$user_id'";
-        } else {
-            $where = "owner = '$user_id'";
+        $uuid = $this->input->post('uuid');
+        if(!empty($uuid)) {
+            if($where != null) {
+                $where .= " AND uuid = '$uuid'";
+            } else {
+                $where = "uuid = '$uuid'";
+            }
         }
 
-        $store = $this->Crud_model->get('stores', '*', $where, null, 'row' );
+        $user_id = $this->input->post('user_id');
+        if(!empty($user_id)) {
+            if($where != null) {
+                $where .= " AND owner = '$user_id'";
+            } else {
+                $where = "owner = '$user_id'";
+            }
+        }
+
+        $store_id = $this->input->post('store_id');
+        if(!empty($store_id)) {
+            if($where != null) {
+                $where .= " AND store_id = '$store_id'";
+            } else {
+                $where = "store_id = '$store_id'";
+            }
+        }
+
+        $store = $this->Crud_model->get('address', '*', $where, null, 'row' );
         if(!$store) {
-            $this->json_response(null, false, "No store is currently assigned!");
+            $this->json_response($where, false, "No address is currently assigned!");
             exit;
         }
 
-        //TODO: Important
+        $this->json_response($store);
     }
 
     function createNewAddress() {
         $user = $this->is_authorized();
 
         $uid = $this->input->post('uid');
+        $store_id = $this->input->post('store_id');
         $type = $this->input->post('type');
         $address = $this->input->post('address');
         $house = $this->input->post('house');
@@ -106,13 +128,14 @@ class Address extends Galyon_controller {
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
 
-        if(empty($uid) || empty($type) || empty($address) || empty($house) || empty($lat) || empty($lng)) {
+        if(empty($type) || empty($address) || empty($house) || empty($lat) || empty($lng)) {
             $this->json_response(null, false, "Required fields cannot be empty.");
         }
 
         $inserted = $this->Crud_model->insert($this->table_name, array( 
             "uuid" => $this->uuid->v4(), 
-            "uid" => $user->uuid,
+            "uid" => $user->uuid ? $user->uuid : $uid, //TODO
+            "store_id" => !empty($store_id) ? $store_id : NULL,
             "type" => $type, 
             "address" => $address, 
             "house" => $house,
@@ -141,6 +164,7 @@ class Address extends Galyon_controller {
 
         $uuid = $this->input->post('uuid');
         $uid = $this->input->post('uid');
+        $store_id = $this->input->post('store_id');
         $type = $this->input->post('type');
         $address = $this->input->post('address');
         $house = $this->input->post('house');
@@ -149,12 +173,13 @@ class Address extends Galyon_controller {
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
 
-        if(empty($uuid) || empty($uid) || empty($type) || empty($address) || empty($house) || empty($lat) || empty($lng)) {
+        if(empty($uuid) || empty($type) || empty($address) || empty($house) || empty($lat) || empty($lng)) {
             $this->json_response(null, false, "Required fields cannot be empty.");
         }
 
         $latest =  array( 
-            "uid" => $uid,
+            "uid" => $uid ? $uid : NULL,
+            "store_id" => !empty($store_id) ? $store_id : NULL,
             "type" => $type, 
             "address" => $address, 
             "house" => $house,

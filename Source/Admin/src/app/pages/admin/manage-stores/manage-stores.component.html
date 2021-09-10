@@ -133,10 +133,21 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <button class="btn btn-primary btn-round float-right" (click)="create()" *ngIf="new">Create new Store
+                        <button class="btn btn-primary btn-round float-right" (click)="create()" *ngIf="new">
+                            Create Store
                         </button>
                         <button class="btn btn-primary btn-round float-right" (click)="updateVenue()" *ngIf="!new">
-                            Update Store </button>
+                            Update Store
+                        </button>
+                        <button class="btn btn-primary btn-round float-right" (click)="editAddress(!storeAddress)" *ngIf="!storeAddress" style="margin-right: 15px;">
+                            Add Address
+                        </button>
+                        <button class="btn btn-primary btn-round float-right" (click)="editAddress(storeAddress)" *ngIf="storeAddress" style="margin-right: 15px;">
+                            Edit Address
+                        </button>
+                        <button class="btn btn-primary btn-round float-left" (click)="goBack()">
+                            Go Back
+                        </button>
                     </div>
                 </div>
             </div>

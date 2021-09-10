@@ -32,7 +32,7 @@ class Products extends Galyon_controller {
         $where = "uuid = '$uuid'";
         if($user) {
             if($user->role !== "admin") {
-                $where .= " AND status = '0' AND verified_at IS NULL AND deleted_at IS NULL"; 
+                $where .= " AND status = '1' AND verified_at IS NULL AND deleted_at IS NULL"; 
             }
         }
 
@@ -61,7 +61,7 @@ class Products extends Galyon_controller {
         $where = null;
         if($user) {
             if($user->role !== "admin") {
-                $where .= "status = '0' AND verified_at IS NULL AND deleted_at IS NULL"; 
+                $where .= "status = '1' AND verified_at IS NULL AND deleted_at IS NULL"; 
             }
         }
 
