@@ -356,7 +356,11 @@ export class ManageAddressComponent implements OnInit {
       lat: this.mapOrigin.lat,
       lng: this.mapOrigin.lng,
       type: 'other'
-    }, null);
+    }, (response) => {
+      if(response) {
+        this.navCtrl.back();
+      }
+    });
   }
 
   update() {
@@ -371,7 +375,11 @@ export class ManageAddressComponent implements OnInit {
       lat: this.mapOrigin.lat,
       lng: this.mapOrigin.lng,
       type: 'other'
-    }, null);
+    }, (response) => {
+      if(response) {
+        this.navCtrl.back();
+      }
+    });
   }
 
   onSearch() {
