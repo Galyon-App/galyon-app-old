@@ -17,6 +17,8 @@ import { CityService } from 'src/app/services/city.service';
 import { City } from 'src/app/models/city.model';
 import { Store } from 'src/app/models/store.model';
 import { Console } from 'console';
+import { StoreService } from 'src/app/services/store.service';
+import { OptionService } from 'src/app/services/option.service';
 
 @Component({
   selector: 'app-home',
@@ -69,7 +71,9 @@ export class HomePage {
     public city: CityService,
     private chMod: ChangeDetectorRef,
     private iab: InAppBrowser,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private storeServ: StoreService,
+    private optServ: OptionService
   ) {
     this.dummyCates = Array(6);
     this.dummyBanners = Array(5);
@@ -78,7 +82,7 @@ export class HomePage {
     this.dummyTopProducts = Array(5);
     this.dummyProducts = Array(5);
     this.dummyStores = Array(5);
-    this.dummyTopStores = Array(5);
+    this.dummyTopStores = Array(3);
 
     if (!this.util.appClosed) {
       this.resetAllArrays(null);
@@ -91,12 +95,21 @@ export class HomePage {
       this.getAllCategories();
       this.getBanners();
       this.getFeaturedProducts();
+      this.getPopup();
 
-
-      //this.getStoreByCity();
+      this.getStoreByCity();
       //this.getInit();
       //
     }
+  }
+
+  async getPopup() {
+    const alertCtrl = await this.alertCtrl.create({
+      header: this.util.getString('Message'),
+      message: 'Welcome to our application!',
+      mode: 'ios',
+      buttons: [this.util.getString('Cancle'), this.util.getString('Ok')],
+    });
   }
 
   resetAllArrays(message) {
@@ -124,11 +137,12 @@ export class HomePage {
   }
 
   getStoreByCity() {
-    this.api.post('galyon/v1/stores/getStoreByCity', {
+    this.api.post('galyon/v1/stores/getAllStores', {
       uuid: this.city.activeCity
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         this.stores = response.data;
+        this.dummyStores = [];
 
         this.stores.forEach(async (store) => {
           store['isOpen'] = await this.isOpen(store.open_time, store.close_time);
@@ -231,11 +245,6 @@ export class HomePage {
 
   }
 
-  /**
-   * Opening of variant and updating the target product variant.
-   * @param item 
-   * @param var_id 
-   */
   async variant(item, var_id) {
     const allData = [];
     if (item && item.variations !== '' && item.variations.length > 0 && item.variations[var_id]) {
@@ -296,69 +305,7 @@ export class HomePage {
 
 
 
-
-
-
   
-
-  getPopup() {
-    this.api.get('popup').subscribe(async (data: any) => {
-      console.log('popup message', data);
-      if (data && data.status === 200) {
-        const info = data.data[0];
-        if (info && info.shown === '1') {
-          const alertCtrl = await this.alertCtrl.create({
-            header: this.util.getString('Message'),
-            message: info.message,
-            mode: 'ios',
-            buttons: [this.util.getString('Cancle'), this.util.getString('Ok')],
-          });
-          localStorage.setItem('pop', 'true');
-          alertCtrl.present();
-        }
-      }
-    }, error => {
-      console.log(error);
-    });
-  }
-  
-  getInit() {    
-
-    
-
-        // this.api.post('products/getHome', param).subscribe((data: any) => {
-        //   console.log('home products', data);
-        //   this.dummyTopProducts = [];
-        //   if (data && data.status === 200 && data.data && data.data.length) {
-        //     data.data.forEach(element => {
-        //       if (element.variations && element.size === '1' && element.variations !== '') {
-        //         if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.variations)) {
-        //           element.variations = JSON.parse(element.variations);
-        //           element['variant'] = 0;
-        //         } else {
-        //           element.variations = [];
-        //           element['variant'] = 1;
-        //         }
-        //       } else {
-        //         element.variations = [];
-        //         element['variant'] = 1;
-        //       }
-        //       if (this.cart.itemId.includes(element.id)) {
-        //         const index = this.cart.cart.filter(x => x.id === element.id);
-        //         element['quantiy'] = index[0].quantiy;
-        //       } else {
-        //         element['quantiy'] = 0;
-        //       }
-        //       if (this.util.active_store.includes(element.store_id)) {
-        //         this.topProducts.push(element);
-        //       }
-        //     });
-        //   }
-        // }, error => {
-        //   this.dummyTopProducts = [];
-        //   console.log(error);
-        // });
-  }
 
   
 
@@ -391,8 +338,6 @@ export class HomePage {
     const data = this.cart.cart.filter(x => x.uuid === id);
     return data[0].quantiy;
   }
-
-  
 
   openMenu() {
     this.util.openMenu();
@@ -517,7 +462,6 @@ export class HomePage {
   }
 
   search(event: string) {
-    console.log(event);
     if (event && event !== '') {
       const param = {
         id: this.city.current.uuid,
@@ -525,13 +469,11 @@ export class HomePage {
       };
       this.util.show();
       this.api.post('products/getSearchItems', param).subscribe((data: any) => {
-        console.log('search data==>', data);
         this.util.hide();
         if (data && data.status === 200 && data.data) {
           this.products = data.data;
         }
       }, error => {
-        console.log('error in searhc filess--->>', error);
         this.util.hide();
         this.util.errorToast(this.util.getString('Something went wrong'));
       });

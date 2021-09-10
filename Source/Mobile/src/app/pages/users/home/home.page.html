@@ -230,7 +230,7 @@
 
     <!-- START TOP STORES -->
     <div class="segment-title" style="margin-top: 15px;">
-      <ion-label class="all"> {{util.getString('Brightest Merchants')}} </ion-label>
+      <ion-label class="all"> {{util.getString('Featured Stores')}} </ion-label>
       <ion-label class="view" (click)="topStores()">{{util.getString('More')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
@@ -312,7 +312,7 @@
 
     <!--  START INFINITY STORES -->
     <div class="segment-title" style="margin-top: 15px;">
-      <ion-label class="all"> {{util.getString('Partner Merchant')}} </ion-label>
+      <ion-label class="all"> {{util.getString('Official Resellers')}} </ion-label>
       <!-- <ion-label class="view" (click)="topStores()">{{util.getString('More')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
@@ -343,22 +343,21 @@
           <div class="card_div">
             <div class="image_div" (click)="openStore(item)"
               [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/store.png)'}">
-              <img src="assets/imgs/open.png" class="isOpen" alt="Veg" *ngIf="item.isOpen && item.isClosed ==='1'">
-              <img src="assets/imgs/close.png" class="isOpen" alt="Non Veg"
+              <img src="assets/imgs/open.png" class="isOpen" alt="Open" *ngIf="item.isOpen && item.isClosed ==='1'">
+              <img src="assets/imgs/close.png" class="isOpen" alt="Close"
                 *ngIf="!item.isOpen || item.isClosed === '0'">
             </div>
             <div class="desc_div" (click)="openStore(item)">
               <ion-label class="pro_name">
-                {{ (item.name.length>12)? (item.name | slice:0:12)+'..':(item.name) }}</ion-label>
+                {{ (item.name.length>12)? (item.name | slice:0:29):(item.name) }}</ion-label>
               <ion-label class="pro_detail">
-                {{ (item.address.length>20)? (item.address | slice:0:20)+'..':(item.address) }}
+                {{ (item.address.length>20)? (item.address | slice:0:40)+'..':(item.address) }}
               </ion-label>
               <ion-label class="price_lbl"> {{getTime(item.open_time)}} - {{getTime(item.close_time)}} </ion-label>
-
               <div class="small_flex">
                 <div class="btnBtm">
                   <div class="ion-activatable ripple-parent">
-                    {{util.getString('View')}}
+                    View Store
                     <ion-ripple-effect></ion-ripple-effect>
                   </div>
                 </div>
