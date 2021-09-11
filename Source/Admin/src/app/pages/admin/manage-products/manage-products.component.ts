@@ -76,7 +76,7 @@ export class ManageProductsComponent {
   variant_title: any = '';
   variant_price: any;
   variant_discount: any;
-  variatIndex: any;
+  variatIndex: number;
   subIndex: any;
   sub: boolean;
 
@@ -399,7 +399,7 @@ export class ManageProductsComponent {
       this.variant_title = '';
       this.variant_price = 0;
       this.variant_discount = 0;
-      this.variatIndex = '';
+      this.variatIndex = 0;
       const item = {
         title: this.curVar,
         type: 'radio',
@@ -416,7 +416,7 @@ export class ManageProductsComponent {
     this.variant_title = '';
     this.variant_price = 0;
     this.variant_discount = 0;
-    this.variatIndex = '';
+    this.variatIndex = index;
     try {
       this.modalService.open(this.contentVarient, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
         console.log(result);
@@ -445,6 +445,7 @@ export class ManageProductsComponent {
           price: parseFloat(this.variant_price),
           discount: this.variant_discount && this.variant_discount ? parseFloat(this.variant_discount) : 0
         };
+        console.log(this.variatIndex);
         this.variations[this.variatIndex].items.push(item);
         this.modalService.dismissAll();
       } else {
