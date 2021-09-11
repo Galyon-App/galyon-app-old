@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Store } from '../models/store.model';
 import { ApiService } from './api.service';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -40,14 +41,27 @@ export class StoreService {
     this.observable = this.subject.asObservable();
   }
 
-  public request(callback = null) {
+  public isOpen(start, end) {
+    const format = 'H:mm:ss';
+    const ctime = moment().format('HH:mm:ss');
+    const time = moment(ctime, format);
+    const beforeTime = moment(start, format);
+    const afterTime = moment(end, format);
+
+    if (time.isBetween(beforeTime, afterTime)) {
+      return true;
+    }
+    return false
+  }
+
+  public request(callback = null, persist: boolean = true) {
     if(this.has_fresh_data()) {
       if(callback != null) {
         callback(this.current);
       }
     } else {
       this.api.gets('galyon/v1/stores/getAllStores').then((res: any) => {
-        if(res && res.success == true && res.data) {
+        if(res && res.success == true && res.data && persist) {
           this.subject = new BehaviorSubject<Store[]>(res.data);
         }
         if(callback != null) {
@@ -60,5 +74,20 @@ export class StoreService {
         }
       });
     }
+  }
+
+  public getById(store_id: string, callback = null) {
+    this.api.posts('galyon/v1/stores/getStoreById', {
+      uuid: store_id
+    }).then((res: any) => {
+      if(callback != null) {
+        callback(res.success ? res.data : null);
+      }
+    }).catch(error => {
+      console.log('error', error);
+      if(callback != null) {
+        callback(null);
+      }
+    });
   }
 }

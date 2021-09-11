@@ -266,7 +266,6 @@ export class ProductPage implements OnInit {
     const param: NavigationExtras = {
       queryParams: {
         id: this.storeId,
-        name: this.storeName
       }
     };
     this.router.navigate(['user/home/store'], param);

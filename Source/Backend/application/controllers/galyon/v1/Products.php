@@ -55,13 +55,32 @@ class Products extends Galyon_controller {
     }
 
     function getAllProducts() {
-        $user = $this->is_authorized();
-        
-        //TODO: Filter by search using the post key of search.
-        $where = null;
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            if($user->role !== "admin") {
-                $where .= "status = '1' AND verified_at IS NULL AND deleted_at IS NULL"; 
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic === "") {
+                $where = null; 
+            }
+        }
+
+        $store_id = $this->input->post('store_id');
+        if(!empty($store_id)) {
+            if($where != null) {
+                $where .= " AND store_id = '$store_id'";
+            } else {
+                $where = "store_id = '$store_id'";
+            }
+        }
+
+        $limit_start = $this->input->post('limit_start');
+        $limit_length = $this->input->post('limit_length');
+        if(!empty($limit_length)) {
+            $limit_start = (int)$limit_start;
+            if($where != null) {
+                $where .= " LIMIT $limit_start, $limit_length";
+            } else {
+                $where = " LIMIT $limit_start, $limit_length";
             }
         }
 

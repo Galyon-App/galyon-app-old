@@ -438,12 +438,9 @@ export class HomePage {
   
 
   openStore(item) {
-    console.log('open store', item);
-
     const param: NavigationExtras = {
       queryParams: {
-        id: item.uid,
-        name: item.name
+        id: item.uuid
       }
     };
     this.router.navigate(['user/home/store'], param);

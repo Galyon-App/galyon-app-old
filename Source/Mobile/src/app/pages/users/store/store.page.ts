@@ -12,6 +12,10 @@ import { UtilService } from 'src/app/services/util.service';
 import { CartService } from 'src/app/services/cart.service';
 import { FiltersComponent } from 'src/app/components/filters/filters.component';
 import { SortPage } from '../sort/sort.page';
+import { Store } from 'src/app/models/store.model';
+import { StoreService } from 'src/app/services/store.service';
+import { ProductsService } from 'src/app/services/products.service';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-store',
@@ -40,6 +44,12 @@ export class StorePage implements OnInit {
   discount: any;
   haveSortFilter: boolean;
   storeIsActive: boolean = false;
+
+  store: Store;
+  limit_start: number = 0;
+  limit_length: number = 10;
+  total_length: number;
+
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
@@ -49,41 +59,28 @@ export class StorePage implements OnInit {
     private router: Router,
     private popoverController: PopoverController,
     private modalController: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private storeServ: StoreService,
+    private productServ: ProductsService
   ) {
     this.haveSearch = false;
     this.route.queryParams.subscribe((data) => {
-      console.log(data);
       if (data && data.id) {
-        this.id = data.id;
-        this.name = data.name;
-        this.limit = 1;
-        this.getStoreStatus();
-        this.getStoreProducts(false, 'none');
+        this.storeServ.getById(data.id, (response) => {
+          if(response) {
+            this.store = response;
+            this.name = this.store.name;
+            this.limit = 1;
+            this.storeIsActive = this.storeServ.isOpen(this.store.open_time, this.store.close_time);
+            this.getStoreProducts(null);
+          }
+        });
       }
-    });
-  }
-
-  getStoreStatus() {
-    const param = {
-      id: this.id
-    };
-
-    this.api.post('stores/getByUid', param).subscribe((datas: any) => {
-      console.log('store info...', datas);
-      if (datas && datas.status === 200 && datas.data.length) {
-        if (datas.data[0] && datas.data[0].status === '1') {
-          this.storeIsActive = true;
-        }
-      }
-    }, error => {
-      console.log(error);
     });
   }
 
   sortFilter() {
     if (this.discount && this.discount !== null) {
-      console.log('filter with discount');
       const products = [];
       this.dummyProduct.forEach(element => {
         if (parseFloat(element.original_price) >= this.minValue && parseFloat(element.original_price) <= this.maxValue &&
@@ -93,7 +90,6 @@ export class StorePage implements OnInit {
         this.products = products;
       });
     } else {
-      console.log('filter without discount');
       const products = [];
       this.dummyProduct.forEach(element => {
         if (parseFloat(element.original_price) >= this.minValue && parseFloat(element.original_price) <= this.maxValue) {
@@ -111,34 +107,34 @@ export class StorePage implements OnInit {
     this.navCtrl.back();
   }
 
-  getStoreProducts(limit, event) {
-    const param = {
-      id: this.id,
-      limit: this.limit * 10,
-    };
-    console.log('param->', param);
-    this.api.post('products/getByStoreId', param).subscribe((data: any) => {
-      console.log(data);
-      console.log('ids', data);
-      this.dummy = [];
-      if (data && data.status === 200 && data.data && data.data.length) {
-        const products = data.data;
-        this.products = products.filter(x => x.status === '1');
+  getStoreProducts(event) {
+    this.productServ.request({
+      store_id: this.store.uuid,
+      limit_start: this.limit_start + '',
+      limit_length: this.limit_length + ''
+    }, (lists) => {
+      if(lists) {
+        if(this.products) {
+          lists.forEach(element => {
+            this.products.push(element);;
+          });
+        } else {
+          this.products = lists;
+        }
         this.dummyProduct = this.products;
-        // const cart = this.cart.cart;
-        console.log('cart===============>>>>>>', this.cart.cart);
+        
         this.products.forEach(info => {
-          if (info.variations && info.size === '1' && info.variations !== '') {
+          if (info.variations && info.variations !== '') {
             if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(info.variations)) {
               info.variations = JSON.parse(info.variations);
-              info['variant'] = 0;
+              info.variations.forEach(element => {
+                element.current = 0;
+              });
             } else {
               info.variations = [];
-              info['variant'] = 1;
             }
           } else {
             info.variations = [];
-            info['variant'] = 1;
           }
           if (this.cart.itemId.includes(info.id)) {
             const index = this.cart.cart.filter(x => x.id === info.id);
@@ -147,32 +143,26 @@ export class StorePage implements OnInit {
             info['quantiy'] = 0;
           }
         });
+        this.dummy = [];
 
         this.max = Math.max(...this.products.map(o => o.original_price), 0);
-        console.log('maxValueOfPrice', this.max);
-
         this.min = Math.min.apply(null, this.products.map(item => item.original_price))
-        console.log('minValueOfPrice', this.min);
+
         if (this.selectedFilterID && this.selectedFilterID !== null) {
           this.updateFilter();
         }
+
         if (this.haveSortFilter && this.isClosedFilter === false) {
           this.sortFilter();
         }
 
-        if (limit) {
+        if(event) {
           event.complete();
         }
       } else {
-        if (limit) {
+        if(event) {
           event.complete();
         }
-      }
-    }, error => {
-      console.log(error);
-      this.util.errorToast(this.util.getString('Something went wrong'));
-      if (limit) {
-        event.complete();
       }
     });
   }
@@ -182,7 +172,6 @@ export class StorePage implements OnInit {
   }
 
   onSearchChange(event) {
-    // console.log(event.detail.value);
     if (event.detail.value) {
       this.products = this.dummyProduct.filter((item) => {
         return item.name.toLowerCase().indexOf(event.detail.value.toLowerCase()) > -1;
@@ -300,7 +289,6 @@ export class StorePage implements OnInit {
     }
   }
 
-
   checkCartItems() {
     const cart = this.cart.cart;
     if (cart && cart.length) {
@@ -328,11 +316,9 @@ export class StorePage implements OnInit {
     // return this.cart.itemId.includes(id);
   }
 
-
   loadData(event) {
-    console.log(event);
-    this.limit = this.limit + 1;
-    this.getStoreProducts(true, event.target);
+    this.limit_start += this.limit_length;
+    this.getStoreProducts(event.target);
   }
 
   singleProduct(item) {

@@ -54,8 +54,7 @@ export class TopStoresPage implements OnInit {
 
     const param: NavigationExtras = {
       queryParams: {
-        id: item.uid,
-        name: item.name
+        id: item.uid
       }
     };
     this.router.navigate(['user/home/store'], param);

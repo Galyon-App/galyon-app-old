@@ -5,73 +5,81 @@
   Created : 01-Jan-2021
 */
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Product } from '../models/product.model';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  products = [
-    {
-      img: 'assets/imgs/1.jpeg',
-      name: 'Cheetos Twisted',
-      price: '20',
-      status: '1'
-    },
-    {
-      img: 'assets/imgs/2.jpeg',
-      name: 'Mini Torrefaction Fonce',
-      price: '120',
-      status: '1'
-    },
-    {
-      img: 'assets/imgs/3.jpeg',
-      name: 'Torrefaction Fonce',
-      price: '240',
-      status: '0'
-    },
-    {
-      img: 'assets/imgs/4.jpeg',
-      name: 'Tim hotton Decaf',
-      price: '240',
-      status: '0'
-    },
-    {
-      img: 'assets/imgs/5.jpeg',
-      name: 'Premiun Poundo Iyan',
-      price: '200',
-      status: '1'
-    },
-    {
-      img: 'assets/imgs/6.jpeg',
-      name: 'Nutella',
-      price: '130',
-      status: '1'
-    },
-    {
-      img: 'assets/imgs/7.jpeg',
-      name: '2 Pack of Nutella',
-      price: '275',
-      status: '1'
-    },
-    {
-      img: 'assets/imgs/8.jpeg',
-      name: 'Organic Oatmeal',
-      price: '245',
-      status: '1'
-    },
-    {
-      img: 'assets/imgs/9.jpeg',
-      name: 'Organic Chia Seeds',
-      price: '450',
-      status: '1'
-    },
-    {
-      img: 'assets/imgs/10.jpeg',
-      name: 'Walkers cheese & onion',
-      price: '50',
-      status: '1'
-    },
-  ];
-  constructor() { }
+  private date_init = new Date(); 
+	private date_new = new Date(); 
+  
+  public has_fresh_data(timer: number = 10000) {
+    this.date_new = new Date(); 
+    let counting = (this.date_new.getTime() - this.date_init.getTime())/1000; 
+    if(counting > timer) {
+      this.date_init = new Date(); 
+      
+    } return counting > timer ? true : false;
+  }
+
+  private subject: BehaviorSubject<Product[]>;
+  private observable: Observable<Product[]>;
+
+  public get current(): Product[] {
+    return this.subject.value;
+  }
+
+  public setCurrent = (cur: Product[]) => {
+    this.subject.next(cur);
+  }
+
+  constructor(
+    private api: ApiService,
+  ) { 
+    //TODO: Get the data from localdatabase then load.
+    let instance = Product[0];
+    this.subject = new BehaviorSubject<Product[]>(instance);
+    this.observable = this.subject.asObservable();
+  }
+
+  public request(params: any, callback = null, persist: boolean = true) {
+    if(this.has_fresh_data()) {
+      if(callback != null) {
+        callback(this.current);
+      }
+    } else {
+      this.api.posts('galyon/v1/products/getAllProducts', params).then((res: any) => {
+        if(res && res.success == true && res.data && persist) {
+          this.subject = new BehaviorSubject<Product[]>(res.data);
+        }
+        if(callback != null) {
+          callback(res.success ? this.current : null);
+        }
+      }).catch(error => {
+        console.log('error', error);
+        if(callback != null) {
+          callback(null);
+        }
+      });
+    }
+  }
+
+  public getById(product_id: string, callback = null) {
+    this.api.posts('galyon/v1/products/getProductById', {
+      uuid: product_id
+    }).then((res: any) => {
+      if(callback != null) {
+        callback(res.success ? res.data : null);
+      }
+    }).catch(error => {
+      console.log('error', error);
+      if(callback != null) {
+        callback(null);
+      }
+    });
+  }
 }
