@@ -56,72 +56,72 @@ export class ResetPasswordPage implements OnInit {
   }
 
   sendOTP() {
-    console.log(this.email, ';sendOTPDriver');
-    if (!this.email) {
-      this.util.showToast(this.util.getString('email is required'), 'dark', 'bottom');
-      return false;
-    }
-    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-    if (!emailfilter.test(this.email)) {
-      this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
-      return false;
-    }
-    this.loggedIn = true;
-    const param = {
-      email: this.email
-    };
-    this.api.post('users/sendOTP', param).subscribe((data: any) => {
-      console.log(data);
-      this.loggedIn = false;
-      if (data && data.status === 200) {
-        this.id = data.data.id;
-        this.loggedIn = false;
-        this.div_type = 2;
-      } else {
-        if (data && data.status === 500 && data.data && data.data.message) {
-          this.util.errorToast(data.data.message);
-          return false;
-        }
-        this.util.errorToast(this.util.getString('Something went wrong'));
-        return false;
-      }
-    }, error => {
-      console.log(error);
-      this.loggedIn = false;
-      this.util.errorToast(this.util.getString('Something went wrong'));
-    });
+    // console.log(this.email, ';sendOTPDriver');
+    // if (!this.email) {
+    //   this.util.showToast(this.util.getString('email is required'), 'dark', 'bottom');
+    //   return false;
+    // }
+    // const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+    // if (!emailfilter.test(this.email)) {
+    //   this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
+    //   return false;
+    // }
+    // this.loggedIn = true;
+    // const param = {
+    //   email: this.email
+    // };
+    // this.api.post('users/sendOTP', param).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.loggedIn = false;
+    //   if (data && data.status === 200) {
+    //     this.id = data.data.id;
+    //     this.loggedIn = false;
+    //     this.div_type = 2;
+    //   } else {
+    //     if (data && data.status === 500 && data.data && data.data.message) {
+    //       this.util.errorToast(data.data.message);
+    //       return false;
+    //     }
+    //     this.util.errorToast(this.util.getString('Something went wrong'));
+    //     return false;
+    //   }
+    // }, error => {
+    //   console.log(error);
+    //   this.loggedIn = false;
+    //   this.util.errorToast(this.util.getString('Something went wrong'));
+    // });
   }
 
   verifyOTP() {
     // this.div_type = 3;
-    if (!this.otp || this.otp === '') {
-      this.util.showToast(this.util.getString('otp is required'), 'dark', 'bottom');
-      return false;
-    }
-    this.loggedIn = true;
-    const param = {
-      id: this.id,
-      otp: this.otp
-    };
-    this.api.post('users/verifyOTP', param).subscribe((data: any) => {
-      console.log(data);
-      this.loggedIn = false;
-      if (data && data.status === 200) {
-        this.loggedIn = false;
-        this.div_type = 3;
-      } else {
-        if (data && data.status === 500 && data.data && data.data.message) {
-          this.util.errorToast(data.data.message);
-          return false;
-        }
-        this.util.errorToast(this.util.getString('Something went wrong'));
-        return false;
-      }
-    }, error => {
-      console.log(error);
-      this.loggedIn = false;
-      this.util.errorToast(this.util.getString('Something went wrong'));
-    });
+    // if (!this.otp || this.otp === '') {
+    //   this.util.showToast(this.util.getString('otp is required'), 'dark', 'bottom');
+    //   return false;
+    // }
+    // this.loggedIn = true;
+    // const param = {
+    //   id: this.id,
+    //   otp: this.otp
+    // };
+    // this.api.post('users/verifyOTP', param).subscribe((data: any) => {
+    //   console.log(data);
+    //   this.loggedIn = false;
+    //   if (data && data.status === 200) {
+    //     this.loggedIn = false;
+    //     this.div_type = 3;
+    //   } else {
+    //     if (data && data.status === 500 && data.data && data.data.message) {
+    //       this.util.errorToast(data.data.message);
+    //       return false;
+    //     }
+    //     this.util.errorToast(this.util.getString('Something went wrong'));
+    //     return false;
+    //   }
+    // }, error => {
+    //   console.log(error);
+    //   this.loggedIn = false;
+    //   this.util.errorToast(this.util.getString('Something went wrong'));
+    // });
   }
 
   sendEmail() {

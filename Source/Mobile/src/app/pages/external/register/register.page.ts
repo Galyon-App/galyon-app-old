@@ -48,172 +48,172 @@ export class RegisterPage implements OnInit {
   }
 
   async openModal() {
-    const modal = await this.modalCtrl.create({
-      component: VerifyPage,
-      componentProps: { code: this.ccCode, phone: this.mobile }
-    });
+    // const modal = await this.modalCtrl.create({
+    //   component: VerifyPage,
+    //   componentProps: { code: this.ccCode, phone: this.mobile }
+    // });
 
-    modal.onDidDismiss().then((data) => {
-      console.log(data);
-      if (data && data.role === 'ok') {
-        console.log('login');
-        const param = {
-          first_name: this.fname,
-          last_name: this.lname,
-          email: this.email,
-          password: this.password,
-          gender: this.gender,
-          fcm_token: localStorage.getItem('fcm') ? localStorage.getItem('fcm') : 'NA',
-          type: 'user',
-          lat: '',
-          lng: '',
-          cover: 'NA',
-          mobile: this.mobile,
-          status: 1,
-          country_code: this.ccCode,
-          verified: 0,
-          others: 1,
-          date: moment().format('YYYY-MM-DD'),
-          stripe_key: ''
-        };
+    // modal.onDidDismiss().then((data) => {
+    //   console.log(data);
+    //   if (data && data.role === 'ok') {
+    //     console.log('login');
+    //     const param = {
+    //       first_name: this.fname,
+    //       last_name: this.lname,
+    //       email: this.email,
+    //       password: this.password,
+    //       gender: this.gender,
+    //       fcm_token: localStorage.getItem('fcm') ? localStorage.getItem('fcm') : 'NA',
+    //       type: 'user',
+    //       lat: '',
+    //       lng: '',
+    //       cover: 'NA',
+    //       mobile: this.mobile,
+    //       status: 1,
+    //       country_code: this.ccCode,
+    //       verified: 0,
+    //       others: 1,
+    //       date: moment().format('YYYY-MM-DD'),
+    //       stripe_key: ''
+    //     };
 
-        console.log('param', param);
-        this.loggedIn = true;
-        this.api.post('users/registerUser', param).subscribe((data: any) => {
-          this.loggedIn = false;
-          console.log(data);
-          if (data && data.status === 200) {
-            this.util.userInfo = data.data;
-            localStorage.setItem('uid', data.data.id);
-            const fcm = localStorage.getItem('fcm');
-            if (fcm && fcm !== null && fcm !== 'null') {
-              const updateParam = {
-                id: data.data.id,
-                fcm_token: fcm
-              };
-              this.api.post('users/edit_profile', updateParam).subscribe((data: any) => {
-                console.log('user info=>', data);
-              }, error => {
-                console.log(error);
-              });
-            }
-            this.sendVerification(this.email, this.api.baseUrl + 'users/verify?uid=' + data.data.id);
-            this.navCtrl.navigateRoot(['']);
+    //     console.log('param', param);
+    //     this.loggedIn = true;
+    //     this.api.post('users/registerUser', param).subscribe((data: any) => {
+    //       this.loggedIn = false;
+    //       console.log(data);
+    //       if (data && data.status === 200) {
+    //         this.util.userInfo = data.data;
+    //         localStorage.setItem('uid', data.data.id);
+    //         const fcm = localStorage.getItem('fcm');
+    //         if (fcm && fcm !== null && fcm !== 'null') {
+    //           const updateParam = {
+    //             id: data.data.id,
+    //             fcm_token: fcm
+    //           };
+    //           this.api.post('users/edit_profile', updateParam).subscribe((data: any) => {
+    //             console.log('user info=>', data);
+    //           }, error => {
+    //             console.log(error);
+    //           });
+    //         }
+    //         this.sendVerification(this.email, this.api.baseUrl + 'users/verify?uid=' + data.data.id);
+    //         this.navCtrl.navigateRoot(['']);
 
-          } else if (data && data.status === 500) {
-            this.util.errorToast(data.data.message);
-          } else {
-            this.util.errorToast(this.util.getString('Something went wrong'));
-          }
-        }, error => {
-          console.log(error);
-          this.loggedIn = false;
-          this.util.errorToast(this.util.getString('Something went wrong'));
-        });
-      }
-    });
-    modal.present();
+    //       } else if (data && data.status === 500) {
+    //         this.util.errorToast(data.data.message);
+    //       } else {
+    //         this.util.errorToast(this.util.getString('Something went wrong'));
+    //       }
+    //     }, error => {
+    //       console.log(error);
+    //       this.loggedIn = false;
+    //       this.util.errorToast(this.util.getString('Something went wrong'));
+    //     });
+    //   }
+    // });
+    // modal.present();
   }
 
   login() {
-    console.log('login');
-    if (!this.check) {
-      this.util.showToast(this.util.getString('Please accept terms and conditions'), 'dark', 'bottom');
-      return false;
-    }
-    if (!this.fname || !this.lname || !this.mobile || !this.email || !this.password ) {
-      this.util.showToast(this.util.getString('All Fields are required'), 'dark', 'bottom');
-      return false;
-    }
+    // console.log('login');
+    // if (!this.check) {
+    //   this.util.showToast(this.util.getString('Please accept terms and conditions'), 'dark', 'bottom');
+    //   return false;
+    // }
+    // if (!this.fname || !this.lname || !this.mobile || !this.email || !this.password ) {
+    //   this.util.showToast(this.util.getString('All Fields are required'), 'dark', 'bottom');
+    //   return false;
+    // }
 
-    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-    if (!emailfilter.test(this.email)) {
-      this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
-      return false;
-    }
+    // const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+    // if (!emailfilter.test(this.email)) {
+    //   this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
+    //   return false;
+    // }
 
 
-    if (this.util.twillo === '1') {
-      console.log('open model=>>>');
-      const param = {
-        email: this.email,
-        phone: this.mobile,
-        cc: this.ccCode
-      };
-      this.loggedIn = true;
-      this.api.post('users/validatePhoneAndEmail', param).subscribe((data: any) => {
-        this.loggedIn = false;
-        console.log('data', data);
-        if (data && data.status === 200) {
-          console.log('all done...');
-          this.presentAlertConfirm();
-        } else if (data && data.status === 500) {
-          this.util.errorToast(data.data.message);
-        } else {
-          this.util.errorToast(this.util.getString('Something went wrong'));
-        }
-      }, error => {
-        console.log(error);
-        this.loggedIn = false;
-        this.util.errorToast(this.util.getString('Something went wrong'));
-      });
-      // this.openModal();
-    } else {
-      console.log('login');
-      const param = {
-        first_name: this.fname,
-        last_name: this.lname,
-        email: this.email,
-        password: this.password,
-        gender: this.gender,
-        fcm_token: localStorage.getItem('fcm') ? localStorage.getItem('fcm') : 'NA',
-        type: 'user',
-        lat: '',
-        lng: '',
-        cover: 'NA',
-        mobile: this.mobile,
-        status: 1,
-        country_code: this.ccCode,
-        verified: 0,
-        others: 1,
-        date: moment().format('YYYY-MM-DD'),
-        stripe_key: ''
-      };
+    // if (this.util.twillo === '1') {
+    //   console.log('open model=>>>');
+    //   const param = {
+    //     email: this.email,
+    //     phone: this.mobile,
+    //     cc: this.ccCode
+    //   };
+    //   this.loggedIn = true;
+    //   this.api.post('users/validatePhoneAndEmail', param).subscribe((data: any) => {
+    //     this.loggedIn = false;
+    //     console.log('data', data);
+    //     if (data && data.status === 200) {
+    //       console.log('all done...');
+    //       this.presentAlertConfirm();
+    //     } else if (data && data.status === 500) {
+    //       this.util.errorToast(data.data.message);
+    //     } else {
+    //       this.util.errorToast(this.util.getString('Something went wrong'));
+    //     }
+    //   }, error => {
+    //     console.log(error);
+    //     this.loggedIn = false;
+    //     this.util.errorToast(this.util.getString('Something went wrong'));
+    //   });
+    //   // this.openModal();
+    // } else {
+    //   console.log('login');
+    //   const param = {
+    //     first_name: this.fname,
+    //     last_name: this.lname,
+    //     email: this.email,
+    //     password: this.password,
+    //     gender: this.gender,
+    //     fcm_token: localStorage.getItem('fcm') ? localStorage.getItem('fcm') : 'NA',
+    //     type: 'user',
+    //     lat: '',
+    //     lng: '',
+    //     cover: 'NA',
+    //     mobile: this.mobile,
+    //     status: 1,
+    //     country_code: this.ccCode,
+    //     verified: 0,
+    //     others: 1,
+    //     date: moment().format('YYYY-MM-DD'),
+    //     stripe_key: ''
+    //   };
 
-      console.log('param', param);
-      this.loggedIn = true;
-      this.api.post('users/registerUser', param).subscribe((data: any) => {
-        this.loggedIn = false;
-        console.log(data);
-        if (data && data.status === 200) {
-          this.util.userInfo = data.data;
-          localStorage.setItem('uid', data.data.id);
-          const fcm = localStorage.getItem('fcm');
-          if (fcm && fcm !== null && fcm !== 'null') {
-            const updateParam = {
-              id: data.data.id,
-              fcm_token: fcm
-            };
-            this.api.post('users/edit_profile', updateParam).subscribe((data: any) => {
-              console.log('user info=>', data);
-            }, error => {
-              console.log(error);
-            });
-          }
-          this.sendVerification(this.email, this.api.baseUrl + 'users/verify?uid=' + data.data.id);
-          this.navCtrl.navigateRoot(['']);
+    //   console.log('param', param);
+    //   this.loggedIn = true;
+    //   this.api.post('users/registerUser', param).subscribe((data: any) => {
+    //     this.loggedIn = false;
+    //     console.log(data);
+    //     if (data && data.status === 200) {
+    //       this.util.userInfo = data.data;
+    //       localStorage.setItem('uid', data.data.id);
+    //       const fcm = localStorage.getItem('fcm');
+    //       if (fcm && fcm !== null && fcm !== 'null') {
+    //         const updateParam = {
+    //           id: data.data.id,
+    //           fcm_token: fcm
+    //         };
+    //         this.api.post('users/edit_profile', updateParam).subscribe((data: any) => {
+    //           console.log('user info=>', data);
+    //         }, error => {
+    //           console.log(error);
+    //         });
+    //       }
+    //       this.sendVerification(this.email, this.api.baseUrl + 'users/verify?uid=' + data.data.id);
+    //       this.navCtrl.navigateRoot(['']);
 
-        } else if (data && data.status === 500) {
-          this.util.errorToast(data.data.message);
-        } else {
-          this.util.errorToast(this.util.getString('Something went wrong'));
-        }
-      }, error => {
-        console.log(error);
-        this.loggedIn = false;
-        this.util.errorToast(this.util.getString('Something went wrong'));
-      });
-    }
+    //     } else if (data && data.status === 500) {
+    //       this.util.errorToast(data.data.message);
+    //     } else {
+    //       this.util.errorToast(this.util.getString('Something went wrong'));
+    //     }
+    //   }, error => {
+    //     console.log(error);
+    //     this.loggedIn = false;
+    //     this.util.errorToast(this.util.getString('Something went wrong'));
+    //   });
+    // }
   }
 
   goToLogin() {
