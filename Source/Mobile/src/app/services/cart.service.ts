@@ -106,7 +106,7 @@ export class CartService {
             total = total + (parseFloat(element.variations[0].items[element.variant].price) * element.quantiy);
           }
         } else {
-          total = total + (parseFloat(element.original_price) * element.quantiy);
+          total = total + (parseFloat(element.orig_price) * element.quantiy);
         }
       } else {
         if (element.size === '1' || element.size === 1) {

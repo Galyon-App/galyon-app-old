@@ -170,7 +170,7 @@ export class ProductPage implements OnInit {
         this.in_offer = info.in_offer;
         this.in_stock = info.in_stock;
         this.is_single = info.is_single;
-        this.realPrice = parseFloat(info.original_price);
+        this.realPrice = parseFloat(info.orig_price);
         this.sellPrice = parseFloat(info.sell_price);
         this.status = info.status;
         this.rate = info.rating;

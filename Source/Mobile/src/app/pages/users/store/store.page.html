@@ -176,15 +176,15 @@
             </ion-label>
             <div *ngIf="item.variations">
               <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
-                {{item.original_price}} </ion-label>
+                {{item.orig_price}} </ion-label>
               <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">
-                {{item.original_price}}
+                {{item.orig_price}}
                 {{util.currecny}}</ion-label>
               <ion-label class="price_lbl" *ngIf="item.discount !== '0'" (click)="singleProduct(item)">
-                <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.original_price}} </span>
+                <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}} </span>
                 <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
 
-                <span class="original" *ngIf="util.cside ==='right'"> {{item.original_price}} {{util.currecny}}</span>
+                <span class="original" *ngIf="util.cside ==='right'"> {{item.orig_price}} {{util.currecny}}</span>
                 <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
 
               </ion-label>
@@ -274,16 +274,14 @@
           </ion-label>
           <div *ngIf="item.variations">
             <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
-              {{item.original_price}} </ion-label>
-            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">{{item.original_price}}
+              {{item.orig_price}} </ion-label>
+            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">{{item.orig_price}}
               {{util.currecny}}</ion-label>
             <ion-label class="price_lbl" *ngIf="item.discount !== '0'" (click)="singleProduct(item)">
-              <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.original_price}} </span>
+              <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}} </span>
               <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
-
-              <span class="original" *ngIf="util.cside ==='right'"> {{item.original_price}} {{util.currecny}}</span>
+              <span class="original" *ngIf="util.cside ==='right'"> {{item.orig_price}} {{util.currecny}}</span>
               <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
-
             </ion-label>
           </div>
           <div class="btnBtm"
@@ -304,8 +302,7 @@
       </div>
     </div>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" style="padding: 25px;">
-      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="">
-        <ion-label>Please wait...</ion-label>
+      <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </div>

@@ -126,7 +126,7 @@ export class NewProductPage implements OnInit {
         this.in_offer = info.in_offer === '1' ? true : false;
         this.in_stock = info.in_stock;
         this.is_single = info.is_single === '1' ? true : false;
-        this.realPrice = parseFloat(info.original_price);
+        this.realPrice = parseFloat(info.orig_price);
         this.sellPrice = parseFloat(info.sell_price);
         this.status = info.status;
         this.size = info && info.size && info.size === '1' ? true : false;
@@ -276,7 +276,7 @@ export class NewProductPage implements OnInit {
       cover: this.coverImage,
       name: this.name,
       images: JSON.stringify(image),
-      original_price: this.realPrice,
+      orig_price: this.realPrice,
       sell_price: this.sellPrice ? this.sellPrice : 0,
       discount: this.discount ? this.discount : 0,
       cate_id: this.cateId,
@@ -380,7 +380,7 @@ export class NewProductPage implements OnInit {
       cover: this.coverImage,
       name: this.name,
       images: JSON.stringify(image),
-      original_price: this.realPrice,
+      orig_price: this.realPrice,
       sell_price: this.sellPrice ? this.sellPrice : 0,
       discount: this.discount ? this.discount : 0,
       cate_id: this.cateId,

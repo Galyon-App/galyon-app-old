@@ -47,10 +47,10 @@
             <span *ngIf="order.have_ml ==='1'"> {{order.ml}} ml</span>
             <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} pcs </span>
             <span *ngIf="util.cside ==='left'">
-              {{util.currecny}} {{order.discount ==='0' ? order.original_price : order.sell_price}}
+              {{util.currecny}} {{order.discount ==='0' ? order.orig_price : order.sell_price}}
             </span>
             <span *ngIf="util.cside ==='right'">
-              {{order.discount ==='0' ? order.original_price : order.sell_price}} {{util.currecny}}
+              {{order.discount ==='0' ? order.orig_price : order.sell_price}} {{util.currecny}}
             </span>
           </span>
           <span *ngIf="order.size ==='0'">{{order.name}} -
@@ -83,10 +83,10 @@
           </span>
           <span *ngIf="order.size ==='0'">
             <span *ngIf="util.cside ==='left'">
-              {{util.currecny}} {{order.discount ==='0' ? order.original_price : order.sell_price}}
+              {{util.currecny}} {{order.discount ==='0' ? order.orig_price : order.sell_price}}
             </span>
             <span *ngIf="util.cside ==='right'">
-              {{order.discount ==='0' ? order.original_price : order.sell_price}} {{util.currecny}}
+              {{order.discount ==='0' ? order.orig_price : order.sell_price}} {{util.currecny}}
             </span>
           </span>
           <span>X {{order.quantiy}}</span>

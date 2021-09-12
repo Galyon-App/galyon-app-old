@@ -99,14 +99,14 @@
           </ion-label>
           <div *ngIf="item.size ==='0'">
             <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
-              {{item.original_price}} </ion-label>
-            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">{{item.original_price}}
+              {{item.orig_price}} </ion-label>
+            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">{{item.orig_price}}
               {{util.currecny}}</ion-label>
             <ion-label class="price_lbl" *ngIf="item.discount !== '0'">
-              <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.original_price}} </span>
+              <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}} </span>
               <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
 
-              <span class="original" *ngIf="util.cside ==='right'"> {{item.original_price}} {{util.currecny}}</span>
+              <span class="original" *ngIf="util.cside ==='right'"> {{item.orig_price}} {{util.currecny}}</span>
               <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
 
             </ion-label>

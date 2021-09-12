@@ -69,7 +69,7 @@ export class AnalyticsPage implements OnInit {
         //     const info = JSON.parse(element.status);
         //     await element.orders.forEach(calc => {
         //       if (calc.sell_price === '0.00') {
-        //         total = total + parseFloat(calc.original_price);
+        //         total = total + parseFloat(calc.orig_price);
         //       } else {
         //         total = total + parseFloat(calc.sell_price);
         //       }
@@ -122,7 +122,7 @@ export class AnalyticsPage implements OnInit {
                         total = total + (parseFloat(calc.variations[0].items[calc.variant].price) * calc.quantiy);
                       }
                     } else {
-                      total = total + (parseFloat(calc.original_price) * calc.quantiy);
+                      total = total + (parseFloat(calc.orig_price) * calc.quantiy);
                     }
                   } else {
                     if (calc.size === '1' || calc.size === 1) {

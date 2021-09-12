@@ -155,7 +155,7 @@ export class OrderDetailPage implements OnInit {
                 price = price + (parseFloat(element.variations[0].items[element.variant].price) * element.quantiy);
               }
             } else {
-              price = price + (parseFloat(element.original_price) * element.quantiy);
+              price = price + (parseFloat(element.orig_price) * element.quantiy);
             }
           } else {
             if (element.size === '1' || element.size === 1) {
@@ -169,7 +169,7 @@ export class OrderDetailPage implements OnInit {
             }
           }
           console.log('PRICEEE-->', price);
-          // const price = element.sell_price === '0.00' ? parseFloat(element.original_price) : parseFloat(element.sell_price);
+          // const price = element.sell_price === '0.00' ? parseFloat(element.orig_price) : parseFloat(element.sell_price);
           const items = '<div style="border-bottom:1px dashed lightgray;display:flex;flex-direction:row;justify-content:space-between;"> <p style="font-weight:bold">' + element.name + ' X ' + element.quantiy + '</p> <p style="font-weight:bold">' + price + this.util.currecny + ' </p>  </div>';
           this.orderString.push(items);
           console.log(total, price);

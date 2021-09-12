@@ -56,7 +56,7 @@ export class FavoritePage implements OnInit {
       console.log('filter with discount');
       const products = [];
       this.dummyProduct.forEach(element => {
-        if (parseFloat(element.original_price) >= this.minValue && parseFloat(element.original_price) <= this.maxValue &&
+        if (parseFloat(element.orig_price) >= this.minValue && parseFloat(element.orig_price) <= this.maxValue &&
           parseFloat(this.discount) <= parseFloat(element.discount)) {
           products.push(element);
         }
@@ -66,7 +66,7 @@ export class FavoritePage implements OnInit {
       console.log('filter without discount');
       const products = [];
       this.dummyProduct.forEach(element => {
-        if (parseFloat(element.original_price) >= this.minValue && parseFloat(element.original_price) <= this.maxValue) {
+        if (parseFloat(element.orig_price) >= this.minValue && parseFloat(element.orig_price) <= this.maxValue) {
           products.push(element);
         }
       });
@@ -117,10 +117,10 @@ export class FavoritePage implements OnInit {
             info['quantiy'] = 0;
           }
         });
-        this.max = Math.max(...this.products.map(o => o.original_price), 0);
+        this.max = Math.max(...this.products.map(o => o.orig_price), 0);
         console.log('maxValueOfPrice', this.max);
 
-        this.min = Math.min.apply(null, this.products.map(item => item.original_price))
+        this.min = Math.min.apply(null, this.products.map(item => item.orig_price))
         console.log('minValueOfPrice', this.min);
         if (this.selectedFilterID && this.selectedFilterID !== null) {
           this.updateFilter();
@@ -170,16 +170,16 @@ export class FavoritePage implements OnInit {
         console.log('its low to high');
         this.selectedFilter = this.util.getString('Price L-H');
         this.products = this.products.sort((a, b) =>
-          parseFloat(a.original_price) < parseFloat(b.original_price) ? -1
-            : (parseFloat(a.original_price) > parseFloat(b.original_price) ? 1 : 0));
+          parseFloat(a.orig_price) < parseFloat(b.orig_price) ? -1
+            : (parseFloat(a.orig_price) > parseFloat(b.orig_price) ? 1 : 0));
         break;
 
       case '3':
         console.log('its highht to low');
         this.selectedFilter = this.util.getString('Price H-L');
         this.products = this.products.sort((a, b) =>
-          parseFloat(b.original_price) < parseFloat(a.original_price) ? -1
-            : (parseFloat(b.original_price) > parseFloat(a.original_price) ? 1 : 0));
+          parseFloat(b.orig_price) < parseFloat(a.orig_price) ? -1
+            : (parseFloat(b.orig_price) > parseFloat(a.orig_price) ? 1 : 0));
         break;
 
       case '4':
