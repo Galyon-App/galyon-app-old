@@ -56,8 +56,8 @@ export class ProductsPage implements OnInit {
     this.haveSearch = false;
     this.route.queryParams.subscribe((data) => {
       console.log(data);
-      if (data && data.id && data.name) {
-        this.id = data.id;
+      if (data && data.uuid && data.name) {
+        this.id = data.uuid;
         this.name = data.name;
         this.from = data.from;
         this.limit = 1;
@@ -187,7 +187,7 @@ export class ProductsPage implements OnInit {
     console.log(product);
     if (this.products[index].quantiy > 0) {
       this.products[index].quantiy = this.products[index].quantiy + 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -195,10 +195,10 @@ export class ProductsPage implements OnInit {
     console.log(product, index);
     if (this.products[index].quantiy === 1) {
       this.products[index].quantiy = 0;
-      this.cart.removeItem(product.id)
+      this.cart.removeItem(product.uuid)
     } else {
       this.products[index].quantiy = this.products[index].quantiy - 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -211,7 +211,7 @@ export class ProductsPage implements OnInit {
       if (stores && stores.status === 200 && stores.data && stores.data.length) {
         this.util.active_store = [...new Set(stores.data.map(item => item.uid))];
         const param = {
-          id: this.id,
+          uuid: this.id,
           limit: this.limit * 10,
           cid: this.city.current.uuid
         };
@@ -318,7 +318,7 @@ export class ProductsPage implements OnInit {
   singleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
     if (this.from === 'home') {

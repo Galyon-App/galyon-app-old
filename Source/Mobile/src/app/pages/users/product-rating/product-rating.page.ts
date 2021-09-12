@@ -29,15 +29,13 @@ export class ProductRatingPage implements OnInit {
     public api: ApiService
   ) {
 
-    this.id = this.navParam.get('id');
+    this.id = this.navParam.get('uuid');
     this.name = this.navParam.get('name');
     if (this.navParam.get('way')) {
       this.way = this.navParam.get('way');
     } else {
       this.way = 'order';
     }
-    console.log('id', this.id);
-    console.log('name', this.name);
     const param = {
       where: 'pid = ' + this.id
     }
@@ -118,7 +116,7 @@ export class ProductRatingPage implements OnInit {
       if (data && data.status === 200) {
         this.util.showToast('Rating added', 'success', 'bottom');
         const storeParam = {
-          id: this.id,
+          uuid: this.id,
           total_rating: this.total + 1,
           rating: storeRating
         }

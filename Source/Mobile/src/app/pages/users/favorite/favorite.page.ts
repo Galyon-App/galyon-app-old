@@ -235,7 +235,7 @@ export class FavoritePage implements OnInit {
     console.log(product);
     if (this.products[index].quantiy > 0) {
       this.products[index].quantiy = this.products[index].quantiy + 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -279,7 +279,7 @@ export class FavoritePage implements OnInit {
   singleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
 

@@ -90,9 +90,9 @@ export class ProductPage implements OnInit {
 
     this.route.queryParams.subscribe((data: any) => {
       console.log(data);
-      if (data && data.id) {
+      if (data && data.uuid) {
         this.loaded = false;
-        this.id = data.id;
+        this.id = data.uuid;
         this.getProduct();
       }
     })
@@ -122,7 +122,7 @@ export class ProductPage implements OnInit {
       console.log('=>related=>', data);
       if (data && data.status === 200 && data.data && data.data.length) {
         const products = data.data;
-        this.related = products.filter(x => x.id !== this.id);
+        this.related = products.filter(x => x.uuid !== this.id);
       }
     }, error => {
       console.log(error);
@@ -130,8 +130,7 @@ export class ProductPage implements OnInit {
   }
 
   checkCartItems() {
-    const item = this.cart.cart.filter(x => x.id === this.id);
-    console.log('cart=====>>>>>>', item);
+    const item = this.cart.cart.filter(x => x.uuid === this.id);
     if (item && item.length) {
       this.quantiy = item[0].quantiy;
     }
@@ -139,7 +138,7 @@ export class ProductPage implements OnInit {
 
   getProduct() {
     const param = {
-      id: this.id
+      uuid: this.id
     }
     this.api.post('products/getById', param).subscribe((data: any) => {
       this.loaded = true;
@@ -356,7 +355,7 @@ export class ProductPage implements OnInit {
   singleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
 
@@ -366,7 +365,7 @@ export class ProductPage implements OnInit {
   productRating() {
     const param: NavigationExtras = {
       queryParams: {
-        id: this.id,
+        uuid: this.id,
         name: this.name,
         type: 'product'
       }
