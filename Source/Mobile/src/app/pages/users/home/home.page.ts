@@ -53,15 +53,18 @@ export class HomePage {
   products: any[] = [];
   dummyProducts: any[] = [];
 
-  haveStores: boolean;
+  dummyFeaturedStores: any[] = [];
+  featuredStores: any[] = [];
 
-  dummyTopStores: any[] = [];
   dummyStores: any[] = [];
   stores: any[] = [];
+
   terms: any;
 
   parentCategories: any[] = [];
   currentCity: any = '';
+
+  haveStores: boolean;
   
   constructor(
     public util: UtilService,
@@ -82,7 +85,7 @@ export class HomePage {
     this.dummyTopProducts = Array(5);
     this.dummyProducts = Array(5);
     this.dummyStores = Array(5);
-    this.dummyTopStores = Array(3);
+    this.dummyFeaturedStores = Array(3);
 
     if (!this.util.appClosed) {
       this.resetAllArrays(null);
@@ -96,11 +99,28 @@ export class HomePage {
       this.getBanners();
       this.getFeaturedProducts();
       this.getPopup();
-
+      this.getStoreByCityAndFeatured();
       this.getStoreByCity();
-      //this.getInit();
-      //
     }
+  }
+
+  getStoreByCityAndFeatured() {
+    this.api.post('galyon/v1/stores/getStoreFeatured', {
+      city_id: this.city.activeCity
+    }).subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        this.featuredStores = response.data;
+        this.dummyFeaturedStores = [];
+
+        this.featuredStores.forEach(async (store) => {
+          store['isOpen'] = await this.isOpen(store.open_time, store.close_time);
+        });
+      } else {
+        this.resetAllArrays(response.message);
+      }
+    }, error => {
+      this.resetAllArrays('Something went wrong');
+    });
   }
 
   async getPopup() {
@@ -113,19 +133,19 @@ export class HomePage {
   }
 
   resetAllArrays(message) {
-    this.haveStores = true; //TEMP
-    this.stores = [];
-    this.parentCategories = [];
-    this.categories = [];
-    this.banners = [];
-    this.bottomBanners = [];
-    this.betweenBanners = [];
-    this.topProducts = [];
-    this.products = [];
-    if(message != null) {
-      this.chMod.detectChanges();
-      this.util.errorToast(message);
-    }
+    // this.haveStores = true; //TEMP
+    // this.stores = [];
+    // this.parentCategories = [];
+    // this.categories = [];
+    // this.banners = [];
+    // this.bottomBanners = [];
+    // this.betweenBanners = [];
+    // this.topProducts = [];
+    // this.products = [];
+    // if(message != null) {
+    //   this.chMod.detectChanges();
+    //   this.util.errorToast(message);
+    // }
     //this.dummyCates = [];
     //this.dummyBanners = [];
     //this.bottomDummy = [];

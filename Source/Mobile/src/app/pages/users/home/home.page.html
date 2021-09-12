@@ -256,27 +256,26 @@
             </div>
           </div>
         </ion-item>
-        <!-- <ion-slide *ngFor="let item of stores;let i = index;">
-          <div class="content_div">
-            <div class="card_div">
-              <div class="image_div" (click)="openStore(item)"
+        <ion-item *ngFor="let item of featuredStores;let i = index;">
+          <div class="allstore_div">
+            <div class="card_div" style="border-left: 5px solid var(--ion-color-primary);">
+              <div class="image_div" (click)="openStore(item)" style="background-repeat: no-repeat; background-position: center; background-size: cover;"
                 [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/store.png)'}">
-                <img src="assets/imgs/open.png" class="isOpen" alt="Veg" *ngIf="item.isOpen && item.isClosed ==='1'">
-                <img src="assets/imgs/close.png" class="isOpen" alt="Non Veg"
-                  *ngIf="!item.isOpen || item.isClosed === '0'">
+                <div *ngIf="!item.isOpen || item.isClosed == '1'" class="statusCheck">
+                  <ion-label class="text"> {{util.getString('Store Closed')}} </ion-label>
+                </div>
               </div>
               <div class="desc_div" (click)="openStore(item)">
                 <ion-label class="pro_name">
-                  {{ (item.name.length>12)? (item.name | slice:0:12)+'..':(item.name) }}</ion-label>
+                  {{ (item.name.length>12)? (item.name | slice:0:29):(item.name) }}</ion-label>
                 <ion-label class="pro_detail">
-                  {{ (item.address.length>20)? (item.address | slice:0:20)+'..':(item.address) }}
+                  {{ (item.address.length>20)? (item.address | slice:0:40)+'..':(item.address) }}
                 </ion-label>
                 <ion-label class="price_lbl"> {{getTime(item.open_time)}} - {{getTime(item.close_time)}} </ion-label>
-
                 <div class="small_flex">
                   <div class="btnBtm">
                     <div class="ion-activatable ripple-parent">
-                      {{util.getString('View')}}
+                      View Store
                       <ion-ripple-effect></ion-ripple-effect>
                     </div>
                   </div>
@@ -284,7 +283,7 @@
               </div>
             </div>
           </div>
-        </ion-slide> -->
+        </ion-item>
       </ion-list>
     </div>
     <!-- END TOP PRODUCTS -->
@@ -337,7 +336,6 @@
             </div>
           </div>
         </div>
-        
       </ion-item>
       <ion-item *ngFor="let item of stores;let i = index;">
         <div class="allstore_div">
