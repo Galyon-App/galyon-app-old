@@ -21,27 +21,15 @@ class Address extends Galyon_controller {
     }
 
     function getByUser() {
-        $user = $this->is_authorized(false);
-        $is_mobile = $this->is_basic_header('mobile');
-        $where = null;
-        if($is_mobile) {
-            $where .= "status = '1' AND deleted_at IS NULL";
-        } else {
-            if($user) {
-                if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
-                    $where = null; 
-                }
-            }
+        $auth = $this->is_authorized();
+
+        $uuid = $this->input->post('uuid');
+        if(empty($uuid)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
-        $user_id = $this->input->post('uuid');
-        if($where != null) {
-            $where .= " AND uid = '$user_id'";
-        } else {
-            $where = "uid = '$user_id'";
-        }
-
-        $addresses = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'result' );
+        $addresses = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, ["uid = '$uuid'", "store_id IS NULL"]), null, 'result' );
 
         if($addresses) {
             $this->json_response($addresses);
@@ -51,68 +39,39 @@ class Address extends Galyon_controller {
     }
     
     function getByStore() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            if($user->role === "admin") { //TODO: and if this category is owned by a store or operator.
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized();
 
         $store_id = $this->input->post('store_id');
-        if($where != null) {
-            $where .= " AND store_id = '$store_id'";
-        } else {
-            $where = "store_id = '$store_id'";
+        if(empty($store_id)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
-        //TODO: important
+        $addresses = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, ["store_id = '$store_id'", "uid IS NULL"]), null, 'result' );
+
+        if($addresses) {
+            $this->json_response($addresses);
+        } else {
+            $this->json_response(null, false, "No store address was found!");
+        }
     }
 
     function getByID() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized();
 
         $uuid = $this->input->post('uuid');
-        if(!empty($uuid)) {
-            if($where != null) {
-                $where .= " AND uuid = '$uuid'";
-            } else {
-                $where = "uuid = '$uuid'";
-            }
+        if(empty($uuid)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
-        $user_id = $this->input->post('user_id');
-        if(!empty($user_id)) {
-            if($where != null) {
-                $where .= " AND owner = '$user_id'";
-            } else {
-                $where = "owner = '$user_id'";
-            }
-        }
-
-        $store_id = $this->input->post('store_id');
-        if(!empty($store_id)) {
-            if($where != null) {
-                $where .= " AND store_id = '$store_id'";
-            } else {
-                $where = "store_id = '$store_id'";
-            }
-        }
-
-        $store = $this->Crud_model->get('address', '*', $where, null, 'row' );
-        if(!$store) {
+        $address = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, ["uuid = '$uuid'"]), null, 'row' );
+            
+        if(!$address) {
             $this->json_response($where, false, "No address is currently assigned!");
-            exit;
         }
 
-        $this->json_response($store);
+        $this->json_response($address);
     }
 
     function createNewAddress() {
@@ -121,7 +80,7 @@ class Address extends Galyon_controller {
         $uid = $this->input->post('uid');
         $store_id = $this->input->post('store_id');
         $type = $this->input->post('type');
-        $address = $this->input->post('address');
+        $address = $this->input->post($this->table_name);
         $house = $this->input->post('house');
         $landmark = $this->input->post('landmark');
         $zipcode = $this->input->post('zipcode');
@@ -155,18 +114,24 @@ class Address extends Galyon_controller {
     }
 
     function editAddresssCurrent() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
+        $auth = $this->is_authorized(false);
+        if(!$auth && !isset($auth->uuid)) {
+            $this->json_response($found, false, "You're not authorized!");
+        }
+
+        $address = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$auth->uuid'", null, 'row' );
+        if($address) {
+            if($auth->role != "admin" && $auth->uuid != $address->uid) {
+                $this->json_response($where, false, "You do not own this address!");
             }
+            //TODO: Also check if this address is from store then check if this user is an owner of this store.
         }
 
         $uuid = $this->input->post('uuid');
         $uid = $this->input->post('uid');
         $store_id = $this->input->post('store_id');
         $type = $this->input->post('type');
-        $address = $this->input->post('address');
+        $address = $this->input->post($this->table_name);
         $house = $this->input->post('house');
         $landmark = $this->input->post('landmark');
         $zipcode = $this->input->post('zipcode');
@@ -178,7 +143,7 @@ class Address extends Galyon_controller {
         }
 
         $latest =  array( 
-            "uid" => $uid ? $uid : NULL,
+            "uid" => $uid,
             "store_id" => !empty($store_id) ? $store_id : NULL,
             "type" => $type, 
             "address" => $address, 
@@ -200,27 +165,32 @@ class Address extends Galyon_controller {
     }
 
     function deleteAddressCurrent() {
-        $user = $this->is_authorized();
-        if($user) {
-            $owner = $this->Crud_model->get($this->table_name, 'id', "uid = '$user->uuid'", null, 'row' );
-            if($user->role !== "admin" && !$owner) {
-                $this->json_response($found, false, "You're not authorized!");
-            }
+        $auth = $this->is_authorized(false);
+        if(!$auth && !isset($auth->uuid)) {
+            $this->json_response($found, false, "You're not authorized!");
         }
 
-        $found = $this->validate_request($_POST, $this->required);
-        if(count($found)) {
-            $this->json_response($found, false, "Required fields cannot be empty!");
+        $address = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$auth->uuid'", null, 'row' );
+        if($address) {
+            if($auth->role != "admin" && $auth->uuid != $address->uid) {
+                $this->json_response($where, false, "You do not own this address!");
+            }
+            //TODO: Also check if this address is from store then check if this user is an owner of this store.
         }
 
         $address_id = $this->input->post('uuid');
+        if(empty($address_id)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
+        }
+
         $deleted_at = get_current_utc_time();
         $is_deleted = $this->Crud_model->update($this->table_name, array('deleted_at' => $deleted_at), "uuid = '$address_id'" );
 
         if($is_deleted) {
-            $this->json_response(null);
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$address_id'", null, 'row' );
+            $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No store associated to this account!");
+            $this->json_response(null, false, "No address or changes was found!");
         }
     }
 }

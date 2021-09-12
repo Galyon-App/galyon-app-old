@@ -24,7 +24,7 @@ class Category extends Galyon_controller {
         $auth = $this->is_authorized();
 
         $category_id = $this->input->post('uuid');
-        if(empty($category_id) && (int)$category_id > 0) {
+        if(empty($category_id)) {
             $this->json_response(null, false, "Required fields cannot be empty!");
         }
         
@@ -34,7 +34,7 @@ class Category extends Galyon_controller {
         if($category) {
             $this->json_response($category);
         } else {
-            $this->json_response(null, false, "No category or changes was found!");
+            $this->json_response(null, false, "No category was found!");
         }
     }
 
@@ -65,7 +65,7 @@ class Category extends Galyon_controller {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
         } else {
-            $this->json_response(null, false, "No category or changes was found!");
+            $this->json_response(null, false, "No category was found!");
         }
     }
 
@@ -85,7 +85,7 @@ class Category extends Galyon_controller {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
         } else {
-            $this->json_response(null, false, "No category or changes was found!");
+            $this->json_response(null, false, "No category was found!");
         }
     }
 
@@ -97,7 +97,7 @@ class Category extends Galyon_controller {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
         } else {
-            $this->json_response(null, false, "No category or changes was found!");
+            $this->json_response(null, false, "No category was found!");
         }
     }
 
@@ -162,7 +162,7 @@ class Category extends Galyon_controller {
         $auth = $this->is_authorized(true, ["admin"]);
 
         $category_id = $this->input->post('uuid');
-        if(empty($category_id) && (int)$category_id > 0) {
+        if(empty($category_id)) {
             $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
@@ -180,7 +180,7 @@ class Category extends Galyon_controller {
         $auth = $this->is_authorized(true, ["admin"]);
 
         $category_id = $this->input->post('uuid');
-        if(empty($category_id) && (int)$category_id > 0) {
+        if(empty($category_id)) {
             $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
@@ -198,13 +198,14 @@ class Category extends Galyon_controller {
         $auth = $this->is_authorized(true, ["admin"]);
 
         $category_id = $this->input->post('uuid');
-        if(empty($category_id) && (int)$category_id > 0) {
+        if(empty($category_id)) {
             $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
-        $deleted = $this->Crud_model->delete($this->table_name, "uuid = '$category_id'");
+        $deleted_at = get_current_utc_time();
+        $is_deleted = $this->Crud_model->update($this->table_name, array('deleted_at' => $deleted_at), "uuid = '$category_id'" );
 
-        if($deleted) {
+        if($is_deleted) {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$category_id'", null, 'row' );
             $this->json_response($current);
         } else {
