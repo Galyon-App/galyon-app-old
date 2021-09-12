@@ -31,17 +31,15 @@ class Galyon_controller extends CI_Controller{
    * @param  mixed $force_exit Exit if not authorized.
    * @return void | jwt token
    */
-  public function is_authorized($failexit = TRUE) {
+  public function is_authorized($failexit = TRUE, $roles_req = ["admin"], $role_special = ["admin"], $access_special = ["admin"]) {
     $bearer = $this->input->get_request_header('Authorization');
     $token = str_replace("Bearer ", "", $bearer);
     $user = JWT::decode($token, $this->config->item('jwt_secret_phrase'));
 
     if($user == false) {
-      $this->json_response(null, false, "Invalid access token!", $failexit);
-      if(!$failexit) {
-        return false;
-      }
-    } 
+      $reponse = $this->json_response(null, false, "Invalid access token!", $failexit);
+      return null;
+    }
 
     // $since = $user->expiry;
     // $span = $this->config->item('jwt_expiration');
@@ -51,22 +49,75 @@ class Galyon_controller extends CI_Controller{
     //   $this->json_response(null, false, "You're tokenn is already expired!", $failexit);
     // }
     
-    $current = $this->Crud_model->get('users', 'status, verified_at', array( "uuid" => $user->uuid ), null, 'row' );
+    $current = $this->Crud_model->get('users', 'status, verified_at, type as role', array( "uuid" => $user->uuid ), null, 'row' );
 
     if(!$current) {
-      $this->json_response(null, false, "Encountered problem with the account!", $failexit);
+      $reponse = $this->json_response(null, false, "Encountered problem with the account!", $failexit);
+      return null;
+    }
 
+    $user->{"success"} = false;
+    $user->{"where"} = "status = '1'";
+
+    if($current->verified_at == null) {
+      $message = "You're account is not yet verified!";
+      $this->json_response(null, false, $message, $failexit);
+      $user->{"message"} = $message;
+      return $user;
     }
 
     if($current->status == "0") {
-      $this->json_response(null, false, "You're account is deactivated!", $failexit);
-    }
-    
-    if($current->verified_at == null) {
-      $this->json_response(null, false, "You're account is not yet verified!", $failexit);
+      $message = "You're account is deactivated!";
+      $this->json_response(null, false, $message, $failexit);
+      $user->{"message"} = $message;
+      return $user;
     }
 
+    if($roles_req != null) {
+      if(!in_array($current->role, $roles_req)) {
+        $message = "You're not authorized for this action!";
+        $this->json_response(null, false, $message, $failexit);
+        $user->{"message"} = $message;
+        return $user;
+      }
+    }
+    
+    if($role_special != null && $access_special != null) {
+      if(is_array($role_special) && is_array($access_special)) {
+        $basic = $this->input->get_request_header('Basic', TRUE);
+        if(in_array($current->role, $role_special) && in_array($basic, $access_special)) {
+          $user->where = null; 
+        }
+      }
+    }
+
+    $deleted = $this->input->post('deleted');
+    $hasNot = !empty($deleted) && (boolean)$deleted == true ? "NOT" : "";
+    if($user->where != null) {
+      $user->where .= " AND deleted_at IS $hasNot NULL";
+    } else {
+      $user->where = "deleted_at IS $hasNot NULL";
+    }
+
+    $user->success = true;
     return $user;
+  }
+
+  /**
+   * 
+   * @param  string $where
+   * @param  array $queries
+   * @return string
+   */
+  public function compileWhereClause($where, $queries = []) {
+    $where_clause = $where;
+    foreach($queries as $query) {
+      if($where_clause != null && $where_clause != "") {
+        $where_clause .= " AND ";
+      }
+      $where_clause .= $query;
+    }
+    return $where_clause;
   }
 
   /**
@@ -134,14 +185,12 @@ class Galyon_controller extends CI_Controller{
    */
   public function json_response($data, $success = true, $message = "", $failexit = true) {
     if($success === true) {
-      $response = json_encode(
-        array(
+      $response = array(
           "success" => true,
           "data" => $data
-        )
-      );
+        );
       if($failexit) {
-        echo $response;
+        echo json_encode($response);
         exit;
       } else {
         return $response;
@@ -154,9 +203,8 @@ class Galyon_controller extends CI_Controller{
       if($data != null) {
         $response['data'] = $data;
       }
-      $response = json_encode($response);
       if($failexit) {
-        echo $response;
+        echo json_encode($response);
         exit;
       } else {
         return $response;

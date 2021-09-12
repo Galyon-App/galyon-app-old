@@ -21,19 +21,15 @@ class Category extends Galyon_controller {
     }
 
     function getCategoryByID() {
-        $user = $this->is_authorized();
+        $auth = $this->is_authorized();
 
-        //TODO: Filter by search using the post key of search.
         $category_id = $this->input->post('uuid');
-        $where = "uuid = '$category_id'";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
-                $where = "status = '1' AND deleted_at IS NULL"; 
-            }
+        if(empty($category_id) && (int)$category_id > 0) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
         }
         
-        $category = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'row' );
+        $category = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, ["uuid = '$category_id'"]), NULL, 'row' );
 
         if($category) {
             $this->json_response($category);
@@ -46,13 +42,13 @@ class Category extends Galyon_controller {
         foreach($categories as $category) {
             if(!empty($category->parent_id)) {
                 $current = $this->Crud_model->get($this->table_name, 'name', "uuid = '$category->parent_id'", NULL, 'row' );
-                $category->{"parent"} = $current->name;
+                $category->{"parent"} = $current ? $current->name : null;
             } else {
                 $category->{"parent"} = null;
             }
             if(!empty($category->store_id)) {
                 $current = $this->Crud_model->get('stores', 'name', "uuid = '$category->store_id'", NULL, 'row' );
-                $category->{"store"} = $current->name;
+                $category->{"store"} = $current ? $current->name : null;
             } else {
                 $category->{"store"} = null;
             }
@@ -61,16 +57,10 @@ class Category extends Galyon_controller {
     }
 
     function getParentCategorys() {
-        $user = $this->is_authorized(false);
-        $where = "parent_id IS NULL AND status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized();
 
-        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, ["parent_id IS NULL"]), NULL, 'result' );
         if($categorys) {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
@@ -80,23 +70,17 @@ class Category extends Galyon_controller {
     }
 
     function getChildCategorys() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized();
 
         $parent_id = $this->input->post('parent_id');
-        if($where != null) {
-            $where .= " AND parent_id = '$parent_id'";
+        if(!empty($parent_id)) {
+            $parent_id .= "parent_id = '$parent_id'";
         } else {
-            $where = "parent_id IS NOT NULL";
+            $parent_id = "parent_id IS NOT NULL";
         }
-
-        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        
+        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, [$parent_id]), NULL, 'result' );
         if($categorys) {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
@@ -106,16 +90,9 @@ class Category extends Galyon_controller {
     }
 
     function getAllCategorys() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized();
 
-        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, $auth->where, NULL, 'result' );
         if($categorys) {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
@@ -125,12 +102,7 @@ class Category extends Galyon_controller {
     }
 
     function createNewCategory() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $auth = $this->is_authorized(true, ["admin"]);
 
         $name = $this->input->post('name');
         $cover = $this->input->post('cover');
@@ -148,7 +120,7 @@ class Category extends Galyon_controller {
         ));
 
         if($inserted) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "id" => $inserted ), null, 'row' );
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "id = '$inserted'", null, 'row' );
             $this->json_response($current);
         } else {
             $this->json_response(null, false, "No user was found!");
@@ -156,12 +128,7 @@ class Category extends Galyon_controller {
     }
 
     function editCategoryCurrent() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $auth = $this->is_authorized(true, ["admin"]);
 
         $uuid = $this->input->post('uuid');
         $name = $this->input->post('name');
@@ -172,24 +139,19 @@ class Category extends Galyon_controller {
             $this->json_response(null, false, "Required fields cannot be empty.");
         }
 
-        if($parent == 'null') {
-            $parent = null;
-        }
-
-        $category = array( 
+        $updates = array( 
             "name" => $name,
-            "parent_id" => $parent != 'null' ? $parent : null, 
+            "parent_id" => empty($parent) ? null : $parent, 
         );
 
         if(!empty($cover)) {
-            //upload and update database.
-            $category['cover'] = $cover;
+            $updates['cover'] = $cover;
         }
 
-        $updated = $this->Crud_model->update($this->table_name,  $category, "uuid = '$uuid'" );
+        $updated = $this->Crud_model->update($this->table_name, $updates, "uuid = '$uuid'" );
 
         if($updated) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $uuid ), null, 'row' );
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$uuid'", null, 'row' );
             $this->json_response($current);
         } else {
             $this->json_response(null, false, "No category was found!");
@@ -197,18 +159,17 @@ class Category extends Galyon_controller {
     }
 
     function activate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $auth = $this->is_authorized(true, ["admin"]);
 
         $category_id = $this->input->post('uuid');
-        $category = $this->Crud_model->update($this->table_name, array( "status" => "1" ), array( "uuid" => $category_id ));
+        if(empty($category_id) && (int)$category_id > 0) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
+        }
 
-        if($category) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $category_id ), null, 'row' );
+        $updated = $this->Crud_model->update($this->table_name, array( "status" => "1" ), "uuid = '$category_id'");
+
+        if($updated) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$category_id'", null, 'row' );
             $this->json_response($current);
         } else {
             $this->json_response(null, false, "No category was found!");
@@ -216,18 +177,17 @@ class Category extends Galyon_controller {
     }
 
     function deactivate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $auth = $this->is_authorized(true, ["admin"]);
 
         $category_id = $this->input->post('uuid');
-        $category = $this->Crud_model->update($this->table_name, array( "status" => "0" ), array( "uuid" => $category_id ));
+        if(empty($category_id) && (int)$category_id > 0) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
+        }
 
-        if($category) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $category_id ), null, 'row' );
+        $updated = $this->Crud_model->update($this->table_name, array( "status" => "0" ), "uuid = '$category_id'");
+
+        if($updated) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$category_id'", null, 'row' );
             $this->json_response($current);
         } else {
             $this->json_response(null, false, "No category was found!");
@@ -235,21 +195,18 @@ class Category extends Galyon_controller {
     }
 
     function deleteCategoryCurrent() {
-        $cur_user = $this->is_authorized();
-        if($cur_user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
-        }
-
-        $found = $this->validate_request($_POST, $this->required);
-        if(count($found)) {
-            $this->json_response($found, false, "Required fields cannot be empty!");
-        }
+        $auth = $this->is_authorized(true, ["admin"]);
 
         $category_id = $this->input->post('uuid');
-        $is_deleted = $this->Crud_model->delete($this->table_name, array( "uuid" => $category_id ) );
+        if(empty($category_id) && (int)$category_id > 0) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
+        }
 
-        if($is_deleted) {
-            $this->json_response(null);
+        $deleted = $this->Crud_model->delete($this->table_name, "uuid = '$category_id'");
+
+        if($deleted) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$category_id'", null, 'row' );
+            $this->json_response($current);
         } else {
             $this->json_response(null, false, "No category was found!");
         }
