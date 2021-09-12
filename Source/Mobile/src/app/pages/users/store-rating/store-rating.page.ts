@@ -29,10 +29,8 @@ export class StoreRatingPage implements OnInit {
     public api: ApiService
   ) {
 
-    this.id = this.navParam.get('id');
+    this.id = this.navParam.get('uuid');
     this.name = this.navParam.get('name');
-    console.log('id', this.id);
-    console.log('name', this.name);
     if (this.navParam.get('way')) {
       this.way = this.navParam.get('way');
     } else {
@@ -118,7 +116,7 @@ export class StoreRatingPage implements OnInit {
       if (data && data.status === 200) {
         this.util.showToast(this.util.getString('Rating added'), 'success', 'bottom');
         const storeParam = {
-          id: this.id,
+          uuid: this.id,
           total_rating: this.total + 1,
           rating: storeRating
         }

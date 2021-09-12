@@ -27,8 +27,8 @@
       <div *ngIf="orders?.length" class="border_bottom">
         <div *ngFor="let item of orders">
           <p class="storeName">
-            <span class="name"> {{getStoreName(item.id)}} </span>
-            <span class="status"> {{getOrderStatus(item.id)}} </span>
+            <span class="name"> {{getStoreName(item.uuid)}} </span>
+            <span class="status"> {{getOrderStatus(item.uuid)}} </span>
           </p>
 
           <ion-label class="titles"> {{util.getString('Order Details')}} </ion-label>
@@ -132,7 +132,7 @@
             </ion-label>
           </div>
           <ion-fab class="directionBtn" (click)="direction(item,'driver')"
-            *ngIf="getOrderStatusFromDriver(item.id) ==='ongoing' || getOrderStatusFromDriver(item.id) ==='accepted' ">
+            *ngIf="getOrderStatusFromDriver(item.uuid) ==='ongoing' || getOrderStatusFromDriver(item.uuid) ==='accepted' ">
             <ion-fab-button color="light" size="small">
               <ion-icon name="compass-outline"></ion-icon>
             </ion-fab-button>

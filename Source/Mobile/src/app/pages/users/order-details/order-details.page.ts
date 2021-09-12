@@ -51,8 +51,8 @@ export class OrderDetailsPage implements OnInit {
   ) {
     this.route.queryParams.subscribe((data) => {
       console.log(data);
-      if (data && data.id) {
-        this.id = data.id;
+      if (data && data.uuid) {
+        this.id = data.uuid;
         this.loaded = false;
         this.getOrder();
       } else {
@@ -68,7 +68,7 @@ export class OrderDetailsPage implements OnInit {
 
   getOrder() {
     const param = {
-      id: this.id
+      uuid: this.id
     };
     this.api.post('orders/getById', param).subscribe((data: any) => {
       console.log(data);
@@ -245,7 +245,7 @@ export class OrderDetailsPage implements OnInit {
             // this.util.setOrders(this.orderData);
             const param: NavigationExtras = {
               queryParams: {
-                id: this.id
+                uuid: this.id
               }
             }
             this.router.navigate(['order-rating'], param);
@@ -275,7 +275,7 @@ export class OrderDetailsPage implements OnInit {
 
     this.util.show();
     const param = {
-      id: this.id,
+      uuid: this.id,
       notes: JSON.stringify(this.orderDetail),
       status: JSON.stringify(this.status),
     };
@@ -333,8 +333,8 @@ export class OrderDetailsPage implements OnInit {
     return 'Store';
   }
 
-  getOrderStatus(id) {
-    const item = this.status.filter(x => x.id === id);
+  getOrderStatus(uuid) {
+    const item = this.status.filter(x => x.uuid === uuid);
     if (item && item.length) {
       return this.util.getString(item[0].status);
     }
@@ -454,13 +454,12 @@ export class OrderDetailsPage implements OnInit {
   }
 
   direction(item, type) {
-    console.log(item, type);
     const navData: NavigationExtras = {
       queryParams: {
         lat: item.lat,
         lng: item.lng,
         who: type,
-        id: type === 'store' ? item.uid : item.id,
+        id: item.uuid,
         orderAt: this.orderAt,
         homeLat: this.userLat ? this.userLat : 'none',
         homeLng: this.userLng ? this.userLng : 'none',

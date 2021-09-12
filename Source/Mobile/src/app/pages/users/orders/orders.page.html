@@ -41,7 +41,7 @@
           <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold;color: gray;font-size: 12px;"> {{util.getString('ORDER')}} #{{item.id}}
+          <ion-label style="font-weight: bold;color: gray;font-size: 12px;"> {{util.getString('ORDER')}} #{{item.uuid}}
           </ion-label>
           <div *ngIf="item.orders?.length" class="border_bottom">
             <p *ngFor="let order of item.orders;let ol = index" class="items">

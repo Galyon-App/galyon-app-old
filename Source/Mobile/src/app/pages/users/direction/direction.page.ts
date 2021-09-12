@@ -50,9 +50,8 @@ export class DirectionPage implements OnInit {
     private alertController: AlertController
   ) {
     this.route.queryParams.subscribe((data: any) => {
-      console.log(data);
-      if (data && data.id && data.lat && data.lng && data.who) {
-        this.uid = data.id;
+      if (data && data.uuid && data.lat && data.lng && data.who) {
+        this.uid = data.uuid;
         this.orderId = data.orderId;
         this.who = data.who;
         this.orderAt = data.orderAt;

@@ -45,8 +45,8 @@ export class OrderRatingPage implements OnInit {
   ) {
     this.route.queryParams.subscribe((data) => {
       console.log(data);
-      if (data && data.id) {
-        this.id = data.id;
+      if (data && data.uuid) {
+        this.id = data.uuid;
         this.loaded = false;
         this.getOrder();
       } else {
@@ -57,7 +57,7 @@ export class OrderRatingPage implements OnInit {
 
   getOrder() {
     const param = {
-      id: this.id
+      uuid: this.id
     };
     this.api.post('orders/getById', param).subscribe((data: any) => {
       console.log(data);
@@ -156,7 +156,7 @@ export class OrderRatingPage implements OnInit {
       backdropDismiss: false,
       swipeToClose: true,
       componentProps: {
-        id: item.id,
+        id: item.uuid,
         name: item.name
       }
     });
@@ -186,14 +186,13 @@ export class OrderRatingPage implements OnInit {
   }
 
   async ratDriver(item) {
-    console.log(item);
     const modal = await this.modalCtrl.create({
       component: DriverRatingPage,
       cssClass: 'modalContact',
       backdropDismiss: false,
       swipeToClose: true,
       componentProps: {
-        id: item.id,
+        id: item.uuid,
         name: item.first_name + ' ' + item.last_name
       }
     });

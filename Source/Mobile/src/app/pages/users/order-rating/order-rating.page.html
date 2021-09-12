@@ -29,8 +29,8 @@
       <div *ngIf="orders?.length" class="border_bottom">
         <div *ngFor="let item of orders">
           <p class="storeName">
-            <span class="name"> {{getStoreName(item.id)}} </span>
-            <span class="status" (click)="rateStore(item.id)">
+            <span class="name"> {{getStoreName(item.uuid)}} </span>
+            <span class="status" (click)="rateStore(item.uuid)">
               <div class="ion-activatable ripple-parent">
                 <ion-icon slot="start" color="warning" name="star-outline"></ion-icon>
                 <ion-ripple-effect type="bounded"></ion-ripple-effect>

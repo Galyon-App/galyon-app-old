@@ -83,7 +83,7 @@ export class OrdersPage implements OnInit {
   goToOrder(val) {
     const navData: NavigationExtras = {
       queryParams: {
-        id: val.id
+        uuid: val.id
       }
     }
     this.router.navigate(['/order-details'], navData);
