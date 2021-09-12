@@ -97,7 +97,7 @@ export class SubCategoryPage implements OnInit {
 
   getSubProducts(limit, event) {
     const city = {
-      id: this.id,
+      uuid: this.id,
       cid: this.city.current.uuid,
       sid: this.tabSelected,
       limit: this.limit * 10
@@ -123,8 +123,8 @@ export class SubCategoryPage implements OnInit {
             info.variations = [];
             info['variant'] = 1;
           }
-          if (this.cart.checkProductInCart(info.id)) {
-            const index = this.cart.cart.filter(x => x.id === info.id);
+          if (this.cart.checkProductInCart(info.uuid)) {
+            const index = this.cart.cart.filter(x => x.uuid === info.uuid);
             info['quantiy'] = index[0].quantiy;
           } else {
             info['quantiy'] = 0;
@@ -155,7 +155,7 @@ export class SubCategoryPage implements OnInit {
     console.log(product);
     if (this.products[index].quantiy > 0) {
       this.products[index].quantiy = this.products[index].quantiy + 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -163,10 +163,10 @@ export class SubCategoryPage implements OnInit {
     console.log(product, index);
     if (this.products[index].quantiy === 1) {
       this.products[index].quantiy = 0;
-      this.cart.removeItem(product.id)
+      this.cart.removeItem(product.uuid)
     } else {
       this.products[index].quantiy = this.products[index].quantiy - 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
   // getByCid
@@ -189,7 +189,7 @@ export class SubCategoryPage implements OnInit {
     console.log(item);
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
 
@@ -215,11 +215,11 @@ export class SubCategoryPage implements OnInit {
     console.log(item);
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
 
-    this.router.navigate(['home/product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   loadData(event) {
@@ -231,11 +231,11 @@ export class SubCategoryPage implements OnInit {
   goToSingleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
 
-    this.router.navigate(['home/product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   async variant(item, indeX) {

@@ -72,10 +72,10 @@ export class CategoriesPage implements OnInit {
   }
 
   goToProductList(val) {
-    this.subIndex = val.id;
+    this.subIndex = val.uuid;
     const navData: NavigationExtras = {
       queryParams: {
-        id: val.id,
+        uuid: val.uuid,
         name: val.name,
         from: 'categories'
       }

@@ -37,18 +37,18 @@
   <div class="main" *ngIf="categories?.length && !dummy?.length">
 
     <div class="flex_main" *ngFor="let item of categories">
-      <div class="flex_div" (click)="change(item.id)">
+      <div class="flex_div" (click)="change(item.uuid)">
         <div class="cateIcon" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/category.png)'}" 
           style="background-size: cover; background-repeat: no-repeat; border-radius: 50%;"></div>
         <div class="detail_div">
-          <ion-label class="title_name" [class.boldFont]="selectedIndex === item.id">{{item.name}}</ion-label>
+          <ion-label class="title_name" [class.boldFont]="selectedIndex === item.uuid">{{item.name}}</ion-label>
         </div>
         <ion-icon name="chevron-down-outline" class="arrow"></ion-icon>
       </div>
 
-      <div class="details" *ngIf="selectedIndex === item.id">
+      <div class="details" *ngIf="selectedIndex === item.uuid">
         <div class="inlnes" *ngFor="let sub of item.subCates" (click)="goToProductList(sub)">
-          <ion-label class="titles" [class.boldFont]="subIndex === sub.id">{{sub.name}}</ion-label>
+          <ion-label class="titles" [class.boldFont]="subIndex === sub.uuid">{{sub.name}}</ion-label>
         </div>
 
       </div>
