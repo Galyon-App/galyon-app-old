@@ -50,6 +50,11 @@ const routes: Routes = [
               import('../sub-category/sub-category.module').then(m => m.SubCategoryPageModule)
           },
           {
+            path: 'subcategory',
+            loadChildren: () =>
+              import('../subcategory/subcategory.module').then(m => m.SubcategoryPageModule)
+          },
+          {
             path: 'all-offers',
             loadChildren: () =>
               import('../all-offers/all-offers.module').then(m => m.AllOffersPageModule)

@@ -77,10 +77,11 @@ export class CategoriesPage implements OnInit {
       queryParams: {
         uuid: val.uuid,
         name: val.name,
-        from: 'categories'
+        //from: 'categories'
       }
     }
-    this.router.navigate(['products'], navData);
+    this.router.navigate(['user/home/subcategory'], navData);
+    //this.router.navigate(['user/home/products'], navData);
   }
 
   back() {

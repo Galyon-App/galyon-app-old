@@ -1,0 +1,88 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Platform: {{name}}</ion-title>
+  </ion-toolbar>
+  <ion-searchbar [placeholder]="util.getString('Search...')" inputmode="text" mode="ios"
+    type="text" (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-slides *ngIf="subCates?.length > 1" [options]="slideOpts">
+    <ion-slide *ngFor="let item of subCates" [class.mnu-selected]="item.uuid == tabSelected" 
+      id="mnu_{{item.uuid}}" style="max-width: fit-content !important; padding: 10px 20px;">
+      <ion-col class="side_col" (click)="onMenuClick(item.uuid)">
+        <div class="icon-menu" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/category.png)'}" 
+          style="background-size: cover; background-repeat: no-repeat;"></div>
+        <ion-label class="menutext">{{item.name}}</ion-label>
+      </ion-col>
+    </ion-slide>
+    <ion-slide *ngFor="let item of dummyCates" style="max-width: fit-content !important; padding: 10px 20px;">
+      <ion-col class="side_col">
+        <div class="icon-menu">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </div>
+        <ion-label class="menutext">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-label>
+      </ion-col>
+    </ion-slide>
+  </ion-slides>
+
+  <p class="ion-text-center" *ngIf="!stores?.length && !dummys?.length">
+    {{util.getString('No Store found')}}
+  </p>
+
+  <ion-content #content style="margin-top: 20px;">
+    <div style="padding-bottom: 100px;">
+      <ion-row>
+        <ion-col size="6" *ngFor="let item of dummys" style="margin: 5px 0 0;">
+          <div style="border: .50px solid lightgray; ">
+            <ion-skeleton-text animated style="width: 100%;height:120px"></ion-skeleton-text>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row style="position: relative;">
+        <ion-col *ngFor="let item of stores;let i = index;" text-center size="6" style="margin: 5px 0 0;">
+          <div style="border: .50px solid lightgray; ">
+            <div class="productimage" (click)="viewStore(item)"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}">
+              <div *ngIf="!item.isOpen || item.isClosed == '1'" class="statusCheck">
+                <ion-label class="text"> {{util.getString('Store Closed')}}</ion-label>
+              </div>
+            </div>
+            <ion-label class="producttext" (click)="viewStore(item)" style="padding: 5px 4px 0;">
+              {{ (item.name.length>25)? (item.name | slice:0:25)+'..':(item.name) }}
+            </ion-label>
+            <ion-label class="itemsKind" style="padding: 5px 4px 0;">
+              <span>{{ (item.address.length>55)? (item.address | slice:0:55)+'..':(item.address) }}</span>
+            </ion-label>
+            <div class="btnBtm" style="padding: 5px;">
+              <div class="ion-activatable ripple-parent" (click)="viewStore(item)">
+                {{util.getString('View Store')}}
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Please wait...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-content>

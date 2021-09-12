@@ -20,6 +20,7 @@ import { CityService } from 'src/app/services/city.service';
   styleUrls: ['./products.page.scss'],
 })
 export class ProductsPage implements OnInit {
+
   id: any;
   name: any;
   limit: any;
@@ -41,6 +42,7 @@ export class ProductsPage implements OnInit {
   discount: any;
   haveSortFilter: boolean;
   from: any;
+
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
@@ -55,8 +57,7 @@ export class ProductsPage implements OnInit {
   ) {
     this.haveSearch = false;
     this.route.queryParams.subscribe((data) => {
-      console.log(data);
-      if (data && data.uuid && data.name) {
+      if (data && data.uuid) {
         this.id = data.uuid;
         this.name = data.name;
         this.from = data.from;
