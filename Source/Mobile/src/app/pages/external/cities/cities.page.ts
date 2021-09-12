@@ -60,7 +60,6 @@ export class CitiesPage {
 
   selected() {
     this.clicked = true;
-    console.log(this.id);
     this.city.setActiveCity(this.id);
     const city: City[] = this.cities.filter(x => x.uuid === this.id);
     this.city.setCurrent(city[0]);

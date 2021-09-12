@@ -376,7 +376,7 @@ export class HomePage {
   goToSingleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
 
@@ -394,12 +394,10 @@ export class HomePage {
   }
 
   openLink(item) {
-    console.log(item);
-
     if (item.type === '0') {
       // Category
       console.log('open category');
-      const name = this.categories.filter(x => x.id === item.link);
+      const name = this.categories.filter(x => x.uuid === item.uuid);
       let cateName: any = '';
       if (name && name.length) {
         cateName = name[0].name
@@ -431,7 +429,7 @@ export class HomePage {
   goToProductList(val) {
     const navData: NavigationExtras = {
       queryParams: {
-        id: val.id,
+        uuid: val.uuid,
         name: val.name,
         from: 'home'
       }
@@ -451,7 +449,7 @@ export class HomePage {
   openStore(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.uuid
+        uuid: item.uuid
       }
     };
     this.router.navigate(['user/home/store'], param);

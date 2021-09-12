@@ -48,8 +48,9 @@
 
 <ion-content>
   <div class="main_content">
-    <p class="ion-text-center" *ngIf="!dummy?.length && !products?.length"> {{util.getString('No Products found')}} </p>
-
+    <p class="ion-text-center" *ngIf="!dummy?.length && !products?.length">
+      {{util.getString('No Products found')}}
+    </p>
     <ion-row>
       <ion-col size="6" *ngFor="let item of dummy">
         <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
@@ -59,7 +60,6 @@
       </ion-col>
     </ion-row>
     <ion-row *ngIf="mode === 'grid'">
-
       <ion-col size="6" *ngFor="let item of products;let i = index;">
         <div style="border: 1px solid lightgray;">
           <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"

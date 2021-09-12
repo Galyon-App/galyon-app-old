@@ -65,8 +65,8 @@ export class StorePage implements OnInit {
   ) {
     this.haveSearch = false;
     this.route.queryParams.subscribe((data) => {
-      if (data && data.id) {
-        this.storeServ.getById(data.id, (response) => {
+      if (data && data.uuid) {
+        this.storeServ.getById(data.uuid, (response) => {
           if(response) {
             this.store = response;
             this.name = this.store.name;
@@ -113,6 +113,9 @@ export class StorePage implements OnInit {
       limit_start: this.limit_start + '',
       limit_length: this.limit_length + ''
     }, (lists) => {
+      if(event === null) {
+        this.dummy = []; //Initial query and no product was found.
+      }
       if(lists) {
         if(this.products) {
           lists.forEach(element => {
@@ -263,18 +266,18 @@ export class StorePage implements OnInit {
   onChat() {
     const param: NavigationExtras = {
       queryParams: {
-        id: this.id,
+        uuid: this.id,
         name: this.name
       }
     };
-    this.router.navigate(['chat'], param);
+    this.router.navigate(['user/chat'], param);
   }
 
   add(product, index) {
     console.log(product);
     if (this.products[index].quantiy > 0) {
       this.products[index].quantiy = this.products[index].quantiy + 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -282,10 +285,10 @@ export class StorePage implements OnInit {
     console.log(product, index);
     if (this.products[index].quantiy === 1) {
       this.products[index].quantiy = 0;
-      this.cart.removeItem(product.id)
+      this.cart.removeItem(product.uuid)
     } else {
       this.products[index].quantiy = this.products[index].quantiy - 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -319,7 +322,7 @@ export class StorePage implements OnInit {
   singleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        id: item.uuid
       }
     };
 
