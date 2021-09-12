@@ -105,15 +105,11 @@ export class SubCategoryPage implements OnInit {
     console.log('parma', city);
     // this.loaded = false;
     this.api.post('products/getByCSID', city).subscribe((cates: any) => {
-      console.log(cates);
       if (cates && cates.status === 200 && cates.data && cates.data.length) {
         console.log('products', cates.data);
         const products = cates.data;
         this.products = products.filter(x => x.status === '1' && this.util.active_store.includes(x.store_id));
         this.dummyProducts = this.products;
-        console.log('real products', this.products);
-        // const cart = this.cart.cart;
-        console.log('cart===============>>>>>>', this.cart.cart);
         this.products.forEach(info => {
           if (info.variations && info.size === '1' && info.variations !== '') {
             if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(info.variations)) {
@@ -127,7 +123,7 @@ export class SubCategoryPage implements OnInit {
             info.variations = [];
             info['variant'] = 1;
           }
-          if (this.cart.itemId.includes(info.id)) {
+          if (this.cart.checkProductInCart(info.id)) {
             const index = this.cart.cart.filter(x => x.id === info.id);
             info['quantiy'] = index[0].quantiy;
           } else {

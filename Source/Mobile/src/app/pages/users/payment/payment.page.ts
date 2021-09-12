@@ -158,7 +158,7 @@ export class PaymentPage implements OnInit {
     this.api.post('orders/save', param).subscribe((data: any) => {
       console.log(data);
       this.util.hide();
-      this.api.createOrderNotification(this.cart.stores);
+      //this.api.createOrderNotification(this.cart.stores);
       this.cart.clearCart();
       this.util.publishNewOrder();
       this.navCtrl.navigateRoot(['/orders'], { replaceUrl: true, skipLocationChange: true });

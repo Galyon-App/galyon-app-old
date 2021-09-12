@@ -65,7 +65,7 @@ export class TopPickedPage implements OnInit {
           } else {
             element.variations = [];
           }
-          if (this.cart.itemId.includes(element.uuid)) {
+          if (this.cart.checkProductInCart(element.uuid)) {
             const index = this.cart.cart.filter(x => x.uuid === element.uuid);
             element['quantiy'] = index[0].quantiy;
           } else {
@@ -172,7 +172,7 @@ export class TopPickedPage implements OnInit {
                 element.variations = [];
                 element['variant'] = 1;
               }
-              if (this.cart.itemId.includes(element.uuid)) {
+              if (this.cart.checkProductInCart(element.uuid)) {
                 const index = this.cart.cart.filter(x => x.uuid === element.uuid);
                 element['quantiy'] = index[0].quantiy;
               } else {
@@ -216,7 +216,7 @@ export class TopPickedPage implements OnInit {
                 element.variations = [];
                 element['variant'] = 1;
               }
-              if (this.cart.itemId.includes(element.uuid)) {
+              if (this.cart.checkProductInCart(element.uuid)) {
                 const index = this.cart.cart.filter(x => x.uuid === element.uuid);
                 element['quantiy'] = index[0].quantiy;
               } else {
@@ -245,10 +245,8 @@ export class TopPickedPage implements OnInit {
     const cart = this.cart.cart;
     if (cart && cart.length) {
       cart.forEach(element => {
-        if (this.cart.itemId && this.cart.itemId.length && this.cart.itemId.includes(element.uuid)) {
+        if (this.cart.cart && this.cart.cart.length && this.cart.checkProductInCart(element.uuid)) {
           const index = this.products.findIndex(x => x.uuid === element.uuid);
-          console.log('index============>', index);
-          console.log('???', element.quantiy);
           this.products[index].quantiy = element.quantiy;
         }
       });
@@ -261,11 +259,8 @@ export class TopPickedPage implements OnInit {
     this.cart.addItem(item);
   }
 
-  checkCart(id) {
-    const item = this.cart.itemId;
-    console.log('item', item);
-    return false;
-    // return this.cart.itemId.includes(id);
+  checkCart(uuid) {
+    return this.cart.checkProductInCart(uuid);
   }
 
   singleProduct(item) {

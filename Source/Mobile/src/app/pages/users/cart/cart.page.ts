@@ -44,17 +44,17 @@ export class CartPage implements OnInit {
   add(product, index) {
     if (this.cart.cart[index].quantiy > 0) {
       this.cart.cart[index].quantiy = this.cart.cart[index].quantiy + 1;
-      this.cart.addQuantity(this.cart.cart[index].quantiy, product.id);
+      this.cart.addQuantity(this.cart.cart[index].quantiy, product.uuid);
     }
   }
 
   remove(product, index) {
     if (this.cart.cart[index].quantiy === 1) {
       this.cart.cart[index].quantiy = 0;
-      this.cart.removeItem(product.id)
+      this.cart.removeItem(product.uuid)
     } else {
       this.cart.cart[index].quantiy = this.cart.cart[index].quantiy - 1;
-      this.cart.addQuantity(this.cart.cart[index].quantiy, product.id);
+      this.cart.addQuantity(this.cart.cart[index].quantiy, product.uuid);
     }
   }
 
@@ -82,42 +82,40 @@ export class CartPage implements OnInit {
     this.router.navigate(['offers']);
   }
 
-  async variant(item, indeX) {
-    console.log(item);
+  async variant(item, var_id) {
+    //let pid = this.cart.cart.findIndex(item);
+    //this.cart.cart[pid]
     const allData = [];
-    console.log(item && item.variations !== '');
-    console.log(item && item.variations !== '' && item.variations.length > 0);
-    console.log(item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0);
-    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0) {
-      console.log('->', item.variations[0].items);
-      item.variations[0].items.forEach((element, index) => {
-        console.log('OK');
+    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[var_id]) {
+      let variant = item.variations[var_id];
+      variant.items.forEach((element, index) => {
         let title = '';
-        if (this.util.cside === 'left') {
-          const price = item.variations && item.variations[0] &&
-            item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + this.util.currecny + ' ' + price;
-        } else {
-          const price = item.variations && item.variations[0] && item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + price + ' ' + this.util.currecny;
+        let discount_type = variant.items[index].discount_type;
+        let discount_amt = variant.items[index].discount;
+        let discount_sfx = discount_type == 'percent' ? '%' : ' off';
+        let discount_text = discount_type != 'none' ? ' ('+discount_amt+discount_sfx+')' : '';
+        if(discount_type == 'none' || discount_amt == '0' || discount_amt == 0) {
+          discount_text = '';
         }
+        const price = variant.items[index] && variant.items[index].discount ? variant.items[index].discount : variant.items[index].price;
+        if (this.util.cside === 'left') {
+          title = ' * ' +element.title + ' : +' + this.util.currecny + '' + price + discount_text;
+        } else {
+          title = ' * ' +element.title + ' : +' + price + '' + this.util.currecny + discount_text;
+        }
+
         const data = {
           name: element.title,
           type: 'radio',
           label: title,
           value: index,
-          checked: item.variant === index
+          checked: variant.current === index
         };
         allData.push(data);
-      });
+      });      
 
-      console.log('All Data', allData);
       const alert = await this.alertCtrl.create({
-        header: item.name,
+        header: item.name + ': ' + variant.title,
         inputs: allData,
         buttons: [
           {
@@ -128,22 +126,24 @@ export class CartPage implements OnInit {
               console.log('Confirm Cancel');
             }
           }, {
-            text: this.util.getString('Ok'),
+            text: this.util.getString('Confirm'),
             handler: (data) => {
               console.log('Confirm Ok', data);
-              console.log('before', this.cart.cart[indeX].variant);
-              this.cart.cart[indeX].variant = data;
-              console.log('after', this.cart.cart[indeX].variant);
-              this.cart.calcuate();
+              let prod_index = this.cart.cart.indexOf(item);
+              this.cart.cart[prod_index].variations[var_id].current = data;
+              
+              let cartProduct: any = this.cart.cart.filter( x => x.uuid == item.uuid);
+              if(cartProduct.length) {
+                cartProduct[0].variations[var_id].current = data;
+              }
+              this.cart.saveLocalToStorage();
             }
           }
         ]
       });
-
       await alert.present();
     } else {
       console.log('none');
     }
-
   }
 }

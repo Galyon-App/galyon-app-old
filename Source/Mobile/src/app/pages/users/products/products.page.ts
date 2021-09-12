@@ -224,7 +224,6 @@ export class ProductsPage implements OnInit {
             this.products = products.filter(x => x.status === '1' && this.util.active_store.includes(x.store_id));
             this.dummyProduct = this.products;
             // const cart = this.cart.cart;
-            console.log('cart===============>>>>>>', this.cart.cart);
             this.products.forEach(info => {
               if (info.variations && info.size === '1' && info.variations !== '') {
                 if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(info.variations)) {
@@ -238,8 +237,8 @@ export class ProductsPage implements OnInit {
                 info.variations = [];
                 info['variant'] = 1;
               }
-              if (this.cart.itemId.includes(info.id)) {
-                const index = this.cart.cart.filter(x => x.id === info.id);
+              if (this.cart.checkProductInCart(info.uuid)) {
+                const index = this.cart.cart.filter(x => x.uuid === info.uuid);
                 info['quantiy'] = index[0].quantiy;
               } else {
                 info['quantiy'] = 0;
@@ -285,10 +284,8 @@ export class ProductsPage implements OnInit {
     const cart = this.cart.cart;
     if (cart && cart.length) {
       cart.forEach(element => {
-        if (this.cart.itemId && this.cart.itemId.length && this.cart.itemId.includes(element.id)) {
-          const index = this.products.findIndex(x => x.id === element.id);
-          console.log('index============>', index);
-          console.log('???', element.quantiy);
+        if (this.cart.cart && this.cart.cart.length && this.cart.checkProductInCart(element.uuid)) {
+          const index = this.products.findIndex(x => x.uuid === element.uuid);
           this.products[index].quantiy = element.quantiy;
         }
       });
@@ -301,11 +298,8 @@ export class ProductsPage implements OnInit {
     this.cart.addItem(item);
   }
 
-  checkCart(id) {
-    const item = this.cart.itemId;
-    console.log('item', item);
-    return false;
-    // return this.cart.itemId.includes(id);
+  checkCart(uuid) {
+    return this.cart.checkProductInCart(uuid);
   }
 
   ngOnInit() {

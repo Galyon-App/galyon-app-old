@@ -50,16 +50,17 @@ export class ApiService {
   }
 
   createOrderNotification(stores) {
-    const ids = [...new Set(stores.map(item => item.token))];
-    const apiCalls = [];
-    ids.forEach(element => {
-      apiCalls.push(this.sendNotification('You have received new order', 'New Order Received', element));
-    });
-    forkJoin(apiCalls).subscribe((data) => {
-      console.log('fork result', data);
-    }, error => {
-      console.log('fork error', error);
-    });
+    //TODO: Use firebase
+    // const ids = [...new Set(stores.map(item => item.token))];
+    // const apiCalls = [];
+    // ids.forEach(element => {
+    //   apiCalls.push(this.sendNotification('You have received new order', 'New Order Received', element));
+    // });
+    // forkJoin(apiCalls).subscribe((data) => {
+    //   console.log('fork result', data);
+    // }, error => {
+    //   console.log('fork error', error);
+    // });
 
   }
 

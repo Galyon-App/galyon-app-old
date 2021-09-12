@@ -143,14 +143,14 @@
         </div>
 
         <div class="addBtn"
-          *ngIf="!cart.itemId.includes(id) && quantiy <= 0 && status ==='1' && in_stock ==='1' && storeIsActive ===true">
+          *ngIf="!cart.checkProductInCart(id) && quantiy <= 0 && status ==='1' && in_stock ==='1' && storeIsActive ===true">
           <div class="ion-activatable ripple-parent" (click)="addToCart()">
             {{util.getString('Add')}}
             <ion-ripple-effect></ion-ripple-effect>
           </div>
         </div>
 
-        <div class="abs_add" *ngIf="cart.itemId.includes(id)">
+        <div class="abs_add" *ngIf="cart.checkProductInCart(id)">
           <img src="assets/imgs/remove.png" (click)="remove()">
           <ion-label>{{quantiy}}</ion-label>
           <img src="assets/imgs/add.png" (click)="add()">

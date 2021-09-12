@@ -55,7 +55,7 @@ export class DeliveryOptionsPage implements OnInit {
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         this.storeAddress = response.data;
-        this.cart.stores = this.storeAddress;
+        // this.cart.stores = this.storeAddress; TODO VERY IMPORTANT TO REVIEW.
       }
     }, error => {
       console.log(error);

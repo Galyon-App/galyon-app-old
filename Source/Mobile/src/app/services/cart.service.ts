@@ -31,7 +31,6 @@ export class CartService {
   public deliveryAt: any;
   public deliveryAddress: any;
   public deliveryPrice: any = 0;
-  public stores: any[] = [];
   public bulkOrder: any[] = [];
   public userOrderTaxByStores: any[] = [];
   
@@ -45,7 +44,7 @@ export class CartService {
           const userCart = data;
           if (userCart && userCart.length > 0) {
             this.cart = userCart;
-            this.itemId = [...new Set(this.cart.map(item => item.uuid))];
+            //this.itemId = [...new Set(this.cart.map(item => item.uuid))];
             this.calcuate();
           } else {
             this.calcuate();
@@ -58,167 +57,185 @@ export class CartService {
   
   addItem(item) {
     this.cart.push(item);
-    this.itemId.push(item.uuid);
     this.calcuate();
   }
 
-  addQuantity(quantity, id) {
+  addQuantity(quantity, uuid) {
     if (quantity < 0) {
-      this.removeItem(id);
+      this.removeItem(uuid);
       return false;
     }
     this.cart.forEach(element => {
-      if (element.uuid === id) {
+      if (element.uuid === uuid) {
         element.quantiy = quantity;
       }
     });
     this.calcuate();
   }
 
-  removeItem(id) {
-    this.cart = this.cart.filter(x => x.uuid !== id);
-    this.itemId = this.itemId.filter(x => x !== id);
+  removeItem(uuid) {
+    this.cart = this.cart.filter(x => x.uuid !== uuid);
     this.calcuate();
   }
 
   clearCart() {
     this.cart = [];
-    this.itemId = [];
     this.totalPrice = 0;
     this.grandTotal = 0;
     this.coupon = undefined;
     this.discount = 0;
     this.orderPrice = 0;
     this.datetime = undefined;
-    this.stores = [];
     this.util.clearKeys('cart');
   }
 
   calcuate() {
     this.userOrderTaxByStores = [];
-    let total = 0;
+    let sub_total: number = 0;
     this.cart.forEach(element => {
-      if (element && element.discount === '0') {
-        if (element.size === '1' || element.size === 1) {
-          if (element.variations[0].items[element.variant].discount && element.variations[0].items[element.variant].discount !== 0) {
-            total = total + (parseFloat(element.variations[0].items[element.variant].discount) * element.quantiy);
-          } else {
-            total = total + (parseFloat(element.variations[0].items[element.variant].price) * element.quantiy);
-          }
-        } else {
-          total = total + (parseFloat(element.orig_price) * element.quantiy);
-        }
-      } else {
-        if (element.size === '1' || element.size === 1) {
-          if (element.variations[0].items[element.variant].discount && element.variations[0].items[element.variant].discount !== 0) {
-            total = total + (parseFloat(element.variations[0].items[element.variant].discount) * element.quantiy);
-          } else {
-            total = total + (parseFloat(element.variations[0].items[element.variant].price) * element.quantiy);
-          }
-        } else {
-          total = total + (parseFloat(element.sell_price) * element.quantiy);
-        }
-      }
-    });
-    this.totalPrice = total;
 
-    if (this.coupon && this.coupon.type) {
+      //Determine the Discount of the total items.
+      let calcdiscount: number = 0;
+      if(element.discount_type == 'fixed') {
+        calcdiscount = parseFloat(element.discount) > 0 ? parseFloat(element.discount) * element.quantiy : 0;
+      } else if(element.discount_type == 'percent') {
+        calcdiscount = parseFloat(element.discount) > 0 ? (parseFloat(element.orig_price) * (parseFloat(element.discount)/100)) * element.quantiy : 0;
+      } else {
+        calcdiscount = 0;
+      }
+
+      //Add the item total to the grand total.
+      if(calcdiscount > 0) {
+        sub_total += (parseFloat(element.orig_price) * element.quantiy) * calcdiscount;
+      } else {
+        sub_total += parseFloat(element.orig_price) * element.quantiy;
+      }
+      
+      //Add each variant total to the grand.
+      element.variations.forEach(variant => {
+        let curVarIndex = variant.current;
+        let varPrice = parseFloat(variant.items[curVarIndex].price);
+        let varDiscount = parseFloat(variant.items[curVarIndex].discount)/100;
+
+        if(varDiscount > 0) {          
+          sub_total += (varPrice - (varPrice*varDiscount)) * element.quantiy
+        } else {
+          sub_total += varPrice * element.quantiy
+        }
+      });
+
+    });
+    this.totalPrice = sub_total;
+
+    //TODO: Coupons
+    this.discount = 0;
+    if (this.coupon) {
       const min = parseFloat(this.coupon.min);
       if (this.totalPrice >= min) {
-        if (this.coupon && this.coupon.type === 'per') {
+        if (this.coupon && this.coupon.type === 'percent') {
           function percentage(num, per) {
             return (num / 100) * per;
           }
           const totalPrice = percentage(parseFloat(this.totalPrice).toFixed(2), parseFloat(this.coupon.off));
           this.discount = totalPrice.toFixed(2);
-          // this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
+          //this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
         } else {
           this.discount = this.coupon.off;
           // this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
         }
       } else {
-        this.discount = 0;
         this.coupon = null;
       }
     } else {
       this.grandTotal = this.totalPrice + this.orderTax;
     }
-    if (this.stores && this.stores.length && this.deliveryAddress && this.deliveryAt === 'home') {
-      // this.deliveryPrice = 0;
+
+    this.deliveryPrice = 0;
+    if (this.deliveryAddress && this.deliveryAt === 'home') {
       let totalKM = 0;
       let taxEach = 0;
-      this.stores.forEach(async (element) => {
-        const distance = await this.distanceInKmBetweenEarthCoordinates(this.deliveryAddress.lat, this.deliveryAddress.lng,
-          element.lat, element.lng);
-        totalKM = totalKM + distance;
-        // const storeCount = this.stores.length + 1;
-        taxEach = this.orderTax / this.stores.length;
-        const extraChargeParam = {
-          store_id: element.uid,
-          distance: distance.toFixed(2),
-          tax: taxEach.toFixed(2),
-          shipping: this.shipping,
-          shippingPrice: this.shippingPrice
-        };
-        console.log('extraChargeParam', extraChargeParam);
-        this.userOrderTaxByStores.push(extraChargeParam);
-      });
-      setTimeout(() => {
-        console.log('free', this.freeShipping);
-        console.log('totalprice', this.totalPrice);
-        if (this.freeShipping > this.totalPrice) {
-          if (this.shipping === 'km') {
-            const distancePricer = totalKM * this.shippingPrice;
-            this.deliveryPrice = Math.floor(distancePricer).toFixed(2);
-            if (!this.discount || this.discount === null) {
-              this.discount = 0;
-            }
-            this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + distancePricer;
-            this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-            // console.log('deliveryeeeeeeeee', this.deliveryPrice);
-          } else {
-            this.deliveryPrice = this.shippingPrice;
-            if (!this.discount || this.discount === null) {
-              this.discount = 0;
-            }
-            this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + this.shippingPrice;
-            this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-          }
 
-        } else {
-          this.deliveryPrice = 0;
-          if (!this.discount || this.discount === null) {
-            this.discount = 0;
-          }
-          this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
-          this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-        }
-      }, 1000);
+      //TODO: Very important computinf the delivery.
+      // this.stores.forEach(async (element) => {
+      //   const distance = await this.distanceInKmBetweenEarthCoordinates(this.deliveryAddress.lat, this.deliveryAddress.lng,
+      //     element.lat, element.lng);
+      //   totalKM = totalKM + distance;
+      //   // const storeCount = this.stores.length + 1;
+      //   taxEach = this.orderTax / this.stores.length;
+      //   const extraChargeParam = {
+      //     store_id: element.uid,
+      //     distance: distance.toFixed(2),
+      //     tax: taxEach.toFixed(2),
+      //     shipping: this.shipping,
+      //     shippingPrice: this.shippingPrice
+      //   };
+      //   console.log('extraChargeParam', extraChargeParam);
+      //   this.userOrderTaxByStores.push(extraChargeParam);
+      // });
 
+      //TODO: Very important computinf the delivery after the delivery fee.
+      // setTimeout(() => {
+      //   console.log('free', this.freeShipping);
+      //   console.log('totalprice', this.totalPrice);
+      //   if (this.freeShipping > this.totalPrice) {
+      //     if (this.shipping === 'km') {
+      //       const distancePricer = totalKM * this.shippingPrice;
+      //       this.deliveryPrice = Math.floor(distancePricer).toFixed(2);
+      //       if (!this.discount || this.discount === null) {
+      //         this.discount = 0;
+      //       }
+      //       this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + distancePricer;
+      //       this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+      //       // console.log('deliveryeeeeeeeee', this.deliveryPrice);
+      //     } else {
+      //       this.deliveryPrice = this.shippingPrice;
+      //       if (!this.discount || this.discount === null) {
+      //         this.discount = 0;
+      //       }
+      //       this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + this.shippingPrice;
+      //       this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+      //     }
+
+      //   } else {
+      //     this.deliveryPrice = 0;
+      //     if (!this.discount || this.discount === null) {
+      //       this.discount = 0;
+      //     }
+      //     this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
+      //     this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+      //   }
+      // }, 1000);
     } else {
-      console.log('no store,no delivery address, no shipping price valid');
-      let taxEach = 0;
-      this.stores.forEach(async (element) => {
-        taxEach = this.orderTax / this.stores.length;
-        const extraChargeParam = {
-          store_id: element.uid,
-          distance: 0,
-          tax: taxEach.toFixed(2),
-          shipping: this.shipping,
-          shippingPrice: this.shippingPrice
-        };
-        console.log(extraChargeParam);
-        this.userOrderTaxByStores.push(extraChargeParam);
-      });
-      this.deliveryPrice = 0;
-      this.discount = this.discount === null || this.discount === 0 || !this.discount ? 0 : this.discount;
-      this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + parseFloat(this.orderTax);
-      this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+      console.log('no delivery address, no shipping price valid');
+      //TODO: Very important computing the delivery and store fee.
+      // let taxEach = 0;
+      // this.stores.forEach(async (element) => {
+      //   taxEach = this.orderTax / this.stores.length;
+      //   const extraChargeParam = {
+      //     store_id: element.uid,
+      //     distance: 0,
+      //     tax: taxEach.toFixed(2),
+      //     shipping: this.shipping,
+      //     shippingPrice: this.shippingPrice
+      //   };
+      //   console.log(extraChargeParam);
+      //   this.userOrderTaxByStores.push(extraChargeParam);
+      // });
     }
 
+    this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + parseFloat(this.orderTax);
+    this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+
+    this.saveLocalToStorage();
+    //this.createBulkOrder();
+  }
+
+  /**
+   * Refresh the cart value to the storage,
+   */
+  saveLocalToStorage() {
     this.util.clearKeys('cart');
     this.util.setKeys('cart', this.cart);
-    // this.createBulkOrder();
   }
 
   createBulkOrder() {
@@ -242,8 +259,8 @@ export class CartService {
     this.bulkOrder = order;
   }
 
-  checkProductInCart(id) {
-    return this.itemId.includes(id);
+  checkProductInCart(uuid) {
+    return this.cart.filter(x => x.uuid === uuid).length > 0 ? true : false;
   }
 
   degreesToRadians(degrees) {

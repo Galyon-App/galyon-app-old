@@ -226,9 +226,15 @@ export class HomePage {
           } else {
             element.variations = [];
           }
-          if (this.cart.itemId.includes(element.id)) {
-            const index = this.cart.cart.filter(x => x.id === element.id);
-            element['quantiy'] = index[0].quantiy;
+          if (this.cart.checkProductInCart(element.uuid)) {
+            let filterprod: any = this.cart.cart.filter(x => x.uuid === element.uuid);
+            element['quantiy'] = filterprod[0].quantiy;
+            element.variations.forEach(variant => {
+              let cartVariant: any = filterprod[0].variations.filter( x => x.title == variant.title);
+              if(cartVariant.length) {
+                variant.current = cartVariant[0].current;
+              }
+            });
           } else {
             element['quantiy'] = 0;
           }
@@ -292,6 +298,12 @@ export class HomePage {
               console.log('Confirm Ok', data);
               let prod_index = this.topProducts.indexOf(item);
               this.topProducts[prod_index].variations[var_id].current = data;
+          
+              let cartProduct: any = this.cart.cart.filter( x => x.uuid == item.uuid);
+              if(cartProduct.length) {
+                cartProduct[0].variations[var_id].current = data;
+              }
+              this.cart.saveLocalToStorage();
             }
           }
         ]
@@ -329,7 +341,6 @@ export class HomePage {
   }
 
   addToCart(item, index) {
-    console.log(item);
     this.topProducts[index].quantiy = 1;
     this.cart.addItem(item);
   }

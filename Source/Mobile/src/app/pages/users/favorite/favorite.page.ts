@@ -110,8 +110,8 @@ export class FavoritePage implements OnInit {
             info.variations = [];
             info['variant'] = 1;
           }
-          if (this.cart.itemId.includes(info.id)) {
-            const index = this.cart.cart.filter(x => x.id === info.id);
+          if (this.cart.checkProductInCart(info.uuid)) {
+            const index = this.cart.cart.filter(x => x.uuid === info.uuid);
             info['quantiy'] = index[0].quantiy;
           } else {
             info['quantiy'] = 0;
@@ -243,10 +243,10 @@ export class FavoritePage implements OnInit {
     console.log(product, index);
     if (this.products[index].quantiy === 1) {
       this.products[index].quantiy = 0;
-      this.cart.removeItem(product.id)
+      this.cart.removeItem(product.uuid)
     } else {
       this.products[index].quantiy = this.products[index].quantiy - 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.id);
+      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
     }
   }
 
@@ -254,10 +254,8 @@ export class FavoritePage implements OnInit {
     const cart = this.cart.cart;
     if (cart && cart.length) {
       cart.forEach(element => {
-        if (this.cart.itemId && this.cart.itemId.length && this.cart.itemId.includes(element.id)) {
-          const index = this.products.findIndex(x => x.id === element.id);
-          console.log('index============>', index);
-          console.log('???', element.quantiy);
+        if (this.cart.cart && this.cart.cart.length && this.cart.checkProductInCart(element.uuid)) {
+          const index = this.products.findIndex(x => x.uuid === element.uuid);
           this.products[index].quantiy = element.quantiy;
         }
       });
@@ -270,11 +268,8 @@ export class FavoritePage implements OnInit {
     this.cart.addItem(item);
   }
 
-  checkCart(id) {
-    const item = this.cart.itemId;
-    console.log('item', item);
-    return false;
-    // return this.cart.itemId.includes(id);
+  checkCart(uuid) {
+    return this.cart.checkProductInCart(uuid)
   }
 
   back() {
