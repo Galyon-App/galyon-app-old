@@ -82,7 +82,7 @@
                 .variant{
                     .selecter{
                         font-size: 10px;
-                        padding: 10px;
+                        padding: 5px 10px;
                         border: 1px solid lightgray;
                         margin: 10px 0px;
                         border-radius: 5px;
@@ -139,6 +139,7 @@
                     font-weight: 700;
                     font-size: 15px;
                     text-transform: capitalize;
+                    margin-bottom: 5px;
                 }
                 .desc{
                     font-size: 12px;

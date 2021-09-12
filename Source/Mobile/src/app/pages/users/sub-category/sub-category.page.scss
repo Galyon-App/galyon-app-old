@@ -236,3 +236,22 @@ ion-label {
 }
 
 
+.statusCheck{
+  background: #ffffff7d;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: -webkit-fill-available;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  .text{
+      padding: 5px;
+      margin: 10px;
+      background: red;
+      color: white;
+      font-size: 11px;
+      position: relative;
+      top: 33%;
+  }
+}

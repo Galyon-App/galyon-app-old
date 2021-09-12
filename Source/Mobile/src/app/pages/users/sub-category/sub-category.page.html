@@ -13,14 +13,15 @@
         <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>{{name}}</ion-title>
+    <ion-title>Collab: {{name}}</ion-title>
   </ion-toolbar>
   <ion-searchbar [placeholder]="util.getString('Search...')" inputmode="text" mode="ios"
     type="text" (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
 </ion-header>
 
 <ion-content>
-  <ion-slides [options]="slideOpts">
+
+  <ion-slides *ngIf="subCates?.length > 1" [options]="slideOpts">
     <ion-slide *ngFor="let item of subCates" [class.mnu-selected]="item.uuid == tabSelected" 
       id="mnu_{{item.uuid}}" style="max-width: fit-content !important; padding: 10px 20px;">
       <ion-col class="side_col" (click)="onMenuClick(item.uuid)">
@@ -42,7 +43,7 @@
   </ion-slides>
 
   <p class="ion-text-center" *ngIf="!subCates?.length && !dummyCates?.length && !dummys?.length">
-    {{util.getString('No Product found')}}
+    {{util.getString('No Store found')}}
   </p>
   <ion-list *ngIf="subCates?.length && allProducts?.length">
     <ion-item *ngFor="let item of allProducts" lines="none" (click)="goToSingleProduct(item)">
@@ -53,146 +54,43 @@
     </ion-item>
   </ion-list>
 
-  <ion-row style="margin-top: 20px;">
-    <ion-col size="3" class="ion-no-padding">
-      <div scrollY="false" class="menu-content">
-        
-      </div>
-    </ion-col>
-
-    <ion-col size="9" class="ion-no-padding">
-      <ion-content #content>
-        <div style="padding-bottom: 100px;">
-          <ion-row>
-            <ion-col size="6" *ngFor="let item of dummys">
-              <ion-skeleton-text animated style="width: 100%;height:120px"></ion-skeleton-text>
-            </ion-col>
-          </ion-row>
-          <ion-row style="position: relative;">
-            <ion-col text-center size="6" style="border: .50px solid lightgray;"
-              *ngFor="let item of products;let i = index;">
-              <div class="productimage"
-                [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
-                (click)="singleProduct(item)">
-                <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
-                <div *ngIf="item.in_stock === '0'" class="notInStock">
-                  <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
-                </div>
+  <ion-content #content style="margin-top: 20px;">
+    <div style="padding-bottom: 100px;">
+      <ion-row>
+        <ion-col size="6" *ngFor="let item of dummys" style="margin: 5px 0 0;">
+          <div style="border: .50px solid lightgray; ">
+            <ion-skeleton-text animated style="width: 100%;height:120px"></ion-skeleton-text>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row style="position: relative;">
+        <ion-col *ngFor="let item of stores;let i = index;" text-center size="6" style="margin: 5px 0 0;">
+          <div style="border: .50px solid lightgray; ">
+            <div class="productimage" (click)="viewStore(item)"
+              [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}">
+              <div *ngIf="!item.isOpen" class="statusCheck">
+                <ion-label class="text"> {{util.getString('Store Closed')}} </ion-label>
               </div>
-
-              <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
-              <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
-              <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
-              <ion-label class="producttext" (click)="singleProduct(item)">
-                {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
-              </ion-label>
-              <div *ngIf="item.size ==='1'" class="variant" (click)="variant(item,i)">
-                <ion-label class="selecter ion-activatable">
-                  <span>
-                    <span> {{
-                            item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                            item.variations[0].items[item.variant].title ?
-                            item.variations[0].items[item.variant].title : ''}} </span>
-                    -
-                    <span *ngIf="util.cside ==='left'" class="price_lbl"> {{util.currecny}}
-                      <span class="original" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                     item.variations[0].items[item.variant].discount">
-                        {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                     item.variations[0].items[item.variant].price ?
-                                     item.variations[0].items[item.variant].price : 0}}
-                      </span>
-                      <span class="sell" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                    item.variations[0].items[item.variant].discount"> {{item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                    item.variations[0].items[item.variant].discount ?
-                                    item.variations[0].items[item.variant].discount : 0}}
-                      </span>
-                      <span
-                        *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                    item.variations[0].items[item.variant].discount === 0 && !item.variations[0].items[item.variant].discount">
-                        {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                     item.variations[0].items[item.variant].price ?
-                                     item.variations[0].items[item.variant].price : 0}}
-                      </span>
-
-                    </span>
-                    <span *ngIf="util.cside ==='right'">
-                      <span class="original" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                      item.variations[0].items[item.variant].discount">
-                        {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                      item.variations[0].items[item.variant].price ?
-                                      item.variations[0].items[item.variant].price : 0}}
-                      </span>
-                      <span class="sell" *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                    item.variations[0].items[item.variant].discount"> {{item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                    item.variations[0].items[item.variant].discount ?
-                                    item.variations[0].items[item.variant].discount : 0}}
-                      </span>
-                      <span
-                        *ngIf="item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                      item.variations[0].items[item.variant].discount === 0 && !item.variations[0].items[item.variant].discount">
-                        {{ item.variations && item.variations[0] && item.variations[0].items[item.variant] &&
-                                      item.variations[0].items[item.variant].price ?
-                                      item.variations[0].items[item.variant].price : 0}}
-                      </span>
-                      {{util.currecny}}
-                    </span>
-                  </span>
-                  <ion-icon slot="start" name="caret-down-outline"></ion-icon>
-                  <ion-ripple-effect type="bounded"></ion-ripple-effect>
-                </ion-label>
+            </div>
+            <ion-label class="producttext" (click)="viewStore(item)" style="padding: 5px 4px 0;">
+              {{ (item.name.length>25)? (item.name | slice:0:25)+'..':(item.name) }}
+            </ion-label>
+            <ion-label class="itemsKind" style="padding: 5px 4px 0;">
+              <span>{{ (item.address.length>55)? (item.address | slice:0:55)+'..':(item.address) }}</span>
+            </ion-label>
+            <div class="btnBtm" style="padding: 5px;">
+              <div class="ion-activatable ripple-parent" (click)="viewStore(item)">
+                {{util.getString('View Store')}}
+                <ion-ripple-effect></ion-ripple-effect>
               </div>
-              <ion-label class="itemsKind" *ngIf="item.size ==='0'">
-                <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
-                <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
-                <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
-                <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
-                <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
-              </ion-label>
-              <div *ngIf="item.size ==='0'">
-                <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'"
-                  (click)="singleProduct(item)">
-                  {{item.orig_price}}
-                  {{util.currecny}}</ion-label>
-                <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"
-                  (click)="singleProduct(item)">
-                  {{util.currecny}}
-                  {{item.orig_price}} </ion-label>
-                <ion-label class="price_lbl" *ngIf="item.discount !== '0'" (click)="singleProduct(item)">
-                  <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}}
-                  </span>
-                  <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
-
-                  <span class="original" *ngIf="util.cside ==='right'"> {{item.orig_price}}
-                    {{util.currecny}}</span>
-                  <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
-
-                </ion-label>
-              </div>
-              <div class="btnBtm" *ngIf="!cart.checkProductInCart(item.uuid) && item.quantiy <= 0 && item.in_stock === '1'">
-                <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
-                  {{util.getString('Add to Cart')}}
-                  <ion-ripple-effect></ion-ripple-effect>
-                </div>
-              </div>
-
-              <div class="cartBtn" *ngIf="cart.checkProductInCart(item.uuid)">
-                <div class="abs_add">
-                  <img src="assets/imgs/remove.png" (click)="remove(item,i)">
-                  <ion-label *ngIf="item.quantiy !== 0">{{item.quantiy}}</ion-label>
-                  <ion-label *ngIf="item.quantiy === 0">
-                    <ion-spinner name="circles" color="light"></ion-spinner>
-                  </ion-label>
-                  <img src="assets/imgs/add.png" (click)="add(item,i)">
-                </div>
-              </div>
-            </ion-col>
-          </ion-row>
-        </div>
-        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="">
-          </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-content>
-    </ion-col>
-  </ion-row>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Please wait...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-content>
 </ion-content>

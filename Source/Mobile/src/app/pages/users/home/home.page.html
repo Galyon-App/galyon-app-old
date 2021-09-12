@@ -129,6 +129,7 @@
                 <label style="text-decoration: line-through;">
                   {{util.currecny}} {{ item.orig_price }}
                 </label> 
+                &nbsp;
                 {{ item.discount_type == 'percent' ? '' : util.currecny }} 
                 {{ item.discount_type == 'percent' ? item.discount : item.discount }}
                 {{ item.discount_type == 'percent' ? '%' : 'off' }}
@@ -312,7 +313,7 @@
 
     <!--  START INFINITY STORES -->
     <div class="segment-title" style="margin-top: 15px;">
-      <ion-label class="all"> {{util.getString('Official Resellers')}} </ion-label>
+      <ion-label class="all"> {{util.getString('Official Stores')}} </ion-label>
       <!-- <ion-label class="view" (click)="topStores()">{{util.getString('More')}}
         <div class="ion-activatable">
           <ion-ripple-effect type="bounded"></ion-ripple-effect>
@@ -341,11 +342,11 @@
       <ion-item *ngFor="let item of stores;let i = index;">
         <div class="allstore_div">
           <div class="card_div">
-            <div class="image_div" (click)="openStore(item)"
+            <div class="image_div" (click)="openStore(item)" style="background-repeat: no-repeat; background-position: center; background-size: cover;"
               [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/store.png)'}">
-              <img src="assets/imgs/open.png" class="isOpen" alt="Open" *ngIf="item.isOpen && item.isClosed ==='1'">
-              <img src="assets/imgs/close.png" class="isOpen" alt="Close"
-                *ngIf="!item.isOpen || item.isClosed === '0'">
+              <div *ngIf="!item.isOpen" class="statusCheck">
+                <ion-label class="text"> {{util.getString('Store Closed')}} </ion-label>
+              </div>
             </div>
             <div class="desc_div" (click)="openStore(item)">
               <ion-label class="pro_name">

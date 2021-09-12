@@ -94,13 +94,35 @@ class Stores extends Galyon_controller {
         }
     }
 
+    //
+
     function getAllStores() {
         $user = $this->is_authorized(false);
         $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
             $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
+            if($user->role === "admin" &&  $basic == "admin") {
                 $where = null; 
+            }
+        }
+
+        // $subcategory_id = $this->input->post('subcategory_id');
+        // if(!empty($subcategory_id)) {
+        //     if($where != null) {
+        //         $where .= " AND store_id = '$subcategory_id'";
+        //     } else {
+        //         $where = "store_id = '$subcategory_id'";
+        //     }
+        // }
+
+        $limit_start = $this->input->post('limit_start');
+        $limit_length = $this->input->post('limit_length');
+        if(!empty($limit_length)) {
+            $limit_start = (int)$limit_start;
+            if($where != null) {
+                $where .= " LIMIT $limit_start, $limit_length";
+            } else {
+                $where = " LIMIT $limit_start, $limit_length";
             }
         }
 
@@ -130,6 +152,74 @@ class Stores extends Galyon_controller {
             $this->json_response($stores);
         } else {
             $this->json_response(null, false, "No store was found!");
+        }
+    }
+
+    function getStoresByCategory() {
+        
+        $city_id = $this->input->post('city_id');
+        $subcategory_id = $this->input->post('subcategory_id');
+        if(empty($city_id) || empty($subcategory_id)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
+        }
+
+        $limit_start = $this->input->post('limit_start');
+        $limit_length = $this->input->post('limit_length');
+        $params = array($city_id, $subcategory_id, (int)$limit_start, (int)$limit_length);
+
+        $stores = $this->Crud_model->custom("
+            SELECT DISTINCT(`products`.`store_id`), 
+                `stores`.`uuid`,
+                `stores`.`name`,
+                `stores`.`city_id`,
+                `stores`.`email`,
+                `stores`.`phone`,
+                `stores`.`cover`,
+                `stores`.`images`,
+                `stores`.`owner`,
+                `stores`.`isClosed`,
+                `stores`.`open_time`,
+                `stores`.`close_time`,
+                `stores`.`status`,
+                `stores`.`timestamp`,
+                `stores`.`updated_at`,
+                `stores`.`deleted_at`
+            FROM `stores` INNER JOIN `products` ON 
+                `stores`.`uuid` = `products`.`store_id` 
+            WHERE 
+                `stores`.status=1 AND 
+                `stores`.`deleted_at` IS NULL AND 
+                `stores`.`city_id`=? AND 
+                `products`.`subcategory_id`=? 
+            LIMIT ?, ?
+        ", $params, 'result');
+
+        if($stores) {
+            foreach($stores as $store) {
+                $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
+                $store->address = null;
+                if($address){
+                    $store->address = $address->house.", ".$address->address;
+                }
+
+                $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
+                $store->owner_name = "-";
+                if($owner){
+                    $store->owner_name = $owner->first_name .' '. $owner->last_name;
+                }
+
+                $city = $this->Crud_model->get('cities', 'name', array( "uuid" => $store->city_id ), null, 'row' );
+                $store->city_name = "-";
+                if($city){
+                    $store->city_name = $city->name;
+                }
+                
+                $store->ratings = '-';
+            }
+
+            $this->json_response($stores);
+        } else {
+            $this->json_response($stores, false, "No store associated to the subcategory!");
         }
     }
     

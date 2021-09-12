@@ -107,4 +107,24 @@ class Galyon_model extends CI_Model
 			return false;
 		}
 	}
+
+	public function custom($sql_query, $params = array(), $result = 'row') {
+		// $sql = "SELECT * FROM some_table WHERE id = ? AND status = ? AND author = ?";
+		// $this->db->query($sql, array(3, 'live', 'Rick'));
+		
+		$active_query = $this->db->query($sql_query, $params);
+		if( !$active_query  ) {
+			return $this->db->error();
+		}
+
+		if($this->db->affected_rows() > 0) {
+			if($result == 'row') {
+				return $active_query->row();
+			} else {
+				return $active_query->result();
+			}
+		} else {
+			return false;
+		}
+	}
 }

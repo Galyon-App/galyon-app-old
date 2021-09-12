@@ -74,7 +74,7 @@ class Category extends Galyon_controller {
 
         $parent_id = $this->input->post('parent_id');
         if(!empty($parent_id)) {
-            $parent_id .= "parent_id = '$parent_id'";
+            $parent_id = "parent_id = '$parent_id'";
         } else {
             $parent_id = "parent_id IS NOT NULL";
         }

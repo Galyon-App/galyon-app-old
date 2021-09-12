@@ -140,8 +140,14 @@ export class StorePage implements OnInit {
             info.variations = [];
           }
           if (this.cart.checkProductInCart(info.uuid)) {
-            const index = this.cart.cart.filter(x => x.uuid === info.uuid);
-            info['quantiy'] = index[0].quantiy;
+            let filterprod: any = this.cart.cart.filter(x => x.uuid === info.uuid);
+            info['quantiy'] = filterprod[0].quantiy;
+            info.variations.forEach(variant => {
+              let cartVariant: any = filterprod[0].variations.filter( x => x.title == variant.title);
+              if(cartVariant.length) {
+                variant.current = cartVariant[0].current;
+              }
+            });
           } else {
             info['quantiy'] = 0;
           }
@@ -359,42 +365,38 @@ export class StorePage implements OnInit {
     return await modal.present();
   }
 
-  async variant(item, indeX) {
-    console.log(item);
+  async variant(item, var_id) {
     const allData = [];
-    console.log(item && item.variations !== '');
-    console.log(item && item.variations !== '' && item.variations.length > 0);
-    console.log(item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0);
-    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0) {
-      console.log('->', item.variations[0].items);
-      item.variations[0].items.forEach((element, index) => {
-        console.log('OK');
+    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[var_id]) {
+      let variant = item.variations[var_id];
+      variant.items.forEach((element, index) => {
         let title = '';
-        if (this.util.cside === 'left') {
-          const price = item.variations && item.variations[0] &&
-            item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + this.util.currecny + ' ' + price;
-        } else {
-          const price = item.variations && item.variations[0] && item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + price + ' ' + this.util.currecny;
+        let discount_type = variant.items[index].discount_type;
+        let discount_amt = variant.items[index].discount;
+        let discount_sfx = discount_type == 'percent' ? '%' : ' off';
+        let discount_text = discount_type != 'none' ? ' ('+discount_amt+discount_sfx+')' : '';
+        if(discount_type == 'none' || discount_amt == '0' || discount_amt == 0) {
+          discount_text = '';
         }
+        const price = variant.items[index] && variant.items[index].discount ? variant.items[index].discount : variant.items[index].price;
+        if (this.util.cside === 'left') {
+          title = ' * ' +element.title + ' : +' + this.util.currecny + '' + price + discount_text;
+        } else {
+          title = ' * ' +element.title + ' : +' + price + '' + this.util.currecny + discount_text;
+        }
+
         const data = {
           name: element.title,
           type: 'radio',
           label: title,
           value: index,
-          checked: item.variant === index
+          checked: variant.current === index
         };
         allData.push(data);
-      });
+      });      
 
-      console.log('All Data', allData);
       const alert = await this.alertCtrl.create({
-        header: item.name,
+        header: item.name + ': ' + variant.title,
         inputs: allData,
         buttons: [
           {
@@ -405,21 +407,24 @@ export class StorePage implements OnInit {
               console.log('Confirm Cancel');
             }
           }, {
-            text: this.util.getString('Ok'),
+            text: this.util.getString('Confirm'),
             handler: (data) => {
               console.log('Confirm Ok', data);
-              console.log('before', this.products[indeX].variant);
-              this.products[indeX].variant = data;
-              console.log('after', this.products[indeX].variant);
+              let prod_index = this.products.indexOf(item);
+              this.products[prod_index].variations[var_id].current = data;
+          
+              let cartProduct: any = this.cart.cart.filter( x => x.uuid == item.uuid);
+              if(cartProduct.length) {
+                cartProduct[0].variations[var_id].current = data;
+              }
+              this.cart.saveLocalToStorage();
             }
           }
         ]
       });
-
       await alert.present();
     } else {
       console.log('none');
     }
-
   }
 }
