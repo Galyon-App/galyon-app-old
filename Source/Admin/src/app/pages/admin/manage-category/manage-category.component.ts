@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 */
 
 import { Component, OnInit } from '@angular/core';
-import { ToastData, ToastOptions, ToastyService } from 'ng2-toasty';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { ApisService } from 'src/app/services/apis.service';
@@ -31,7 +30,6 @@ export class ManageCategoryComponent {
 
   constructor(
     public api: ApisService,
-    private toastyService: ToastyService,
     private spinner: NgxSpinnerService,
     private navCtrl: Location,
     private route: ActivatedRoute,
@@ -78,7 +76,7 @@ export class ManageCategoryComponent {
       }
     }, error => {
       this.spinner.hide();
-      console.log('errror', error);
+      console.log('error', error);
       this.util.error(this.api.translate('Something went wrong'));
     }).catch(error => {
       this.spinner.hide();
@@ -129,7 +127,7 @@ export class ManageCategoryComponent {
     }).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
-        this.navCtrl.back();
+        this.util.success(null);
       } else {
         this.util.error(response.message);
       }
@@ -155,7 +153,7 @@ export class ManageCategoryComponent {
     }).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
-        this.navCtrl.back();
+        this.util.success(null);
       } else {
         this.util.error(response.message);
       }

@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { ToastData, ToastOptions, ToastyService } from 'ng2-toasty';
 import { ApisService } from 'src/app/services/apis.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -82,39 +83,49 @@ export class UtilService {
   }
 
   error(message) {
-    const toastOptions: ToastOptions = {
-      title: this.api.translate('Error'),
-      msg: this.api.translate(message),
-      showClose: true,
-      timeout: 2000,
-      theme: 'default',
-      onAdd: (toast: ToastData) => {
-        console.log('Toast ' + toast.id + ' has been added: '+message);
-      },
-      onRemove: () => {
-        console.log('Toast  has been removed!');
-      }
-    };
-    // Add see all possible types in one shot
-    this.toastyService.error(toastOptions);
+    Swal.fire(
+      'Something went wrong',
+      message,
+      'error'
+    );
+    // const toastOptions: ToastOptions = {
+    //   title: this.api.translate('Error'),
+    //   msg: this.api.translate(message),
+    //   showClose: true,
+    //   timeout: 2000,
+    //   theme: 'default',
+    //   onAdd: (toast: ToastData) => {
+    //     console.log('Toast ' + toast.id + ' has been added: '+message);
+    //   },
+    //   onRemove: () => {
+    //     console.log('Toast  has been removed!');
+    //   }
+    // };
+    // // Add see all possible types in one shot
+    // this.toastyService.error(toastOptions);
   }
 
   success(message) {
-    const toastOptions: ToastOptions = {
-      title: this.api.translate('Success'),
-      msg: this.api.translate(message),
-      showClose: true,
-      timeout: 2000,
-      theme: 'default',
-      onAdd: (toast: ToastData) => {
-        console.log('Toast ' + toast.id + ' has been added: '+message);
-      },
-      onRemove: () => {
-        console.log('Toast  has been removed!');
-      }
-    };
-    // Add see all possible types in one shot
-    this.toastyService.success(toastOptions);
+    Swal.fire(
+      'Congratualtions!',
+      message ? message : "Your request was sent and approved by the server.",
+      'success'
+    );
+    // const toastOptions: ToastOptions = {
+    //   title: this.api.translate('Success'),
+    //   msg: this.api.translate(message),
+    //   showClose: true,
+    //   timeout: 2000,
+    //   theme: 'default',
+    //   onAdd: (toast: ToastData) => {
+    //     console.log('Toast ' + toast.id + ' has been added: '+message);
+    //   },
+    //   onRemove: () => {
+    //     console.log('Toast  has been removed!');
+    //   }
+    // };
+    // // Add see all possible types in one shot
+    // this.toastyService.success(toastOptions);
   }
 
   changeLng(item) {

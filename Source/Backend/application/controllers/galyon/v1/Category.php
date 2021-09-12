@@ -34,7 +34,7 @@ class Category extends Galyon_controller {
         if($category) {
             $this->json_response($category);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 
@@ -65,7 +65,7 @@ class Category extends Galyon_controller {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 
@@ -85,7 +85,7 @@ class Category extends Galyon_controller {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 
@@ -97,7 +97,7 @@ class Category extends Galyon_controller {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 
@@ -154,7 +154,7 @@ class Category extends Galyon_controller {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$uuid'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 
@@ -172,7 +172,7 @@ class Category extends Galyon_controller {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$category_id'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 
@@ -190,7 +190,7 @@ class Category extends Galyon_controller {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$category_id'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 
@@ -208,7 +208,7 @@ class Category extends Galyon_controller {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$category_id'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No category was found!");
+            $this->json_response(null, false, "No category or changes was found!");
         }
     }
 }

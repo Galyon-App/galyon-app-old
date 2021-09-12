@@ -34,6 +34,7 @@ export class CategoryComponent {
   }
 
   getAllCategory() {
+    //deleted: true
     this.api.post('galyon/v1/category/getAllCategorys', {}).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
@@ -105,8 +106,9 @@ export class CategoryComponent {
           uuid: item.uuid
         }).then((response) => {
           if(response.success) {
-            let index = this.categories.findIndex((x => x.uuid == item.uuid));
+            let index = this.categories.findIndex(x => x.uuid == item.uuid);
             this.categories[index].status = response.data.status;
+            this.util.success(null);
           } else {
             this.util.error( response.message );
           }

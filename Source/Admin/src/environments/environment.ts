@@ -33,7 +33,7 @@ export const environment = {
     symbol: '₱',
     code: 'PHP'
   },
-  authToken: '123456789'
+  authToken: 'admin'
 };
 
 /*
