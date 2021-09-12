@@ -32,7 +32,8 @@ export const environment = {
   general: {
     symbol: '₱',
     code: 'PHP'
-  }
+  },
+  authToken: 'mobile'
 };
 
 /*
