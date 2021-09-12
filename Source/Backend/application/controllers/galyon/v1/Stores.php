@@ -13,7 +13,8 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Stores extends Galyon_controller {
 
     private $table_name = 'stores';
-    private $public_column = ['uuid','owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','status','timestamp','updated_at','deleted_at'];
+    private $edit_column = ['owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','status'];
+    private $public_column = ['uuid','owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
     function __construct(){
@@ -21,38 +22,24 @@ class Stores extends Galyon_controller {
     }
 
     function getStoreById() {
+        $auth = $this->is_authorized(false);
+
         $uuid = $this->input->post('uuid');
         if(empty($uuid)) {
             $this->json_response(null, false, "Required field cannot be empty!");
         }
 
-        $store = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$uuid'", NULL, 'row' );
+        $store = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, ["uuid = '$uuid'"]), NULL, 'row' );
         if($store) {
-            $address = $this->Crud_model->get('address', 'uuid, store_id, type, address, house, landmark, zipcode, lat, lng', 
-                array( "store_id" => $store->uuid, "status" => "1" , "deleted_at" => null ), null, 'row' );
-            $store->address = null;
-            if($address){
-                $store->address = $address;
-            }
-
-            $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
-            $store->owner_name = "-";
-            if($owner){
-                $store->owner_name = $owner->first_name .' '. $owner->last_name;
-            }
-
-            $city = $this->Crud_model->get('cities', 'name', array( "uuid" => $store->city_id ), null, 'row' );
-            $store->city_name = "-";
-            if($city){
-                $store->city_name = $city->name;
-            }
-
+            $store = $this->getStoreMeta($store, true);
             $this->json_response($store);
         } else {
             $this->json_response(null, false, "No store was found!");
         }
     }
 
+    //Temporary
     function getStoreByIds() {
         $uuids = $this->input->post('uuids');
         if(empty($uuids)) {
@@ -69,86 +56,24 @@ class Stores extends Galyon_controller {
 
         $stores = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
         if($stores) {
-            foreach($stores as $store) {
-                $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
-                $store->address = null;
-                if($address){
-                    $store->address = $address->house.", ".$address->address;
-                }
-
-                $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
-                $store->owner_name = "-";
-                if($owner){
-                    $store->owner_name = $owner->first_name .' '. $owner->last_name;
-                }
-
-                $city = $this->Crud_model->get('cities', 'name', array( "uuid" => $store->city_id ), null, 'row' );
-                $store->city_name = "-";
-                if($city){
-                    $store->city_name = $city->name;
-                }
-            }
+            $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
         } else {
             $this->json_response(null, false, "No store was found!");
         }
     }
 
-    //
-
     function getAllStores() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic == "admin") {
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized(false);
 
-        // $subcategory_id = $this->input->post('subcategory_id');
-        // if(!empty($subcategory_id)) {
-        //     if($where != null) {
-        //         $where .= " AND store_id = '$subcategory_id'";
-        //     } else {
-        //         $where = "store_id = '$subcategory_id'";
-        //     }
-        // }
-
-        $limit_start = $this->input->post('limit_start');
+        $limit_start = (int)$this->input->post('limit_start');
         $limit_length = $this->input->post('limit_length');
-        if(!empty($limit_length)) {
-            $limit_start = (int)$limit_start;
-            if($where != null) {
-                $where .= " LIMIT $limit_start, $limit_length";
-            } else {
-                $where = " LIMIT $limit_start, $limit_length";
-            }
-        }
+        $limit_length = $limit_length ? (int)$limit_length : 10;
 
-        $stores = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, [" LIMIT $limit_start, $limit_length "], false), NULL, 'result' );
         if($stores) {
-            foreach($stores as $store) {
-                $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
-                $store->address = null;
-                if($address){
-                    $store->address = $address->house.", ".$address->address;
-                }
-
-                $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
-                $store->owner_name = "-";
-                if($owner){
-                    $store->owner_name = $owner->first_name .' '. $owner->last_name;
-                }
-
-                $city = $this->Crud_model->get('cities', 'name', array( "uuid" => $store->city_id ), null, 'row' );
-                $store->city_name = "-";
-                if($city){
-                    $store->city_name = $city->name;
-                }
-                
-                $store->ratings = '-';
-            }
+            $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
         } else {
             $this->json_response(null, false, "No store was found!");
@@ -156,6 +81,7 @@ class Stores extends Galyon_controller {
     }
 
     function getStoresByCategory() {
+        $auth = $this->is_authorized(false);
         
         $city_id = $this->input->post('city_id');
         $subcategory_id = $this->input->post('subcategory_id');
@@ -165,58 +91,29 @@ class Stores extends Galyon_controller {
 
         $limit_start = $this->input->post('limit_start');
         $limit_length = $this->input->post('limit_length');
-        $params = array($city_id, $subcategory_id, (int)$limit_start, (int)$limit_length);
+        $limit_length = $limit_length ? (int)$limit_length : 10;
+        $params = array($city_id, $subcategory_id, (int)$limit_start, $limit_length);
 
-        $stores = $this->Crud_model->custom("
-            SELECT DISTINCT(`products`.`store_id`), 
-                `stores`.`uuid`,
-                `stores`.`name`,
-                `stores`.`city_id`,
-                `stores`.`email`,
-                `stores`.`phone`,
-                `stores`.`cover`,
-                `stores`.`images`,
-                `stores`.`owner`,
-                `stores`.`isClosed`,
-                `stores`.`open_time`,
-                `stores`.`close_time`,
-                `stores`.`status`,
-                `stores`.`timestamp`,
-                `stores`.`updated_at`,
-                `stores`.`deleted_at`
-            FROM `stores` INNER JOIN `products` ON 
-                `stores`.`uuid` = `products`.`store_id` 
+        $start_query = "
+            SELECT DISTINCT(`products`.`store_id`) 
+        ";
+        foreach($this->public_column as $column) {
+            $start_query .= ", `$this->table_name`.`$column`";
+        }
+        $end_query = "
+            FROM `$this->table_name` INNER JOIN `products` ON 
+                `$this->table_name`.`uuid` = `products`.`store_id` 
             WHERE 
-                `stores`.status=1 AND 
-                `stores`.`deleted_at` IS NULL AND 
-                `stores`.`city_id`=? AND 
+                `$this->table_name`.status=1 AND 
+                `$this->table_name`.`deleted_at` IS NULL AND 
+                `$this->table_name`.`city_id`=? AND 
                 `products`.`subcategory_id`=? 
             LIMIT ?, ?
-        ", $params, 'result');
+        ";
+        $stores = $this->Crud_model->custom($start_query.$end_query, $params, 'result');
 
         if($stores) {
-            foreach($stores as $store) {
-                $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
-                $store->address = null;
-                if($address){
-                    $store->address = $address->house.", ".$address->address;
-                }
-
-                $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
-                $store->owner_name = "-";
-                if($owner){
-                    $store->owner_name = $owner->first_name .' '. $owner->last_name;
-                }
-
-                $city = $this->Crud_model->get('cities', 'name', array( "uuid" => $store->city_id ), null, 'row' );
-                $store->city_name = "-";
-                if($city){
-                    $store->city_name = $city->name;
-                }
-                
-                $store->ratings = '-';
-            }
-
+            $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
         } else {
             $this->json_response($stores, false, "No store associated to the subcategory!");
@@ -224,26 +121,18 @@ class Stores extends Galyon_controller {
     }
     
     function getStoreByOwner() {
-        //Get the authorization header.
-        $bearer = $this->input->get_request_header('Authorization');
-        $token = str_replace("Bearer ", "", $bearer);
-        $user = JWT::decode($token, $this->config->item('encryption_key'));
+        $auth = $this->is_authorized(false);
 
-        if($user == false) {
-            $this->json_response(null, false, "Invalid access token!");
-            exit;
+        $uuid = $this->input->post('uuid');
+        if(empty($uuid)) {
+            $this->json_response(null, false, "Required field cannot be empty!");
         }
 
-        $user_uuid = $this->input->post('uuid');
-        $stores = $this->Crud_model->get('stores', '*', array( "owner" => $user_uuid ), null, 'row' );
-        foreach($stores as $store) {
-            unset($store->id);
-            unset($store->owner);
-            unset($store->status);
-            unset($store->updated_at);
-        }
+        $stores = $this->Crud_model->get($this->table_name, $this->$public_column, 
+            $this->compileWhereClause($auth->where, [" owner = '$uuid'"]), null, 'row' );
 
         if($stores) {
+            $stores = $this->getStoreMeta($stores, true);
             $this->json_response($stores);
         } else {
             $this->json_response(null, false, "No store associated to this account!");
@@ -251,10 +140,18 @@ class Stores extends Galyon_controller {
     }
 
     function getStoreByCity() {
+        $auth = $this->is_authorized(false);
+
         $city_id = $this->input->post('uuid');
-        $stores = $this->Crud_model->get($this->table_name, $this->public_column, array( "city_id" => $city_id ), null, 'result' );
+        if(empty($city_id)) {
+            $this->json_response(null, false, "Required field cannot be empty!");
+        }
+
+        $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, [" city_id = '$city_id'"]), null, 'result' );
 
         if($stores) {
+            $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
         } else {
             $this->json_response(null, false, "No store associated to this city!");
@@ -262,80 +159,139 @@ class Stores extends Galyon_controller {
     }
 
     function getStoreFeatured() {
+        $auth = $this->is_authorized(false);
 
+        $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, [" is_featured = '1'"]), null, 'result' );
+
+        if($stores) {
+            $stores = $this->getStoreMeta($stores);
+            $this->json_response($stores);
+        } else {
+            $this->json_response(null, false, "No store associated to this city!");
+        }
+    }
+
+    protected function getStoreMetaItem($store) {
+        unset($store->id);
+    
+        $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
+        $store->address = null;
+        if($address){
+            $store->address = $address->house.", ".$address->address;
+        }
+
+        $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
+        $store->owner_name = "-";
+        if($owner){
+            $store->owner_name = $owner->first_name .' '. $owner->last_name;
+        }
+
+        $city = $this->Crud_model->get('cities', 'name', array( "uuid" => $store->city_id ), null, 'row' );
+        $store->city_name = "-";
+        if($city){
+            $store->city_name = $city->name;
+        }
+        
+        $store->ratings = '-';
+
+        return $store;
+    }
+
+    protected function getStoreMeta($stores, $single = false) {
+        if($single) {
+            $stores = $this->getStoreMetaItem($stores);
+        } else {
+            foreach($stores as $store) {
+                $store = $this->getStoreMetaItem($store);
+            }
+        }
+        return $stores;
     }
 
     function activate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
+        $auth = $this->is_authorized(true, ["admin"]);
+
+        $store_id = $this->input->post('uuid');
+        if(empty($store_id)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
-        $city_id = $this->input->post('uuid');
-        $store = $this->Crud_model->update($this->table_name, array( "status" => "1" ), array( "uuid" => $city_id ));
+        $updated = $this->Crud_model->update($this->table_name, array( "status" => "1" ), "uuid = '$store_id'");
 
-        if($store) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $city_id ), null, 'row' );
+        if($updated) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$store_id'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No store was found!");
+            $this->json_response(null, false, "No store or changes was found!");
         }
     }
 
     function deactivate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
+        $auth = $this->is_authorized(true, ["admin"]);
+
+        $store_id = $this->input->post('uuid');
+        if(empty($store_id)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
-        $city_id = $this->input->post('uuid');
-        $store = $this->Crud_model->update($this->table_name, array( "status" => "0" ), array( "uuid" => $city_id ));
+        $updated = $this->Crud_model->update($this->table_name, array( "status" => "0" ), "uuid = '$store_id'");
 
-        if($store) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $city_id ), null, 'row' );
+        if($updated) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$store_id'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No store was found!");
+            $this->json_response(null, false, "No store or changes was found!");
         }
     }
 
     function createNewStore() {
+        $auth = $this->is_authorized(true, ["admin"]);
+        $request = $this->request_validation($_POST, ["name", "cover"], $this->edit_column);
+        $request->data = array_merge(array(
+            "uuid" => $this->uuid->v4(),
+            "parent_id" => $this->Crud_model->sanitize_param($this->input->post("parent"))
+        ), $request->data);
 
+        $inserted = $this->Crud_model->insert($this->table_name, $request->data);
+
+        if($inserted) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "id = '$inserted'", null, 'row' );
+            $this->json_response($current);
+        } else {
+            $this->json_response(null, false, "No user was found!");
+        }
     }
 
     function editStoreCurrent() {
-        $user = $this->is_authorized();
-        if($user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
-        }
+        $auth = $this->is_authorized(true, ["admin"]);
+        $request = $this->request_validation($_POST, ["uuid", "name"], $this->edit_column);
 
-        $uuid = $this->input->post('uuid');
-        if(empty($uuid)) {
-            $this->json_response(null, false, "Required field cannot be empty!");
-        }
-
-        //$first_name = $this->input->post('first_name');
-        //TODO: Check if param is meet.
-        // if(empty($first_name) || empty($last_name) || empty($phone) || empty($gender) || empty($uuid)) {
-        //     $this->json_response(null, false, "Required fields cannot be empty!");
-        // }
-        $new_val = $_POST; //TODO: Temp
-
-        $success = $this->Crud_model->update($this->table_name, $new_val, array( "uuid" => $uuid ));
-
-        if($success) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $uuid ), null, 'row' );
+        $update = $this->Crud_model->update($this->table_name, $request->data, array( "uuid" => $request->data['uuid'] ));
+        if($update) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $request->data['uuid'] ), null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No store was found!");
+            $this->json_response(null, false, "No store or changes was found!");
         }
     }
 
     function deleteStoreCurrent() {
+        $auth = $this->is_authorized(true, ["admin"]);
 
+        $store_id = $this->input->post('uuid');
+        if(empty($store_id)) {
+            $this->json_response(null, false, "Required fields cannot be empty!");
+        }
+
+        $deleted_at = get_current_utc_time();
+        $is_deleted = $this->Crud_model->update($this->table_name, array('deleted_at' => $deleted_at), "uuid = '$store_id'" );
+
+        if($is_deleted) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$store_id'", null, 'row' );
+            $this->json_response($current);
+        } else {
+            $this->json_response(null, false, "No store or changes was found!");
+        }
     }
 }

@@ -12,6 +12,11 @@ class Galyon_model extends CI_Model
 	function __construct() {
 		parent::__construct();
 	}
+
+	public function sanitize_param($params) {
+		//TODO: VERY IMPORTANT
+		return $params;
+	}
 	
 	/**
 	 * Get a row based on where condition and if row or result.

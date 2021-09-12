@@ -122,6 +122,7 @@ export class StoresComponent {
           if(response.success) {
             let index = this.stores.findIndex((x => x.uuid == item.uuid));
             this.stores[index].status = response.data.status;
+            this.util.success(null);
           } else {
             this.util.error( response.message );
           }

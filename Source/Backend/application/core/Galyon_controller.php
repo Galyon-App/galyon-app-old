@@ -109,10 +109,10 @@ class Galyon_controller extends CI_Controller{
    * @param  array $queries
    * @return string
    */
-  public function compileWhereClause($where, $queries = []) {
+  public function compileWhereClause($where, $queries = [], $withAnd = true) {
     $where_clause = $where;
     foreach($queries as $query) {
-      if($where_clause != null && $where_clause != "") {
+      if($where_clause != null && $where_clause != "" && $withAnd) {
         $where_clause .= " AND ";
       }
       $where_clause .= $query;
@@ -173,6 +173,39 @@ class Galyon_controller extends CI_Controller{
     }
   }
 
+  public function request_validation($request, $required, $optional = [], $failexit = false) {
+    $request_keys = [];
+    foreach($request as $key => $val) {
+        array_push($request_keys, $key);
+    }
+
+    $notfound_keys = [];
+    foreach($required as $key) {
+        if(!in_array($key, $request_keys)) {
+            array_push($notfound_keys, $key);
+        }
+    }
+
+    $data = new stdClass;
+    if(count($notfound_keys) > 0) {
+        $data->{"success"} = false;
+        $data->{"data"} = $notfound_keys;
+        $this->json_response($notfound_keys, false, "Required fields cannot be empty.", $failexit);
+    } else {
+        $data->{"success"} = true;
+        
+        $params = array();
+        foreach($request as $key => $val) {
+            if(in_array($key, $required)) {
+              $params[$key] = $this->Crud_model->sanitize_param($val);
+            } else if(in_array($key, $optional)) {
+              $params[$key] = $this->Crud_model->sanitize_param($val);
+            }
+        }
+        $data->{"data"} = $params;
+    }
+    return $data;
+  }
     
   /**
    * Return a json response object to be echoed.

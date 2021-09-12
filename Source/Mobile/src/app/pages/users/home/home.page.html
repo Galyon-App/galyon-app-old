@@ -344,7 +344,7 @@
           <div class="card_div">
             <div class="image_div" (click)="openStore(item)" style="background-repeat: no-repeat; background-position: center; background-size: cover;"
               [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/store.png)'}">
-              <div *ngIf="!item.isOpen" class="statusCheck">
+              <div *ngIf="!item.isOpen || item.isClosed == '1'" class="statusCheck">
                 <ion-label class="text"> {{util.getString('Store Closed')}} </ion-label>
               </div>
             </div>

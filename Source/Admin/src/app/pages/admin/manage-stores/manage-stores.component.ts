@@ -66,6 +66,11 @@ export class ManageStoresComponent {
   searchFailed = false;
   public searchTerm: any = '';
   private selectedUserId: any = '';
+
+  is_featured: any = '';
+  isClosed: any = '';
+  status: any = '';
+
   search: OperatorFunction<string, readonly {first_name, cover}[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
@@ -146,6 +151,10 @@ export class ManageStoresComponent {
             this.commission = response.commission;
             this.store_email = response.email;
             this.store_phone = response.phone;
+
+            this.is_featured = response.is_featured;
+            this.isClosed = response.isClosed;
+            this.status = response.status;
 
             localStorage.setItem('store-owner', response.owner)
             this.searchTerm = response.owner_name;
@@ -286,15 +295,17 @@ export class ManageStoresComponent {
       owner: localStorage.getItem('store-owner'),
       email: this.store_email,
       phone: this.store_phone,
-      commission: this.commission
+      commission: this.commission,
+      is_featured: this.is_featured,
+      isClosed: this.isClosed,
+      status: this.status
     };
 
     this.spinner.show();
     this.api.post('galyon/v1/stores/editStoreCurrent', param).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
-        //TODO: Ask to go back!
-        this.navCtrl.back();
+        this.util.success(null);
       } else {
         this.util.error(response.message);
       }
@@ -389,9 +400,8 @@ export class ManageStoresComponent {
         };
         console.log('****', storeParam);
         this.api.post('stores/save', storeParam).then((salons: any) => {
-          console.log('salonaasssss--', salons);
           this.spinner.hide();
-          this.navCtrl.back();
+          this.util.success(null);
         }, error => {
           this.spinner.hide();
           console.log(error);

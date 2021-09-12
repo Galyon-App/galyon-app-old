@@ -68,8 +68,8 @@
           <div style="border: .50px solid lightgray; ">
             <div class="productimage" (click)="viewStore(item)"
               [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}">
-              <div *ngIf="!item.isOpen" class="statusCheck">
-                <ion-label class="text"> {{util.getString('Store Closed')}} </ion-label>
+              <div *ngIf="!item.isOpen || item.isClosed == '1'" class="statusCheck">
+                <ion-label class="text"> {{util.getString('Store Closed')}}</ion-label>
               </div>
             </div>
             <ion-label class="producttext" (click)="viewStore(item)" style="padding: 5px 4px 0;">

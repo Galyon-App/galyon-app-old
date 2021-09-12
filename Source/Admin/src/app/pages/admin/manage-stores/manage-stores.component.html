@@ -98,6 +98,27 @@
                                 <label style="margin-top: 10px;">Closing Time</label>
                                 <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
                             </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 10px;">{{util.getString('Featured')}} </label>
+                                <select name="select" [(ngModel)]="is_featured" class="form-control">
+                                    <option value='0'>{{util.getString('Regular')}} </option>
+                                    <option value='1'>{{util.getString('Featured')}} </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 10px;">{{util.getString('Field Status')}} </label>
+                                <select name="select" [(ngModel)]="isClosed" class="form-control">
+                                    <option value='1'>{{util.getString('Closed')}} </option>
+                                    <option value='0'>{{util.getString('Open')}} </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 10px;"> {{util.getString('Status')}}</label>
+                                <select name="select" [(ngModel)]="status" class="form-control">
+                                    <option value='0'>{{util.getString('Unavailable')}} </option>
+                                    <option value='1'>{{util.getString('Available')}} </option>
+                                </select>
+                            </div>
                             <div class="col-sm-8">
                                 <label style="margin-top: 10px;">Select owner</label>
                                 <input id="typeahead-basic" type="text" class="form-control" 
