@@ -16,14 +16,11 @@
             <div class="card-body reset-table p-t-0">
 
                 <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label>Contact Number</label>
                         <input type="text" [(ngModel)]="mobile" class="form-control" placeholder="Contact Number">
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label>Contact Email</label>
                         <input type="email" [(ngModel)]="email" class="form-control" placeholder="Contact Email">
                     </div>
@@ -37,28 +34,19 @@
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-3">
                         <label>City</label>
                         <input type="text" [(ngModel)]="city" class="form-control" placeholder="City">
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-3">
                         <label>Province</label>
                         <input type="text" [(ngModel)]="state" class="form-control" placeholder="Province">
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-3">
                         <label>Zipcode</label>
                         <input type="number" [(ngModel)]="zip" class="form-control" placeholder="Zipcode">
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-3">
                         <label>Country</label>
                         <input type="text" [(ngModel)]="country" class="form-control" placeholder="Country">
                     </div>
@@ -67,52 +55,40 @@
             </div>
 
             <div class="card-body">
-                <h5>Processing</h5>
+                <h5>ORDER / DELIVERY</h5>
             </div>
 
             <div class="card-body reset-table p-t-0">
 
                 <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-4">
                         <label>Minimum Order</label>
                         <input type="number" [(ngModel)]="min" class="form-control" placeholder="Minimum Order">
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-4">
                         <label>Free Shipping</label>
                         <input type="number" [(ngModel)]="free" class="form-control"
                             placeholder="Free Shipping on order price">
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-4">
                         <label>Order Tax</label>
                         <input type="number" [(ngModel)]="tax" class="form-control" placeholder="Order Tax">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-sm-12">
-                        <label>Shipping Price </label>
+                    <div class="col-sm-6">
+                        <label>Shipping Fee </label>
                         <select name="select" [(ngModel)]="shipping" class="form-control">
-                            <option value="fixed">Fixed</option>
-                            <option value="km">Per KM</option>
+                            <option value="fixed">Fixed Fee</option>
+                            <option value="km">Per KM Fee</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="form-group row" *ngIf="shipping ==='fixed'">
-                    <div class="col-sm-12">
-                        <label>Fixed price</label>
+                    <div class="col-sm-6" *ngIf="shipping ==='fixed'">
+                        <label>Per Delivery price</label>
                         <input type="number" [(ngModel)]="shippingPrice" class="form-control" placeholder="Fixed price">
                     </div>
-                </div>
-
-                <div class="form-group row" *ngIf="shipping ==='km'">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6" *ngIf="shipping ==='km'">
                         <label>Per KM price</label>
                         <input type="number" [(ngModel)]="shippingPrice" class="form-control"
                             placeholder="Per KM price">

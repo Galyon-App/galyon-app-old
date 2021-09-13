@@ -20,6 +20,8 @@ import { UtilService } from 'src/app/services/util.service';
 })
 export class AppSettingsComponent {
 
+  timezone: any;
+  currency_code: any;
   symbol: any;
   cside: any;
   direction: any;
@@ -57,6 +59,8 @@ export class AppSettingsComponent {
           this.store_login = info.store_login;
           this.driver_login = info.driver_login;
           this.web_login = info.web_login;
+          this.currency_code = info.currency_code;
+          this.timezone = info.timezone;
       } else {
         this.util.error(response.message);
       }
@@ -93,6 +97,8 @@ export class AppSettingsComponent {
       driver_login: this.driver_login,
       web_login: this.web_login,
       reset_pwd: this.reset_pwd,
+      currency_code: this.currency_code,
+      timezone: this.timezone,
     }).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
