@@ -262,4 +262,40 @@ class Galyon_controller extends CI_Controller{
     $limit_length = $limit_length ? (int)$limit_length : 10;
     return " LIMIT $limit_start, $limit_length ";
   }
+
+  public function send_mail($to_email, $subject, $content) {
+
+    $email_config = Array(
+      'charset' => 'utf-8',
+      'mailtype' => 'html'
+    );
+
+    $email_config["protocol"] = "smtp";
+    $email_config["smtp_host"] = $this->config->item('smtp_host');
+    $email_config["smtp_port"] = $this->config->item('smtp_port');
+    $email_config["smtp_user"] = $this->config->item('smtp_user');
+    $email_config["smtp_pass"] = $this->config->item('smtp_pass');
+    $email_config["smtp_crypto"] = $this->config->item('smtp_crypto');
+    if ($email_config["smtp_crypto"] === "none") {
+        $email_config["smtp_crypto"] = "";
+    }
+
+    $this->load->library('email', $email_config);
+    $this->email->set_newline("\r\n");
+    $this->email->set_crlf("\r\n");
+    $this->email->from(
+      $this->config->item('smtp_reply_email'), 
+      $this->config->item('smtp_reply_name')
+    );
+
+    $this->email->to($to_email);
+    $this->email->subject($subject);
+    $this->email->message($content);
+
+    if ($this->email->send()) {
+      return array("success" => true, 'message' => "Email sent to recepient!");
+    } else {
+      return array("success" => false, 'message' => $this->email->print_debugger());
+    }
+  }
 }

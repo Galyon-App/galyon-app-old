@@ -109,7 +109,7 @@ $autoload['helper'] = array('date_time', 'jwt');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('jwt');
+$autoload['config'] = array('jwt', 'smtp');
 
 /*
 | -------------------------------------------------------------------
