@@ -53,7 +53,7 @@
 
     .detail_div{
         .pro_name{
-            font-size: 20px;
+            font-size: 18px;
             font-family: muli-bold;
             margin-bottom: 5px;
         }
@@ -69,18 +69,18 @@
 
          .variant{
             .selecter{
-                font-size: 10px;
-                padding: 2px;
-                border: 1px solid lightgray;
-                margin: 10px 0px;
-                border-radius: 5px;
-                display: flex !important;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                color: gray;
-                position: relative;
-                overflow: hidden;
+              font-size: 20px;
+              padding: 2px 10px;
+              border: 1px solid lightgray;
+              margin: 10px 10px 0;
+              border-radius: 5px;
+              display: flex !important;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              color: gray;
+              position: relative;
+              overflow: hidden;
             }
             ion-item {
             width: 100%;
@@ -108,11 +108,11 @@
         }
 
         .small_flex_div{
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            border-bottom: 1px solid lightgray;
-            padding: 15px 0px;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          border-bottom: 1px solid lightgray;
+          padding: 15px 0px;
   
             .left{
               display: flex;
@@ -142,28 +142,29 @@
             }
            
             .addBtn{
+              display: contents;
+              text-align: center;
               .ripple-parent {
-                  position: relative;
-                  overflow: hidden;
-                  padding: 5px;
-                  color: white;
-                  background: #f27474;
-                  border-radius: 5px;
+                width: -webkit-fill-available;
+                padding: 10px;
+                color: white;
+                background: var(--ion-color-primary);
+                border-radius: 5px;
               }
             }
             
             // add
           
             .abs_add{
-                width: 100px;
-                background: var(--ion-color-primary);
-                height: 30px;
-                border-radius: 15px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-left: 3px;
-                padding-right: 3px;
+              width: 170px;
+              background: var(--ion-color-primary);
+              height: 30px;
+              border-radius: 15px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding-left: 3px;
+              padding-right: 3px;
       
                 ion-label {
                   color: white;
@@ -182,21 +183,22 @@
           flex-direction: row;
           justify-content: flex-start;
           align-items:center;
-          font-size: 12px;
+          font-size: 18px;
           position: relative;
           overflow: hidden;
+          margin-top: 10px;
         }
         .storeName{
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
           align-items:center;
-          font-size: 12px;
+          font-size: 14px;
           position: relative;
           overflow: hidden;
           color: var(--ion-color-primary);
           font-weight: bold;
-          margin: 10px 0px;
+          margin: 15px 0px;
         }
     }
 

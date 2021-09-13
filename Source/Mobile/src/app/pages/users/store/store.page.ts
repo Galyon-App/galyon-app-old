@@ -328,11 +328,11 @@ export class StorePage implements OnInit {
   singleProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.uuid
+        uuid: item.uuid
       }
     };
 
-    this.router.navigate(['product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   async priceFilter() {

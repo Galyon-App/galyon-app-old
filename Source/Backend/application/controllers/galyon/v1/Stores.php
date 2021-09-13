@@ -240,7 +240,7 @@ class Stores extends Galyon_controller {
             $this->json_response(null, false, "Required fields cannot be empty!");
         }
 
-        $updated = $this->Crud_model->update($this->table_name, array( "status" => "0" ), "uuid = '$store_id'");
+        $updated = $this->Crud_model->update($this->table_name, array( "status" => "0" ), "uuid = '$store_id' AND status = '1'");
 
         if($updated) {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$store_id'", null, 'row' );
@@ -252,7 +252,7 @@ class Stores extends Galyon_controller {
 
     function createNewStore() {
         $auth = $this->is_authorized(true, ["admin"]);
-        $request = $this->request_validation($_POST, ["name", "cover"], $this->edit_column);
+        $request = $this->request_validation($_POST, ["name"], $this->edit_column);
         $request->data = array_merge(array(
             "uuid" => $this->uuid->v4(),
             "parent_id" => $this->Crud_model->sanitize_param($this->input->post("parent"))
@@ -264,7 +264,7 @@ class Stores extends Galyon_controller {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "id = '$inserted'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No user was found!");
+            $this->json_response(null, false, "Failed creator new store!");
         }
     }
 
@@ -290,7 +290,7 @@ class Stores extends Galyon_controller {
         }
 
         $deleted_at = get_current_utc_time();
-        $is_deleted = $this->Crud_model->update($this->table_name, array('deleted_at' => $deleted_at), "uuid = '$store_id'" );
+        $is_deleted = $this->Crud_model->update($this->table_name, array('deleted_at' => $deleted_at), "uuid = '$store_id'  AND deleted_at IS NULL" );
 
         if($is_deleted) {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$store_id'", null, 'row' );

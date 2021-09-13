@@ -173,7 +173,7 @@ class Galyon_controller extends CI_Controller{
     }
   }
 
-  public function request_validation($request, $required, $optional = [], $failexit = false) {
+  public function request_validation($request, $required = [], $optional = [], $failexit = true) {
     $request_keys = [];
     foreach($request as $key => $val) {
         array_push($request_keys, $key);
@@ -251,5 +251,12 @@ class Galyon_controller extends CI_Controller{
         $items[] = $key;
     }
     return array_diff($items, $array);
+  }
+
+  public function get_limit_params() {
+    $limit_start = (int)$this->input->post('limit_start');
+    $limit_length = $this->input->post('limit_length');
+    $limit_length = $limit_length ? (int)$limit_length : 10;
+    return " LIMIT $limit_start, $limit_length ";
   }
 }

@@ -12,6 +12,7 @@ import { NavController, ModalController, AlertController } from '@ionic/angular'
 import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 import { CartService } from 'src/app/services/cart.service';
 import { CityService } from 'src/app/services/city.service';
+import { Product } from 'src/app/models/product.model';
 
 @Component({
   selector: 'app-product',
@@ -19,15 +20,8 @@ import { CityService } from 'src/app/services/city.service';
   styleUrls: ['./product.page.scss'],
 })
 export class ProductPage implements OnInit {
-  // img;
-  // price;
-  // proDetail;
-  // chipVal;
-  // products;
-  qty = 0;
 
   loaded: boolean;
-
   name: any = '';
   realPrice: any;
   sellPrice: any;
@@ -37,7 +31,6 @@ export class ProductPage implements OnInit {
   subId: any;
   status: any;
   coverImage: any = '';
-  veg: any;
 
   have_gram: any;
   gram: any;
@@ -49,7 +42,6 @@ export class ProductPage implements OnInit {
   liter: any;
   have_ml: any;
   ml: any;
-  exp_date: any;
 
   in_stock: any;
   in_offer: any;
@@ -68,14 +60,14 @@ export class ProductPage implements OnInit {
   };
   related: any[] = [];
   quantiy: any = 0;
-  productt: any;
   totalRating: any;
   storeId: any;
   storeName: any;
-  size: any;
   variations: any;
-  variant: any;
   storeIsActive: boolean = false;
+
+  public product: Product;
+
   constructor(
     public api: ApiService,
     public util: UtilService,
@@ -87,9 +79,7 @@ export class ProductPage implements OnInit {
     private alertCtrl: AlertController,
     private city: CityService
   ) {
-
     this.route.queryParams.subscribe((data: any) => {
-      console.log(data);
       if (data && data.uuid) {
         this.loaded = false;
         this.id = data.uuid;
@@ -97,6 +87,7 @@ export class ProductPage implements OnInit {
       }
     })
   }
+
   async openViewer(url) {
     const modal = await this.modalController.create({
       component: ViewerModalComponent,
@@ -112,20 +103,15 @@ export class ProductPage implements OnInit {
   }
 
   getRelated() {
-    const param = {
-      id: this.subId,
-      limit: 5,
-      cid: this.city.current.uuid
-    };
-    this.related = [];
-    this.api.post('products/getRelated', param).subscribe((data: any) => {
-      console.log('=>related=>', data);
-      if (data && data.status === 200 && data.data && data.data.length) {
-        const products = data.data;
+    this.api.post('galyon/v1/products/getProductsByStore', {
+      uuid: this.product.store_id,
+      limit_start: 0,
+      limit_length: 10
+    }).subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        const products = response.data;
         this.related = products.filter(x => x.uuid !== this.id);
       }
-    }, error => {
-      console.log(error);
     });
   }
 
@@ -137,92 +123,82 @@ export class ProductPage implements OnInit {
   }
 
   getProduct() {
-    const param = {
+    this.api.post('galyon/v1/products/getProductById', {
       uuid: this.id
-    }
-    this.api.post('products/getById', param).subscribe((data: any) => {
+    }).subscribe((response: any) => {
+
       this.loaded = true;
-      console.log(data);
       this.gallery = [];
-      if (data && data.status === 200 && data.data && data.data.length) {
-        const info = data.data[0];
-        this.productt = info;
-        this.productt['quantiy'] = 0;
-        this.name = info.name;
-        this.description = info.descriptions;
-        this.subId = info.sub_cate_id;
-        this.coverImage = info.cover;
-        this.key_features = info.key_features;
-        this.disclaimer = info.disclaimer;
-        this.discount = info.discount;
-        this.exp_date = info.exp_date;
-        this.gram = info.gram;
-        this.have_gram = info.have_gram;
-        this.kg = info.kg;
-        this.have_kg = info.have_kg;
-        this.liter = info.liter;
-        this.have_liter = info.have_liter;
-        this.ml = info.ml;
-        this.have_ml = info.have_ml;
-        this.pcs = info.pcs;
-        this.have_pcs = info.have_pcs;
-        this.in_offer = info.in_offer;
-        this.in_stock = info.in_stock;
-        this.is_single = info.is_single;
-        this.realPrice = parseFloat(info.orig_price);
-        this.sellPrice = parseFloat(info.sell_price);
-        this.status = info.status;
-        this.rate = info.rating;
-        this.totalRating = info.total_rating;
-        this.storeId = info.store_id;
-        this.getStoreStatus();
-        this.storeName = info.s_name;
-        this.gallery.push(this.coverImage);
-        this.size = info.size;
-        if (info.variations && info.size === '1' && info.variations !== '') {
-          if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(info.variations)) {
-            this.variations = JSON.parse(info.variations);
-            this.variant = 0;
-            this.productt['variations'] = JSON.parse(info.variations);
-            this.productt['variant'] = 0;
+      if (response && response.success && response.data) {
+        this.product = response.data;
+        this.product.quantiy = 0;
+
+        this.name = this.product.name;
+        this.description = this.product.description;
+        this.subId = this.product.subcategory_id;
+        this.coverImage = this.product.cover;
+        this.key_features = this.product.features;
+        this.disclaimer = this.product.disclaimer;
+        this.discount = this.product.discount;
+
+        this.gram = this.product.gram;
+        this.have_gram = this.product.have_gram;
+        this.kg = this.product.kg;
+        this.have_kg = this.product.have_kg;
+        this.liter = this.product.liter;
+        this.have_liter = this.product.have_liter;
+        this.ml = this.product.ml;
+        this.have_ml = this.product.have_ml;
+        this.pcs = this.product.pcs;
+        this.have_pcs = this.product.have_pcs;
+
+        this.in_offer = this.product.is_featured;
+        this.in_stock = this.product.in_stock;
+        this.is_single = this.product.is_single;
+        this.realPrice = parseFloat(this.product.orig_price+'');
+        this.sellPrice = parseFloat(this.product.sell_price+'');
+        this.status = this.product.status;
+        // this.rate = this.product.rating;
+        // this.totalRating = this.product.total_rating;
+        this.storeId = this.product.store_id;
+        this.storeName = this.product.store_name;
+        this.storeIsActive = this.product.status == 'true';
+
+        if (this.product.variations && this.product.variations !== '') {
+          if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(this.product.variations)) {
+            this.product.variations = JSON.parse(this.product.variations);
+            this.product.variations.forEach(element => {
+              element.current = 0;
+            });
           } else {
-            info.variations = [];
-            this.productt['variations'] = [];
-            this.variant = 1;
-            this.productt['variant'] = 1;
+            this.product.variations = [];
           }
         } else {
-          this.variations = [];
-          this.variant = 1;
-          this.productt['variations'] = [];
-          this.productt['variant'] = 1;
+          this.product.variations = [];
         }
-        this.checkCartItems();
-        if (info.images) {
-          const images = JSON.parse(info.images);
-          console.log('images======>>>', images);
-          if (images[0]) {
-            this.gallery.push(images[0]);
-          }
-          if (images[1]) {
-            this.gallery.push(images[1]);
-          }
-          if (images[2]) {
-            this.gallery.push(images[2]);
-          }
-          if (images[3]) {
-            this.gallery.push(images[3]);
-          }
-          if (images[4]) {
-            this.gallery.push(images[4]);
-          }
-          if (images[5]) {
-            this.gallery.push(images[5]);
-          }
-        }
-        this.getRelated();
-      }
+        
+        if (this.cart.checkProductInCart(this.product.uuid)) {
+          let filterprod: any = this.cart.cart.filter(x => x.uuid === this.product.uuid);
+          this.product.quantiy = filterprod[0].quantiy;
+          this.product.variations.forEach(variant => {
+            let cartVariant: any = filterprod[0].variations.filter( x => x.title == variant.title);
+            if(cartVariant.length) {
+              variant.current = cartVariant[0].current;
+            }
+          });
+        } else {
+          this.product.quantiy = 0;
+        } 
+        //this.checkCartItems();
 
+        this.gallery.push(this.coverImage);
+        const images = JSON.parse(this.product.images);
+        images.forEach(element => {
+          this.gallery.push(element);
+        });
+
+        this.getRelated();
+      }        
     }, error => {
       console.log(error);
       this.loaded = true;
@@ -230,21 +206,14 @@ export class ProductPage implements OnInit {
     });
   }
 
-  getStoreStatus() {
-    const param = {
-      id: this.storeId
-    };
-
-    this.api.post('stores/getByUid', param).subscribe((datas: any) => {
-      console.log('store info...', datas);
-      if (datas && datas.status === 200 && datas.data.length) {
-        if (datas.data[0] && datas.data[0].status === '1') {
-          this.storeIsActive = true;
-        }
-      }
-    }, error => {
-      console.log(error);
-    });
+  getDiscountSuffix() {
+    if(this.product.discount_type == 'fixed') {
+      return "off";
+    } else if(this.product.discount_type == 'percent') {
+        return "%";
+    } else {
+        return "";
+    }
   }
 
   back() {
@@ -255,11 +224,11 @@ export class ProductPage implements OnInit {
   }
 
   addToCart() {
-    this.quantiy = 1;
-    this.productt.quantiy = 1;
-    this.cart.addItem(this.productt);
+    // this.quantiy = 1;
+    // this.productt.quantiy = 1;
+    this.product.quantiy = 1;
+    this.cart.addItem(this.product);
   }
-
 
   gotoStore() {
     const param: NavigationExtras = {
@@ -271,17 +240,28 @@ export class ProductPage implements OnInit {
   }
 
   add() {
-    this.quantiy = this.quantiy + 1;
-    this.cart.addQuantity(this.quantiy, this.id);
+    // this.quantiy = this.quantiy + 1;
+    // this.cart.addQuantity(this.quantiy, this.id);
+    if (this.product.quantiy > 0) {
+      this.product.quantiy = this.product.quantiy + 1;
+      this.cart.addQuantity(this.product.quantiy, this.product.uuid);
+    }
   }
 
   remove() {
-    if (this.quantiy === 1) {
-      this.quantiy = 0;
-      this.cart.removeItem(this.id)
+    // if (this.quantiy === 1) {
+    //   this.quantiy = 0;
+    //   this.cart.removeItem(this.id)
+    // } else {
+    //   this.quantiy = this.quantiy - 1;
+    //   this.cart.addQuantity(this.quantiy, this.id);
+    // }
+    if (this.product.quantiy === 1) {
+      this.product.quantiy = 0;
+      this.cart.removeItem(this.product.uuid)
     } else {
-      this.quantiy = this.quantiy - 1;
-      this.cart.addQuantity(this.quantiy, this.id);
+      this.product.quantiy = this.product.quantiy - 1;
+      this.cart.addQuantity(this.product.quantiy, this.product.uuid);
     }
   }
 
@@ -359,7 +339,7 @@ export class ProductPage implements OnInit {
       }
     };
 
-    this.router.navigate(['product'], param);
+    this.router.navigate(['user/home/product'], param);
   }
 
   productRating() {
@@ -374,40 +354,38 @@ export class ProductPage implements OnInit {
     this.router.navigate(['user/home/ratings'], param);
   }
 
-  async variants() {
-
+  async variant(var_id) {
     const allData = [];
-
-    if (this.variations !== '' && this.variations.length > 0 && this.variations[0].items.length > 0) {
-      console.log('->', this.variations[0].items);
-      this.variations[0].items.forEach((element, index) => {
-        console.log('OK');
+    if (this.product && this.product.variations.length > 0 && this.product.variations[var_id]) {
+      let variant = this.product.variations[var_id];
+      variant.items.forEach((element, index) => {
         let title = '';
-        if (this.util.cside === 'left') {
-          const price = this.variations && this.variations[0] &&
-            this.variations[0].items[index] &&
-            this.variations[0].items[index].discount ? this.variations[0].items[index].discount :
-            this.variations[0].items[index].price;
-          title = element.title + ' - ' + this.util.currecny + ' ' + price;
-        } else {
-          const price = this.variations && this.variations[0] && this.variations[0].items[index] &&
-            this.variations[0].items[index].discount ? this.variations[0].items[index].discount :
-            this.variations[0].items[index].price;
-          title = element.title + ' - ' + price + ' ' + this.util.currecny;
+        let discount_type = variant.items[index].discount_type;
+        let discount_amt = variant.items[index].discount;
+        let discount_sfx = discount_type == 'percent' ? '%' : ' off';
+        let discount_text = discount_type != 'none' ? ' ('+discount_amt+discount_sfx+')' : '';
+        if(discount_type == 'none' || discount_amt == '0' || discount_amt == 0) {
+          discount_text = '';
         }
+        const price = variant.items[index] && variant.items[index].discount ? variant.items[index].discount : variant.items[index].price;
+        if (this.util.cside === 'left') {
+          title = ' * ' +element.title + ' : +' + this.util.currecny + '' + price + discount_text;
+        } else {
+          title = ' * ' +element.title + ' : +' + price + '' + this.util.currecny + discount_text;
+        }
+
         const data = {
           name: element.title,
           type: 'radio',
           label: title,
           value: index,
-          checked: this.variant === index
+          checked: variant.current === index
         };
         allData.push(data);
-      });
+      });      
 
-      console.log('All Data', allData);
       const alert = await this.alertCtrl.create({
-        header: this.name,
+        header: this.product.name + ': ' + variant.title,
         inputs: allData,
         buttons: [
           {
@@ -418,22 +396,23 @@ export class ProductPage implements OnInit {
               console.log('Confirm Cancel');
             }
           }, {
-            text: this.util.getString('Ok'),
+            text: this.util.getString('Confirm'),
             handler: (data) => {
               console.log('Confirm Ok', data);
-              console.log('before', this.variant);
-              this.variant = data;
-              console.log('after', this.variant);
-              this.productt['variant'] = data;
+              this.product.variations[var_id].current = data;
+          
+              let cartProduct: any = this.cart.cart.filter( x => x.uuid == this.product.uuid);
+              if(cartProduct.length) {
+                cartProduct[0].variations[var_id].current = data;
+              }
+              this.cart.saveLocalToStorage();
             }
           }
         ]
       });
-
       await alert.present();
     } else {
       console.log('none');
     }
-
   }
 }

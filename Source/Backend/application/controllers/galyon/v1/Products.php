@@ -13,41 +13,83 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Products extends Galyon_controller {
 
     private $table_name = 'products';
-    private $public_column = ['uuid','store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','verified_at','status','updated_at','deleted_at'];
+    private $edit_column = ['store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','status'];
+    private $public_column = ['uuid','store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','verified_at','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
     function __construct(){
 		parent::__construct();
     }
 
-    function getProductById() {
-        $user = $this->is_authorized();
-        
-        $uuid = $this->input->post('uuid');
-        if(empty($uuid)) {
-            $this->json_response(null, false, "Required field cannot be empty!");
-        }
+    protected function is_owner_of_product($user_id, $product_id) {
+        $params = array(
+            $user_id, 
+            $product_id
+        );
 
-        //TODO: Filter by search using the post key of search.
-        $where = "uuid = '$uuid'";
-        if($user) {
-            if($user->role !== "admin") {
-                $where .= " AND status = '1' AND verified_at IS NULL AND deleted_at IS NULL"; 
-            }
-        }
+        $query = " SELECT `stores`.`uuid` 
+        FROM `stores` INNER JOIN `$this->table_name` 
+            ON `stores`.`uuid` = `$this->table_name`.`store_id` 
+        WHERE `stores`.`owner` = ?
+            AND `$this->table_name`.`uuid` = ?
+        ";
 
-        $product = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'row' );
-        if($product) {
-            if(isset($product->store_id)) {
-                $store = $this->Crud_model->get('stores', 'name', "uuid = '$product->store_id'", NULL, 'row' );
-                if($store) {
-                    $product->{"store_name"} = $store->name;
-                } else {
-                    $product->{"store_name"} = null;
-                }
+        return $this->Crud_model->custom($query, $params, 'row');
+    }
+
+    protected function is_owner_of_store($user_id, $store_id) {
+        $params = array(
+            $user_id, 
+            $store_id
+        );
+
+        $query = " SELECT `uuid` 
+        FROM `stores` 
+        WHERE `owner` = ? AND `uuid` = ?
+        ";
+
+        return $this->Crud_model->custom($query, $params, 'row');
+    }
+
+    protected function getProductMetaItem($product) {
+        unset($product->id);
+    
+        if(isset($product->store_id) && $product->store_id != null && $product->store_id != '') {
+            $store = $this->Crud_model->get('stores', 'name', "uuid = '$product->store_id'", NULL, 'row' );
+            if($store) {
+                $product->{"store_name"} = $store->name;
             } else {
                 $product->{"store_name"} = null;
             }
+        } else {
+            $product->{"store_name"} = null;
+        }
+
+        return $product;
+    }
+
+    protected function getProductMeta($products, $single = false) {
+        if($single) {
+            $products = $this->getProductMetaItem($products);
+        } else {
+            foreach($products as $product) {
+                $product = $this->getProductMetaItem($product);
+            }
+        }
+        return $products;
+    }
+
+    function getProductById() {
+        $auth = $this->is_authorized(false);
+        $request = $this->request_validation($_POST, ["uuid"], []); 
+        $product_id = $request->data['uuid'];       
+        $query = $this->compileWhereClause($auth->where, ["uuid = '$product_id'"]);
+
+        $product = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'row' );
+        
+        if($product) {
+            $product = $this->getProductMetaItem($product);
             $this->json_response($product);
         } else {
             $this->json_response(null, false, "No product was found!");
@@ -55,49 +97,16 @@ class Products extends Galyon_controller {
     }
 
     function getAllProducts() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized(false);
+        $request = $this->request_validation($_POST, ["store_id"], []); 
+        $store_id = $request->data['store_id'];       
+        $query = $this->compileWhereClause($auth->where, ["store_id = '$store_id'"]);
 
-        $store_id = $this->input->post('store_id');
-        if(!empty($store_id)) {
-            if($where != null) {
-                $where .= " AND store_id = '$store_id'";
-            } else {
-                $where = "store_id = '$store_id'";
-            }
-        }
-
-        $limit_start = $this->input->post('limit_start');
-        $limit_length = $this->input->post('limit_length');
-        if(!empty($limit_length)) {
-            $limit_start = (int)$limit_start;
-            if($where != null) {
-                $where .= " LIMIT $limit_start, $limit_length";
-            } else {
-                $where = " LIMIT $limit_start, $limit_length";
-            }
-        }
-
-        $products = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        $products = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'result' );
+        
         if($products) {
-            foreach($products as $product) {
-                if(isset($product->store_id)) {
-                    $store = $this->Crud_model->get('stores', 'name', "uuid = '$product->store_id'", NULL, 'row' );
-                    if($store) {
-                        $product->{"store_name"} = $store->name;
-                    } else {
-                        $product->{"store_name"} = null;
-                    }
-                } else {
-                    $product->{"store_name"} = null;
-                }
-            }
+            $products = $this->getProductMeta($products);
             $this->json_response($products);
         } else {
             $this->json_response(null, false, "No product was found!");
@@ -105,149 +114,164 @@ class Products extends Galyon_controller {
     }
     
     function getProductsByStore() {
-        //Force exit if not by default.
-        $this->is_authorized();
+        $auth = $this->is_authorized(false);
+        $request = $this->request_validation($_POST, ["uuid"], []); 
+        $store_id = $request->data['uuid'];       
+        $query = $this->compileWhereClause($auth->where, ["store_id = '$store_id'"]);
 
-        $found = $this->validate_request($_POST, $this->required);
-        if(count($found)) {
-            $this->json_response($found, false, "Required fields cannot be empty!");
-        }
-
-        $store_uuid = $this->input->post('uuid');
-        $products = $this->Crud_model->get($this->table_name, $this->public_column, array( "store_id" => $store_uuid ), null, 'result' );
-
-        if($products) {
-            $this->json_response($products);
-        } else {
-            $this->json_response(null, false, "No store associated to this account!");
-        }
-    }
-
-    function getProductByCategory() {
+        $products = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'result' );
         
-    }
-
-    function getFeaturedProduct() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
-                $where = null; 
-            }
-        }
-        if($where == null) {
-            $where = " is_featured = '1'";
-        } else {
-            $where .= " AND is_featured = '1'";
-        }
-
-        $products = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
         if($products) {
-            foreach($products as $product) {
-                if(isset($product->store_id)) {
-                    $store = $this->Crud_model->get('stores', 'name', "uuid = '$product->store_id'", NULL, 'row' );
-                    if($store) {
-                        $product->{"store_name"} = $store->name;
-                    } else {
-                        $product->{"store_name"} = null;
-                    }
-                } else {
-                    $product->{"store_name"} = null;
-                }
-            }
+            $products = $this->getProductMeta($products);
             $this->json_response($products);
         } else {
             $this->json_response(null, false, "No product was found!");
         }
     }
 
+    function getFeaturedProduct() {
+        $auth = $this->is_authorized(false);
+        $query = $this->compileWhereClause($auth->where, ["is_featured = '1'"]);
+
+        $products = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'result' );
+        
+        if($products) {
+            $products = $this->getProductMeta($products);
+            $this->json_response($products);
+        } else {
+            $this->json_response(null, false, "No product was found!");
+        }
+    }
+
+
+
+
+
     function activate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+
+        $request = $this->request_validation($_POST, ["uuid"], $this->edit_column);
+        $product_id = $request->data['uuid'];
+        
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        } else if($auth->role == "store") {
+            $is_owner = $this->is_owner_of_product($auth->uuid, $product_id);
+            if(!$is_owner) {
+                $this->json_response(null, false, "You are not authorized for this actions!"); 
             }
         }
 
-        $product_id = $this->input->post('uuid');
-        $product = $this->Crud_model->update($this->table_name, array( "status" => "1" ), array( "uuid" => $product_id ));
+        $product = $this->Crud_model->update($this->table_name, array( "status" => "1" ), "uuid = '$product_id' AND status = '0'");
 
         if($product) {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $product_id ), null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No product was found!");
+            $this->json_response(null, false, "No product or changes was found!");
         }
     }
 
     function deactivate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+
+        $request = $this->request_validation($_POST, ["uuid"], $this->edit_column);
+        $product_id = $request->data['uuid'];
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        } else if($auth->role == "store") {
+            $is_owner = $this->is_owner_of_product($auth->uuid, $product_id);
+            if(!$is_owner) {
+                $this->json_response(null, false, "You are not authorized for this actions!"); 
             }
         }
 
-        $product_id = $this->input->post('uuid');
-        $product = $this->Crud_model->update($this->table_name, array( "status" => "0" ), array( "uuid" => $product_id ));
+        $updated = $this->Crud_model->update($this->table_name, array( "status" => "0" ), "uuid = '$product_id' AND status = '1'");
 
-        if($product) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $product_id ), null, 'row' );
+        if($updated) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$product_id'", null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No product was found!");
+            $this->json_response(null, false, "No product or changes was found!");
         }
     }
 
     function createProductToStore() {
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+        $request = $this->request_validation($_POST, ["name"], $this->edit_column);
+        $request->data = array_merge(array(
+            "uuid" => $this->uuid->v4(),
+            "store_id" => $this->Crud_model->sanitize_param($this->input->post("store_id"))
+        ), $request->data);
 
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        } else if($auth->role == "store") {
+            $is_owner = $this->is_owner_of_store($auth->uuid, $request->data['store_id']);
+            if(!$is_owner) {
+                $this->json_response(null, false, "You are not authorized for this actions!"); 
+            }
+        }
+
+        $inserted = $this->Crud_model->insert($this->table_name, $request->data);
+
+        if($inserted) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "id = '$inserted'", null, 'row' );
+            $this->json_response($current);
+        } else {
+            $this->json_response(null, false, "Failed creator new product!");
+        }
     } 
 
     function editProductToStore() {
-        $user = $this->is_authorized();
-        if($user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+        $request = $this->request_validation($_POST, ["uuid", "name"], $this->edit_column);
+        $product_id = $request->data['uuid'];
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        } else if($auth->role == "store") {
+            $is_owner = $this->is_owner_of_product($auth->uuid, $product_id);
+            if(!$is_owner) {
+                $this->json_response(null, false, "You are not authorized for this actions!"); 
+            }
         }
 
-        $uuid = $this->input->post('uuid');
-        if(empty($uuid)) {
-            $this->json_response(null, false, "Required field cannot be empty!");
-        }
-
-        //$first_name = $this->input->post('first_name');
-        //TODO: Check if param is meet.
-        // if(empty($first_name) || empty($last_name) || empty($phone) || empty($gender) || empty($uuid)) {
-        //     $this->json_response(null, false, "Required fields cannot be empty!");
-        // }
-        $new_val = $_POST; //TODO: Temp
-
-        $success = $this->Crud_model->update($this->table_name, $new_val, array( "uuid" => $uuid ));
-
-        if($success) {
-            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $uuid ), null, 'row' );
+        $update = $this->Crud_model->update($this->table_name, $request->data, array( "uuid" => $product_id ));
+        if($update) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $product_id ), null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No user was found!");
+            $this->json_response(null, false, "No product or changes was found!");
         }
     } 
 
     function deleteProductToStore() {
-        //Force exit if not by default.
-        $this->is_authorized();
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
 
-        $found = $this->validate_request($_POST, $this->required);
-        if(count($found)) {
-            $this->json_response($found, false, "Required fields cannot be empty!");
+        $request = $this->request_validation($_POST, ["uuid"], []); //product id.
+        $product_id = $request->data['uuid'];
+        
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        } else if($auth->role == "store") {
+            $is_owner = $this->is_owner_of_product($auth->uuid, $product_id);
+            if(!$is_owner) {
+                $this->json_response(null, false, "You are not authorized for this actions!"); 
+            }
         }
 
-        $product_id = $this->input->post('uuid');
-        $is_deleted = $this->Crud_model->delete($this->table_name, array( "uuid" => $product_id ) );
+        $deleted_at = get_current_utc_time();
+        $is_deleted = $this->Crud_model->update($this->table_name, array('deleted_at' => $deleted_at), "uuid = '$product_id' AND deleted_at IS NULL" );
 
-        if($products) {
-            $this->json_response($products);
+        if($is_deleted) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$product_id'", null, 'row' );
+            $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No store associated to this account!");
+            $this->json_response(null, false, "No product or changes was found!");
         }
-    } 
+    }
 }

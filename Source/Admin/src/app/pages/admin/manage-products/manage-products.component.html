@@ -250,7 +250,7 @@
                </div>
                <div class="col-sm-3" style="margin-bottom: 12px;">
                   <label>{{util.getString('Discount Type')}} </label>
-                  <select name="select" [(ngModel)]="discount_type" class="form-control">
+                  <select name="select" [(ngModel)]="discount_type" (ngModelChange)="onDicountType($event)" class="form-control">
                      <option value='none'>{{util.getString('None')}} </option>
                      <option value='fixed'>{{util.getString('Fixed')}} </option>
                      <option value='percent'>{{util.getString('Percent')}} </option>

@@ -171,6 +171,7 @@ export class ManageProductsComponent {
     //TODO
     this.storeId = info.store_id;
     this.storeName = info.store_name;
+    this.get_discounted();
 
     this.api.get('galyon/v1/stores/getAllStores').then((response: any) => {
       if (response && response.success && response.data) {
@@ -238,34 +239,48 @@ export class ManageProductsComponent {
   }
 
   onDicount(value) {
-    value = parseFloat(value);
-    if(this.discount_type == 'percent') {
-      if (this.realPrice && value <= 99) {
-        this.percentage(this.discount, this.realPrice);
-      } else {
-        this.discount = 0;
-        this.percentage(this.discount, this.realPrice);
-      }
+    this.discount = parseFloat(value);
+    this.get_discounted();
+  }
+
+  onDicountType(value) {
+    this.discount_type = value;
+    if(value == 'percent') {
+    } else if(value == 'fixed') {
     } else {
+      this.discount = 0;
+    }
+    this.get_discounted();
+  }
+
+  protected get_discounted() {
+    if(this.discount_type == 'percent') {
+      if (this.realPrice && this.discount <= 100) {
+        this.sellPrice = this.percentage(this.discount);
+      } else {
+        this.sellPrice = this.percentage(100);
+      }
+    } else if(this.discount_type == 'fixed') {
       if (this.discount <= this.realPrice) {
         this.sellPrice = this.realPrice - this.discount;
       } else {
-        this.discount = this.realPrice;
+        this.sellPrice = this.realPrice;
       }
+    } else {
+      this.sellPrice = this.realPrice;
     }
   }
 
-  percentage(percent, total) {
-    this.sellPrice = 0;
-    const price = ((percent / 100) * total);
-    this.sellPrice = this.realPrice - price;
+  percentage(percent) {
+    const price = ((percent / 100) * this.realPrice);
+    return this.realPrice - price;
   }
 
   onRealPrice(value) {
     value = parseFloat(value);
-    if (this.sellPrice && value > 1) {
-      this.percentage(this.discount, this.realPrice);
-    }
+    // if (this.sellPrice && value > 1) {
+    //   this.percentage(this.discount);
+    // }
   }
 
   openCate() {
@@ -535,8 +550,7 @@ export class ManageProductsComponent {
     this.api.post('galyon/v1/products/editProductToStore', param).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
-        //TODO: Ask to go back!
-        this.navCtrl.back();
+        this.util.success(null);
       } else {
         this.util.error(response.message);
       }

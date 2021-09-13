@@ -140,6 +140,11 @@ export class ProductsComponent {
           if(response.success) {
             let index = this.products.findIndex((x => x.uuid == item.uuid));
             this.products[index].status = response.data.status;
+            if(response.success) {
+              this.util.success(null);
+            } else {
+              this.util.error(response.message);
+            }
           } else {
             this.util.error( response.message );
           }
