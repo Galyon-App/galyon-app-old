@@ -198,9 +198,12 @@ class Galyon_controller extends CI_Controller{
         foreach($request as $key => $val) {
             if(in_array($key, $required)) {
               $params[$key] = $this->Crud_model->sanitize_param($val);
-            } else if(in_array($key, $optional)) {
-              $params[$key] = $this->Crud_model->sanitize_param($val);
             }
+        }
+        foreach($request as $key => $val) {
+          if(in_array($key, $optional)) {
+            $params[$key] = $this->Crud_model->sanitize_param($val);
+          }
         }
         $data->{"data"} = $params;
     }

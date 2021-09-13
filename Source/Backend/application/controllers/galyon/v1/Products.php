@@ -98,12 +98,15 @@ class Products extends Galyon_controller {
 
     function getAllProducts() {
         $auth = $this->is_authorized(false);
-        $request = $this->request_validation($_POST, ["store_id"], []); 
-        $store_id = $request->data['store_id'];       
-        $query = $this->compileWhereClause($auth->where, ["store_id = '$store_id'"]);
+        $request = $this->request_validation($_POST, [], ["store_id"]); 
+
+        if(isset($request->data['store_id'])) {
+            $store_id = $request->data['store_id'];
+            $auth->where = $this->compileWhereClause($auth->where, ["store_id = '$store_id'"]);
+        }
 
         $products = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'result' );
+            $this->compileWhereClause($auth->where, [$this->get_limit_params()], false), NULL, 'result' );
         
         if($products) {
             $products = $this->getProductMeta($products);
@@ -144,10 +147,6 @@ class Products extends Galyon_controller {
             $this->json_response(null, false, "No product was found!");
         }
     }
-
-
-
-
 
     function activate() {
         $auth = $this->is_authorized(true, ["admin","operator","store"]);
