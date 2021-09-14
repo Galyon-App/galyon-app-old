@@ -31,7 +31,7 @@ class Galyon_controller extends CI_Controller{
    * @param  mixed $force_exit Exit if not authorized.
    * @return void | jwt token
    */
-  public function is_authorized($failexit = TRUE, $roles_req = ["admin"], $role_special = ["admin"], $access_special = ["admin"]) {
+  public function is_authorized($failexit = TRUE, $roles_req = ["admin"], $role_special = ["admin"], $access_special = []) {
     $bearer = $this->input->get_request_header('Authorization');
     $token = str_replace("Bearer ", "", $bearer);
     $user = JWT::decode($token, $this->config->item('jwt_secret_phrase'));
@@ -82,21 +82,25 @@ class Galyon_controller extends CI_Controller{
       }
     }
     
-    if($role_special != null && $access_special != null) {
-      if(is_array($role_special) && is_array($access_special)) {
-        $basic = $this->input->get_request_header('Basic', TRUE);
-        if(in_array($current->role, $role_special) && in_array($basic, $access_special)) {
-          $user->where = null; 
-        }
+    $role_special ? $role_special : [];
+    $access_special ? $access_special : [];
+    $basic = $this->input->get_request_header('Basic', TRUE);
+    if((in_array($current->role, $role_special) && in_array($basic, $access_special)) || !in_array($basic, ["mobile"])) {
+      $user->where = null; 
+    }  
+
+    if(!in_array($user->role, ["admin","operator"])) {
+      $deleted = $this->input->post('deleted');
+      $hasNot = !empty($deleted) && (boolean)$deleted == true ? "NOT" : "";
+      if($user->where != null) {
+        $user->where .= " AND deleted_at IS $hasNot NULL";
+      } else {
+        $user->where = "deleted_at IS $hasNot NULL";
       }
     }
 
-    $deleted = $this->input->post('deleted');
-    $hasNot = !empty($deleted) && (boolean)$deleted == true ? "NOT" : "";
-    if($user->where != null) {
-      $user->where .= " AND deleted_at IS $hasNot NULL";
-    } else {
-      $user->where = "deleted_at IS $hasNot NULL";
+    if(empty($user->where) || $user->where == null) {
+      $user->where = "id != '0'";
     }
 
     $user->success = true;
@@ -109,14 +113,17 @@ class Galyon_controller extends CI_Controller{
    * @param  array $queries
    * @return string
    */
-  public function compileWhereClause($where, $queries = [], $withAnd = true) {
+  public function compileWhereClause($where, $queries = [], $withLimit = false) {
+
+    $initiated = false;
     $where_clause = $where;
     foreach($queries as $query) {
-      if($where_clause != null && $where_clause != "" && $withAnd) {
+      if(!empty($where_clause) || $where_clause != null) {
         $where_clause .= " AND ";
       }
       $where_clause .= $query;
     }
+
     return $where_clause;
   }
 
@@ -173,7 +180,9 @@ class Galyon_controller extends CI_Controller{
     }
   }
 
-  public function request_validation($request, $required = [], $optional = [], $failexit = true) {
+  public function request_validation($request, $required = [], $optional = [], $wheres = [], $failexit = true) {
+    $data = new stdClass;
+
     $request_keys = [];
     foreach($request as $key => $val) {
         array_push($request_keys, $key);
@@ -186,7 +195,13 @@ class Galyon_controller extends CI_Controller{
         }
     }
 
-    $data = new stdClass;
+    $data->{"where"} = [];
+    foreach($wheres as $where) {
+      if(in_array($where, $request_keys)) {
+        array_push($data->where, "$where = '$request[$where]'"); //Multiple validation =,!=,LIKE
+      }
+    }
+
     if(count($notfound_keys) > 0) {
         $data->{"success"} = false;
         $data->{"data"} = $notfound_keys;
@@ -254,13 +269,6 @@ class Galyon_controller extends CI_Controller{
         $items[] = $key;
     }
     return array_diff($items, $array);
-  }
-
-  public function get_limit_params() {
-    $limit_start = (int)$this->input->post('limit_start');
-    $limit_length = $this->input->post('limit_length');
-    $limit_length = $limit_length ? (int)$limit_length : 10;
-    return " LIMIT $limit_start, $limit_length ";
   }
 
   public function send_mail($to_email, $subject, $content) {

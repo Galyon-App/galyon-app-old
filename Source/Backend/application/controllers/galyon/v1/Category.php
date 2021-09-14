@@ -21,15 +21,11 @@ class Category extends Galyon_controller {
     }
 
     function getCategoryByID() {
-        $auth = $this->is_authorized();
-
-        $category_id = $this->input->post('uuid');
-        if(empty($category_id)) {
-            $this->json_response(null, false, "Required fields cannot be empty!");
-        }
+        $auth = $this->is_authorized(false);
+        $request = $this->request_validation($_POST, ["uuid"], [], ["uuid"]); 
         
         $category = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, ["uuid = '$category_id'"]), NULL, 'row' );
+            $this->compileWhereClause($auth->where, $request->where), NULL, 'row' );
 
         if($category) {
             $this->json_response($category);
@@ -57,10 +53,10 @@ class Category extends Galyon_controller {
     }
 
     function getParentCategorys() {
-        $auth = $this->is_authorized();
+        $auth = $this->is_authorized(false);
 
         $categorys = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, ["parent_id IS NULL"]), NULL, 'result' );
+            $this->compileWhereClause($auth->where, ["parent_id IS NULL"], true), NULL, 'result' );
         if($categorys) {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
@@ -70,17 +66,11 @@ class Category extends Galyon_controller {
     }
 
     function getChildCategorys() {
-        $auth = $this->is_authorized();
-
-        $parent_id = $this->input->post('parent_id');
-        if(!empty($parent_id)) {
-            $parent_id = "parent_id = '$parent_id'";
-        } else {
-            $parent_id = "parent_id IS NOT NULL";
-        }
+        $auth = $this->is_authorized(false);
+        $request = $this->request_validation($_POST, ["parent_id"], [], ["parent_id"]); 
         
         $categorys = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, [$parent_id]), NULL, 'result' );
+            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result' );
         if($categorys) {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
@@ -90,9 +80,10 @@ class Category extends Galyon_controller {
     }
 
     function getAllCategorys() {
-        $auth = $this->is_authorized();
+        $auth = $this->is_authorized(false);
 
-        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, $auth->where, NULL, 'result' );
+        $categorys = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, [], true), NULL, 'result' );
         if($categorys) {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);

@@ -81,12 +81,10 @@ class Products extends Galyon_controller {
 
     function getProductById() {
         $auth = $this->is_authorized(false);
-        $request = $this->request_validation($_POST, ["uuid"], []); 
-        $product_id = $request->data['uuid'];       
-        $query = $this->compileWhereClause($auth->where, ["uuid = '$product_id'"]);
+        $request = $this->request_validation($_POST, ["uuid"], [], ["uuid"]); 
 
         $product = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'row' );
+            $this->compileWhereClause($auth->where, $request->where), NULL, 'row' );
         
         if($product) {
             $product = $this->getProductMetaItem($product);
@@ -98,15 +96,10 @@ class Products extends Galyon_controller {
 
     function getAllProducts() {
         $auth = $this->is_authorized(false);
-        $request = $this->request_validation($_POST, [], ["store_id"]); 
-
-        if(isset($request->data['store_id'])) {
-            $store_id = $request->data['store_id'];
-            $auth->where = $this->compileWhereClause($auth->where, ["store_id = '$store_id'"]);
-        }
+        $request = $this->request_validation($_POST, [], [], ["store_id"]); 
 
         $products = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, [$this->get_limit_params()], false), NULL, 'result' );
+            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result' );
         
         if($products) {
             $products = $this->getProductMeta($products);
@@ -120,10 +113,9 @@ class Products extends Galyon_controller {
         $auth = $this->is_authorized(false);
         $request = $this->request_validation($_POST, ["uuid"], []); 
         $store_id = $request->data['uuid'];       
-        $query = $this->compileWhereClause($auth->where, ["store_id = '$store_id'"]);
 
         $products = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'result' );
+            $this->compileWhereClause($auth->where, ["store_id = '$store_id'"], true), NULL, 'result' );
         
         if($products) {
             $products = $this->getProductMeta($products);
@@ -135,10 +127,9 @@ class Products extends Galyon_controller {
 
     function getFeaturedProduct() {
         $auth = $this->is_authorized(false);
-        $query = $this->compileWhereClause($auth->where, ["is_featured = '1'"]);
 
         $products = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($query, [$this->get_limit_params()], false), NULL, 'result' );
+            $this->compileWhereClause($auth->where, ["is_featured = '1'"], true), NULL, 'result' );
         
         if($products) {
             $products = $this->getProductMeta($products);

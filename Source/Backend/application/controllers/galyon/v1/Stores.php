@@ -66,12 +66,8 @@ class Stores extends Galyon_controller {
     function getAllStores() {
         $auth = $this->is_authorized(false);
 
-        $limit_start = (int)$this->input->post('limit_start');
-        $limit_length = $this->input->post('limit_length');
-        $limit_length = $limit_length ? (int)$limit_length : 10;
-
         $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, [" LIMIT $limit_start, $limit_length "], false), NULL, 'result' );
+            $this->compileWhereClause($auth->where, [], true), NULL, 'result' );
         if($stores) {
             $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
@@ -128,7 +124,7 @@ class Stores extends Galyon_controller {
             $this->json_response(null, false, "Required field cannot be empty!");
         }
 
-        $stores = $this->Crud_model->get($this->table_name, $this->$public_column, 
+        $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
             $this->compileWhereClause($auth->where, [" owner = '$uuid'"]), null, 'row' );
 
         if($stores) {

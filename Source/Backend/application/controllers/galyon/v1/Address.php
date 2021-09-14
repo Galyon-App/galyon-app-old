@@ -21,11 +21,11 @@ class Address extends Galyon_controller {
     }
 
     function getByUser() {
-        $auth = $this->is_authorized();
+        $auth = $this->is_authorized(false);
 
         $uuid = $this->input->post('uuid');
         if(empty($uuid)) {
-            $this->json_response(null, false, "Required fields cannot be empty!");
+            $this->json_response(["uuid"], false, "Required fields cannot be empty!");
         }
 
         $addresses = $this->Crud_model->get($this->table_name, $this->public_column, 
@@ -39,11 +39,11 @@ class Address extends Galyon_controller {
     }
     
     function getByStore() {
-        $auth = $this->is_authorized();
+        $auth = $this->is_authorized(false);
 
         $store_id = $this->input->post('store_id');
         if(empty($store_id)) {
-            $this->json_response(null, false, "Required fields cannot be empty!");
+            $this->json_response(["store_id"], false, "Required fields cannot be empty!");
         }
 
         $addresses = $this->Crud_model->get($this->table_name, $this->public_column, 
@@ -57,15 +57,11 @@ class Address extends Galyon_controller {
     }
 
     function getByID() {
-        $auth = $this->is_authorized();
-
-        $uuid = $this->input->post('uuid');
-        if(empty($uuid)) {
-            $this->json_response(null, false, "Required fields cannot be empty!");
-        }
+        $auth = $this->is_authorized(false);
+        $request = $this->request_validation($_POST, ["uuid"], [], ["uuid"]); 
 
         $address = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, ["uuid = '$uuid'"]), null, 'row' );
+            $this->compileWhereClause($auth->where, $request->where), null, 'row' );
             
         if(!$address) {
             $this->json_response($where, false, "No address is currently assigned!");

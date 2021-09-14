@@ -41,6 +41,10 @@ class Galyon_model extends CI_Model
 			if($result == 'row') {
 				return $this->db->get()->row();
 			} else {
+				$limit_start = $this->input->post('limit_start');
+				$limit_length = $this->input->post('limit_length');
+				$limit_length = $limit_length ? (int)$limit_length : 10;
+				$this->db->limit($limit_length, $limit_start);
 				return $this->db->get()->result();
 			}
 		}
