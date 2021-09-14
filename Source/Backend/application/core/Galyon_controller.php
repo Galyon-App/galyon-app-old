@@ -82,7 +82,12 @@ class Galyon_controller extends CI_Controller{
     $access_special = is_array($access_special) ? $access_special : [];
     $basic = $this->input->get_request_header('Basic', TRUE);
     if((in_array($current->role, $role_special) && in_array($basic, $access_special)) || in_array($basic, ["admin"])) {
-      $user->where = null; 
+      $user->where = null;
+      if(isset($_POST['status'])) {
+        $status = $this->input->post('status');
+        $active = $status === "1" ? "1" : "0";
+        $user->where = "status = '$active'";
+      }
     }
 
     if(!in_array($user->role, ["admin","operator"])) {
