@@ -8,11 +8,6 @@
     <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
 </ngx-spinner>
 
-<ng-template #rt let-r="result" let-t="term">
-    <img [src]="r.cover" class="mr-1" style="width: 25px; border-radius: 50%;">
-    <ngb-highlight [result]="r.first_name +' '+ r.last_name" [term]="t" style="padding-left: 5px;"></ngb-highlight>
-</ng-template>
-
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -77,72 +72,50 @@
                             onError="this.src='assets/images/store.png'">
                         <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
                             accept="image/*">
+                        <img *ngIf="pending_cover" [src]="pending_cover" alt="" style="height: 200px; width: 200px; object-fit: cover; padding: 20px 10px 5px;"
+                            onError="this.src='assets/images/store.png'">
+                        <label *ngIf="pending_cover" style="padding-top: 5px; color: #e74c3c;"><strong>Pending:</strong> Cover Image...</label>
                     </div>
                     <div class="col-sm-8">
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <label>Stores Name</label>
                                 <input type="text" [(ngModel)]="name" class="form-control" placeholder="Stores Name">
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_name"><strong>Pending:</strong> {{pending_name}}</label>
                             </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Select city</label>
-                                <select name="select" [(ngModel)]="city" class="form-control">
-                                    <option *ngFor="let item of cities" [value]="item.uuid">{{item.name}}</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Opening Time</label>
-                                <input [(ngModel)]="openTime" type="time" class="form-control" placeholder="Opening Time">
-                            </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Closing Time</label>
-                                <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
-                            </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">{{util.getString('Featured')}} </label>
-                                <select name="select" [(ngModel)]="is_featured" class="form-control">
-                                    <option value='0'>{{util.getString('Regular')}} </option>
-                                    <option value='1'>{{util.getString('Featured')}} </option>
-                                </select>
-                            </div>
-                            <div class="col-sm-4">
+                            <!-- <div class="col-sm-4">
                                 <label style="margin-top: 10px;">{{util.getString('Field Status')}} </label>
                                 <select name="select" [(ngModel)]="isClosed" class="form-control">
                                     <option value='1'>{{util.getString('Closed')}} </option>
                                     <option value='0'>{{util.getString('Open')}} </option>
                                 </select>
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_serving"><strong>Pending:</strong> {{pending_serving}}</label>
+                            </div> -->
+                            <div class="col-sm-6">
+                                <label style="margin-top: 10px;">Opening Time</label>
+                                <input [(ngModel)]="openTime" type="time" class="form-control" placeholder="Opening Time">
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_open"><strong>Pending:</strong> {{pending_open}}</label>
                             </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;"> {{util.getString('Status')}}</label>
-                                <select name="select" [(ngModel)]="status" class="form-control">
-                                    <option value='0'>{{util.getString('Unavailable')}} </option>
-                                    <option value='1'>{{util.getString('Available')}} </option>
-                                </select>
-                            </div>
-                            <div class="col-sm-8">
-                                <label style="margin-top: 10px;">Select owner</label>
-                                <input id="typeahead-basic" type="text" class="form-control" 
-                                [(ngModel)]="searchTerm" [editable]='false' [ngbTypeahead]="search" (keyup.enter)="checkUser()"
-                                [resultFormatter]="resultFormatBandListValue" [inputFormatter]="inputFormatBandListValue" [resultTemplate]="rt"/>
-                            </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Store Commision (%)</label>
-                                <input [(ngModel)]="commission" type="number" class="form-control"
-                                    placeholder="Store commission %">
+                            <div class="col-sm-6">
+                                <label style="margin-top: 10px;">Closing Time</label>
+                                <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_close"><strong>Pending:</strong> {{pending_close}}</label>
                             </div>
                             <div class="col-sm-6">
                                 <label style="margin-top: 10px;">Email Address</label>
                                 <input type="text" [(ngModel)]="store_email" class="form-control" placeholder="Email">
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_email"><strong>Pending:</strong> {{pending_email}}</label>
                             </div>
                             <div class="col-sm-6">
                                 <label style="margin-top: 10px;">Phone Number</label>
-                                <input [(ngModel)]="store_phone" type="text" class="form-control"
-                                    placeholder="Phone">
+                                <input [(ngModel)]="store_phone" type="text" class="form-control" placeholder="Phone">
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_phone"><strong>Pending:</strong> {{pending_phone}}</label>
                             </div>
                             <div class="col-sm-12">
                                 <label style="margin-top: 10px;">Store Description</label>
                                 <textarea [(ngModel)]="descritions" rows="5" cols="5" class="form-control"
                                     placeholder="Store Description"></textarea>
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_description"><strong>Pending:</strong> {{pending_description}}</label>
                             </div>
                             <!-- <div class="col-sm-12">
                                 <label>Address</label>
@@ -160,12 +133,12 @@
                         <button class="btn btn-primary btn-round float-right" (click)="updateVenue()" *ngIf="!new">
                             Update Store
                         </button>
-                        <button class="btn btn-primary btn-round float-right" (click)="editAddress(!storeAddress)" *ngIf="!storeAddress" style="margin-right: 15px;">
+                        <!-- <button class="btn btn-primary btn-round float-right" (click)="editAddress(!storeAddress)" *ngIf="!storeAddress" style="margin-right: 15px;">
                             Add Address
                         </button>
                         <button class="btn btn-primary btn-round float-right" (click)="editAddress(storeAddress)" *ngIf="storeAddress" style="margin-right: 15px;">
                             Edit Address
-                        </button>
+                        </button> -->
                         <button class="btn btn-primary btn-round float-left" (click)="goBack()">
                             Go Back
                         </button>

@@ -208,7 +208,7 @@ const ADMIN_ITEMS = [
 
 const MERCHANT_ITEMS = [
   {
-    label: 'Main',
+    label: 'General',
     main: [
       {
         state: 'dashboard',
@@ -235,7 +235,7 @@ const MERCHANT_ITEMS = [
     main: [
       {
         state: 'stats',
-        name: 'Store Stats',
+        name: 'Reports',
         type: 'link',
         icon: 'ti-stats-up'
       },
@@ -244,6 +244,12 @@ const MERCHANT_ITEMS = [
         name: 'Support',
         type: 'link',
         icon: 'ti-comments-smiley'
+      },
+      {
+        state: 'store',
+        name: 'Settings',
+        type: 'link',
+        icon: 'ti-panel'
       },
     ]
   },

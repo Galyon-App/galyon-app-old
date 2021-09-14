@@ -118,6 +118,16 @@ export class ManageStoresComponent {
     console.log(data);
   }
 
+  pending: any = '';
+  pending_name: any = '';
+  pending_description: any = '';
+  pending_open: any = '';
+  pending_close: any = '';
+  pending_serving: any = '';
+  pending_phone: any = '';
+  pending_email: any = '';
+  pending_cover: any = '';
+
   constructor(
     private route: ActivatedRoute,
     public api: ApisService,
@@ -131,40 +141,63 @@ export class ManageStoresComponent {
     private storeServ: StoresService,
     private userServ: UserService,
   ) {
-    this.route.queryParams.subscribe(data => {
-      this.new = data.register === 'true' ? true : false;
-      
-      if (data && data.uuid && data.register) {
-        this.id = data.uuid;
-        this.storeServ.getStoreById(data.uuid, (response: any) => {
-          if(response) {
-            this.storeAddress = response.address;
-            this.name = response.name;
-            this.city = response.city_id;
-            this.latitude = response.lat;
-            this.longitude = response.lng;
-            this.fileURL = response.cover;
-            this.coverImage = environment.mediaURL + response.cover;
-            this.descritions = response.descriptions;
-            this.openTime = response.open_time;
-            this.closeTime = response.close_time;
-            this.commission = response.commission;
-            this.store_email = response.email;
-            this.store_phone = response.phone;
+    this.id = this.storeServ.storeValue.uuid;
+    this.storeServ.getStoreById(this.id, (response: any) => {
+      if(response) {
+        this.storeAddress = response.address;
+        this.name = response.name;
+        this.city = response.city_id;
+        this.latitude = response.lat;
+        this.longitude = response.lng;
+        this.fileURL = response.cover;
+        this.coverImage = environment.mediaURL + response.cover;
+        this.descritions = response.descriptions;
+        this.openTime = response.open_time;
+        this.closeTime = response.close_time;
+        this.commission = response.commission;
+        this.store_email = response.email;
+        this.store_phone = response.phone;
 
-            this.is_featured = response.is_featured;
-            this.isClosed = response.isClosed;
-            this.status = response.status;
+        this.is_featured = response.is_featured;
+        this.isClosed = response.isClosed;
+        this.status = response.status;
 
-            localStorage.setItem('store-owner', response.owner)
-            this.searchTerm = response.owner_name;
-            //this.getOrders();
+        localStorage.setItem('store-owner', response.owner)
+        this.searchTerm = response.owner_name;
+
+        this.pending = response.pending_update;
+        for (var key in this.pending) {
+          if(key == "name") {
+            this.pending_name = this.pending.name;
           }
-        });
-        //this.getVenue();
-        //this.getReviews();
+          if(key == "isClosed") {
+            this.pending_serving = this.pending.isClosed == "1" ? "Closed" : "Open";
+          }
+          if(key == "open_time") {
+            this.pending_open = this.pending.open_time;
+          }
+          if(key == "close_time") {
+            this.pending_close = this.pending.close_time;
+          }
+          if(key == "phone") {
+            this.pending_phone = this.pending.phone;
+          }
+          if(key == "email") {
+            this.pending_email = this.pending.email;
+          }
+          if(key == "descriptions") {
+            this.pending_description = this.pending.descriptions;
+          }
+          if(key == "cover") {
+            this.pending_cover = api.mediaURL + this.pending.cover;
+          }
+          console.log(this.pending[key]);
+        }
+        //this.getOrders();
       }
     });
+    //this.getVenue();
+    //this.getReviews();
     this.cityServ.request(activeCities => {
       this.cities = activeCities;
     });
@@ -291,14 +324,14 @@ export class ManageStoresComponent {
       cover: this.fileURL,
       open_time: this.openTime,
       close_time: this.closeTime,
-      city_id: this.city,
+      //city_id: this.city,
       owner: localStorage.getItem('store-owner'),
       email: this.store_email,
       phone: this.store_phone,
-      commission: this.commission,
-      is_featured: this.is_featured,
+      //commission: this.commission,
+      //is_featured: this.is_featured,
       isClosed: this.isClosed,
-      status: this.status
+      //status: this.status
     };
 
     this.spinner.show();

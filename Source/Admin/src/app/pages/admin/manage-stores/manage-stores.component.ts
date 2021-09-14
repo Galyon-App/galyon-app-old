@@ -118,6 +118,16 @@ export class ManageStoresComponent {
     console.log(data);
   }
 
+  pending: any = '';
+  pending_name: any = '';
+  pending_description: any = '';
+  pending_open: any = '';
+  pending_close: any = '';
+  pending_serving: any = '';
+  pending_phone: any = '';
+  pending_email: any = '';
+  pending_cover: any = '';
+
   constructor(
     private route: ActivatedRoute,
     public api: ApisService,
@@ -158,6 +168,35 @@ export class ManageStoresComponent {
 
             localStorage.setItem('store-owner', response.owner)
             this.searchTerm = response.owner_name;
+
+            this.pending = response.pending_update;
+            for (var key in this.pending) {
+              if(key == "name") {
+                this.pending_name = this.pending.name;
+              }
+              if(key == "isClosed") {
+                this.pending_serving = this.pending.isClosed == "1" ? "Closed" : "Open";
+              }
+              if(key == "open_time") {
+                this.pending_open = this.pending.open_time;
+              }
+              if(key == "close_time") {
+                this.pending_close = this.pending.close_time;
+              }
+              if(key == "phone") {
+                this.pending_phone = this.pending.phone;
+              }
+              if(key == "email") {
+                this.pending_email = this.pending.email;
+              }
+              if(key == "descriptions") {
+                this.pending_description = this.pending.descriptions;
+              }
+              if(key == "cover") {
+                this.pending_cover = api.mediaURL + this.pending.cover;
+              }
+              console.log(this.pending[key]);
+            }
             //this.getOrders();
           }
         });
@@ -167,6 +206,25 @@ export class ManageStoresComponent {
     });
     this.cityServ.request(activeCities => {
       this.cities = activeCities;
+    });
+  }
+
+  decideRequest(action) {
+    this.spinner.show();
+    this.api.post('galyon/v1/stores/decidePending', { 
+      uuid: this.id,
+      action: action
+    }).then((response: any) => {
+      this.spinner.hide();
+      if (response && response.success && response.data) {
+        this.util.success(null);
+      } else {
+        this.util.error(response.message);
+      }
+    }, error => {
+      this.spinner.hide();
+      this.util.error(this.util.getString('Something went wrong'));
+      console.log('error', error);
     });
   }
 

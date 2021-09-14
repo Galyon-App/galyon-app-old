@@ -14,11 +14,25 @@ class Stores extends Galyon_controller {
 
     private $table_name = 'stores';
     private $edit_column = ['owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','status'];
-    private $public_column = ['uuid','owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','status','timestamp','updated_at','deleted_at'];
+    private $public_column = ['uuid','owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','pending_update','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
     function __construct(){
 		parent::__construct();
+    }
+
+    protected function is_owner_of_store($user_id, $store_id) {
+        $params = array(
+            $user_id, 
+            $store_id
+        );
+
+        $query = " SELECT `uuid` 
+        FROM `stores` 
+        WHERE `owner` = ? AND `uuid` = ?
+        ";
+
+        return $this->Crud_model->custom($query, $params, 'row');
     }
 
     function getStoreById() {
@@ -32,7 +46,7 @@ class Stores extends Galyon_controller {
         $store = $this->Crud_model->get($this->table_name, $this->public_column, 
             $this->compileWhereClause($auth->where, ["uuid = '$uuid'"]), NULL, 'row' );
         if($store) {
-            $store = $this->getStoreMeta($store, true);
+            $store = $this->getStoreMetaItem($store, true);
             $this->json_response($store);
         } else {
             $this->json_response(null, false, "No store was found!");
@@ -128,7 +142,7 @@ class Stores extends Galyon_controller {
             $this->compileWhereClause($auth->where, [" owner = '$uuid'"]), null, 'row' );
 
         if($stores) {
-            $stores = $this->getStoreMeta($stores, true);
+            $stores = $this->getStoreMetaItem($stores);
             $this->json_response($stores);
         } else {
             $this->json_response(null, false, "No store associated to this account!");
@@ -173,7 +187,7 @@ class Stores extends Galyon_controller {
         }
     }
 
-    protected function getStoreMetaItem($store) {
+    protected function getStoreMetaItem($store, $with_pending = false) {
         unset($store->id);
     
         $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
@@ -196,16 +210,16 @@ class Stores extends Galyon_controller {
         
         $store->ratings = '-';
 
+        if($with_pending) {
+            $store->pending_update = $store->pending_update ? unserialize($store->pending_update) : null;
+        }
+
         return $store;
     }
 
-    protected function getStoreMeta($stores, $single = false) {
-        if($single) {
-            $stores = $this->getStoreMetaItem($stores);
-        } else {
-            foreach($stores as $store) {
-                $store = $this->getStoreMetaItem($store);
-            }
+    protected function getStoreMeta($stores) {
+        foreach($stores as $store) {
+            $store = $this->getStoreMetaItem($store);
         }
         return $stores;
     }
@@ -246,6 +260,42 @@ class Stores extends Galyon_controller {
         }
     }
 
+    function decidePending() {
+        $auth = $this->is_authorized(true, ["admin","operator"]);
+        $request = $this->request_validation($_POST, ["uuid", "action"], $this->edit_column);
+        $store_id = $request->data['uuid'];
+
+        $action = in_array($request->data['action'], ["approve","reject"]) ? true: false;
+        if(!$action) {
+            $this->json_response(null, false, "Action is not valid"); 
+        }
+        $action = $request->data['action'];
+        
+        $existing = $this->Crud_model->get(
+            $this->table_name, 
+            ["pending_update"], 
+            "uuid = '$store_id' AND pending_update IS NOT NULL", 
+            null, 'row' );
+
+        if(!$existing) {
+            $this->json_response(null, false, "No existing request was found"); 
+        }
+
+        $changes = array();
+        if($action == "approve") {
+            $changes = unserialize($existing->pending_update);
+        }
+        $changes['pending_update'] = NULL;
+
+        $update = $this->Crud_model->update($this->table_name, $changes, array( "uuid" => $request->data['uuid'] ));
+        if($update) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $request->data['uuid'] ), null, 'row' );
+            $this->json_response($current);
+        } else {
+            $this->json_response(null, false, "Something went wrong saving changes!");
+        }
+    }
+
     function createNewStore() {
         $auth = $this->is_authorized(true, ["admin"]);
         $request = $this->request_validation($_POST, ["name"], $this->edit_column);
@@ -265,15 +315,47 @@ class Stores extends Galyon_controller {
     }
 
     function editStoreCurrent() {
-        $auth = $this->is_authorized(true, ["admin"]);
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
         $request = $this->request_validation($_POST, ["uuid", "name"], $this->edit_column);
+        $store_id = $request->data['uuid'];
+        
+        $previous = $this->Crud_model->get(
+            $this->table_name, 
+            $this->public_column, 
+            "uuid = '$store_id'", 
+            null, 'row' );
+        $changes = array_diff($_POST, (array)$previous);
+
+        if(!$changes) {
+            $this->json_response(null, false, "No changes was found"); 
+        }
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        } else if($auth->role == "store") {
+            $is_owner = $this->is_owner_of_store($auth->uuid, $request->data['uuid']);
+            if(!$is_owner) {
+                $this->json_response(null, false, "You are not authorized for this actions!"); 
+            }
+
+            $update = $this->Crud_model->update(
+                $this->table_name, 
+                array("pending_update"=>serialize($changes)), 
+                "uuid = '$store_id' AND pending_update IS NULL");
+            if($update) {
+                $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $request->data['uuid'] ), null, 'row' );
+                $this->json_response($current);
+            } else {
+                $this->json_response(null, false, "Existing store detail updates on process!");
+            }
+        }
 
         $update = $this->Crud_model->update($this->table_name, $request->data, array( "uuid" => $request->data['uuid'] ));
         if($update) {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $request->data['uuid'] ), null, 'row' );
             $this->json_response($current);
         } else {
-            $this->json_response(null, false, "No store or changes was found!");
+            $this->json_response(null, false, "Something went wrong saving changes!");
         }
     }
 

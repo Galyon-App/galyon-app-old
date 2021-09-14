@@ -234,10 +234,6 @@ const routes: Routes = [
         loadChildren: () => import('./pages/merchant/manage-orders/manage-orders.module').then(m => m.ManageOrdersModule)
       },
       {
-        path: 'contacts',
-        loadChildren: () => import('./pages/merchant/contacts/contacts.module').then(m => m.ContactsModule)
-      },
-      {
         path: 'products',
         loadChildren: () => import('./pages/merchant/products/products.module').then(m => m.ProductsModule)
       },
@@ -248,6 +244,14 @@ const routes: Routes = [
       {
         path: 'reviews',
         loadChildren: () => import('./pages/merchant/reviews/reviews.module').then(m => m.ReviewsModule)
+      },
+      {
+        path: 'contacts',
+        loadChildren: () => import('./pages/merchant/contacts/contacts.module').then(m => m.ContactsModule)
+      },
+      {
+        path: 'store',
+        loadChildren: () => import('./pages/merchant/manage-stores/manage-stores.module').then(m => m.ManageStoresModule)
       },
     ],
     canActivate: [AuthGuard],
