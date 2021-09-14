@@ -278,9 +278,7 @@ export class ManageProductsComponent {
 
   onRealPrice(value) {
     value = parseFloat(value);
-    // if (this.sellPrice && value > 1) {
-    //   this.percentage(this.discount);
-    // }
+    this.get_discounted();
   }
 
   openCate() {
