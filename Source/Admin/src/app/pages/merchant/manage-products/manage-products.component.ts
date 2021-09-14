@@ -67,9 +67,6 @@ export class ManageProductsComponent {
   subId: any = '';
   subName: any = '';
 
-  stores: any = [] = [];
-  dummyStores: any[] = [];
-  storeString: any = '';
   storeId: any = '';
   storeName: any= '';
 
@@ -173,23 +170,13 @@ export class ManageProductsComponent {
     this.storeName = info.store_name;
     this.get_discounted();
 
-    this.api.get('galyon/v1/stores/getAllStores').then((response: any) => {
-      if (response && response.success && response.data) {
-        this.stores = response.data;
-        this.dummyStores = this.stores;
-      } else {
-        this.util.error(this.util.getString('No category found'));
-      }
-    }, error => {
-      this.util.error(this.util.getString('Something went wrong'));
-      console.log(error);
-    });
-
     this.cateId = info.category_id;
     this.subId = info.subcategory_id;
     this.variations = JSON.parse(info.variations);
 
-    this.api.get('galyon/v1/category/getAllCategorys').then((response: any) => {
+    this.api.post('galyon/v1/category/getAllCategorys', {
+      status: 1
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.category = response.data.filter(x => x.parent_id == null);
         this.dummyCates = this.category;
@@ -314,7 +301,8 @@ export class ManageProductsComponent {
     if (this.cateId) {
       this.spinner.show();
       this.api.post('galyon/v1/category/getChildCategorys', {
-        parent_id: this.cateId
+        parent_id: this.cateId,
+        status: 1
       }).then((response: any) => {
         this.spinner.hide();
         if (response && response.success && response.data) {
@@ -355,52 +343,6 @@ export class ManageProductsComponent {
   }
   searchSubCate(str) {
     this.subCates = this.dummySubCates.filter((ele: any) => {
-      return ele.name.toLowerCase().includes(str.toLowerCase());
-    });
-  }
-
-  openStore() {
-    if (this.storeId) {
-      this.spinner.show();
-      this.api.get('galyon/v1/stores/getAllStores').then((response: any) => {
-        this.spinner.hide();
-        if (response && response.success && response.data) {
-          this.stores = response.data;
-          this.dummyStores = this.stores;
-          const child = this.stores.filter(x => x.uuid === this.storeId);
-          if(child.length > 0) {
-            this.storeName = child[0].name;
-          }
-        } else {
-          this.util.error(this.util.getString('No category found'));
-        }
-      }, error => {
-        this.spinner.hide();
-        this.util.error(this.util.getString('Something went wrong'));
-        console.log(error);
-      });
-      try {
-        this.modalService.open(this.contentStore, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-          console.log(result);
-        }, (reason) => {
-          console.log(reason);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      this.util.error('Please select parent category first');
-    }
-  }
-  close4() {
-    if (this.storeId) {
-      const name = this.stores.filter(x => x.uuid === this.storeId);
-      this.storeName = name[0].name;
-    }
-    this.modalService.dismissAll();
-  }
-  searchStore(str) {
-    this.stores = this.dummyStores.filter((ele: any) => {
       return ele.name.toLowerCase().includes(str.toLowerCase());
     });
   }
