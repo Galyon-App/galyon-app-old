@@ -35,9 +35,9 @@ export class UserService {
     this.observable = this.subject.asObservable();
   }
 
-  public request(uid, callback = null) {
+  public request(user_id: string = "", callback = null) {
     this.api.post('galyon/v1/users/getByID', {
-      uuid: uid
+      uuid: user_id
     }).then((response: any) => {
       if (response && response.success == true && response.data) {
         let curUser: User = response.data;

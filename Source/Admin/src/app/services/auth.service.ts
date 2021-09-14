@@ -22,7 +22,11 @@ export class AuthService {
     private storeService: StoresService
   ) {
     const _token = localStorage.getItem('access-token');
-    let _user = this.util.jwtDecode(_token);
+    let _user: any = '';
+    if(_token != '' || _token != null) {
+      _user = this.util.jwtDecode(_token);
+    }
+    
     //const isExpired = jwt.isTokenExpired(_token);
     this.userSubject = new BehaviorSubject<User>(_user);
     this.user = this.userSubject.asObservable();
@@ -41,9 +45,7 @@ export class AuthService {
         localStorage.setItem('access-token', res.data);
         let decoded = this.util.jwtDecode(res.data);
         this.userSubject.next(decoded);
-        if(decoded.role == 'store') {
-          this.storeService.getStoreByOwner(decoded.uuid);
-        }
+        this.user
         callback({ success: res.success, data: decoded });
       } else {
         callback({ success: res.success, message: res.message });
@@ -61,7 +63,7 @@ export class AuthService {
       this.userSubject.next(null);
       this.router.navigate(['/login']);
   }
-
+  
   // isAuthenticated() {
   //   return this.authState.value;
   // }

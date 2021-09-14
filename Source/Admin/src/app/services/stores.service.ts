@@ -34,14 +34,20 @@ export class StoresService {
     return this.storeSubject.value;
   }
 
-  getStoreByOwner(storeOwner: any) {
+  getStoreByOwner(storeOwner: any, callback = null) {
     this.api.post('galyon/v1/stores/getStoreByOwner', { uuid: storeOwner }).then((res: any) => {
       if(res && res.success == true && res.data) {
         localStorage.setItem(this.localKey, JSON.stringify(res.data));
         this.storeSubject.next(res.data);
       }
+      if(callback != null) {
+        callback(res.success ? res.data : null);
+      }
     }).catch(error => {
       console.log('error', error);
+      if(callback != null) {
+        callback(null);
+      }
     });
   }
 

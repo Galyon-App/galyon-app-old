@@ -61,33 +61,29 @@ class Galyon_controller extends CI_Controller{
 
     if($current->verified_at == null) {
       $message = "You're account is not yet verified!";
-      $this->json_response(null, false, $message, $failexit);
       $user->{"message"} = $message;
-      return $user;
+      $this->json_response(null, false, $message, $failexit);
     }
 
     if($current->status == "0") {
       $message = "You're account is deactivated!";
-      $this->json_response(null, false, $message, $failexit);
       $user->{"message"} = $message;
-      return $user;
+      $this->json_response(null, false, $message, $failexit);
     }
 
-    if($roles_req != null) {
-      if(!in_array($current->role, $roles_req)) {
-        $message = "You're not authorized for this action!";
-        $this->json_response(null, false, $message, $failexit);
-        $user->{"message"} = $message;
-        return $user;
-      }
+    $roles_req = is_array($roles_req) ? $roles_req : [];
+    if(!in_array($current->role, $roles_req)) {
+      $message = "You're not authorized for this action!";
+      $user->{"message"} = $message;
+      $this->json_response(null, false, $message, $failexit);
     }
     
-    $role_special ? $role_special : [];
-    $access_special ? $access_special : [];
+    $role_special = is_array($role_special) ? $role_special : [];
+    $access_special = is_array($access_special) ? $access_special : [];
     $basic = $this->input->get_request_header('Basic', TRUE);
-    if((in_array($current->role, $role_special) && in_array($basic, $access_special)) || !in_array($basic, ["mobile"])) {
+    if((in_array($current->role, $role_special) && in_array($basic, $access_special)) || in_array($basic, ["admin"])) {
       $user->where = null; 
-    }  
+    }
 
     if(!in_array($user->role, ["admin","operator"])) {
       $deleted = $this->input->post('deleted');
@@ -99,7 +95,7 @@ class Galyon_controller extends CI_Controller{
       }
     }
 
-    if(empty($user->where) || $user->where == null) {
+    if($user->where == null) {
       $user->where = "id != '0'";
     }
 

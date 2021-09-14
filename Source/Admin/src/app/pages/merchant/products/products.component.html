@@ -5,43 +5,38 @@
   Created : 01-Jan-2021
  -->
 <ngx-spinner type="ball-pulse-sync" color="#e74c3c">
-    <p style="font-size: 20px; color: #e74c3c">{{util.getString('Please wait...')}} </p>
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
 </ngx-spinner>
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h5>{{util.getString('All Products')}} </h5>
+                <h5>All Products</h5>
             </div>
             <div class="card-body reset-table p-t-0">
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">{{util.getString('Search')}} </label>
+                    <label class="col-sm-2 col-form-label">Search</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control form-control-round"
-                            [placeholder]="util.getString('Search products')" (input)="search($event.target.value)">
+                        <input type="text" class="form-control form-control-round" placeholder="Search products"
+                            (input)="search($event.target.value)">
                     </div>
-                    <div class="col-sm-4">
-                        <button style="float: right;" type="button" (click)="createNew()"
-                            class="btn btn-danger btn-round">{{util.getString('CREATE NEW')}} </button>
-                    </div>
+
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr class="text-uppercase">
-                                <!-- <th>{{util.getString('UUID')}} </th> -->
-                                <th>{{util.getString('Image')}} </th>
-                                <th (click)="sortByName()">{{util.getString('Name')}} <i class="ti-angle-down"></i>
-                                </th>
-                                <th>{{util.getString('Price')}} </th>
-                                <th>{{util.getString('In Stock')}} </th>
-
-                                <!-- <th (click)="sortByRating()">{{util.getString('Rating')}} <i class="ti-angle-down"></i>
-                                </th> -->
-
-                                <th>{{util.getString('Status')}} </th>
-                                <th>{{util.getString('Actions')}} </th>
+                                <th>Cover</th>
+                                <th (click)="sortByName()">Name <i class="ti-angle-down"></i> </th>
+                                <th>Price </th>
+                                <th (click)="sortByRating()">Rating <i class="ti-angle-down"></i> </th>
+                                <th (click)="sortByHome()">Homepage<i class="ti-angle-down"></i> </th>
+                                <th>Featured</th>
+                                <th>In Stock</th>
+                                <th>Verified</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,7 +76,21 @@
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
                                     </ngx-skeleton-loader>
                                 </td>
-
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
                                 <td>
                                     <ngx-skeleton-loader count="1"
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
@@ -90,24 +99,31 @@
                             </tr>
                             <tr
                                 *ngFor="let item of products | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
-                                <!-- <td>{{item.uuid}}</td> -->
-                                <td><a href="javascript:;"><img class="img-responsive" style="height: 70px; width: auto;"
-                                    [src]="api.mediaURL+item.cover" onError="this.src='assets/images/product.png'" alt="chat-user"></a>
-                                </td>
-                                <td>{{item.name}}</td>
-                                <td>{{item.orig_price}}</td>
-                                <td>{{item.in_stock === '1' ? util.getString('YES') :util.getString('NO')}}</td>
-
-                                <!-- <td> {{item.rating}}</td> -->
-
                                 <td>
-                                    <button type="button" (click)="update(item,'status')"
-                                        [className]="getClass(item.status)">{{item.status === '1' ? util.getString('Active') :util.getString('Deactive')}}</button>
+                                    <a href="javascript:;"><img class="img-responsive" style="object-fit: cover; height: 75px; width: 75px;"
+                                        [src]="api.mediaURL+item.cover" onError="this.src='assets/images/product.png'" alt="chat-user"></a>
                                 </td>
-
-                                <td><button type="button" (click)="openOrder(item)"
-                                        class="btn btn-success btn-round btn-outline-success">{{util.getString('View')}}
-                                    </button>
+                                <td> {{item.name}}</td>
+                                <td> {{item.orig_price}}</td>
+                                <td> None</td>
+                                <td>
+                                    <button disabled type="button" [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</button>
+                                </td>
+                                <td>
+                                    <button disabled type="button" [className]="getClass(item.is_featured)">{{item.is_featured === '1' ? 'Yes':'No'}}</button>
+                                </td>
+                                <td>
+                                    <button disabled type="button" [className]="getClass(item.in_stock)">{{item.in_stock === '1' ? 'Yes':'No'}}</button>
+                                </td>
+                                <td>
+                                    <button disabled type="button" [className]="getClass(item.verified_at !== null ? '1' : '0')">{{item.verified_at !== null ? 'Yes':'No'}}</button>
+                                </td>
+                                <td>
+                                    <button type="button" (click)="changeStatus(item)" [className]="getClass(item.status)" 
+                                        (click)="changeStatus(item)">{{item.status === '1' ? 'Active':'Inactive'}}</button>
+                                </td>
+                                <td><button type="button" (click)="manage(item)"
+                                        class="btn btn-info btn-round btn-outline-info">Manage</button>
                                 </td>
                             </tr>
                         </tbody>

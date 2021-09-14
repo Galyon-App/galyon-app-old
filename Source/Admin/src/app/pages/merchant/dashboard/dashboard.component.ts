@@ -65,18 +65,12 @@ export class DashboardComponent implements OnInit {
     private storeService: StoresService
   ) {
     let owner_id = this.authService.userValue.uuid;
-    this.api.post('galyon/v1/stores/getStoreByOwner', { uuid: owner_id }).then((response: any) => {
-      if (response && response.success == true && response.data) {
-        this.statusText = ' by ' + this.storeService.storeValue.name;
-        this.getData();
-      } else {
-        localStorage.clear();
-        this.router.navigate(['login']);
+    this.storeService.getStoreByOwner(owner_id, (response) => {
+      if(response) {
+        //this.statusText = ' by ' + this.storeService.storeValue.name;
+        //this.getData();
       }
-    }, error => {
-      console.log(error);
     });
-    
   }
 
   ngOnInit(): void {

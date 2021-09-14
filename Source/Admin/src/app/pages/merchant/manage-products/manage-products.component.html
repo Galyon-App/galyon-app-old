@@ -5,7 +5,7 @@
   Created : 01-Jan-2021
  -->
 <ngx-spinner type="ball-pulse-sync" color="#e74c3c">
-   <p style="font-size: 20px; color: #e74c3c"> {{util.getString('Please wait...')}} </p>
+   <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
 </ngx-spinner>
 <ng-template #content let-modal>
    <div class="modal-header">
@@ -25,10 +25,10 @@
 
       <div class="form-group row">
          <div class="col-sm-12">
-            <div *ngFor="let item of category" (click)="cateId = item.id"
+            <div *ngFor="let item of category" (click)="cateId = item.uuid"
                style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
                <p style="margin: 0px;"> {{item.name}}</p>
-               <i class="ti-check-box" *ngIf="item.id === cateId"></i>
+               <i class="ti-check-box" *ngIf="item.uuid === cateId"></i>
             </div>
          </div>
       </div>
@@ -57,16 +57,48 @@
 
       <div class="form-group row">
          <div class="col-sm-12">
-            <div *ngFor="let item of subCates" (click)="subId = item.id"
+            <div *ngFor="let item of subCates" (click)="subId = item.uuid"
                style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
                <p style="margin: 0px;"> {{item.name}}</p>
-               <i class="ti-check-box" *ngIf="item.id === subId"></i>
+               <i class="ti-check-box" *ngIf="item.uuid === subId"></i>
             </div>
          </div>
       </div>
    </div>
    <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="close2()">{{util.getString('Save')}} </button>
+   </div>
+</ng-template>
+
+<ng-template #contentStore let-modal>
+   <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{util.getString('Select Store')}} </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <label>{{util.getString('Select Store')}} </label>
+            <input style="background: transparent !important;" [(ngModel)]="storeString"
+               (ngModelChange)="searchStore($event)" type="text" class="form-control" placeholder="Search Store">
+         </div>
+      </div>
+
+      <div class="form-group row">
+         <div class="col-sm-12">
+            <div *ngFor="let item of stores" (click)="storeId = item.uuid"
+               style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
+               <p style="margin: 0px;"> {{item.name}}</p>
+               <i class="ti-check-box" *ngIf="item.uuid === storeId"></i>
+            </div>
+         </div>
+      </div>
+
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="close4()">{{util.getString('Save')}} </button>
    </div>
 </ng-template>
 
@@ -92,7 +124,7 @@
          </div>
 
          <div class="col-sm-12">
-            <label>{{util.getString('Add-ons discount')}} </label>
+            <label>{{util.getString('Add-ons discount (%)')}} </label>
             <input style="background: transparent !important;" [(ngModel)]="variant_discount" type="number"
                class="form-control" [placeholder]="util.getString('Add-ons discount')">
          </div>
@@ -101,7 +133,7 @@
 
    </div>
    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="close3()">{{util.getString('Save')}} </button>
+      <button type="button" class="btn btn-outline-dark" (click)="close3()">{{ sub ? 'Save' : 'Add' }} </button>
    </div>
 </ng-template>
 
@@ -109,299 +141,237 @@
    <div class="col-md-12">
       <div class="card">
          <div class="card-body">
-            <h5>{{util.getString('Product Details')}} </h5>
+            <h5>{{util.getString('Manage Product')}} </h5>
          </div>
          <div class="card-body reset-table p-t-0">
 
+            <div class="form-group row" style="width: -webkit-fill-available; display: block; padding: 0 15px;">
+               <ul style="display: -webkit-box; overflow-x: auto; background-color: #f8f8f8;">
+                  <li>
+                     <div class="form-group row" style="margin: auto; padding: 10px; width: min-content;">
+                        <div class="col-md-12" style="text-align: center;">
+                           <img [src]="api.mediaURL+ coverImage" alt="" style="object-fit: cover; height: 250px; width: 250px; padding: 5px;"
+                              onError="this.src='assets/images/product.png'">
+                        </div>
+                        <div class="col-md-12" style="width: auto; padding-top: 20px;">
+                           <input (change)="displayPreview($event.target.files)" type="file" class="form-control" accept="image/*">
+                           <button type="button" (click)="addPreview()" class="btn btn-primary btn-md btn-block waves-effect text-center" 
+                              style="margin: 15px 0; padding: 5px;">Add Preview</button>
+                        </div>
+                     </div>
+                  </li>
+                  <li *ngFor="let image of images; let pos = index">
+                     <div class="form-group row" style="margin: 0 10px; padding: 20px; width: min-content;">
+                        <div class="col-md-12" style="text-align: center;">
+                           <img [src]="api.mediaURL+image" alt="" style="object-fit: cover; height: 200px; width: 200px;"
+                              onError="this.src='assets/images/product.png'">
+                        </div>
+                        <div class="col-md-12" style="width: auto; padding-top: 20px;">
+                           <input (change)="displayPreview($event.target.files, pos)" type="file" class="form-control" accept="image/*">
+                           <button type="button" (click)="removePreview(pos)" class="btn btn-danger btn-md btn-block waves-effect text-center" 
+                              style="margin: 15px 0; padding: 5px;">Remove</button>
+                        </div>
+                     </div>
+                  </li>
+               </ul>
+            </div>
+
             <div class="form-group row">
-               <div class="col-sm-6" (click)="openCate()">
+               <div class="col-sm-12" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Name')}} </label>
+                  <input type="text" [(ngModel)]="name" class="form-control" [placeholder]="util.getString('Name')">
+               </div>
+               <div class="col-sm-6" (click)="openStore()" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Select Store')}} </label>
+                  <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="storeName"
+                     class="form-control" [placeholder]="util.getString('Select Store')">
+               </div>
+               <div class="col-sm-3" (click)="openCate()" style="margin-bottom: 12px;">
                   <label>{{util.getString('Select Category')}} </label>
                   <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="cateName"
                      class="form-control" [placeholder]="util.getString('Select Category')">
                </div>
-               <div class="col-sm-6" (click)="openSub()">
-                  <label>{{util.getString('Select Sub Category')}} </label>
+               <div class="col-sm-3" (click)="openSub()" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Select Sub-Category')}} </label>
                   <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="subName"
                      class="form-control" [placeholder]="util.getString('Select Sub Category')">
                </div>
-
-               <div class="col-sm-6">
-                  <label>{{util.getString('Name')}} </label>
-                  <input type="text" [(ngModel)]="name" class="form-control" [placeholder]="util.getString('Name')">
-               </div>
-               <div class="col-sm-6">
-                  <label> {{util.getString('Real price')}} </label>
-                  <input type="text" [(ngModel)]="realPrice" (ngModelChange)="onRealPrice($event)" class="form-control"
-                     [placeholder]="util.getString('Real price')">
-               </div>
-               <div class="col-sm-6">
-                  <label>{{util.getString('Sell price')}} </label>
-                  <input type="text" [(ngModel)]="sellPrice" disabled="true" class="form-control"
-                     [placeholder]="util.getString('Sell price')">
-               </div>
-               <div class="col-sm-6">
-                  <label>{{util.getString('Discount %')}} </label>
-                  <input type="text" [(ngModel)]="discount" (ngModelChange)="onDicount($event)" class="form-control"
-                     [placeholder]="util.getString('Discount %')">
-               </div>
-               <div class="col-sm-6">
-                  <label>{{util.getString('Exp Date')}} </label>
-                  <input type="date" [(ngModel)]="exp_date" class="form-control"
-                     [placeholder]="util.getString('Exp Date')">
-               </div>
-
-               <div class="col-sm-6">
-                  <label> {{util.getString('Status')}}</label>
-                  <select name="select" [(ngModel)]="status" class="form-control">
-                     <option value='1'>{{util.getString('Available')}} </option>
-                     <option value='0'>{{util.getString('Hide')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6">
-                  <label>{{util.getString('In Stoke')}} </label>
-                  <select name="select" [(ngModel)]="in_stoke" class="form-control">
-                     <option value='1'>{{util.getString('In Stoke')}} </option>
-                     <option value='0'>{{util.getString('Out Of Stoke')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6">
-                  <label>{{util.getString('Kind')}} </label>
-                  <select name="select" [(ngModel)]="veg" class="form-control">
-                     <option value='1'>{{util.getString('Veg')}} </option>
-                     <option value='0'>{{util.getString('Non Veg')}} </option>
-                  </select>
-               </div>
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-6">
-                  <label>{{util.getString('Have Gram')}} </label>
-                  <select name="select" [(ngModel)]="have_gram" class="form-control">
-                     <option value='1'>{{util.getString('Yes')}} </option>
-                     <option value='0'> {{util.getString('No')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6" *ngIf="have_gram  ==='1'">
-                  <label>{{util.getString('Gram')}} </label>
-                  <input type="number" [(ngModel)]="gram" class="form-control" [placeholder]="util.getString('Gram')">
-               </div>
-
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-6">
-                  <label>{{util.getString('Have KG')}} </label>
-                  <select name="select" [(ngModel)]="have_kg" class="form-control">
-                     <option value='1'>{{util.getString('Yes')}} </option>
-                     <option value='0'>{{util.getString('No')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6" *ngIf="have_kg  ==='1'">
-                  <label>{{util.getString('KG')}} </label>
-                  <input type="number" [(ngModel)]="kg" class="form-control" [placeholder]="util.getString('KG')">
-               </div>
-
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-6">
-                  <label>{{util.getString('Have Liter')}} </label>
-                  <select name="select" [(ngModel)]="have_liter" class="form-control">
-                     <option value='1'>{{util.getString('Yes')}} </option>
-                     <option value='0'>{{util.getString('No')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6" *ngIf="have_liter  ==='1'">
-                  <label>{{util.getString('Liter')}} </label>
-                  <input type="number" [(ngModel)]="liter" class="form-control" [placeholder]="util.getString('Liter')">
-               </div>
-
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-6">
-                  <label>{{util.getString('Have ML')}} </label>
-                  <select name="select" [(ngModel)]="have_ml" class="form-control">
-                     <option value='1'>{{util.getString('Yes')}} </option>
-                     <option value='0'>{{util.getString('No')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6" *ngIf="have_ml  ==='1'">
-                  <label>{{util.getString('ML')}} </label>
-                  <input type="number" [(ngModel)]="ml" class="form-control" [placeholder]="util.getString('ML')">
-               </div>
-
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-6">
-                  <label>{{util.getString('Have PCs')}} </label>
-                  <select name="select" [(ngModel)]="have_pcs" class="form-control">
-                     <option value='1'>{{util.getString('Yes')}} </option>
-                     <option value='0'>{{util.getString('No')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6" *ngIf="have_pcs ==='1'">
-                  <label>{{util.getString('PCs')}} </label>
-                  <input type="number" [(ngModel)]="pcs" class="form-control" [placeholder]="util.getString('PCs')">
-               </div>
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-6">
-                  <label>{{util.getString('Size')}} </label>
-                  <select name="select" (ngModelChange)="changeSize($event)" [(ngModel)]="size" class="form-control">
-                     <option value='1'>{{util.getString('Have Variations')}} </option>
-                     <option value='0'>{{util.getString('No Variations')}} </option>
-                  </select>
-               </div>
-               <div class="col-sm-6">
-                  <div *ngFor="let item of variations;let i = index;">
-                     <div
-                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                        <label style="margin: 0px !important;font-weight: bold;">{{item.title}}</label>
-                        <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;" (click)="addItem(i)"></i>
-                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="delete(item)"></i>
-                     </div>
-                     <div *ngFor="let sub of item.items;let j = index"
-                        style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                        <div
-                           style="font-size: 15px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                           {{sub.title}}
-                           <p *ngIf="sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
-                              <span> {{sub.price}}$</span>
-                           </p>
-                           <p class="price_lbl" style="margin: 0px !important;"
-                              *ngIf="sub.discount !== 0 && sub.discount !=='0'">
-                              <span style="text-decoration:line-through;"> $ {{sub.price}}
-                              </span>
-                              <span class="sell">$ {{sub.discount}} </span>
-                           </p>
-                        </div>
-
-                        <i class="ti-pencil-alt" style="font-weight: bold;margin: 0px 10px;"
-                           (click)="editSub(i,sub,j)"></i>
-                        <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;" (click)="deleteSub(i,sub)"></i>
-                     </div>
-                  </div>
-               </div>
-            </div>
-
-
-            <div class="form-group row">
-               <div class="col-sm-12">
+               <div class="col-sm-12" style="margin-bottom: 12px;">
                   <label>{{util.getString('Descriptions')}} </label>
-                  <textarea rows="5" cols="5" [(ngModel)]="description" class="form-control"
+                  <textarea rows="3" cols="3" [(ngModel)]="description" class="form-control"
                      [placeholder]="util.getString('Descriptions')"></textarea>
                </div>
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-12">
-                  <label>{{util.getString('Key feature')}} </label>
-                  <textarea rows="5" cols="5" [(ngModel)]="key_features" class="form-control"
+               <div class="col-sm-12" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Features')}} </label>
+                  <textarea rows="3" cols="3" [(ngModel)]="key_features" class="form-control"
                      [placeholder]="util.getString('Key feature')"></textarea>
                </div>
-            </div>
-
-            <div class="form-group row">
-               <div class="col-sm-12">
+               <div class="col-sm-12" style="margin-bottom: 12px;">
                   <label>{{util.getString('Disclaimer')}} </label>
-                  <textarea rows="5" cols="5" [(ngModel)]="disclaimer" class="form-control"
+                  <textarea rows="3" cols="3" [(ngModel)]="disclaimer" class="form-control"
                      [placeholder]="util.getString('Disclaimer')"></textarea>
                </div>
             </div>
 
             <div class="form-group row">
-
-               <label class="col-sm-4 col-form-label">{{util.getString('Upload cover image here')}} </label>
                <div class="col-sm-4">
-                  <input (change)="preview_banner($event.target.files)" type="file" class="form-control"
-                     accept="image/*">
+                  <label>{{util.getString('Featured')}} </label>
+                  <select name="select" [(ngModel)]="is_featured" class="form-control">
+                     <option value='0'>{{util.getString('Regular')}} </option>
+                     <option value='1'>{{util.getString('Featured')}} </option>
+                  </select>
                </div>
                <div class="col-sm-4">
-                  <img [src]="api.mediaURL+ coverImage" alt="" style="height: 100px;width: 100px;float: right;"
-                     onError="this.src='assets/images/default.png'">
+                  <label>{{util.getString('In Stock')}} </label>
+                  <select name="select" [(ngModel)]="in_stock" class="form-control">
+                     <option value='1'>{{util.getString('In Stock')}} </option>
+                     <option value='0'>{{util.getString('Out Of Stock')}} </option>
+                  </select>
                </div>
-
+               <div class="col-sm-4">
+                  <label> {{util.getString('Status')}}</label>
+                  <select name="select" [(ngModel)]="status" class="form-control">
+                     <option value='0'>{{util.getString('Unavailable')}} </option>
+                     <option value='1'>{{util.getString('Available')}} </option>
+                  </select>
+               </div>
             </div>
 
             <div class="form-group row">
-
-               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 1')}} </label>
-               <div class="col-sm-4">
-                  <input (change)="others($event.target.files,'1')" type="file" class="form-control" accept="image/*">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <label> {{util.getString('Real price')}} </label>
+                  <input type="text" [(ngModel)]="realPrice" (ngModelChange)="onRealPrice($event)" class="form-control"
+                     [placeholder]="util.getString('Real price')">
                </div>
-               <div class="col-sm-4">
-                  <img [src]="api.mediaURL+ image1" alt="" style="height: 100px;width: 100px;float: right;"
-                     onError="this.src='assets/images/default.png'">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Sell price')}} </label>
+                  <input type="text" [(ngModel)]="sellPrice" disabled="true" class="form-control"
+                     [placeholder]="util.getString('Sell price')">
                </div>
-
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Discount Type')}} </label>
+                  <select name="select" [(ngModel)]="discount_type" (ngModelChange)="onDicountType($event)" class="form-control">
+                     <option value='none'>{{util.getString('None')}} </option>
+                     <option value='fixed'>{{util.getString('Fixed')}} </option>
+                     <option value='percent'>{{util.getString('Percent')}} </option>
+                  </select>
+               </div>
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <label>{{util.getString('Discount Amount')}} </label>
+                  <input type="text" [(ngModel)]="discount" (ngModelChange)="onDicount($event)" class="form-control"
+                     [placeholder]="util.getString('Discount')">
+               </div>
             </div>
 
             <div class="form-group row">
-
-               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 2')}} </label>
-               <div class="col-sm-4">
-                  <input (change)="others($event.target.files,'2')" type="file" class="form-control" accept="image/*">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have KG')}} </label>
+                     <select name="select" [(ngModel)]="have_kg" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_kg  ==='1'">
+                     <label>{{util.getString('Kilogram')}} </label>
+                     <input type="number" [(ngModel)]="kg" class="form-control" [placeholder]="util.getString('KG')">
+                  </div>
                </div>
-               <div class="col-sm-4">
-                  <img [src]="api.mediaURL+ image2" alt="" style="height: 100px;width: 100px;float: right;"
-                     onError="this.src='assets/images/default.png'">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have Gram')}} </label>
+                     <select name="select" [(ngModel)]="have_gram" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'> {{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_gram  ==='1'">
+                     <label>{{util.getString('Gram')}} </label>
+                     <input type="number" [(ngModel)]="gram" class="form-control" [placeholder]="util.getString('G')">
+                  </div>
                </div>
-
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have Liter')}} </label>
+                     <select name="select" [(ngModel)]="have_liter" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_liter  ==='1'">
+                     <label>{{util.getString('Liter')}} </label>
+                     <input type="number" [(ngModel)]="liter" class="form-control" [placeholder]="util.getString('L')">
+                  </div>
+               </div>
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have ML')}} </label>
+                     <select name="select" [(ngModel)]="have_ml" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_ml  ==='1'">
+                     <label>{{util.getString('MILLILITER')}} </label>
+                     <input type="number" [(ngModel)]="ml" class="form-control" [placeholder]="util.getString('ML')">
+                  </div>
+               </div>
             </div>
 
             <div class="form-group row">
-
-               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 3')}} </label>
-               <div class="col-sm-4">
-                  <input (change)="others($event.target.files,'3')" type="file" class="form-control" accept="image/*">
+               <div class="col-sm-3" style="margin-bottom: 12px;">
+                  <div>
+                     <label>{{util.getString('Have Pieces')}} </label>
+                     <select name="select" [(ngModel)]="have_pcs" class="form-control">
+                        <option value='1'>{{util.getString('Yes')}} </option>
+                        <option value='0'>{{util.getString('No')}} </option>
+                     </select>
+                  </div>
+                  <div *ngIf="have_pcs  ==='1'">
+                     <label>{{util.getString('Pieces')}} </label>
+                     <input type="number" [(ngModel)]="pcs" class="form-control" [placeholder]="util.getString('PCs')">
+                  </div>
                </div>
-               <div class="col-sm-4">
-                  <img [src]="api.mediaURL+ image3" alt="" style="height: 100px;width: 100px;float: right;"
-                     onError="this.src='assets/images/default.png'">
+               <div class="col-sm-3">
+                  <label>{{util.getString('Variations')}} </label>
+                  <!-- <select name="select" (ngModelChange)="changeSize($event)" [(ngModel)]="variations.length" class="form-control">
+                     <option value='0'>{{util.getString('No Variations')}} </option>
+                     <option value='1'>{{util.getString('Have Variations')}} </option>
+                  </select> -->
+                  <input type="text" [(ngModel)]="curVar" (keyup.enter)="changeSize($event)" class="form-control" [placeholder]="util.getString('Name of Variant')">
                </div>
-
-            </div>
-
-            <div class="form-group row">
-
-               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 4')}} </label>
-               <div class="col-sm-4">
-                  <input (change)="others($event.target.files,'4')" type="file" class="form-control" accept="image/*">
+               <div class="col-sm-6">
+                  <div *ngFor="let item of variations;let i = index;" style="margin-bottom: 15px;">
+                     <div class="var_whole">
+                        <div class="var_title">
+                           <label style="margin: 0px !important;">Name: <strong>{{item.title}}</strong></label>
+                           <i class="ti-minus" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="delete(item)"></i>
+                           <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="addItem(i)"></i>
+                        </div>
+                        <div *ngFor="let sub of item.items; let j = index"
+                           style="font-size: 15px; display: flow-root; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                           <div
+                              style="font-size: 15px; display: inline-flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
+                              * {{sub.title}}&nbsp;&nbsp; = &nbsp;
+                              <p *ngIf="sub.discount_type == 'none' || sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
+                                 <span>{{util.currecny}}{{sub.price}}</span>
+                              </p>
+                              <p class="price_lbl" style="margin: 0px !important;"
+                                 *ngIf="sub.discount !== 0 && sub.discount !=='0'">
+                                 <span style="text-decoration:line-through;">
+                                    {{util.currecny}}{{sub.price}}
+                                 </span>
+                                 <span class="sell">
+                                    &nbsp;- {{util.currecny}}{{sub.discount}}
+                                 </span>
+                              </p>
+                           </div>
+                           <i class="ti-trash" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="deleteSub(i,sub)"></i>
+                           <i class="ti-pencil-alt" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="editSub(i,sub,j)"></i>
+                        </div>  
+                     </div>                   
+                  </div>
                </div>
-               <div class="col-sm-4">
-                  <img [src]="api.mediaURL+ image4" alt="" style="height: 100px;width: 100px;float: right;"
-                     onError="this.src='assets/images/default.png'">
-               </div>
-
-            </div>
-
-            <div class="form-group row">
-
-               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 5')}} </label>
-               <div class="col-sm-4">
-                  <input (change)="others($event.target.files,'5')" type="file" class="form-control" accept="image/*">
-               </div>
-               <div class="col-sm-4">
-                  <img [src]="api.mediaURL+ image5" alt="" style="height: 100px;width: 100px;float: right;"
-                     onError="this.src='assets/images/default.png'">
-               </div>
-
-            </div>
-
-            <div class="form-group row">
-
-               <label class="col-sm-4 col-form-label">{{util.getString('Upload image 6')}} </label>
-               <div class="col-sm-4">
-                  <input (change)="others($event.target.files,'6')" type="file" class="form-control" accept="image/*">
-               </div>
-               <div class="col-sm-4">
-                  <img [src]="api.mediaURL+ image6" alt="" style="height: 100px;width: 100px;float: right;"
-                     onError="this.src='assets/images/default.png'">
-               </div>
-
             </div>
 
             <div class="form-group row">
