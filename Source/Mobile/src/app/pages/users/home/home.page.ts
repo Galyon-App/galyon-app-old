@@ -100,7 +100,7 @@ export class HomePage {
       this.getFeaturedProducts();
       this.getPopup();
       this.getStoreByCityAndFeatured();
-      this.getStoreByCity();
+      this.getStoreByCity(null);
     }
   }
 
@@ -156,24 +156,53 @@ export class HomePage {
     //this.dummyStores = [];
   }
 
-  getStoreByCity() {
+  limit_start: number = 0;
+  limit_length: number = 3;
+  total_length: number;
+  no_stores_follows: boolean = false;
+
+  loadData(event) {
+    this.limit_start += this.limit_length;
+    this.getStoreByCity(event.target);
+  }
+
+  getStoreByCity(event) {
     this.api.post('galyon/v1/stores/getAllStores', {
-      uuid: this.city.activeCity
+      uuid: this.city.activeCity,
+      limit_start: this.limit_start + '',
+      limit_length: this.limit_length + ''
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
-        this.stores = response.data;
+        if(this.stores) {
+          response.data.forEach(element => {
+            this.stores.push(element);;
+          });
+        } else {
+          this.stores = response.data;
+        }
         this.dummyStores = [];
 
         this.stores.forEach(async (store) => {
           store['isOpen'] = await this.isOpen(store.open_time, store.close_time);
+          if(!store.address) {
+            store.address = "Not yet set...";
+          }
         });
 
         this.util.active_store = [...new Set(this.stores.map(item => item.uuid))];
         this.haveStores = true;
       } else {
+        this.no_stores_follows = true;
         this.resetAllArrays(response.message);
       }
+
+      if(event) {
+        event.complete();
+      }
     }, error => {
+      if(event) {
+        event.complete();
+      }
       this.resetAllArrays('Something went wrong');
     });
   }

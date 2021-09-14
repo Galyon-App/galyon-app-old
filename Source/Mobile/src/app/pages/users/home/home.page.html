@@ -367,14 +367,16 @@
       </ion-item>
     </ion-list>
 
-    <ion-infinite-scroll *ngIf="false">
-      <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Loading…">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [ngStyle]="{'display': no_stores_follows ? 'none':'block'}" style="padding: 20px;">
+      <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
     <!--  END INFINITY STORES -->
 
+  </div>
+
+  <div *ngIf="haveStores === true && no_stores_follows === true" style="display: flex; flex-direction: column; margin: 0 0 20px;">
+    <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
   </div>
 
   <div *ngIf="haveStores === false" class="nothing">
