@@ -35,7 +35,10 @@ export class CategoryComponent {
 
   getAllCategory() {
     //deleted: true
-    this.api.post('galyon/v1/category/getAllCategorys', {}).then((response: any) => {
+    this.api.post('galyon/v1/category/getAllCategorys', {
+      limit_start: 0,
+      limit_length: 1000
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
         this.categories = response.data;

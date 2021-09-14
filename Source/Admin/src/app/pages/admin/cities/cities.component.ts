@@ -36,7 +36,10 @@ export class CitiesComponent {
   }
 
   getAllCities() {
-    this.api.post('galyon/v1/cities/getAllCities', {}).then((response: any) => {
+    this.api.post('galyon/v1/cities/getAllCities', {
+      limit_start: 0,
+      limit_length: 1000
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
         this.cities = response.data;

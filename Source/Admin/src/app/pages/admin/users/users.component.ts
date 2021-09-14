@@ -41,7 +41,9 @@ export class UsersComponent {
    */
   getUsers(filter = '') {
     this.api.post('galyon/v1/users/getAll', {
-      search: filter
+      search: filter,
+      limit_start: 0,
+      limit_length: 1000
     }).then((response: any) => {
       console.log(response);
       if (response && response.success == true && response.data) {

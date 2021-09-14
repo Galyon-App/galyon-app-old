@@ -38,7 +38,10 @@ export class StoresComponent {
   }
 
   getAllStores() {
-    this.api.post('galyon/v1/stores/getAllStores', {}).then((response: any) => {
+    this.api.post('galyon/v1/stores/getAllStores', {
+      limit_start: 0,
+      limit_length: 1000
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
         this.stores = response.data;

@@ -34,7 +34,10 @@ export class AppPagesComponent {
   }
 
   getAllPages() {
-    this.api.post('galyon/v1/pages/getAllPages', {}).then((response: any) => {
+    this.api.post('galyon/v1/pages/getAllPages', {
+      limit_start: 0,
+      limit_length: 1000
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
         this.list = response.data;

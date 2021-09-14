@@ -37,7 +37,10 @@ export class OffersComponent {
   }
 
   getAllOffers() {
-    this.api.post('galyon/v1/offers/getAllOffers', {}).then((response: any) => {
+    this.api.post('galyon/v1/offers/getAllOffers', {
+      limit_start: 0,
+      limit_length: 1000
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
         this.list = response.data;

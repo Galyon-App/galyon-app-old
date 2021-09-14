@@ -39,7 +39,9 @@ export class ProductsComponent {
 
   getAllProducts(filter = '') {
     this.api.post('galyon/v1/products/getAllProducts', {
-      search: filter
+      search: filter,
+      limit_start: 0,
+      limit_length: 1000
     }).then((response: any) => {
       if (response && response.success == true && response.data) {
         let product_list = response.data;

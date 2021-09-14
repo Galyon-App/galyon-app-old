@@ -36,7 +36,10 @@ export class BannersComponent {
   }
 
   getAllBanners() {
-    this.api.post('galyon/v1/banners/getAllBanners', {}).then((response: any) => {
+    this.api.post('galyon/v1/banners/getAllBanners', {
+      limit_start: 0,
+      limit_length: 1000
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
         this.banners = response.data;
