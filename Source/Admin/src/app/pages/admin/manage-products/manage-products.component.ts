@@ -37,6 +37,7 @@ export class ManageProductsComponent {
   in_offer: any = '0';
   is_single: any = '1';
   is_featured: any = '0';
+  type_of: any = '';
 
   have_pcs: any = '0';
   pcs: any;
@@ -137,6 +138,58 @@ export class ManageProductsComponent {
     }
   }
 
+  decideRequest(action) {
+    this.spinner.show();
+    this.api.post('galyon/v1/products/decidePending', { 
+      uuid: this.id,
+      action: action
+    }).then((response: any) => {
+      this.spinner.hide();
+      if (response && response.success && response.data) {
+        this.util.success(null);
+      } else {
+        this.util.error(response.message);
+      }
+    }, error => {
+      this.spinner.hide();
+      this.util.error(this.util.getString('Something went wrong'));
+      console.log('error', error);
+    });
+  }
+
+  pending: any = '';
+  pending_cover: any = '';
+  pending_images: any[] = [];
+  pending_name: any = '';
+  pending_description: any = '';
+  pending_features: any = '';
+  pending_disclaimer: any = '';
+
+  pending_category_name: any = '';
+  pending_subcategory_name: any = '';
+
+  pending_orig_price: any = '';
+  pending_sell_price: any = '';
+  pending_discount: any = '';
+  pending_discount_type: any = '';
+
+  pending_have_kg: any = '';
+  pending_kg: any = '';
+  pending_have_gram: any = '';
+  pending_gram: any = '';
+  pending_have_liter: any = '';
+  pending_liter: any = '';
+  pending_have_ml: any = '';
+  pending_ml: any = '';
+  pending_pcs: any = '';
+  pending_have_pcs: any = '';
+
+  pending_variations: any[] = [];
+
+  pending_is_featured: any = '';
+  pending_in_stock: any = '';
+  pending_status: any = '';
+
   protected setProductDetail(response) {
     const info = response.data;
 
@@ -152,6 +205,7 @@ export class ManageProductsComponent {
     this.in_offer = info.in_home;
     this.is_single = info.is_single;
     this.is_featured = info.is_featured;
+    this.type_of = info.type_of;
 
     this.gram = info.gram;
     this.have_gram = info.have_gram;
@@ -173,7 +227,11 @@ export class ManageProductsComponent {
     this.storeName = info.store_name;
     this.get_discounted();
 
-    this.api.get('galyon/v1/stores/getAllStores').then((response: any) => {
+    this.api.post('galyon/v1/stores/getAllStores', {
+      status: "1",
+      limit_start: 0,
+      limit_length: 100
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.stores = response.data;
         this.dummyStores = this.stores;
@@ -189,19 +247,37 @@ export class ManageProductsComponent {
     this.subId = info.subcategory_id;
     this.variations = JSON.parse(info.variations);
 
-    this.api.get('galyon/v1/category/getAllCategorys').then((response: any) => {
+    this.api.post('galyon/v1/category/getParentCategorys', {
+      status: "1",
+      limit_start: 0,
+      limit_length: 100
+    }).then((response: any) => {
       if (response && response.success && response.data) {
         this.category = response.data.filter(x => x.parent_id == null);
         this.dummyCates = this.category;
         const parent = this.category.filter(x => x.uuid === this.cateId);
         this.cateName = parent[0].name;
 
-        this.subCates = response.data.filter(x => x.parent_id == this.cateId);
-        this.dummySubCates = this.subCates;
-        const child = this.subCates.filter(x => x.uuid === this.subId);
-        if(child.length > 0) {
-          this.subName = child[0].name;
-        }
+        this.api.post('galyon/v1/category/getChildCategorys', {
+          parent_id: this.cateId,
+          status: "1",
+          limit_start: 0,
+          limit_length: 100
+        }).then((response: any) => {
+          if (response && response.success && response.data) {
+            this.subCates = response.data.filter(x => x.parent_id == this.cateId);
+            this.dummySubCates = this.subCates;
+            const child = this.subCates.filter(x => x.uuid === this.subId);
+            if(child.length > 0) {
+              this.subName = child[0].name;
+            }
+          } else {
+            this.util.error(this.util.getString('No sub category found'));
+          }
+        }, error => {
+          this.util.error(this.util.getString('Something went wrong'));
+          console.log(error);
+        });
       } else {
         this.util.error(this.util.getString('No category found'));
       }
@@ -210,10 +286,99 @@ export class ManageProductsComponent {
       console.log(error);
     });
 
-
-
     this.rating = info.rating;
     this.total_rating = info.total_rating;
+
+    this.pending = info.pending_update;
+    for (var key in this.pending) {
+      if(key == "name") {
+        this.pending_name = this.pending.name;
+      }
+      if(key == "description") {
+        this.pending_description = this.pending.description;
+      }
+      if(key == "features") {
+        this.pending_features = this.pending.features;
+      }
+      if(key == "disclaimer") {
+        this.pending_disclaimer = this.pending.disclaimer;
+      }
+      if(key == "cover") {
+        this.pending_cover = this.pending.cover;
+      }
+      if(key == "images") {
+        this.pending_images = JSON.parse(this.pending.images);
+      }
+
+      if(key == "orig_price") {
+        this.pending_orig_price = this.pending.orig_price;
+      }
+      if(key == "sell_price") {
+        this.pending_sell_price = this.pending.sell_price;
+      }
+      if(key == "discount") {
+        this.pending_discount = this.pending.discount;
+      }
+      if(key == "discount_type") {
+        this.pending_discount_type = this.pending.discount_type;
+      }
+
+      if(key == "is_featured") {
+        this.pending_is_featured = this.pending.is_featured;
+      }
+      if(key == "in_stock") {
+        this.pending_in_stock = this.pending.in_stock;
+      }
+      if(key == "status") {
+        this.pending_status = this.pending.status;
+      }
+
+      if(key == "have_pcs") {
+        this.pending_have_pcs= this.pending.have_pcs;
+      }
+      if(key == "pcs") {
+        this.pending_pcs= this.pending.pcs;
+      }
+
+      if(key == "have_kg") {
+        this.pending_have_kg= this.pending.have_kg;
+      }
+      if(key == "kg") {
+        this.pending_kg= this.pending.kg;
+      }
+
+      if(key == "have_gram") {
+        this.pending_have_gram= this.pending.have_gram;
+      }
+      if(key == "gram") {
+        this.pending_gram= this.pending.gram;
+      }
+      
+      if(key == "have_liter") {
+        this.pending_have_liter= this.pending.have_liter;
+      }
+      if(key == "liter") {
+        this.pending_liter= this.pending.liter;
+      }
+
+      if(key == "have_ml") {
+        this.pending_have_ml= this.pending.have_ml;
+      }
+      if(key == "ml") {
+        this.pending_ml= this.pending.ml;
+      }
+
+      if(key == "variations") {
+        this.pending_variations= JSON.parse(this.pending.variations);
+      }
+
+      if(key == "category_name") {
+        this.pending_category_name= this.pending.category_name;
+      }
+      if(key == "subcategory_name") {
+        this.pending_subcategory_name= this.pending.subcategory_name;
+      }
+    }
   }
 
   getCurrentProduct() {
@@ -406,7 +571,7 @@ export class ManageProductsComponent {
   }
 
   curVar: any='';
-  changeSize(event) {
+  changeSize() {
     const items = this.variations.filter(x => x.title === this.curVar);
     if(items.length === 0) {
       this.variant_title = '';
@@ -419,6 +584,7 @@ export class ManageProductsComponent {
         items: []
       };
       this.variations.push(item);
+      this.curVar = '';
     } else {
       this.util.error(this.util.getString('Variant currently existing'));
     }
@@ -526,12 +692,16 @@ export class ManageProductsComponent {
 
       have_pcs: this.have_pcs,
       pcs: this.have_pcs === '1' ? this.pcs : 0,
+
       have_gram: this.have_gram,
       gram: this.have_gram === '1' ? this.gram : 0,
+
       have_kg: this.have_kg,
       kg: this.have_kg === '1' ? this.kg : 0,
+
       have_liter: this.have_liter,
       liter: this.have_liter === '1' ? this.liter : 0,
+
       have_ml: this.have_ml,
       ml: this.have_ml === '1' ? this.ml : 0,
 
@@ -540,6 +710,7 @@ export class ManageProductsComponent {
       in_home: this.in_offer,
       is_single: this.is_single,
       is_featured: this.is_featured,
+      type_of: this.type_of,
       
       variations: JSON.stringify(this.variations)
     };
