@@ -1,10 +1,8 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { User } from '../models/user.model';
 import { Users } from '../models/users.model';
 import { ApisService } from './apis.service';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,22 +14,22 @@ export class UserService {
     return this.userLocalKey;
   }
 
-  private subject: BehaviorSubject<User>;
-  private observable: Observable<User>;
+  private subject: BehaviorSubject<Users>;
+  private observable: Observable<Users>;
 
-  public get getCurrent(): User {
+  public get getCurrent(): Users {
     return this.subject.value;
   }
 
-  public setCurrent = (cur: User) => {
+  public setCurrent = (cur: Users) => {
     this.subject.next(cur);
   }
 
   constructor(
     private api: ApisService,
   ) {
-    let curUser = new User();
-    this.subject = new BehaviorSubject<User>(curUser);
+    let curUser = new Users();
+    this.subject = new BehaviorSubject<Users>(curUser);
     this.observable = this.subject.asObservable();
   }
 
@@ -40,11 +38,11 @@ export class UserService {
       uuid: user_id
     }).then((response: any) => {
       if (response && response.success == true && response.data) {
-        let curUser: User = response.data;
+        let curUser: Users = response.data;
         this.setCurrent(curUser);
       }
       if(callback != null) {
-        callback(response.success);
+        callback(response.data);
       }
       
     }, error => {

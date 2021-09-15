@@ -13,7 +13,7 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Products extends Galyon_controller {
 
     private $table_name = 'products';
-    private $edit_column = ['store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','status'];
+    private $edit_column = ['store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','status'];
     private $public_column = ['uuid','store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','verified_at','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
@@ -212,11 +212,11 @@ class Products extends Galyon_controller {
     }
 
     function decidePending() {
-        $auth = $this->is_authorized(true, ["admin","operator"]);
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
         $request = $this->request_validation($_POST, ["uuid", "action"], $this->edit_column);
         $product_id = $request->data['uuid'];
 
-        $action = in_array($request->data['action'], ["approve","reject"]) ? true: false;
+        $action = in_array($request->data['action'], ["approve","reject","clear"]) ? true: false;
         if(!$action) {
             $this->json_response(null, false, "Action is not valid"); 
         }
@@ -233,7 +233,7 @@ class Products extends Galyon_controller {
         }
 
         $changes = array();
-        if($action == "approve") {
+        if($action == "approve" && $auth->role == "admin" && $auth->role == "operator") {
             $changes = unserialize($existing->pending_update);
         }
         $changes['pending_update'] = NULL;
@@ -286,6 +286,7 @@ class Products extends Galyon_controller {
             $this->edit_column, 
             "uuid = '$product_id'", 
             null, 'row' );
+            
         if(isset($_POST['orig_price'])) {
             $_POST['orig_price'] = number_format((float)$_POST['orig_price'], 2, '.', '');
         }
@@ -309,9 +310,11 @@ class Products extends Galyon_controller {
             $_POST['pcs'] = number_format((float)$_POST['pcs'], 2, '.', '');
         }
         
-        $latest = $_POST; unset($latest['uuid']);
+        $latest = $_POST; 
+        unset($latest['uuid']);
+        //$pending = (array)unserialize($previous->pending_update);
         $previous = (array)$previous;
-        $changes = array_diff_assoc($latest, $previous); 
+        $changes = array_diff_assoc($latest, $previous); //array_merge(array_diff_assoc($latest, $previous), array_diff_assoc($changes, $pending)); 
 
         if(!$changes) {
             $this->json_response(null, false, "No changes was found"); 
@@ -325,16 +328,22 @@ class Products extends Galyon_controller {
                 $this->json_response(null, false, "You are not authorized for this actions!"); 
             }
 
+            $previous = $this->Crud_model->get($this->table_name, ["pending_update"], "uuid = '$product_id' AND pending_update IS NOT NULL", null, 'row' );
+            if($previous) {
+                $changes = array_merge((array)unserialize($previous->pending_update), $changes);
+            }
+            
+            //TODO: Decide whether to let store update while pending.
             $update = $this->Crud_model->update(
                 $this->table_name, 
                 array("pending_update"=>serialize($changes)), 
-                "uuid = '$product_id' AND pending_update IS NULL");
+                "uuid = '$product_id'"); //AND pending_update IS NULL
             if($update) {
                 $current = $this->Crud_model->get($this->table_name, $this->public_column, array( "uuid" => $request->data['uuid'] ), null, 'row' );
                 $current = $this->getProductMetaItem($current);
                 $this->json_response($current);
             } else {
-                $this->json_response(null, false, "Existing store detail updates on process!");
+                $this->json_response(null, false, "Existing product detail updates on process!");
             }
         }
 

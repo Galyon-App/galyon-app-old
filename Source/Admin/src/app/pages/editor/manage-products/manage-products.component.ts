@@ -11,6 +11,8 @@ import { ApisService } from 'src/app/services/apis.service';
 import { UtilService } from 'src/app/services/util.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from 'src/app/services/auth.service';
+import { Role } from 'src/app/models/role.model';
 
 @Component({
   selector: 'app-manage-products',
@@ -92,6 +94,7 @@ export class ManageProductsComponent {
     private spinner: NgxSpinnerService,
     private router: Router,
     private modalService: NgbModal,
+    public authServ: AuthService
   ) {
     this.route.queryParams.subscribe((data: any) => {
       if (data && data.uuid) {
@@ -138,15 +141,29 @@ export class ManageProductsComponent {
     }
   }
 
+  public get canHighManage(): boolean {
+    if(this.authServ.userValue.role == Role.Admin || this.authServ.userValue.role == Role.Operator) {
+      return true;
+    }
+    return false;
+  }
+
   decideRequest(action) {
+    let cur_action = action;
+    if(!this.canHighManage) {
+      cur_action = "clear";
+    }
+
     this.spinner.show();
     this.api.post('galyon/v1/products/decidePending', { 
       uuid: this.id,
-      action: action
+      action: cur_action
     }).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
-        this.util.success(null);
+        this.util.success(null, () => {
+          location.reload();
+        });
       } else {
         this.util.error(response.message);
       }
@@ -227,21 +244,23 @@ export class ManageProductsComponent {
     this.storeName = info.store_name;
     this.get_discounted();
 
-    this.api.post('galyon/v1/stores/getAllStores', {
-      status: "1",
-      limit_start: 0,
-      limit_length: 100
-    }).then((response: any) => {
-      if (response && response.success && response.data) {
-        this.stores = response.data;
-        this.dummyStores = this.stores;
-      } else {
-        this.util.error(this.util.getString('No category found'));
-      }
-    }, error => {
-      this.util.error(this.util.getString('Something went wrong'));
-      console.log(error);
-    });
+    if(this.canHighManage) {
+      this.api.post('galyon/v1/stores/getAllStores', {
+        status: "1",
+        limit_start: 0,
+        limit_length: 100
+      }).then((response: any) => {
+        if (response && response.success && response.data) {
+          this.stores = response.data;
+          this.dummyStores = this.stores;
+        } else {
+          this.util.error(this.util.getString('No category found'));
+        }
+      }, error => {
+        this.util.error(this.util.getString('Something went wrong'));
+        console.log(error);
+      });
+    }
 
     this.cateId = info.category_id;
     this.subId = info.subcategory_id;
@@ -457,6 +476,7 @@ export class ManageProductsComponent {
       console.log(error);
     }
   }
+
   close() {
     if (this.cateId) {
       const name = this.category.filter(x => x.uuid === this.cateId);
@@ -469,6 +489,7 @@ export class ManageProductsComponent {
     }
     this.modalService.dismissAll();
   }
+
   searchCates(str) {
     this.category = this.dummyCates.filter((ele: any) => {
       return ele.name.toLowerCase().includes(str.toLowerCase());
@@ -511,6 +532,7 @@ export class ManageProductsComponent {
       this.util.error('Please select parent category first');
     }
   }
+
   close2() {
     if (this.subId) {
       const name = this.subCates.filter(x => x.uuid === this.subId);
@@ -518,6 +540,7 @@ export class ManageProductsComponent {
     }
     this.modalService.dismissAll();
   }
+
   searchSubCate(str) {
     this.subCates = this.dummySubCates.filter((ele: any) => {
       return ele.name.toLowerCase().includes(str.toLowerCase());
@@ -525,6 +548,10 @@ export class ManageProductsComponent {
   }
 
   openStore() {
+    if(!this.canHighManage) {
+      return;
+    }
+
     if (this.storeId) {
       this.spinner.show();
       this.api.get('galyon/v1/stores/getAllStores').then((response: any) => {
@@ -557,14 +584,24 @@ export class ManageProductsComponent {
       this.util.error('Please select parent category first');
     }
   }
+
   close4() {
+    if(!this.canHighManage) {
+      return;
+    }
+
     if (this.storeId) {
       const name = this.stores.filter(x => x.uuid === this.storeId);
       this.storeName = name[0].name;
     }
     this.modalService.dismissAll();
   }
+
   searchStore(str) {
+    if(!this.canHighManage) {
+      return;
+    }
+
     this.stores = this.dummyStores.filter((ele: any) => {
       return ele.name.toLowerCase().includes(str.toLowerCase());
     });
@@ -645,6 +682,7 @@ export class ManageProductsComponent {
     }
 
   }
+
   deleteSub(index, item) {
     const selected = this.variations[index].items;
     const data = selected.filter(x => x.title !== item.title);
@@ -670,10 +708,14 @@ export class ManageProductsComponent {
   }
 
   submit() {
+    if(this.subName == '') {
+      this.util.error("Please select a sub-category for this product.");
+      return;
+    }
+
     this.images = this.images.filter((x) => x != '');
     const param = {
       uuid: this.id,
-      store_id: this.storeId,
       cover: this.coverImage,
       images: JSON.stringify(this.images),
 
@@ -707,19 +749,25 @@ export class ManageProductsComponent {
 
       status: this.status,
       in_stock: this.in_stock,
-      in_home: this.in_offer,
+      //in_home: this.in_offer,
       is_single: this.is_single,
-      is_featured: this.is_featured,
       type_of: this.type_of,
       
       variations: JSON.stringify(this.variations)
     };
 
+    if(this.canHighManage) {
+      param['store_id'] = this.storeId;
+      param['is_featured'] = this.is_featured;
+    }
+
     this.spinner.show();
     this.api.post('galyon/v1/products/editProductToStore', param).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
-        this.util.success(null);
+        this.util.success(null, () => {
+          location.reload();
+        });
       } else {
         this.util.error(response.message);
       }

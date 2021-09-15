@@ -36,8 +36,8 @@
 
               <li class="user-profile header-notification">
                 <a [routerLink]="['/']">
-                  <img src="assets/images/user.png" alt="User-Profile-Image" class="user-profile-img">
-                  <span> {{storeServ.storeValue && storeServ.storeValue.name ? storeServ.storeValue.name : 'Merchant'}} </span>
+                  <img [src]="userCover" alt="User-Profile-Image" class="user-profile-img" onError="this.src='assets/images/user.png'">
+                  <span> {{ userName ? userName : 'Merchant'}} </span>
                   <i class="ti-angle-down"></i>
                 </a>
                 <ul class="show-notification profile-notification">

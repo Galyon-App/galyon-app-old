@@ -6,6 +6,9 @@ import { ApisService } from 'src/app/services/apis.service';
 import { Router } from '@angular/router';
 import { UtilService } from 'src/app/services/util.service';
 import { StoresService } from 'src/app/services/stores.service';
+import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Users } from 'src/app/models/users.model';
 
 @Component({
   selector: 'app-admin',
@@ -62,23 +65,34 @@ export class MerchantComponent implements OnInit {
   isCollapsedMobile = 'no-block';
   toggleOn = true;
   windowWidth: number;
+
   @ViewChild('searchFriends', /* TODO: add static flag */ { static: false }) search_friends: ElementRef;
   @ViewChild('toggleButton', /* TODO: add static flag */ { static: false }) toggle_button: ElementRef;
   @ViewChild('sideMenu', /* TODO: add static flag */ { static: false }) side_menu: ElementRef;
 
   config: any;
+  userName: any = '';
+  userCover: any = '';
 
   constructor(
     public menuItems: MenuItems,
     public api: ApisService,
     private router: Router,
     public util: UtilService,
-    public storeServ: StoresService
+    public storeServ: StoresService,
+    private authServ: AuthService,
+    public userServ: UserService,
   ) {
     const scrollHeight = window.screen.height - 150;
     this.innerHeight = scrollHeight + 'px';
     this.windowWidth = window.innerWidth;
     this.setMenuAttributs(this.windowWidth);
+    this.userServ.request(this.authServ.userValue.uuid, (curUser: Users) => {
+      if(curUser) {
+        this.userCover = api.mediaURL + curUser.cover;
+        this.userName = curUser.first_name + " " + curUser.last_name;
+      }
+    });
   }
 
   ngOnInit() { }

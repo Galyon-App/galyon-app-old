@@ -82,12 +82,16 @@ export class UtilService {
     return environment.general.symbol;
   }
 
-  error(message) {
+  error(message, callback = null) {
     Swal.fire(
       'Something went wrong',
       message,
       'error'
-    );
+    ).then(function() {
+      if(callback != null) {
+        callback();
+      }
+    });
     // const toastOptions: ToastOptions = {
     //   title: this.api.translate('Error'),
     //   msg: this.api.translate(message),
@@ -105,12 +109,16 @@ export class UtilService {
     // this.toastyService.error(toastOptions);
   }
 
-  success(message) {
+  success(message, callback = null) {
     Swal.fire(
       'Congratualtions!',
       message ? message : "Your request was sent and approved by the server.",
       'success'
-    );
+    ).then(function() {
+      if(callback != null) {
+        callback();
+      }
+    });
     // const toastOptions: ToastOptions = {
     //   title: this.api.translate('Success'),
     //   msg: this.api.translate(message),
