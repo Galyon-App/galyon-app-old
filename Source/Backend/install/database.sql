@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2021 at 04:49 PM
+-- Generation Time: Sep 15, 2021 at 06:21 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -357,21 +357,21 @@ CREATE TABLE `products` (
   `discount` decimal(10,2) NOT NULL,
   `category_id` varchar(36) DEFAULT NULL,
   `subcategory_id` varchar(36) DEFAULT NULL,
-  `have_pcs` tinyint(1) NOT NULL DEFAULT 0,
-  `pcs` decimal(20,2) NOT NULL,
-  `have_gram` tinyint(1) NOT NULL DEFAULT 0,
-  `gram` decimal(20,2) NOT NULL,
-  `have_kg` tinyint(1) NOT NULL DEFAULT 0,
-  `kg` decimal(20,2) NOT NULL,
-  `have_liter` tinyint(1) NOT NULL DEFAULT 0,
-  `liter` decimal(20,2) NOT NULL,
-  `have_ml` tinyint(1) NOT NULL DEFAULT 0,
-  `ml` decimal(20,2) NOT NULL,
-  `in_stock` tinyint(1) NOT NULL DEFAULT 0,
-  `is_featured` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'in_offer',
-  `in_home` tinyint(1) NOT NULL DEFAULT 0,
-  `is_single` tinyint(1) NOT NULL DEFAULT 1,
-  `type_of` varchar(36) NOT NULL,
+  `have_pcs` enum('0','1') NOT NULL DEFAULT '0',
+  `pcs` decimal(20,2) DEFAULT NULL,
+  `have_gram` enum('0','1') NOT NULL DEFAULT '0',
+  `gram` decimal(20,2) DEFAULT NULL,
+  `have_kg` enum('0','1') NOT NULL DEFAULT '0',
+  `kg` decimal(20,2) DEFAULT NULL,
+  `have_liter` enum('0','1') NOT NULL DEFAULT '0',
+  `liter` decimal(20,2) DEFAULT NULL,
+  `have_ml` enum('0','1') NOT NULL DEFAULT '0',
+  `ml` decimal(20,2) DEFAULT NULL,
+  `in_stock` enum('0','1') NOT NULL DEFAULT '0',
+  `is_featured` enum('0','1') NOT NULL DEFAULT '0' COMMENT 'in_offer',
+  `in_home` enum('0','1') NOT NULL DEFAULT '0',
+  `is_single` enum('0','1') NOT NULL DEFAULT '1',
+  `type_of` varchar(36) DEFAULT NULL,
   `variations` text NOT NULL,
   `pending_update` text DEFAULT NULL,
   `verified_at` timestamp NULL DEFAULT NULL,
@@ -480,6 +480,7 @@ CREATE TABLE `stores` (
   `close_time` time NOT NULL,
   `isClosed` enum('0','1') NOT NULL DEFAULT '1',
   `is_featured` enum('0','1') NOT NULL DEFAULT '0',
+  `pending_update` text DEFAULT NULL,
   `verified_at` timestamp NULL DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
