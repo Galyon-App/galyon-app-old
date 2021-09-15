@@ -259,7 +259,11 @@
             <div class="form-group row">
                <div class="col-sm-4">
                   <label>{{util.getString('Featured')}} </label>
-                  <select name="select" [(ngModel)]="is_featured" class="form-control" disabled="canHighManage ? false : true">
+                  <select name="select" [(ngModel)]="is_featured" class="form-control" *ngIf="canHighManage">
+                     <option value='0'>{{util.getString('Regular')}} </option>
+                     <option value='1'>{{util.getString('Featured')}} </option>
+                  </select>
+                  <select name="select" [(ngModel)]="is_featured" class="form-control" *ngIf="!canHighManage" disabled>
                      <option value='0'>{{util.getString('Regular')}} </option>
                      <option value='1'>{{util.getString('Featured')}} </option>
                   </select>
