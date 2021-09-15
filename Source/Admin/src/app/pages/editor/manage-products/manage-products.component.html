@@ -411,20 +411,19 @@
                            <i class="ti-plus" style="font-weight: bold;margin: 0px 10px;float: right;" (click)="addItem(i)"></i>
                         </div>
                         <div *ngFor="let sub of item.items; let j = index"
-                           style="font-size: 15px; display: flow-root; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                           <div
-                              style="font-size: 15px; display: inline-flex; flex-direction: row; align-items: center; justify-content: flex-start;font-weight: bold;">
-                              * {{sub.title}}&nbsp;&nbsp; = &nbsp;
-                              <p *ngIf="sub.discount_type == 'none' || sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
-                                 <span>{{util.currecny}}{{sub.price}}</span>
+                           style="font-size: 15px; display: flow-root; flex-direction: row; align-items: center; justify-content: flex-start;">
+                           <div style="font-size: 15px; display: inline-flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                              <strong>* {{sub.title}}</strong>&nbsp;&nbsp; : &nbsp;
+                              <p *ngIf="sub.discount === 0 || sub.discount ==='0'" style="margin: 0px !important;">
+                                 <span *ngIf="sub.price !== 0"><strong>{{util.currecny}}{{sub.price.toFixed(2)}}</strong></span>
+                                 <span *ngIf="sub.price === 0"><strong>FREE</strong></span>
                               </p>
-                              <p class="price_lbl" style="margin: 0px !important;"
-                                 *ngIf="sub.discount !== 0 && sub.discount !=='0'">
-                                 <span style="text-decoration:line-through;">
-                                    {{util.currecny}}{{sub.price}}
+                              <p class="price_lbl" style="margin: 0px !important;" *ngIf="sub.discount !== 0 && sub.discount !=='0'">
+                                 <span>
+                                    {{util.currecny}}{{sub.price.toFixed(2)}}
                                  </span>
                                  <span class="sell">
-                                    &nbsp;- {{util.currecny}}{{sub.discount}}
+                                    &nbsp;- ( {{sub.discount}}% ) = <strong>{{util.currecny}}{{(sub.price-(sub.price*(sub.discount/100))).toFixed(2)}}</strong>
                                  </span>
                               </p>
                            </div>
