@@ -344,24 +344,24 @@
                 margin-left: 10px;
               }
               .notInStock{
-                  background: #8373735c;
-                  position: absolute;
-                  top: 50%;
-                  left: 50%;
-                  width: 80%;
-                  transform: translate(-50%,-50%);
-                  text-align: center;
-                  height: 20px;
-                  line-height: 20px;
-                  .text{
-                      border: 1px solid gray;
-                      padding: 5px;
-                      border-radius: 5px;
-                      background: white;
-                      color: gray;
-                      font-size: 10px;
-                  }
-              }
+                background: #ffffff7d;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100%;
+                height: -webkit-fill-available;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                .text{
+                    padding: 5px;
+                    margin: 10px;
+                    background: red;
+                    color: white;
+                    font-size: 11px;
+                    position: relative;
+                    top: 33%;
+                }
+            }
               .kind{
                   height: 15px;
                   width: 15px;
