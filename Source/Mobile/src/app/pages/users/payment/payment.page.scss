@@ -6,12 +6,12 @@
 */
 .coupones{
     display: flex;
-    padding: 20px 10px;
-    background: var(--ion-color-light);
+    padding: 10px;
     margin-top: 10px;
+    border: 1px lightgrey solid;
     .badge{
-        width: 60px;
-        height: auto;
+        width: 40px;
+        height: fit-content;
     }
     .title{
         padding: 10px;
@@ -44,9 +44,9 @@
 }
 
 .header{
-    background: var(--ion-color-light);
-    padding: 20px;
-    margin: 20px 0;
+    padding: 15px;
+    margin: 20px 0 10px;
+    border-bottom: 1px solid lightgray;
     .title{
         font-size: 1rem;
         font-weight: bold;

@@ -18,13 +18,10 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="coupones" (click)="openCoupon()">
-    <img src="assets/imgs/discount.png" class="badge" />
-    <ion-label class="title">{{util.getString('Apply coupon code')}} <br>
-      <p *ngIf="cart.coupon">{{util.getString('Coupon Applied')}} </p>
-    </ion-label>
-  </div>
 
+  <div class="header" style="margin-top: 0;">
+    <ion-label class="title"> {{util.getString('Order Summary')}} </ion-label>
+  </div>
   <div class="billing">
     <div class="singleRow">
       <ion-label class="headerTitle"> {{util.getString('Item Total')}} </ion-label>
@@ -37,8 +34,8 @@
     <div class="singleRow" *ngIf="cart.coupon">
       <ion-label class="headerTitle"> {{util.getString('Discount')}} </ion-label>
       <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount.toFixed(2)}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.discount.toFixed(2)}} {{util.currecny}} </span>
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.discount}} {{util.currecny}} </span>
       </ion-label>
     </div>
 
@@ -59,7 +56,7 @@
     </div>
 
     <div class="singleRow">
-      <ion-label class="headerTotal boldClass"> {{util.getString('Grand Total')}} </ion-label>
+      <ion-label class="headerTotal"> {{util.getString('Grand Total')}} </ion-label>
       <ion-label class="priceTotal boldClass">
         <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}}</span>
         <span *ngIf="util.cside ==='right'">{{cart.grandTotal}} {{util.currecny}} </span>
@@ -67,8 +64,16 @@
     </div>
 
   </div>
+
+  <div class="coupones" (click)="openCoupon()">
+    <img src="assets/imgs/discount.png" class="badge" />
+    <ion-label class="title">{{util.getString('Apply coupon code')}} <br>
+      <p *ngIf="cart.coupon">{{util.getString('Coupon Applied')}} </p>
+    </ion-label>
+  </div>
+
   <div class="header">
-    <ion-label class="title"> {{util.getString('Payment with')}} </ion-label>
+    <ion-label class="title"> {{util.getString('Payment Method')}} </ion-label>
   </div>
 
   <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && haveCOD">

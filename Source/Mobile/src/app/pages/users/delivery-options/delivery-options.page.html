@@ -67,9 +67,9 @@
       {{util.getString("Please visit this stores for your grocery , you can find this address in order details as well, if you found more than one address in list then, you have to visit every stores for your grocery")}}
     </p>
     <div (click)="payment()" class="btmbar">
-      <ion-label>{{cart.cart.length}} {{util.getString('Items')}}:
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.totalPrice}} {{util.currecny}} </span>
+      <ion-label>{{cart.cart.length}} {{util.getString('Item(s)')}}: &nbsp;
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.totalPrice.toFixed(2)}} {{util.currecny}} </span>
       </ion-label>
       <ion-label>{{util.getString('Payment')}}
         <ion-icon name="exit-outline"></ion-icon>
