@@ -29,32 +29,32 @@
     <div class="singleRow">
       <ion-label class="headerTitle"> {{util.getString('Item Total')}} </ion-label>
       <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.totalPrice}} {{util.currecny}} </span>
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.totalPrice.toFixed(2)}} {{util.currecny}} </span>
       </ion-label>
     </div>
 
     <div class="singleRow" *ngIf="cart.coupon">
       <ion-label class="headerTitle"> {{util.getString('Discount')}} </ion-label>
       <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.discount}} {{util.currecny}} </span>
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.discount.toFixed(2)}} {{util.currecny}} </span>
       </ion-label>
     </div>
 
     <div class="singleRow">
       <ion-label class="headerTitle"> {{util.getString('Taxes & Charges')}} </ion-label>
       <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.orderTax}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.orderTax}} {{util.currecny}} </span>
+        <span *ngIf="util.cside ==='left'">({{cart.orderTax}}%)&nbsp;{{util.currecny}}{{cart.orderTaxAmt}} </span>
+        <span *ngIf="util.cside ==='right'">({{cart.orderTax}}%)&nbsp;{{cart.orderTaxAmt}}{{util.currecny}} </span>
       </ion-label>
     </div>
 
     <div class="singleRow">
       <ion-label class="headerTitle"> {{util.getString('Delivery Charges')}} </ion-label>
       <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.deliveryPrice}} {{util.currecny}} </span>
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.deliveryPrice.toFixed(2)}} {{util.currecny}} </span>
       </ion-label>
     </div>
 

@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { UtilService } from './util.service';
 import { element } from 'protractor';
+import { ProductsService } from './products.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,9 @@ export class CartService {
   public coupon: any;
   public discount: any = 0;
   public orderTax: any = 0;
+  public get orderTaxAmt(): any {
+    return (this.grandTotal * (this.orderTax/100)).toFixed(2);
+  }
   public orderPrice: any;
   public shipping: any;
   public shippingPrice: any = 0;
@@ -36,7 +40,8 @@ export class CartService {
   
   constructor(
     public api: ApiService,
-    public util: UtilService
+    public util: UtilService,
+    private productServ: ProductsService
   ) {
     this.util.getKeys('cart')
       .then((data: any) => {
@@ -52,6 +57,20 @@ export class CartService {
         } else {
           this.calcuate();
         }
+
+        this.cart.forEach(element => {
+          this.productServ.getById(element.uuid, (curProduct) => {
+            if(curProduct) {
+              let quantiy: number = element.quantiy;
+
+              element.orig_price = curProduct.orig_price;
+              element.quantiy = quantiy;
+
+              //console.log(curProduct);
+              this.saveLocalToStorage();
+            }
+          })
+        });
       });
   }
   
@@ -92,23 +111,24 @@ export class CartService {
   calcuate() {
     this.userOrderTaxByStores = [];
     let sub_total: number = 0;
+
+
     this.cart.forEach(element => {
 
       //Determine the Discount of the total items.
       let calcdiscount: number = 0;
       if(element.discount_type == 'fixed') {
-        calcdiscount = parseFloat(element.discount) > 0 ? parseFloat(element.discount) * element.quantiy : 0;
+        calcdiscount = parseFloat(element.discount);
       } else if(element.discount_type == 'percent') {
-        calcdiscount = parseFloat(element.discount) > 0 ? (parseFloat(element.orig_price) * (parseFloat(element.discount)/100)) * element.quantiy : 0;
+        calcdiscount = parseFloat(element.orig_price) * (parseFloat(element.discount)/100);
       } else {
         calcdiscount = 0;
       }
+      calcdiscount *= element.quantiy;
 
-      //Add the item total to the grand total.
+      sub_total += (parseFloat(element.orig_price) * element.quantiy);
       if(calcdiscount > 0) {
-        sub_total += (parseFloat(element.orig_price) * element.quantiy) * calcdiscount;
-      } else {
-        sub_total += parseFloat(element.orig_price) * element.quantiy;
+        sub_total -= calcdiscount;
       }
       
       //Add each variant total to the grand.
@@ -118,9 +138,9 @@ export class CartService {
         let varDiscount = parseFloat(variant.items[curVarIndex].discount)/100;
 
         if(varDiscount > 0) {          
-          sub_total += (varPrice - (varPrice*varDiscount)) * element.quantiy
+          sub_total += ((varPrice - (varPrice*varDiscount)) * element.quantiy)
         } else {
-          sub_total += varPrice * element.quantiy
+          sub_total += (varPrice * element.quantiy);
         }
       });
 
@@ -136,18 +156,14 @@ export class CartService {
           function percentage(num, per) {
             return (num / 100) * per;
           }
-          const totalPrice = percentage(parseFloat(this.totalPrice).toFixed(2), parseFloat(this.coupon.off));
+          const totalPrice = percentage(parseFloat(this.totalPrice), parseFloat(this.coupon.off));
           this.discount = totalPrice.toFixed(2);
-          //this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
         } else {
-          this.discount = this.coupon.off;
-          // this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
+          this.discount = parseFloat(this.coupon.off).toFixed(2);
         }
       } else {
         this.coupon = null;
       }
-    } else {
-      this.grandTotal = this.totalPrice + this.orderTax;
     }
 
     this.deliveryPrice = 0;
@@ -155,77 +171,77 @@ export class CartService {
       let totalKM = 0;
       let taxEach = 0;
 
+      console.log("cart => ", this.cart);
       //TODO: Very important computinf the delivery.
-      // this.stores.forEach(async (element) => {
-      //   const distance = await this.distanceInKmBetweenEarthCoordinates(this.deliveryAddress.lat, this.deliveryAddress.lng,
-      //     element.lat, element.lng);
-      //   totalKM = totalKM + distance;
-      //   // const storeCount = this.stores.length + 1;
-      //   taxEach = this.orderTax / this.stores.length;
-      //   const extraChargeParam = {
-      //     store_id: element.uid,
-      //     distance: distance.toFixed(2),
-      //     tax: taxEach.toFixed(2),
-      //     shipping: this.shipping,
-      //     shippingPrice: this.shippingPrice
-      //   };
-      //   console.log('extraChargeParam', extraChargeParam);
-      //   this.userOrderTaxByStores.push(extraChargeParam);
-      // });
+    //   this.stores.forEach(async (element) => {
+    //     const distance = await this.distanceInKmBetweenEarthCoordinates(this.deliveryAddress.lat, this.deliveryAddress.lng, element.lat, element.lng);
+    //     totalKM = totalKM + distance;
+    //     // const storeCount = this.stores.length + 1;
+    //     taxEach = this.orderTax / this.stores.length;
+    //     const extraChargeParam = {
+    //       store_id: element.uid,
+    //       distance: distance.toFixed(2),
+    //       tax: taxEach.toFixed(2),
+    //       shipping: this.shipping,
+    //       shippingPrice: this.shippingPrice
+    //     };
+    //     console.log('extraChargeParam', extraChargeParam);
+    //     this.userOrderTaxByStores.push(extraChargeParam);
+    // });
 
+    console.log("Tax=>", this.orderTax);
       //TODO: Very important computinf the delivery after the delivery fee.
-      // setTimeout(() => {
-      //   console.log('free', this.freeShipping);
-      //   console.log('totalprice', this.totalPrice);
-      //   if (this.freeShipping > this.totalPrice) {
-      //     if (this.shipping === 'km') {
-      //       const distancePricer = totalKM * this.shippingPrice;
-      //       this.deliveryPrice = Math.floor(distancePricer).toFixed(2);
-      //       if (!this.discount || this.discount === null) {
-      //         this.discount = 0;
-      //       }
-      //       this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + distancePricer;
-      //       this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-      //       // console.log('deliveryeeeeeeeee', this.deliveryPrice);
-      //     } else {
-      //       this.deliveryPrice = this.shippingPrice;
-      //       if (!this.discount || this.discount === null) {
-      //         this.discount = 0;
-      //       }
-      //       this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + this.shippingPrice;
-      //       this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-      //     }
-
-      //   } else {
-      //     this.deliveryPrice = 0;
-      //     if (!this.discount || this.discount === null) {
-      //       this.discount = 0;
-      //     }
-      //     this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
-      //     this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-      //   }
-      // }, 1000);
+      setTimeout(() => {
+        if (this.freeShipping > this.totalPrice) {
+          if (this.shipping === 'km') {
+            const distancePricer = totalKM * this.shippingPrice;
+            this.deliveryPrice = Math.floor(distancePricer).toFixed(2);
+            if (!this.discount || this.discount === null) {
+              this.discount = 0;
+            }
+            this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + distancePricer;
+            this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+          } else {
+            this.deliveryPrice = this.shippingPrice;
+            if (!this.discount || this.discount === null) {
+              this.discount = 0;
+            }
+            this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + this.shippingPrice;
+            this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+          }
+        } else {
+          this.deliveryPrice = 0;
+          if (!this.discount || this.discount === null) {
+            this.discount = 0;
+          }
+          this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
+          this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+        }
+      }, 1000);
     } else {
-      console.log('no delivery address, no shipping price valid');
-      //TODO: Very important computing the delivery and store fee.
-      // let taxEach = 0;
-      // this.stores.forEach(async (element) => {
-      //   taxEach = this.orderTax / this.stores.length;
-      //   const extraChargeParam = {
-      //     store_id: element.uid,
-      //     distance: 0,
-      //     tax: taxEach.toFixed(2),
-      //     shipping: this.shipping,
-      //     shippingPrice: this.shippingPrice
-      //   };
-      //   console.log(extraChargeParam);
-      //   this.userOrderTaxByStores.push(extraChargeParam);
-      // });
+    //   //console.log('no delivery address, no shipping price valid');
+    //   //TODO: Very important computing the delivery and store fee.
+    //   // let taxEach = 0;
+    //   // this.stores.forEach(async (element) => {
+    //   //   taxEach = this.orderTax / this.stores.length;
+    //   //   const extraChargeParam = {
+    //   //     store_id: element.uid,
+    //   //     distance: 0,
+    //   //     tax: taxEach.toFixed(2),
+    //   //     shipping: this.shipping,
+    //   //     shippingPrice: this.shippingPrice
+    //   //   };
+    //   //   console.log(extraChargeParam);
+    //   //   this.userOrderTaxByStores.push(extraChargeParam);
+    //   // });
     }
 
-    this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + parseFloat(this.orderTax);
-    this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+    //this.orderTax = this.totalPrice * this.orderTax; //TODO
+    console.log(this.orderTax);
+    this.grandTotal = this.totalPrice - parseFloat(this.discount);
+    //this.grandTotal -= parseFloat(this.orderTax); //TODO
 
+    this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
     this.saveLocalToStorage();
     //this.createBulkOrder();
   }

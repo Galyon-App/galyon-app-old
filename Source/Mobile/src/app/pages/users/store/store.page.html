@@ -64,7 +64,15 @@
         <div style="border: 1px solid lightgray;">
           <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
             (click)="singleProduct(item)">
-            <div class="percent" *ngIf="item.discount_type !== 'none' && item.discount > 0"> {{item.discount}} </div>
+            <div class="percent" *ngIf="item.discount_type !== 'none' && item.discount > 0"> 
+              <span style="display: flex;
+              font-weight: bold;
+              color: white;
+              top: 8px;
+              left: 22px;
+              position: absolute;
+              font-size: 15px;">{{+item.discount}}</span> 
+            </div>
             <div *ngIf="item.in_stock === '0'" class="notInStock">
               <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
             </div>
@@ -73,7 +81,7 @@
           </div>
           <div class="second_div">
             <ion-label class="name_lbl" (click)="singleProduct(item)">
-              {{ (item.name.length>19)? (item.name | slice:0:19)+'..':(item.name) }}
+              {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
             </ion-label>
             <ion-label class="itemsKind" *ngIf="item.variations">
               <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
@@ -83,51 +91,40 @@
               <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
             </ion-label>
             <div *ngIf="item.variations">
-              <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
+              <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='left'"> 
+                {{util.currecny}}
                 {{item.orig_price}} </ion-label>
-              <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">
+              <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='right'">
                 {{item.orig_price}}
-                {{util.currecny}}</ion-label>
-              <ion-label class="price_lbl" *ngIf="item.discount !== '0'" (click)="singleProduct(item)">
-                <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}} </span>
-                <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
-
-                <span class="original" *ngIf="util.cside ==='right'"> {{item.orig_price}} {{util.currecny}}</span>
-                <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
-
+                {{util.currecny}}
+              </ion-label>
+              <ion-label class="price_lbl" (click)="singleProduct(item)">
+                <span class="original" *ngIf="item.discount > 0"> {{util.currecny}}{{item.orig_price}} </span>
+                <span class="sell">{{util.currecny}} {{item.sell_price}} </span>
               </ion-label>
             </div>
             <div *ngIf="item.variations" class="variant">
               <ion-label *ngFor="let parent_var of item.variations;let pvar_id = index;" (click)="variant(item,pvar_id)" class="selecter ion-activatable">
-                <span>
-                  <span> 
-                    {{ parent_var && parent_var.items[parent_var.current].title ? ' * ' + parent_var.items[parent_var.current].title : ''}}
+                <span style="width: -webkit-fill-available; padding: 2px 5px;">
+                  <span style="font-size: 14px;"> 
+                    {{ parent_var && parent_var.items[parent_var.current].title ? ' * ' + parent_var.items[parent_var.current].title : ''}} &nbsp;&nbsp; 
                   </span>
-                  <span *ngIf="util.cside ==='left'" class="price_lbl"> 
-                    {{util.currecny}}
-                    <span class="original" *ngIf="parent_var.items[parent_var.current].discount">
-                      {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
+                  <span class="price_lbl" style="float: right; padding-right: 10px;"> 
+                    <span *ngIf="parent_var.items[parent_var.current].price == 0 && parent_var.items[parent_var.current].discount == 0">
+                      FREE
                     </span>
-                    <span class="sell" *ngIf="parent_var.items[parent_var.current].discount">
-                      {{parent_var.items[parent_var.current].discount ? parent_var.items[parent_var.current].discount : 0}}
+                    <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount == 0">
+                      {{util.cside ==='left' ? util.currecny : "" }}
+                      {{parent_var.items[parent_var.current].price.toFixed(2)}}
+                      <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
                     </span>
-                    <span
-                      *ngIf="!parent_var.items[parent_var.current].discount">
-                      {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
+                    <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount > 0">
+                      {{util.cside ==='left' ? util.currecny : "" }}
+                      {{
+                        (parent_var.items[parent_var.current].price - (parent_var.items[parent_var.current].price*(parent_var.items[parent_var.current].discount/100))).toFixed(2)
+                      }}
+                      <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
                     </span>
-                  </span>
-                  <span *ngIf="util.cside ==='right'">
-                    <span class="original" *ngIf="parent_var.items[parent_var.current].discount">
-                      {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
-                    </span>
-                    <span class="sell" *ngIf="parent_var.items[parent_var.current].discount">
-                      {{ parent_var.items[parent_var.current].discount ? parent_var.items[parent_var.current].discount : 0}}
-                    </span>
-                    <span
-                      *ngIf="!parent_var.items[parent_var.current].discount">
-                      {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
-                    </span>
-                    {{util.currecny}}
                   </span>
                 </span>
                 <ion-icon slot="start" name="caret-down-outline"></ion-icon>
@@ -160,7 +157,15 @@
       <div class="card_div" *ngFor="let item of products;let i = index">
         <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
           (click)="singleProduct(item)">
-          <div class="percent" *ngIf="item.discount !== '0'"> {{item.discount}}% </div>
+          <div class="percent" *ngIf="item.discount_type !== 'none' && item.discount > 0"> 
+            <span style="display: flex;
+            font-weight: bold;
+            color: white;
+            top: 5px;
+            left: 12px;
+            position: absolute;
+            font-size: 14px;">{{+item.discount}}</span> 
+          </div>
           <div *ngIf="item.in_stock === '0'" class="notInStock">
             <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
           </div>
@@ -193,35 +198,26 @@
           </div>
           <div *ngIf="item.variations" class="variant">
             <ion-label *ngFor="let parent_var of item.variations;let pvar_id = index;" (click)="variant(item,pvar_id)" class="selecter ion-activatable">
-              <span>
-                <span> 
-                  {{ parent_var && parent_var.items[parent_var.current].title ? ' * ' + parent_var.items[parent_var.current].title : ''}}
+              <span style="width: -webkit-fill-available; padding: 2px 5px;">
+                <span style="font-size: 14px;"> 
+                  {{ parent_var && parent_var.items[parent_var.current].title ? ' * ' + parent_var.items[parent_var.current].title : ''}} &nbsp;&nbsp; 
                 </span>
-                <span *ngIf="util.cside ==='left'" class="price_lbl"> 
-                  {{util.currecny}}
-                  <span class="original" *ngIf="parent_var.items[parent_var.current].discount">
-                    {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
+                <span class="price_lbl" style="float: right; padding-right: 10px;"> 
+                  <span *ngIf="parent_var.items[parent_var.current].price == 0 && parent_var.items[parent_var.current].discount == 0">
+                    FREE
                   </span>
-                  <span class="sell" *ngIf="parent_var.items[parent_var.current].discount">
-                    {{parent_var.items[parent_var.current].discount ? parent_var.items[parent_var.current].discount : 0}}
+                  <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount == 0">
+                    {{util.cside ==='left' ? util.currecny : "" }}
+                    {{parent_var.items[parent_var.current].price.toFixed(2)}}
+                    <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
                   </span>
-                  <span
-                    *ngIf="!parent_var.items[parent_var.current].discount">
-                    {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
+                  <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount > 0">
+                    {{util.cside ==='left' ? util.currecny : "" }}
+                    {{
+                      (parent_var.items[parent_var.current].price - (parent_var.items[parent_var.current].price*(parent_var.items[parent_var.current].discount/100))).toFixed(2)
+                    }}
+                    <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
                   </span>
-                </span>
-                <span *ngIf="util.cside ==='right'">
-                  <span class="original" *ngIf="parent_var.items[parent_var.current].discount">
-                    {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
-                  </span>
-                  <span class="sell" *ngIf="parent_var.items[parent_var.current].discount">
-                    {{ parent_var.items[parent_var.current].discount ? parent_var.items[parent_var.current].discount : 0}}
-                  </span>
-                  <span
-                    *ngIf="!parent_var.items[parent_var.current].discount">
-                    {{ parent_var.items[parent_var.current].price ? parent_var.items[parent_var.current].price : 0}}
-                  </span>
-                  {{util.currecny}}
                 </span>
               </span>
               <ion-icon slot="start" name="caret-down-outline"></ion-icon>
@@ -249,6 +245,9 @@
       <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
+  </div>
+  <div *ngIf="no_stores_follows === true" style="display: flex; flex-direction: column; margin: 0 0 20px;">
+    <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
   </div>
 
 </ion-content>

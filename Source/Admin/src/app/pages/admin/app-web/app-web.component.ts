@@ -45,7 +45,10 @@ export class AppWebComponent {
 
   getGeneralSetting() {
     this.spinner.show();
-    this.api.get('galyon/v1/settings/getGroupOptions/general').then((response: any) => {
+    this.api.post('galyon/v1/settings/getGroupOptions/general', {
+      limit_start: 0,
+      limit_length: 100
+    }).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
           const info = response.data;

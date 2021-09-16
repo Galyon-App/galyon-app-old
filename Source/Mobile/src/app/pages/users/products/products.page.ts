@@ -354,42 +354,33 @@ export class ProductsPage implements OnInit {
     return await modal.present();
   }
 
-  async variant(item, indeX) {
-    console.log(item);
+  async variant(item, var_id) {
     const allData = [];
-    console.log(item && item.variations !== '');
-    console.log(item && item.variations !== '' && item.variations.length > 0);
-    console.log(item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0);
-    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[0].items.length > 0) {
-      console.log('->', item.variations[0].items);
-      item.variations[0].items.forEach((element, index) => {
-        console.log('OK');
-        let title = '';
-        if (this.util.cside === 'left') {
-          const price = item.variations && item.variations[0] &&
-            item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + this.util.currecny + ' ' + price;
-        } else {
-          const price = item.variations && item.variations[0] && item.variations[0].items[index] &&
-            item.variations[0].items[index].discount ? item.variations[0].items[index].discount :
-            item.variations[0].items[index].price;
-          title = element.title + ' - ' + price + ' ' + this.util.currecny;
-        }
+    if (item && item.variations !== '' && item.variations.length > 0 && item.variations[var_id]) {
+      let variant = item.variations[var_id];
+      variant.items.forEach((element, index) => {
+
+        const price = parseFloat(variant.items[index].price);
+        const discount = parseFloat(variant.items[index].discount);
+        const discounted = price - (price*(discount/100));
+        const sub_price = discount > 0 ? discounted.toFixed(2) : price.toFixed(2);
+        const price_text = parseFloat(sub_price) == 0 ? "FREE" : 
+          this.util.cside === 'left' ? this.util.currecny+sub_price : sub_price+this.util.currecny;
+        const discount_text = discount > 0 ? " ("+discount+"%)" : "";
+        let title = ' * ' +element.title + ' : ' + price_text + discount_text;
+
         const data = {
           name: element.title,
           type: 'radio',
           label: title,
           value: index,
-          checked: item.variant === index
+          checked: variant.current === index
         };
         allData.push(data);
-      });
+      });      
 
-      console.log('All Data', allData);
       const alert = await this.alertCtrl.create({
-        header: item.name,
+        header: 'Choose ' + variant.title,
         inputs: allData,
         buttons: [
           {
@@ -400,21 +391,24 @@ export class ProductsPage implements OnInit {
               console.log('Confirm Cancel');
             }
           }, {
-            text: this.util.getString('Ok'),
+            text: this.util.getString('Confirm'),
             handler: (data) => {
               console.log('Confirm Ok', data);
-              console.log('before', this.products[indeX].variant);
-              this.products[indeX].variant = data;
-              console.log('after', this.products[indeX].variant);
+              let prod_index = this.products.indexOf(item);
+              this.products[prod_index].variations[var_id].current = data;
+          
+              let cartProduct: any = this.cart.cart.filter( x => x.uuid == item.uuid);
+              if(cartProduct.length) {
+                cartProduct[0].variations[var_id].current = data;
+              }
+              this.cart.saveLocalToStorage();
             }
           }
         ]
       });
-
       await alert.present();
     } else {
       console.log('none');
     }
-
   }
 }

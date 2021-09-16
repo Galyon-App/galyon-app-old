@@ -169,8 +169,8 @@ export class HomePage {
   getStoreByCity(event) {
     this.api.post('galyon/v1/stores/getAllStores', {
       uuid: this.city.activeCity,
-      limit_start: this.limit_start + '',
-      limit_length: this.limit_length + ''
+      limit_start: this.limit_start,
+      limit_length: this.limit_length
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         if(this.stores) {
@@ -260,7 +260,10 @@ export class HomePage {
   getFeaturedProducts() {
     this.dummyTopProducts = Array(5);
 
-    this.api.get('galyon/v1/products/getFeaturedProduct').subscribe((response: any) => {
+    this.api.post('galyon/v1/products/getFeaturedProduct', {
+      limit_start: this.limit_start,
+      limit_length: this.limit_length
+    }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         response.data.forEach(element => {
           if (element.variations && element.variations !== '' && element.variations.length > 0) {
@@ -305,20 +308,15 @@ export class HomePage {
     if (item && item.variations !== '' && item.variations.length > 0 && item.variations[var_id]) {
       let variant = item.variations[var_id];
       variant.items.forEach((element, index) => {
-        let title = '';
-        let discount_type = variant.items[index].discount_type;
-        let discount_amt = variant.items[index].discount;
-        let discount_sfx = discount_type == 'percent' ? '%' : ' off';
-        let discount_text = discount_type != 'none' ? ' ('+discount_amt+discount_sfx+')' : '';
-        if(discount_type == 'none' || discount_amt == '0' || discount_amt == 0) {
-          discount_text = '';
-        }
-        const price = variant.items[index] && variant.items[index].discount ? variant.items[index].discount : variant.items[index].price;
-        if (this.util.cside === 'left') {
-          title = ' * ' +element.title + ' : +' + this.util.currecny + '' + price + discount_text;
-        } else {
-          title = ' * ' +element.title + ' : +' + price + '' + this.util.currecny + discount_text;
-        }
+
+        const price = parseFloat(variant.items[index].price);
+        const discount = parseFloat(variant.items[index].discount);
+        const discounted = price - (price*(discount/100));
+        const sub_price = discount > 0 ? discounted.toFixed(2) : price.toFixed(2);
+        const price_text = parseFloat(sub_price) == 0 ? "FREE" : 
+          this.util.cside === 'left' ? this.util.currecny+sub_price : sub_price+this.util.currecny;
+        const discount_text = discount > 0 ? " ("+discount+"%)" : "";
+        let title = ' * ' +element.title + ' : ' + price_text + discount_text;
 
         const data = {
           name: element.title,
@@ -331,7 +329,7 @@ export class HomePage {
       });      
 
       const alert = await this.alertCtrl.create({
-        header: item.name + ': ' + variant.title,
+        header: 'Choose ' + variant.title,
         inputs: allData,
         buttons: [
           {
@@ -345,8 +343,8 @@ export class HomePage {
             text: this.util.getString('Confirm'),
             handler: (data) => {
               console.log('Confirm Ok', data);
-              let prod_index = this.topProducts.indexOf(item);
-              this.topProducts[prod_index].variations[var_id].current = data;
+              let prod_index = this.products.indexOf(item);
+              this.products[prod_index].variations[var_id].current = data;
           
               let cartProduct: any = this.cart.cart.filter( x => x.uuid == item.uuid);
               if(cartProduct.length) {

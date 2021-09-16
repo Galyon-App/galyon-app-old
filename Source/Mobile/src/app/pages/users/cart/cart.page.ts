@@ -83,26 +83,19 @@ export class CartPage implements OnInit {
   }
 
   async variant(item, var_id) {
-    //let pid = this.cart.cart.findIndex(item);
-    //this.cart.cart[pid]
     const allData = [];
     if (item && item.variations !== '' && item.variations.length > 0 && item.variations[var_id]) {
       let variant = item.variations[var_id];
       variant.items.forEach((element, index) => {
-        let title = '';
-        let discount_type = variant.items[index].discount_type;
-        let discount_amt = variant.items[index].discount;
-        let discount_sfx = discount_type == 'percent' ? '%' : ' off';
-        let discount_text = discount_type != 'none' ? ' ('+discount_amt+discount_sfx+')' : '';
-        if(discount_type == 'none' || discount_amt == '0' || discount_amt == 0) {
-          discount_text = '';
-        }
-        const price = variant.items[index] && variant.items[index].discount ? variant.items[index].discount : variant.items[index].price;
-        if (this.util.cside === 'left') {
-          title = ' * ' +element.title + ' : +' + this.util.currecny + '' + price + discount_text;
-        } else {
-          title = ' * ' +element.title + ' : +' + price + '' + this.util.currecny + discount_text;
-        }
+
+        const price = parseFloat(variant.items[index].price);
+        const discount = parseFloat(variant.items[index].discount);
+        const discounted = price - (price*(discount/100));
+        const sub_price = discount > 0 ? discounted.toFixed(2) : price.toFixed(2);
+        const price_text = parseFloat(sub_price) == 0 ? "FREE" : 
+          this.util.cside === 'left' ? this.util.currecny+sub_price : sub_price+this.util.currecny;
+        const discount_text = discount > 0 ? " ("+discount+"%)" : "";
+        let title = ' * ' +element.title + ' : ' + price_text + discount_text;
 
         const data = {
           name: element.title,
@@ -115,7 +108,7 @@ export class CartPage implements OnInit {
       });      
 
       const alert = await this.alertCtrl.create({
-        header: item.name + ': ' + variant.title,
+        header: 'Choose ' + variant.title,
         inputs: allData,
         buttons: [
           {
@@ -131,7 +124,7 @@ export class CartPage implements OnInit {
               console.log('Confirm Ok', data);
               let prod_index = this.cart.cart.indexOf(item);
               this.cart.cart[prod_index].variations[var_id].current = data;
-              
+          
               let cartProduct: any = this.cart.cart.filter( x => x.uuid == item.uuid);
               if(cartProduct.length) {
                 cartProduct[0].variations[var_id].current = data;
