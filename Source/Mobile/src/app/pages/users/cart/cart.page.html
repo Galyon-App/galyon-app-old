@@ -60,7 +60,7 @@
             </ion-label>
             <ion-label class="price_lbl" (click)="singleProduct(item)">
               <span class="original" *ngIf="item.discount > 0"> {{util.currecny}}{{item.orig_price}} </span>
-              <span class="sell">{{util.currecny}} {{item.sell_price}} </span>
+              <span class="sell" style="color: #c82180;" >{{util.currecny}} {{item.sell_price}} </span>
             </ion-label>
           </div>
           <div *ngIf="item.variations" class="variant">

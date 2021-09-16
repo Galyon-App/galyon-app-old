@@ -122,10 +122,17 @@
                 <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
                 <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
               </ion-label>
+              <ion-label class="itemsKind">
+                <span class="quantity" *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
+                <span class="quantity" *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
+                <span class="quantity" *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
+                <span class="quantity" *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
+                <span class="quantity" *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
+              </ion-label>
               <ion-label class="pro_price" (click)="goToSingleProduct(item)">
                 {{util.currecny}} {{ item.sell_price }}
               </ion-label>
-              <ion-label *ngIf="item.discount_type !=='none' && item.discount" class="pro_discount" (click)="goToSingleProduct(item)">
+              <ion-label *ngIf="item.discount_type !=='none' && item.discount > 0" class="pro_discount" (click)="goToSingleProduct(item)">
                 <label style="text-decoration: line-through;">
                   {{util.currecny}} {{ item.orig_price }}
                 </label> 
@@ -161,21 +168,6 @@
                   <ion-ripple-effect type="bounded"></ion-ripple-effect>
                 </ion-label>
               </div>
-              <div *ngIf="item.variations.length === 0">
-                <ion-label class="price_lbl" *ngIf="(item.discount !== '0' || item.discount_type !== 'none') && item.discount > 0" (click)="goToSingleProduct(item)">
-                  <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}} </span>
-                  <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
-                  <span class="original" *ngIf="util.cside ==='right'"> {{item.orig_price}} {{util.currecny}}</span>
-                  <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
-                </ion-label>
-              </div>
-              <ion-label class="itemsKind" *ngIf="item.variations.length === 0">
-                <span class="quantity" *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
-                <span class="quantity" *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
-                <span class="quantity" *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
-                <span class="quantity" *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
-                <span class="quantity" *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
-              </ion-label>
               <div class="small_flex">
                 <div class="btnBtm" *ngIf="!cart.checkProductInCart(item.uuid) && item.in_stock === '1'">
                   <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">

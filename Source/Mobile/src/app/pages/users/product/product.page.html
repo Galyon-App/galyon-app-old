@@ -79,7 +79,7 @@
         <!-- <img src="assets/imgs/normal.png" *ngIf="veg==='1'">
         <img src="assets/imgs/verified.png" *ngIf="veg==='0'"> -->
         <div>
-          <ion-label class="price_lbl" *ngIf="this.discount !== '0'">
+          <ion-label class="price_lbl" *ngIf="discount > 0">
             <span class="original" style="text-decoration: line-through;" *ngIf="util.cside ==='left'"> {{util.currecny}} {{ product.orig_price}} </span>
             <span class="sell" *ngIf="util.cside ==='left'"> {{ product.discount}} {{ getDiscountSuffix() }} </span>
             <span class="original" style="text-decoration: line-through;" *ngIf="util.cside ==='right'"> {{ product.orig_price}} {{util.currecny}}</span>
@@ -186,12 +186,12 @@
                 <!-- <ion-label class="desc" (click)="singleProduct(item)">
                   {{ (item.descriptions.length>40)? (item.descriptions | slice:0:40)+'..':(item.descriptions) }}
                 </ion-label> -->
-                <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
+                <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='left'"> {{util.currecny}}
                   {{item.orig_price}} </ion-label>
-                <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">
+                <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='right'">
                   {{item.orig_price}}
                   {{util.currecny}}</ion-label>
-                <ion-label class="price_lbl" *ngIf="item.discount !== '0'" (click)="singleProduct(item)">
+                <ion-label class="price_lbl" *ngIf="item.discount == 0" (click)="singleProduct(item)">
                   <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}} </span>
                   <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
 

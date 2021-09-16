@@ -322,13 +322,13 @@ ion-thumbnail {
     
     .listView{
         .swiper-slide {
-            width: 165px !important;
+            // width: 165px !important;
             img {
                 width: 12px;
             }
         }
         .box{
-            width: max-content;
+            width: 90% !important;
             height: max-content;
             width: min-content;
             .preview {
@@ -346,7 +346,7 @@ ion-thumbnail {
             }
             .image_div{
                 height: 125px;
-                width: 125px;
+                width: auto;
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
@@ -437,7 +437,8 @@ ion-thumbnail {
                 }
                 .pro_name{
                     font-size: 0.75em;
-                    color: gray;
+                    color: #444444;
+                    padding-bottom: 5px;
                 }
                 .pro_price{
                     font-size: 15px;
@@ -448,7 +449,8 @@ ion-thumbnail {
                 }
                 .itemsKind{
                     font-weight: 400;
-                    font-size: 11px;
+                    font-size: 9px;
+                    padding-bottom: 4px;
                     .quantity {
                         border-left: 1px #d0d0d0 solid;
                         border-right: 1px #d0d0d0 solid;

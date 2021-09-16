@@ -124,6 +124,11 @@ export class TopPickedPage implements OnInit {
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         response.data.forEach(element => {
+          if (element.status === '0') {
+            console.log(element);
+            return;
+          }
+
           if (element.variations && element.variations !== '' && element.variations.length > 0) {
             if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.variations)) {
               element.variations = JSON.parse(element.variations);
@@ -302,7 +307,7 @@ export class TopPickedPage implements OnInit {
   }
 
   limit_start: number = 0;
-  limit_length: number = 3;
+  limit_length: number = 10;
   total_length: number;
   no_stores_follows: boolean = false;
 

@@ -56,7 +56,7 @@
       </ion-col>
     </ion-row>
     <ion-row *ngIf="mode === 'grid'">
-      <ion-col size="6" *ngFor="let item of products;let i = index;">
+      <ion-col size="6" *ngFor="let item of products;let i = index;" style="margin-bottom: 10px;">
         <div style="border: 1px solid lightgray;">
           <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
             (click)="singleProduct(item)">
@@ -96,7 +96,7 @@
               </ion-label>
               <ion-label class="price_lbl" (click)="singleProduct(item)">
                 <span class="original" *ngIf="item.discount > 0"> {{util.currecny}}{{item.orig_price}} </span>
-                <span class="sell">{{util.currecny}} {{item.sell_price}} </span>
+                <span class="sell" style="color: #c82180;" >{{util.currecny}} {{item.sell_price}} </span>
               </ion-label>
             </div>
             <div *ngIf="item.variations" class="variant">
@@ -128,9 +128,9 @@
               </ion-label>
             </div>
             <div class="btnBtm"
-              *ngIf="!cart.checkProductInCart(item.uuid) && item.quantiy <= 0 && item.in_stock === '1' && storeIsActive === true">
+              *ngIf="!cart.checkProductInCart(item.uuid) && item.quantiy <= 0 && item.in_stock === '1'">
               <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
-                {{util.getString('Add')}}
+                {{util.getString('Add to Cart')}}
                 <ion-ripple-effect></ion-ripple-effect>
               </div>
             </div>
@@ -181,15 +181,16 @@
             <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
           </ion-label>
           <div *ngIf="item.variations">
-            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='left'"> {{util.currecny}}
+            <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='left'"> 
+              {{util.currecny}}
               {{item.orig_price}} </ion-label>
-            <ion-label class="price_lbl" *ngIf="item.discount === '0' && util.cside ==='right'">{{item.orig_price}}
-              {{util.currecny}}</ion-label>
-            <ion-label class="price_lbl" *ngIf="item.discount !== '0'" (click)="singleProduct(item)">
-              <span class="original" *ngIf="util.cside ==='left'"> {{util.currecny}} {{item.orig_price}} </span>
-              <span class="sell" *ngIf="util.cside ==='left'">{{util.currecny}} {{item.sell_price}} </span>
-              <span class="original" *ngIf="util.cside ==='right'"> {{item.orig_price}} {{util.currecny}}</span>
-              <span class="sell" *ngIf="util.cside ==='right'"> {{item.sell_price}} {{util.currecny}}</span>
+            <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='right'">
+              {{item.orig_price}}
+              {{util.currecny}}
+            </ion-label>
+            <ion-label class="price_lbl" (click)="singleProduct(item)">
+              <span class="original" *ngIf="item.discount > 0"> {{util.currecny}}{{item.orig_price}} </span>
+              <span class="sell" style="color: #c82180;" >{{util.currecny}} {{item.sell_price}} </span>
             </ion-label>
           </div>
           <div *ngIf="item.variations" class="variant">
@@ -221,7 +222,7 @@
             </ion-label>
           </div>
           <div class="btnBtm"
-            *ngIf="!cart.checkProductInCart(item.uuid) && item.quantiy <= 0 && item.in_stock === '1' && storeIsActive === true">
+            *ngIf="!cart.checkProductInCart(item.uuid) && item.quantiy <= 0 && item.in_stock === '1'">
             <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
               {{util.getString('Add to Cart')}}
               <ion-ripple-effect></ion-ripple-effect>

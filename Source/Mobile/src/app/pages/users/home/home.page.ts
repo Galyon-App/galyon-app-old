@@ -31,8 +31,8 @@ export class HomePage {
     slidesPerView: 1.3,
   };
   slideTops = {
-    slidesPerView: 2,
-    spaceBetween: 5,
+    slidesPerView: 1.7,
+    //spaceBetween: 5,
     slideShadows: true,
   }
   categories: any[] = [];
@@ -157,7 +157,7 @@ export class HomePage {
   }
 
   limit_start: number = 0;
-  limit_length: number = 3;
+  limit_length: number = 5;
   total_length: number;
   no_stores_follows: boolean = false;
 
