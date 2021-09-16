@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2021 at 06:21 PM
+-- Generation Time: Sep 16, 2021 at 04:59 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -268,23 +268,24 @@ CREATE TABLE `orders` (
   `uuid` varchar(36) DEFAULT NULL,
   `uid` varchar(36) DEFAULT NULL,
   `address_id` varchar(36) DEFAULT NULL,
-  `store_id` varchar(36) DEFAULT NULL COMMENT 'multi',
-  `driver_id` varchar(36) DEFAULT NULL COMMENT 'multi',
-  `items` mediumtext NOT NULL,
-  `notes` mediumtext NOT NULL,
-  `extra` mediumtext NOT NULL,
-  `assignee` text NOT NULL,
+  `store_id` varchar(36) DEFAULT NULL,
+  `driver_id` varchar(36) DEFAULT NULL,
+  `items` longtext NOT NULL COMMENT '[{uuid,name,price,discount_type,discount,pcs,kg,gram,liter,ml,length,width,height,category_id,subcategory_id,quantity,variantions[]}]\r\n',
+  `progress` mediumtext NOT NULL COMMENT '[{status,message,timestamp}]',
+  `factor` text NOT NULL COMMENT '{schedule,distance,tax,ship_mode,ship_price}',
+  `coupon` text NOT NULL DEFAULT '{}' COMMENT '{uuid,name,description,type,off,min,upto,expires}',
   `total` decimal(20,2) NOT NULL,
-  `coupon_code` varchar(20) NOT NULL,
-  `delivery_charge` decimal(20,2) NOT NULL,
+  `delivery` decimal(20,2) NOT NULL,
   `discount` decimal(20,2) NOT NULL,
   `tax` decimal(20,2) NOT NULL,
   `grand_total` decimal(20,2) NOT NULL,
-  `paid_method` text NOT NULL,
-  `pay_key` text NOT NULL,
-  `status` enum('created','accepted','ongoing','picked','rejected','cancelled','delivered','refund') NOT NULL,
+  `paid_method` enum('cod','google','gcash','paypal','stripe') NOT NULL,
+  `pay_key` varchar(100) DEFAULT NULL,
+  `stage` enum('created','rejected','ongoing','shipping','cancelled','delivered') NOT NULL DEFAULT 'created',
+  `status` set('1','0') NOT NULL DEFAULT '1',
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -441,9 +442,9 @@ INSERT INTO `settings` (`id`, `guard`, `opt_key`, `opt_val`, `updated_at`) VALUE
 (19, 'general', 'country', 'Philippines', '2021-09-04 07:44:46'),
 (20, 'general', 'minimum_order', '500', '2021-09-04 07:44:25'),
 (21, 'general', 'free_delivery', '2500', '2021-09-04 07:44:25'),
-(22, 'general', 'tax', '5', '2021-09-04 07:44:25'),
-(23, 'general', 'shipping', 'km', '2021-09-04 07:44:25'),
-(24, 'general', 'shippingPrice', '5', '2021-09-04 08:20:00'),
+(22, 'general', 'tax', '12', '2021-09-15 19:25:29'),
+(23, 'general', 'shipping', 'fixed', '2021-09-15 19:25:29'),
+(24, 'general', 'shippingPrice', '120', '2021-09-15 19:25:29'),
 (25, 'app', 'app_close', '1', '2021-09-05 19:31:45'),
 (26, 'app', 'app_close_message', 'The is currently on Maintainance.', '2021-09-03 21:22:45'),
 (28, 'payment', 'cod_enable', '1', '2021-09-04 08:50:22'),
