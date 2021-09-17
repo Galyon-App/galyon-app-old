@@ -5,14 +5,16 @@
   Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavigationExtras, Router } from '@angular/router';
+import { NavController, PopoverController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
 import * as moment from 'moment';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { OptionService } from 'src/app/services/option.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { TimeComponent } from 'src/app/components/time/time.component';
 
 @Component({
   selector: 'app-payment',
@@ -35,9 +37,10 @@ export class PaymentPage implements OnInit {
     public util: UtilService,
     public api: ApiService,
     private iab: InAppBrowser,
-    private optServ: OptionService
+    private popoverController: PopoverController,
+    private optServ: OptionService,
+    private authServ: AuthService
   ) {
-    console.log('delivery at', this.cart.deliveryAt);
     this.util.getCouponObservable().subscribe((data) => {
       console.log(data);
       this.cart.calcuate();
@@ -55,49 +58,120 @@ export class PaymentPage implements OnInit {
       this.haveGCash = payment_method.gcash_enable == '1' ? true : false;
       this.havePaymongo = payment_method.paymongo_enable == '1' ? true : false;
     })    
+
+    this.getStoreList();
+    this.datetime = 'today';
+    this.time = this.util.getString('Today - ') + moment().format('dddd, MMMM Do YYYY');
   }
 
-  async createOrder() {
+  deliveryOption: any = 'home';
 
-    const storeId = [...new Set(this.cart.cart.map(item => item.store_id))];
-    console.log(storeId);
-    const orderStatus = [];
-    storeId.forEach(element => {
-      const info = {
-        id: element,
-        status: 'created'
+  storeAddress: any[] = [];
+  time: any;
+  datetime: any;
+
+  getStoreList() {
+    const info = [...new Set(this.cart.cart.map(item => item.store_id))];
+    
+    this.api.post('galyon/v1/stores/getStoreByIds', {
+      uuids: info.join()
+    }).subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        this.storeAddress = response.data;
       }
-      orderStatus.push(info)
+    }, error => {
+      console.log(error);
+      this.util.errorToast(this.util.getString('Something went wrong'));
     });
-    const notes = [
-      {
-        status: 1,
-        value: 'Order Created',
-        time: moment().format('lll'),
-      }
-    ];
+  }
 
-    const param = {
-      uid: localStorage.getItem('uid'),
-      store_id: storeId.join(),
-      date_time: this.cart.datetime === 'today' ? moment().format('YYYY-MM-DD HH:mm:ss') : moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
-      paid_method: 'cod',
-      order_to: this.cart.deliveryAt,
-      orders: JSON.stringify(this.cart.cart),
-      notes: JSON.stringify(notes),
-      address: this.cart.deliveryAt === 'home' ? JSON.stringify(this.cart.deliveryAddress) : '',
-      driver_id: '',
-      total: this.cart.totalPrice,
-      tax: this.cart.orderTax,
-      grand_total: this.cart.grandTotal,
-      delivery_charge: this.cart.deliveryPrice,
-      coupon_code: this.cart.coupon ? JSON.stringify(this.cart.coupon) : '',
-      discount: this.cart.discount,
-      pay_key: '',
-      status: JSON.stringify(orderStatus),
-      assignee: '',
-      extra: JSON.stringify(this.cart.userOrderTaxByStores)
+  chooseAddress() {
+    const param: NavigationExtras = {
+      queryParams: {
+        from: 'payment'
+      }
+    };
+    //this.cart.calcuate(); //TODO: Move to Cart Page
+    this.router.navigate(['user/cart/address'], param)
+  }
+
+  async openTime(ev) {
+    const popover = await this.popoverController.create({
+      component: TimeComponent,
+      event: ev,
+      mode: 'ios',
+    });
+    popover.onDidDismiss().then(data => {
+      console.log(data.data);
+      if (data.data) {
+        if (data.data === 'today') {
+          this.datetime = 'today';
+          this.time = this.util.getString('Today - ') + moment().format('dddd, MMMM Do YYYY');
+        } else {
+          this.datetime = 'tomorrow';
+          this.time = this.util.getString('Tomorrow - ') + moment().add(1, 'days').format('dddd, MMMM Do YYYY');
+        }
+      }
+    });
+    await popover.present();
+  }
+
+  async createOrder(method = 'cod') {
+
+    if(!this.cart.deliveryAddress) {
+      this.util.errorToast(this.util.getString('Please set the delivery address!'));
+      return;
     }
+
+    //TODO: Temporary and Remove
+    this.util.errorToast(this.util.getString('Sorry, Order Taking is not Yet Available'));
+    return;
+
+    const store_ids = [...new Set(this.cart.cart.map(item => item.store_id))];
+
+    const orderStatus = [];
+    store_ids.forEach(store_id => {
+      //Prepare data
+      const param = {
+        uid: this.authServ.userToken.uuid,
+        address_id: "", //TODO
+        store_id: store_id,
+        
+        items: JSON.stringify(this.cart.cart), //Minimize
+        progress: [], //TODO
+        factor: {}, //TODO
+        coupon: this.cart.coupon ? JSON.stringify(this.cart.coupon) : '', //Minimized
+  
+        total: this.cart.totalPrice, //Check
+        discount: this.cart.discount, //Check
+        tax: this.cart.orderTax, //Check
+        delivery: this.cart.deliveryPrice, //Check
+        grand_total: this.cart.grandTotal, //Check
+        paid_method: method,
+      };
+      console.log(this.cart.deliveryAddress);
+
+      //Send to server
+      // const info = {
+      //   id: element,
+      //   status: 'created'
+      // }
+      // orderStatus.push(info)
+      // const notes = [
+      //   {
+      //     status: 1,
+      //     value: 'Order Created',
+      //     time: moment().format('lll'),
+      //   }
+      // ];
+      
+    });
+    
+
+    //date_time: this.cart.datetime === 'today' ? moment().format('YYYY-MM-DD HH:mm:ss') : moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
+    //notes: JSON.stringify(notes),
+    //extra: JSON.stringify(this.cart.userOrderTaxByStores)
+    //this.cart.deliveryAt === 'home' ? JSON.stringify(this.cart.deliveryAddress) : '', //order_to: this.cart.deliveryAt
 
     //TODO: VERY IMPORTANT
     // this.util.show();

@@ -14,7 +14,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title *ngIf="from ==='cart'"> {{util.getString('Delivery Address')}} </ion-title>
+    <ion-title *ngIf="from ==='payment'"> {{util.getString('Delivery Address')}} </ion-title>
     <ion-title *ngIf="from ==='account'"> {{util.getString('Manage Address')}} </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -49,7 +49,7 @@
           </ion-item>
         </ion-list>
       </div>
-      <ion-list *ngIf="from ==='cart'">
+      <ion-list *ngIf="from ==='payment'">
         <ion-radio-group [(ngModel)]="selectedAddress">
           <ion-item *ngFor="let item of address.current" class="list">
             <ion-label class="title">{{item.title}} <br>

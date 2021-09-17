@@ -20,6 +20,67 @@
 <ion-content class="ion-padding">
 
   <div class="header" style="margin-top: 0;">
+    <ion-label class="title"> {{util.getString('Delivery Details')}} </ion-label>
+  </div>
+  <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray;">{{util.getString('Options')}}</p>
+  <ion-list lines="none" class="delivery">
+    <ion-radio-group [(ngModel)]="deliveryOption">
+      <ion-item>
+        <ion-thumbnail>
+          <img src="assets/imgs/home.png" style="padding: 7px; border-radius: 50%;"/>
+        </ion-thumbnail>
+        <ion-label> {{util.getString('At Home')}} </ion-label>
+        <ion-radio value="home" slot="end" mode="md"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail>
+          <img src="assets/imgs/store.png" style="padding: 7px; border-radius: 50%;"/>
+        </ion-thumbnail>
+        <ion-label> {{util.getString('Self Pickup')}} </ion-label>
+        <ion-radio value="store" slot="end" mode="md"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <div>
+    <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray;"> {{util.getString('Schedule')}} </p>
+    <div class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
+      (click)="openTime($event)">
+      <ion-label> {{time}} </ion-label>
+      <ion-ripple-effect type="bounded"></ion-ripple-effect>
+    </div>
+  </div>
+  <div *ngIf="deliveryOption === 'home'">
+    <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray;"> {{util.getString('Address')}} </p>
+    <div *ngIf="!cart.deliveryAddress" class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
+      (click)="chooseAddress($event)">
+      <ion-label> Choose Address - <label style="color: rgb(243, 67, 67);">Required!</label> </ion-label>
+      <ion-ripple-effect type="bounded"></ion-ripple-effect>
+    </div>
+    <div *ngIf="cart.deliveryAddress" class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
+      (click)="chooseAddress($event)">
+      <ion-label> Choose Another </ion-label>
+      <ion-ripple-effect type="bounded"></ion-ripple-effect>
+    </div>
+    <div *ngIf="cart.deliveryAddress" class="stores">
+      <p class="name" style="font-weight: bold; margin-bottom: 2px; padding-left: 20px; font-size: 14px;">
+        <ion-icon name="location-outline"></ion-icon> {{cart.deliveryAddress ? cart.deliveryAddress.type : ""}}
+      </p>
+      <p style="padding-left: 20px; margin: 0 0 3px; font-size: 12px;"> {{cart.deliveryAddress ? cart.deliveryAddress.house +', '+ cart.deliveryAddress.address : ""}} </p>
+      <p class="address" style="margin-top: 2px; padding-left: 20px; font-size: 12px;" *ngIf="cart.deliveryAddress && cart.deliveryAddress.landmark"> Landmark: {{cart.deliveryAddress.landmark}} </p>
+    </div>
+  </div>
+  <div *ngIf="deliveryOption === 'store'">
+    <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray;"> {{util.getString('Stores')}} </p>
+    <div *ngFor="let item of storeAddress" class="stores">
+      <p class="name" style="font-weight: bold; margin-bottom: 2px; padding-left: 20px; font-size: 14px;">
+        <ion-icon name="location-outline"></ion-icon> {{item.name}}
+      </p>
+      <p style="padding-left: 20px; margin: 0 0 3px; font-size: 12px;"> Operating Hours: {{item.open_time}} - {{item.close_time}}</p>
+      <p class="address" style="margin-top: 2px; padding-left: 20px; font-size: 12px;"> {{item.address}} </p>
+    </div>
+  </div>
+
+  <div class="header">
     <ion-label class="title"> {{util.getString('Order Summary')}} </ion-label>
   </div>
   <div class="billing">
@@ -76,7 +137,7 @@
     <ion-label class="title"> {{util.getString('Payment Method')}} </ion-label>
   </div>
 
-  <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && haveCOD">
+  <ion-item (click)="createOrder()" lines="none" class="ion-activatable" *ngIf="havePayment && haveCOD">
     <ion-thumbnail slot="start">
       <img src="assets/imgs/cod.png" />
     </ion-thumbnail>
@@ -84,7 +145,7 @@
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
 
-  <ion-item (click)="paypalPayment()" lines="none" *ngIf="havePayment && havePayPal">
+  <ion-item (click)="paypalPayment()" lines="none" class="ion-activatable" *ngIf="havePayment && havePayPal">
     <ion-thumbnail slot="start">
       <img src="assets/imgs/paypal.png" />
     </ion-thumbnail>
@@ -92,7 +153,7 @@
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
 
-  <ion-item (click)="openStripe()" lines="none" *ngIf="havePayment && haveStripe">
+  <ion-item (click)="openStripe()" lines="none" class="ion-activatable" *ngIf="havePayment && haveStripe">
     <ion-thumbnail slot="start">
       <img src="assets/imgs/stripe.png" />
     </ion-thumbnail>
@@ -100,7 +161,7 @@
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
 
-  <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && havePaymongo">
+  <ion-item (click)="createOrder()" lines="none" class="ion-activatable" *ngIf="havePayment && havePaymongo">
     <ion-thumbnail slot="start">
       <img src="assets/imgs/paymongo.png" />
     </ion-thumbnail>
@@ -108,7 +169,7 @@
     <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
   </ion-item>
 
-  <ion-item (click)="createOrder()" lines="none" *ngIf="havePayment && haveGCash">
+  <ion-item (click)="createOrder()" lines="none" class="ion-activatable"  *ngIf="havePayment && haveGCash">
     <ion-thumbnail slot="start">
       <img src="assets/imgs/gcash.png" />
     </ion-thumbnail>

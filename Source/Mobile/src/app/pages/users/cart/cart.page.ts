@@ -59,8 +59,6 @@ export class CartPage implements OnInit {
   }
 
   goToPayment() {
-    console.log(this.cart.minOrderPrice);
-
     if (this.cart.totalPrice < this.cart.minOrderPrice) {
       let text;
       if (this.util.cside === 'left') {
@@ -71,7 +69,7 @@ export class CartPage implements OnInit {
       this.util.errorToast(this.util.getString('Minimum order amount must be') + text + this.util.getString('or more'));
       return false;
     }
-    this.router.navigate(['user/cart/delivery-options']);
+    this.router.navigate(['user/cart/payment']);
   }
 
   back() {
