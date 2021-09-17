@@ -39,7 +39,7 @@ class Cities extends Galyon_controller {
         $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
             $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic === "") {
+            if($user->role === "admin" &&  $basic == "admin") {
                 $where = null; 
             }
         }

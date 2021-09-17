@@ -68,15 +68,13 @@ export class TopStoresPage implements OnInit {
   }
 
   getStores() {
-    const param = {
-      id: this.city.current.uuid
-    }
-    this.api.post('stores/getByCity', param).subscribe((stores: any) => {
-      console.log('stores by city', stores);
+    this.api.post('galyon/v1/stores/getStoreFeatured', {
+      city_id: this.city.activeCity
+    }).subscribe((response: any) => {
       this.stores = [];
       this.dummy = [];
-      if (stores && stores.status === 200 && stores.data && stores.data.length) {
-        this.stores = stores.data;
+      if (response && response.success && response.data) {
+        this.stores = response.data;
         this.dummy = [];
         this.stores.forEach(async (element) => {
           element['isOpen'] = await this.isOpen(element.open_time, element.close_time);
