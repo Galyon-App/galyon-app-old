@@ -29,7 +29,7 @@ export class TopStoresPage implements OnInit {
     private city: CityService
   ) {
     this.haveSearch = false;
-    this.getStores();
+    this.getStoreFeatured(null);
   }
 
   ngOnInit() {
@@ -67,22 +67,31 @@ export class TopStoresPage implements OnInit {
     return moment(time, ['h:mm A']).format('hh:mm A');
   }
 
-  getStores() {
+  getStoreFeatured(event) {
     this.api.post('galyon/v1/stores/getStoreFeatured', {
-      city_id: this.city.activeCity
+      city_id: this.city.activeCity,
+      limit_start: this.limit_start,
+      limit_length: this.limit_length
     }).subscribe((response: any) => {
-      this.stores = [];
       this.dummy = [];
       if (response && response.success && response.data) {
-        this.stores = response.data;
-        this.dummy = [];
-        this.stores.forEach(async (element) => {
-          element['isOpen'] = await this.isOpen(element.open_time, element.close_time);
-        });
+        if(this.stores) {
+          response.data.forEach(async (element) => {
+            element['isOpen'] = await this.isOpen(element.open_time, element.close_time);
+            this.stores.push(element);
+          });
+        } else {
+          this.stores = response.data;
+        }
         this.dummyStores = this.stores;
       }
+      if(event) {
+        event.complete();
+      }
     }, error => {
-      console.log(error);
+      if(event) {
+        event.complete();
+      }
       this.util.errorToast(this.util.getString('Something went wrong'));
       this.dummy = [];
       this.dummyStores = [];
@@ -101,6 +110,15 @@ export class TopStoresPage implements OnInit {
       return true;
     }
     return false
+  }
+
+  limit_start: number = 0;
+  limit_length: number = 10;
+  total_length: number;
+
+  loadData(event) {
+    this.limit_start += this.limit_length;
+    this.getStoreFeatured(event.target);
   }
 
   back() {
