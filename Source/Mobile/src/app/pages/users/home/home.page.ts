@@ -62,7 +62,6 @@ export class HomePage {
   terms: any;
 
   parentCategories: any[] = [];
-  currentCity: any = '';
 
   haveStores: boolean;
   
@@ -71,10 +70,10 @@ export class HomePage {
     private router: Router,
     public api: ApiService,
     public cart: CartService,
-    public city: CityService,
     private chMod: ChangeDetectorRef,
     private iab: InAppBrowser,
     private alertCtrl: AlertController,
+    public city: CityService,
     private storeServ: StoreService,
     private optServ: OptionService
   ) {
@@ -89,12 +88,6 @@ export class HomePage {
 
     if (!this.util.appClosed) {
       this.resetAllArrays(null);
-      this.city.getActiveCity((returnCity: City) => {
-        if(returnCity) {
-          this.currentCity = returnCity.name;
-          this.chMod.detectChanges();
-        }
-      });
       this.getAllCategories();
       this.getBanners();
       this.getFeaturedProducts();
@@ -226,10 +219,6 @@ export class HomePage {
 
   viewAllParentCategory() {
     this.router.navigate(['user/home/categories']);
-  }
-
-  changeCity() {
-    this.router.navigate(['cities']);
   }
 
   getBanners() {

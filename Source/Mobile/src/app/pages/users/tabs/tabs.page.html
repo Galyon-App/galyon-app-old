@@ -6,32 +6,48 @@
   Created : 01-Sep-2020
 
  -->
+ 
 <ion-tabs>
-  <ion-tab-bar slot="bottom" class="ion-no-border">
+
+  <ion-header class="ion-no-border">
+    <ion-toolbar color="primary" style="background: var(--ion-color-light); padding: 5px 15px;">
+        <ion-thumbnail slot="start">
+          <img src="assets/imgs/logo.png" class="menu-logo">
+        </ion-thumbnail>
+        <div slot="end" *ngIf="currentCity" style="width: 50vw;height: auto;">
+          <strong style="padding: 10px;" (click)="changeCity()">
+            {{ city.current.name }}
+            <ion-icon  name="location" style="font-size: 1.2em;" ></ion-icon>
+          </strong>
+        </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-tab-bar slot="top" class="ion-no-border">
     <ion-tab-button tab="home">
       <ion-icon name="home"></ion-icon>
-      <ion-label> {{util.getString('Home')}} </ion-label>
+      <!-- <ion-label> {{util.getString('Home')}} </ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="message">
       <ion-icon name="chatbubble"></ion-icon>
-      <ion-label> {{util.getString('Message')}} </ion-label>
+      <!-- <ion-label> {{util.getString('Message')}} </ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="cart">
       <ion-icon name="basket"></ion-icon>
-      <ion-label> {{util.getString('Cart')}} </ion-label>
+      <!-- <ion-label> {{util.getString('Cart')}} </ion-label> -->
       <ion-badge color="danger" *ngIf="cart.cart?.length"> {{cart.cart.length}} </ion-badge>
     </ion-tab-button>
 
     <ion-tab-button tab="orders">
       <ion-icon name="receipt"></ion-icon>
-      <ion-label> {{util.getString('Orders')}} </ion-label>
+      <!-- <ion-label> {{util.getString('Orders')}} </ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="account">
       <ion-icon name="person"></ion-icon>
-      <ion-label> {{util.getString('Account')}} </ion-label>
+      <!-- <ion-label> {{util.getString('Account')}} </ion-label> -->
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

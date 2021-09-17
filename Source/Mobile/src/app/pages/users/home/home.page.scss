@@ -16,19 +16,10 @@ ion-thumbnail {
     img {
         display: block;
         position: relative;
-        height: 70px;
+        height: 50px;
         width: auto;
         padding: 5px 0 5px 10px;
     }
-}
-
-.menu-logo {
-    padding-left: 0px;
-    position: absolute;
-    height: 35px;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
 }
 
 .searchbar{

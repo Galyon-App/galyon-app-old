@@ -4,3 +4,20 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
+
+.nothing{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  padding: 5px;
+  .imgs{
+      height: 100px;
+      width: 100px;
+  }
+  .bolder{
+      text-align: center;
+      font-weight: bold;
+  }
+}

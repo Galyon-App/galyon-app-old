@@ -6,16 +6,11 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header class="ion-no-border">
-  <ion-toolbar color="primary">
-    <ion-title class="ion-text-center"> {{util.getString('Cart')}} </ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content>
   <div *ngIf="!cart.cart?.length" class="nothing">
-    <p class="bolder"> {{util.getString('Your cart is empty')}} </p>
     <img src="assets/imgs/basket.png" alt="" srcset="">
+    <p class="bolder"> {{util.getString('Your cart is empty')}} </p>
   </div>
   <div class="main_content_div" *ngIf="cart.cart?.length">
 

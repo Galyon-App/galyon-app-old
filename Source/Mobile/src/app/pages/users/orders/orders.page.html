@@ -6,19 +6,13 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header class="ion-no-border">
-  <ion-toolbar color="primary">
-    <ion-title class="ion-text-center"> {{util.getString('My Orders')}} </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div *ngIf="!dummy?.length && !orders?.length" class="nothing">
+    <img src="assets/imgs/orders.png" alt="" srcset="">
     <p class="bolder"> {{util.getString('No Order found!')}} </p>
-    <img src="assets/imgs/basket.png" alt="" srcset="">
   </div>
   <ion-item *ngFor="let item of dummy">
     <ion-thumbnail slot="start">
