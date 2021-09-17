@@ -106,12 +106,6 @@ const routes: Routes = [
               import('../cart/cart.module').then(m => m.CartPageModule),
           },
           {
-            path: 'delivery-options',
-            loadChildren: () =>
-              import('../delivery-options/delivery-options.module').then(m => m.DeliveryOptionsPageModule),
-            canActivate: [CartGuard]
-          },
-          {
             path: 'payment',
             loadChildren: () =>
               import('../payment/payment.module').then(m => m.PaymentPageModule),
