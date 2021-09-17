@@ -254,6 +254,12 @@ export class PaymentPage implements OnInit {
     this.router.navigate(['user/cart/offers']);
   }
 
+  getTime(time) {
+    // const date = moment().format('DD-MM-YYYY');
+    // return moment(date + ' ' + time).format('hh:mm a');
+    return moment(time, ['h:mm A']).format('hh:mm A');
+  }
+
   paypalPayment() {
     const options: InAppBrowserOptions = {
       location: 'no',

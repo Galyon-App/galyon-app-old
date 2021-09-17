@@ -75,7 +75,7 @@
       <p class="name" style="font-weight: bold; margin-bottom: 2px; padding-left: 20px; font-size: 14px;">
         <ion-icon name="location-outline"></ion-icon> {{item.name}}
       </p>
-      <p style="padding-left: 20px; margin: 0 0 3px; font-size: 12px;"> Operating Hours: {{item.open_time}} - {{item.close_time}}</p>
+      <p style="padding-left: 20px; margin: 0 0 3px; font-size: 12px;"> Operating Hours: {{getTime(item.open_time)}} - {{getTime(item.close_time)}}</p>
       <p class="address" style="margin-top: 2px; padding-left: 20px; font-size: 12px;"> {{item.address}} </p>
     </div>
   </div>
