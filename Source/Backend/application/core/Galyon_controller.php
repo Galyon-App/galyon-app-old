@@ -31,7 +31,7 @@ class Galyon_controller extends CI_Controller{
    * @param  mixed $force_exit Exit if not authorized.
    * @return void | jwt token
    */
-  public function is_authorized($failexit = TRUE, $roles_req = ["admin"], $role_special = ["admin"], $access_special = []) {
+  public function is_authorized($failexit = TRUE, $roles_req = [], $role_special = [], $access_special = []) {
     $bearer = $this->input->get_request_header('Authorization');
     $token = str_replace("Bearer ", "", $bearer);
     $user = JWT::decode($token, $this->config->item('jwt_secret_phrase'));
@@ -78,7 +78,7 @@ class Galyon_controller extends CI_Controller{
     }
 
     $roles_req = is_array($roles_req) ? $roles_req : [];
-    if(!in_array($current->role, $roles_req)) {
+    if(count($roles_req) && !in_array($current->role, $roles_req)) {
       $message = "You're not authorized for this action!";
       $user->{"message"} = $message;
       $this->json_response(null, false, $message, $failexit);
