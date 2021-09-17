@@ -37,9 +37,16 @@ class Galyon_controller extends CI_Controller{
     $user = JWT::decode($token, $this->config->item('jwt_secret_phrase'));
 
     if($user == false) {
+      $user = new stdClass;
+      $user->{"success"} = false;
+      $user->{"where"} = "status = '1'";
+      $user->role = null;
       $reponse = $this->json_response(null, false, "Invalid access token!", $failexit);
-      return null;
+      return $user;
     }
+
+    $user->success = false;
+    $user->where = "status = '1'";
 
     // $since = $user->expiry;
     // $span = $this->config->item('jwt_expiration');
@@ -48,16 +55,15 @@ class Galyon_controller extends CI_Controller{
     // if($now > $expiry) {
     //   $this->json_response(null, false, "You're tokenn is already expired!", $failexit);
     // }
-    
+
+
     $current = $this->Crud_model->get('users', 'status, verified_at, type as role', array( "uuid" => $user->uuid ), null, 'row' );
 
     if(!$current) {
-      $reponse = $this->json_response(null, false, "Encountered problem with the account!", $failexit);
-      return null;
+      $message = "Encountered problem with the account!";
+      $user->{"message"} = $message;
+      $reponse = $this->json_response(null, false, $message, $failexit);
     }
-
-    $user->{"success"} = false;
-    $user->{"where"} = "status = '1'";
 
     if($current->verified_at == null) {
       $message = "You're account is not yet verified!";
@@ -100,7 +106,7 @@ class Galyon_controller extends CI_Controller{
       }
     }
 
-    if($user->where == null) {
+    if($user->where == null || empty($user->where)) {
       $user->where = "id != '0'";
     }
 

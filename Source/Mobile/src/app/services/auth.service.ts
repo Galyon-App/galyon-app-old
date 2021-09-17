@@ -40,14 +40,14 @@ export class AuthService {
   }
 
   public get userToken(): Token {
-    if(!this.subject.value) {
+    if(this.is_authenticated) {
       const _token = localStorage.getItem(this.userServ.localKey);
       if(_token != null && _token != '') {
         let token = this.util.jwtDecode(_token);
         this.subject.next(token);
       }
-    }
-    return this.subject.value;
+      return this.subject.value;
+    } //TODO: Verify if okay to not return anything when nulled.
   }
 
   login(username: string, password: string, callback) {
@@ -57,7 +57,7 @@ export class AuthService {
     }).then((res: any) => {
       if(res && res.success == true && res.data) {
         localStorage.setItem(this.userServ.localKey, res.data);
-        let decoded = this.util.jwtDecode(res.data);
+        let decoded: Token = this.util.jwtDecode(res.data);
         this.subject.next(decoded);
         if(decoded.role == 'store') {
           //this.storeService.getStoreByOwner(decoded.uuid);

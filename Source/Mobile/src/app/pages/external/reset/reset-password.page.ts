@@ -19,12 +19,12 @@ export class ResetPasswordPage implements OnInit {
 
   div_type;
   sent: boolean;
-  email: any;
+ 
   otp: any;
   myOPT: any;
   verified: any;
   userid: any;
-  password: any;
+  
   repass: any;
   loggedIn: boolean;
   id: any;
@@ -32,6 +32,15 @@ export class ResetPasswordPage implements OnInit {
   phone: any;
   cc: any = '+91';
   ccCode: any = '+91';
+
+
+  email: any;
+  key: any;
+  password: any;
+  confirm_password: any;
+  action: any = 'reset';
+  sending: boolean = false;
+
   constructor(
     private api: ApiService,
     public util: UtilService,
@@ -54,6 +63,97 @@ export class ResetPasswordPage implements OnInit {
 
   ngOnInit() {
   }
+
+  changeMode(event) {
+    this.email = '';
+    this.key = '';
+    this.action = event;
+  }
+
+  resetPassword() {
+    if (!this.email) {
+      this.util.showToast(this.util.getString('Reset password is temporarily disabled'), 'dark', 'bottom');
+      return false;
+    }
+
+    if (!this.email) {
+      this.util.showToast(this.util.getString('Email is requried'), 'dark', 'bottom');
+      return false;
+    }
+
+    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailfilter.test(this.email)) {
+      this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
+      return false;
+    }
+
+    this.sending = true;
+    this.api.post('galyon/v1/users/resetPassword', {
+      email: this.email,
+    }).subscribe((response: any) => {
+      if (response && response.success) {
+        this.util.showToast("Please check your email for reset key!", "dark", "bottom");
+      } else {
+        this.util.errorToast(response.data.message);
+      }
+      this.sending = false;
+    }, error => {
+      console.log(error);
+      this.loggedIn = false;
+      this.util.errorToast(this.util.getString('Something went wrong'));
+      this.sending = false;
+    });
+  }
+
+  activateAccount() {
+    if (!this.email || !this.key || !this.password || !this.confirm_password) {
+      this.util.showToast(this.util.getString('Activation key is requried'), 'dark', 'bottom');
+      return false;
+    }
+
+    if(this.password != this.confirm_password) {
+      this.util.showToast(this.util.getString('Password not the same'), 'dark', 'bottom');
+      return false;
+    }
+
+    if(this.password.length < 7) {
+      this.util.showToast(this.util.getString('Password length is less than 7 character.'), 'dark', 'bottom');
+      return false;
+    }
+
+    this.sending = true;
+    this.api.post('galyon/v1/users/activateAccount', {
+      email: this.email,
+      activation_key: this.key,
+      password: this.password,
+    }).subscribe((response: any) => {
+      if (response && response.success) {
+        this.email = '';
+        this.key = '';
+        this.password = '';
+        this.confirm_password = '';
+        this.util.showToast("You're account is now activated!", "dark", "bottom");
+        //Todo: modal to ask user to login the user automatically.
+      } else {
+        this.util.errorToast(response.data.message);
+      }
+      this.sending = false;
+    }, error => {
+      console.log(error);
+      this.loggedIn = false;
+      this.util.errorToast(this.util.getString('Something went wrong'));
+      this.sending = false;
+    });
+  }
+
+
+
+
+
+
+
+
+
 
   sendOTP() {
     // console.log(this.email, ';sendOTPDriver');

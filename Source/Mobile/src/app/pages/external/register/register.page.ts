@@ -115,22 +115,45 @@ export class RegisterPage implements OnInit {
     // modal.present();
   }
 
-  login() {
-    // console.log('login');
-    // if (!this.check) {
-    //   this.util.showToast(this.util.getString('Please accept terms and conditions'), 'dark', 'bottom');
-    //   return false;
-    // }
-    // if (!this.fname || !this.lname || !this.mobile || !this.email || !this.password ) {
-    //   this.util.showToast(this.util.getString('All Fields are required'), 'dark', 'bottom');
-    //   return false;
-    // }
+  isRegistering: boolean = false;
 
-    // const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-    // if (!emailfilter.test(this.email)) {
-    //   this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
-    //   return false;
-    // }
+  register() {
+    if (!this.check) {
+      this.util.showToast(this.util.getString('Please accept terms and conditions'), 'dark', 'bottom');
+      return false;
+    }
+
+    if (!this.fname || !this.lname || !this.email) {
+      this.util.showToast(this.util.getString('All Fields are required'), 'dark', 'bottom');
+      return false;
+    }
+
+    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailfilter.test(this.email)) {
+      this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
+      return false;
+    }
+
+    this.isRegistering = true;
+    this.api.post('galyon/v1/users/registerUser', {
+      first_name: this.fname,
+      last_name: this.lname,
+      email: this.email,
+      gender: this.gender,
+      //fcm_token: localStorage.getItem('fcm') ? localStorage.getItem('fcm') : 'NA',
+    }).subscribe((response: any) => {
+      if (response && response.success) {
+        this.util.showToast("Please check your email to verify!", "dark", "bottom");
+      } else {
+        this.util.errorToast(response.data.message);
+      }
+      this.isRegistering = false;
+    }, error => {
+      console.log(error);
+      this.loggedIn = false;
+      this.util.errorToast(this.util.getString('Something went wrong'));
+      this.isRegistering = false;
+    });
 
 
     // if (this.util.twillo === '1') {
