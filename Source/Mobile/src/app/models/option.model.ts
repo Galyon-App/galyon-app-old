@@ -36,6 +36,7 @@ export class Setting {
     appDirection: any ='';
     currencySide: any ='';
     currencySymbol: any ='';
+    currency_code: any ='';
     delivery: any ='';
     driver_login: any ='';
     logo: any ='';
