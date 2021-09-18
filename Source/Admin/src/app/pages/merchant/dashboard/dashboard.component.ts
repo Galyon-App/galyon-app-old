@@ -71,7 +71,36 @@ export class DashboardComponent implements OnInit {
         //this.getData();
       }
     });
+    this.getOrdersForThisStore();
   }
+
+  getOrdersForThisStore() {
+    this.api.post('galyon/v1/orders/getOrdersByStore', {
+      store_id: this.storeService.storeValue.uuid,
+      limit_start: 0,
+      limit_length: 1000
+    }).then((response: any) => {
+      console.log(response);
+      this.dummy = [];
+      if (response && response.success  && response.data) {
+
+        // this.orders = data.data;
+        const orders = response.data;
+        orders.forEach(element => {
+          if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.orders)) {
+            element.orders = JSON.parse(element.items);
+            element.date_time = moment(element.date_time).format('dddd, MMMM Do YYYY');
+          }
+        });
+        this.orders = orders;
+      }
+    }, error => {
+      console.log(error);
+      this.dummy = [];
+      this.orders = [];
+    });
+  }
+
 
   ngOnInit(): void {
   }

@@ -61,6 +61,22 @@ class Orders extends Galyon_controller {
         }
     }
 
+    function getOrdersByStore() {
+        $auth = $this->is_authorized(true);
+        $request = $this->request_validation($_POST, ["store_id"], $this->public_column);
+
+        //TODO: Check if Admin or Operator or Owner of store.
+
+        $orders = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result' );
+        if($orders) {
+            $stoordersres = $this->getOrderMeta($orders);
+            $this->json_response($orders);
+        } else {
+            $this->json_response(null, false, "No orders was found!");
+        }
+    }
+
     function getByDriver() {
         
     }
@@ -69,48 +85,6 @@ class Orders extends Galyon_controller {
         
     }
     
-    function getByStore() {
-        $bearer = $this->input->get_request_header('Authorization');
-        $token = str_replace("Bearer ", "", $bearer);
-        $user = JWT::decode($token, $this->config->item('encryption_key'));
-
-        if($user == false) {
-            $this->json_response(null, false, "Invalid access token!");
-            exit;
-        }
-
-        $store = $this->Crud_model->get('stores', '*', array( "owner" => $user->uuid ), null, 'row' );
-        if(!$store) {
-            $this->json_response(null, false, "No store is currently assigned!");
-            exit;
-        }
-
-        $order_list = $this->Crud_model->get('orders', '*', array( "store_id" => $store->uuid ), null, 'result' );
-
-        if($order_list) {
-            foreach($order_list as $cur_order) {
-                $order_details = unserialize($cur_order->items);
-
-                //Add more product meta foreach order item.
-                foreach($order_details as $cur_items) {
-                    $cur_product = $this->Crud_model->get('products', '*', array( "uuid" => $cur_items['pid'] ), null, 'row' );
-                    if($cur_product) {
-                        $cur_items['name'] = $cur_product->name;
-                    }
-                    $cur_items['name'] = $cur_items['pid'];
-                    print_r(json_encode($cur_items));
-                }
-                
-                
-                $cur_order->items = $order_details;
-            }
-            
-            //$this->json_response($order_list);
-        } else {
-            $this->json_response(null, false, "No order found yet!");
-        }
-    }
-
     function getByID() {
         //Get the authorization header.
         $bearer = $this->input->get_request_header('Authorization');
