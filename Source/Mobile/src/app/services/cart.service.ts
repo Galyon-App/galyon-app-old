@@ -19,12 +19,12 @@ export class CartService {
   public itemId: any[] = [];
   
   public totalPrice: any = 0;
-  public grandTotal: any = 0;
+  public grandTotal: any = 0; //Make this a function.
   public coupon: any;
   public discount: any = 0;
   public orderTax: any = 0;
   public get orderTaxAmt(): any {
-    return (this.grandTotal * (this.orderTax/100)).toFixed(2);
+    return (this.totalPrice * (this.orderTax/100)).toFixed(2);
   }
   public orderPrice: any;
   public shipping: any;
@@ -61,10 +61,10 @@ export class CartService {
         this.cart.forEach(element => {
           this.productServ.getById(element.uuid, (curProduct) => {
             if(curProduct) {
-              let quantiy: number = element.quantiy;
+              let quantity: number = element.quantity;
 
               element.orig_price = curProduct.orig_price;
-              element.quantiy = quantiy;
+              element.quantity = quantity;
 
               //console.log(curProduct);
               this.saveLocalToStorage();
@@ -72,6 +72,49 @@ export class CartService {
           })
         });
       });
+  }
+
+  getOrderItemObject() {
+    let items = [];
+    this.cart.forEach(element => {
+      let current = {
+        uuid: element.uuid,
+        name: element.name,
+        price: element.orig_price,
+        discount_type: element.discount_type,
+        discount: element.discount,
+        pcs: element.pcs,
+        kg: element.kg,
+        gram: element.gram,
+        liter: element.liter,
+        ml: element.ml,
+        category_id: element.category_id,
+        subcategory_id: element.subcategory_id,
+        quantity: element.quantity,
+        variations: element.variations,
+      };
+      current.variations = [];
+      element.variations.forEach(variant => {
+        let varitem = variant.items[variant.current];
+          varitem.variant = variant.title;
+        current.variations.push(varitem);
+      });
+      items.push(current);
+    });
+    return items;
+  }
+
+  getCouponObjectForOrder() {
+    return {
+      uuid: this.coupon.uuid,
+      name: this.coupon.name,
+      descriptions: this.coupon.descriptions,
+      type: this.coupon.type,
+      off: this.coupon.off,
+      min: this.coupon.min,
+      upto: this.coupon.upto,
+      expires: this.coupon.expires,
+    };
   }
   
   addItem(item) {
@@ -86,7 +129,7 @@ export class CartService {
     }
     this.cart.forEach(element => {
       if (element.uuid === uuid) {
-        element.quantiy = quantity;
+        element.quantity = quantity;
       }
     });
     this.calcuate();
@@ -124,9 +167,9 @@ export class CartService {
       } else {
         calcdiscount = 0;
       }
-      calcdiscount *= element.quantiy;
+      calcdiscount *= element.quantity;
 
-      sub_total += (parseFloat(element.orig_price) * element.quantiy);
+      sub_total += (parseFloat(element.orig_price) * element.quantity);
       if(calcdiscount > 0) {
         sub_total -= calcdiscount;
       }
@@ -138,9 +181,9 @@ export class CartService {
         let varDiscount = parseFloat(variant.items[curVarIndex].discount)/100;
 
         if(varDiscount > 0) {          
-          sub_total += ((varPrice - (varPrice*varDiscount)) * element.quantiy)
+          sub_total += ((varPrice - (varPrice*varDiscount)) * element.quantity)
         } else {
-          sub_total += (varPrice * element.quantiy);
+          sub_total += (varPrice * element.quantity);
         }
       });
 

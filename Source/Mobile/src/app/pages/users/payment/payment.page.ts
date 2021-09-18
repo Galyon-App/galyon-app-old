@@ -15,6 +15,10 @@ import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/
 import { OptionService } from 'src/app/services/option.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { TimeComponent } from 'src/app/components/time/time.component';
+import { GmapService } from 'src/app/services/gmap.service';
+import { StoreService } from 'src/app/services/store.service';
+import { AddressService } from 'src/app/services/address.service';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-payment',
@@ -39,7 +43,11 @@ export class PaymentPage implements OnInit {
     private iab: InAppBrowser,
     private popoverController: PopoverController,
     private optServ: OptionService,
-    private authServ: AuthService
+    private authServ: AuthService,
+    private gmapServ: GmapService,
+    private storeServ: StoreService,
+    private addressServ: AddressService,
+    private orderServ: OrderService
   ) {
     this.util.getCouponObservable().subscribe((data) => {
       console.log(data);
@@ -62,6 +70,7 @@ export class PaymentPage implements OnInit {
     this.getStoreList();
     this.datetime = 'today';
     this.time = this.util.getString('Today - ') + moment().format('dddd, MMMM Do YYYY');
+    this.curTime = moment().format('YYYY-MM-DD HH:mm:ss'); 
   }
 
   deliveryOption: any = 'home';
@@ -95,6 +104,7 @@ export class PaymentPage implements OnInit {
     this.router.navigate(['user/cart/address'], param)
   }
 
+  curTime: any;
   async openTime(ev) {
     const popover = await this.popoverController.create({
       component: TimeComponent,
@@ -107,9 +117,11 @@ export class PaymentPage implements OnInit {
         if (data.data === 'today') {
           this.datetime = 'today';
           this.time = this.util.getString('Today - ') + moment().format('dddd, MMMM Do YYYY');
+          this.curTime = moment().format('YYYY-MM-DD HH:mm:ss');
         } else {
           this.datetime = 'tomorrow';
           this.time = this.util.getString('Tomorrow - ') + moment().add(1, 'days').format('dddd, MMMM Do YYYY');
+          this.curTime = moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
         }
       }
     });
@@ -118,75 +130,88 @@ export class PaymentPage implements OnInit {
 
   async createOrder(method = 'cod') {
 
-    if(!this.cart.deliveryAddress) {
+    if(!this.cart.deliveryAddress && this.deliveryOption == "home") {
       this.util.errorToast(this.util.getString('Please set the delivery address!'));
       return;
     }
 
-    //TODO: Temporary and Remove
-    this.util.errorToast(this.util.getString('Sorry, Order Taking is not Yet Available'));
-    return;
-
     const store_ids = [...new Set(this.cart.cart.map(item => item.store_id))];
 
-    const orderStatus = [];
-    store_ids.forEach(store_id => {
+    store_ids.forEach(async(store_id) => {
+
       //Prepare data
-      const param = {
+      let orderPackage = {
         uid: this.authServ.userToken.uuid,
-        address_id: "", //TODO
+        address_id: null,
         store_id: store_id,
         
-        items: JSON.stringify(this.cart.cart), //Minimize
-        progress: [], //TODO
-        factor: {}, //TODO
-        coupon: this.cart.coupon ? JSON.stringify(this.cart.coupon) : '', //Minimized
-  
-        total: this.cart.totalPrice, //Check
-        discount: this.cart.discount, //Check
-        tax: this.cart.orderTax, //Check
-        delivery: this.cart.deliveryPrice, //Check
-        grand_total: this.cart.grandTotal, //Check
+        items: JSON.stringify(this.cart.getOrderItemObject()), //Minimize
+        //progress: [], //TODO: Should be done in the server.
+        matrix: null,
+        factor: null,
+        coupon: this.cart.coupon ? JSON.stringify(this.cart.getCouponObjectForOrder()) : '',
+
+        // total: this.cart.totalPrice, //Check
+        // discount: this.cart.discount, //Check
+        // tax: this.cart.orderTaxAmt, //Check
+        // delivery: this.cart.deliveryPrice, //Check
+        // grand_total: this.cart.grandTotal, //Check
         paid_method: method,
+      }
+
+      let factor = {
+        schedule: this.curTime,
+        distance: 0,
+        tax: this.optServ.current.general.tax,
+        ship_mode: this.optServ.current.general.shipping,
+        ship_price: this.optServ.current.general.shippingPrice,
+        min_order: this.optServ.current.general.minimum_order,
+        free_delivery: this.optServ.current.general.free_delivery,
+        currency_code: this.optServ.current.settings.currency_code
       };
-      console.log(this.cart.deliveryAddress);
 
-      //Send to server
-      // const info = {
-      //   id: element,
-      //   status: 'created'
-      // }
-      // orderStatus.push(info)
-      // const notes = [
-      //   {
-      //     status: 1,
-      //     value: 'Order Created',
-      //     time: moment().format('lll'),
-      //   }
-      // ];
-      
+      let matrix: any;
+
+      //Add delievery details if posible.
+      if(this.cart.deliveryAddress) {
+        orderPackage.address_id = this.cart.deliveryAddress.uuid;
+
+        let origin = {
+          lat: parseFloat(this.cart.deliveryAddress.lat), 
+          lng: parseFloat(this.cart.deliveryAddress.lng)
+        };
+        let destination = {
+          lat: origin.lat, 
+          lng: origin.lng
+        };
+
+        let store_address: any = await this.addressServ.getByStore(store_id);
+        if(!store_address) {
+          this.util.errorToast(this.util.getString('One store dont have a valid address.'));
+          return;
+        }
+
+        destination.lat = parseFloat(store_address[0].lat);
+        destination.lng = parseFloat(store_address[0].lng);
+        matrix = await this.gmapServ.calculateDistance(origin, [destination]);
+        if(matrix) {
+          factor.distance = matrix.distances[0][0].distance.value;
+        }
+      }
+      orderPackage.factor = JSON.stringify(factor);
+      orderPackage.matrix = JSON.stringify(matrix);
+
+      let orderStatus = await this.orderServ.submitOrder(orderPackage);
+      if(!orderStatus) {
+        this.util.errorToast(this.util.getString('Order not accepted by one of the store.'));
+        return;
+      }
     });
-    
 
-    //date_time: this.cart.datetime === 'today' ? moment().format('YYYY-MM-DD HH:mm:ss') : moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
-    //notes: JSON.stringify(notes),
-    //extra: JSON.stringify(this.cart.userOrderTaxByStores)
-    //this.cart.deliveryAt === 'home' ? JSON.stringify(this.cart.deliveryAddress) : '', //order_to: this.cart.deliveryAt
-
-    //TODO: VERY IMPORTANT
-    // this.util.show();
-    // this.api.post('orders/save', param).subscribe((data: any) => {
-    //   console.log(data);
-    //   this.util.hide();
-    //   this.api.createOrderNotification(this.cart.stores);
-    //   this.cart.clearCart();
-    //   this.util.publishNewOrder();
-    //   this.navCtrl.navigateRoot(['user/orders'], { replaceUrl: true, skipLocationChange: true });
-    // }, error => {
-    //   console.log(error);
-    //   this.util.hide();
-    //   this.util.showToast(this.util.getString('Something went wrong'), 'danger', 'bottom');
-    // });
+    //this.api.createOrderNotification(this.cart.stores);
+    this.cart.clearCart();
+    //this.util.publishNewOrder();
+    this.navCtrl.navigateRoot(['user/orders'], { replaceUrl: true, skipLocationChange: true });
   }
 
   async makeOrder(method, key) {
@@ -247,7 +272,7 @@ export class PaymentPage implements OnInit {
   }
 
   back() {
-    this.navCtrl.back();
+    this.navCtrl.navigateBack(['user/cart']);
   }
 
   openCoupon() {

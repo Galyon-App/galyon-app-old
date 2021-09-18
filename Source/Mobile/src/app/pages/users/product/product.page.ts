@@ -59,7 +59,7 @@ export class ProductPage implements OnInit {
     slidesPerView: 2.5,
   };
   related: any[] = [];
-  quantiy: any = 0;
+  quantity: any = 0;
   totalRating: any;
   storeId: any;
   storeName: any;
@@ -118,7 +118,7 @@ export class ProductPage implements OnInit {
   checkCartItems() {
     const item = this.cart.cart.filter(x => x.uuid === this.id);
     if (item && item.length) {
-      this.quantiy = item[0].quantiy;
+      this.quantity = item[0].quantity;
     }
   }
 
@@ -131,7 +131,7 @@ export class ProductPage implements OnInit {
       this.gallery = [];
       if (response && response.success && response.data) {
         this.product = response.data;
-        this.product.quantiy = 0;
+        this.product.quantity = 0;
 
         this.name = this.product.name;
         this.description = this.product.description;
@@ -179,7 +179,7 @@ export class ProductPage implements OnInit {
         
         if (this.cart.checkProductInCart(this.product.uuid)) {
           let filterprod: any = this.cart.cart.filter(x => x.uuid === this.product.uuid);
-          this.product.quantiy = filterprod[0].quantiy;
+          this.product.quantity = filterprod[0].quantity;
           this.product.variations.forEach(variant => {
             let cartVariant: any = filterprod[0].variations.filter( x => x.title == variant.title);
             if(cartVariant.length) {
@@ -187,7 +187,7 @@ export class ProductPage implements OnInit {
             }
           });
         } else {
-          this.product.quantiy = 0;
+          this.product.quantity = 0;
         } 
         //this.checkCartItems();
 
@@ -225,9 +225,9 @@ export class ProductPage implements OnInit {
   }
 
   addToCart() {
-    // this.quantiy = 1;
-    // this.productt.quantiy = 1;
-    this.product.quantiy = 1;
+    // this.quantity = 1;
+    // this.productt.quantity = 1;
+    this.product.quantity = 1;
     this.cart.addItem(this.product);
   }
 
@@ -241,28 +241,28 @@ export class ProductPage implements OnInit {
   }
 
   add() {
-    // this.quantiy = this.quantiy + 1;
-    // this.cart.addQuantity(this.quantiy, this.id);
-    if (this.product.quantiy > 0) {
-      this.product.quantiy = this.product.quantiy + 1;
-      this.cart.addQuantity(this.product.quantiy, this.product.uuid);
+    // this.quantity = this.quantity + 1;
+    // this.cart.addQuantity(this.quantity, this.id);
+    if (this.product.quantity > 0) {
+      this.product.quantity = this.product.quantity + 1;
+      this.cart.addQuantity(this.product.quantity, this.product.uuid);
     }
   }
 
   remove() {
-    // if (this.quantiy === 1) {
-    //   this.quantiy = 0;
+    // if (this.quantity === 1) {
+    //   this.quantity = 0;
     //   this.cart.removeItem(this.id)
     // } else {
-    //   this.quantiy = this.quantiy - 1;
-    //   this.cart.addQuantity(this.quantiy, this.id);
+    //   this.quantity = this.quantity - 1;
+    //   this.cart.addQuantity(this.quantity, this.id);
     // }
-    if (this.product.quantiy === 1) {
-      this.product.quantiy = 0;
+    if (this.product.quantity === 1) {
+      this.product.quantity = 0;
       this.cart.removeItem(this.product.uuid)
     } else {
-      this.product.quantiy = this.product.quantiy - 1;
-      this.cart.addQuantity(this.product.quantiy, this.product.uuid);
+      this.product.quantity = this.product.quantity - 1;
+      this.cart.addQuantity(this.product.quantity, this.product.uuid);
     }
   }
 

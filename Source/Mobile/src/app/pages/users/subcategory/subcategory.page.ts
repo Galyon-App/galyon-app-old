@@ -158,7 +158,7 @@ export class SubcategoryPage implements OnInit {
           }
           if (this.cart.checkProductInCart(info.uuid)) {
             let filterprod: any = this.cart.cart.filter(x => x.uuid === info.uuid);
-            info['quantiy'] = filterprod[0].quantiy;
+            info['quantity'] = filterprod[0].quantity;
             info.variations.forEach(variant => {
               let cartVariant: any = filterprod[0].variations.filter( x => x.title == variant.title);
               if(cartVariant.length) {
@@ -166,7 +166,7 @@ export class SubcategoryPage implements OnInit {
               }
             });
           } else {
-            info['quantiy'] = 0;
+            info['quantity'] = 0;
           }
         });
         this.dummys = [];
@@ -185,27 +185,27 @@ export class SubcategoryPage implements OnInit {
 
   addToCart(item, index) {
     console.log(item);
-    this.products[index].quantiy = 1;
+    this.products[index].quantity = 1;
     this.cart.addItem(item);
   }
 
 
   add(product, index) {
     console.log(product);
-    if (this.products[index].quantiy > 0) {
-      this.products[index].quantiy = this.products[index].quantiy + 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
+    if (this.products[index].quantity > 0) {
+      this.products[index].quantity = this.products[index].quantity + 1;
+      this.cart.addQuantity(this.products[index].quantity, product.uuid);
     }
   }
 
   remove(product, index) {
     console.log(product, index);
-    if (this.products[index].quantiy === 1) {
-      this.products[index].quantiy = 0;
+    if (this.products[index].quantity === 1) {
+      this.products[index].quantity = 0;
       this.cart.removeItem(product.uuid)
     } else {
-      this.products[index].quantiy = this.products[index].quantiy - 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
+      this.products[index].quantity = this.products[index].quantity - 1;
+      this.cart.addQuantity(this.products[index].quantity, product.uuid);
     }
   }
   // getByCid

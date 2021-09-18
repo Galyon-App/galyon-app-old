@@ -99,20 +99,20 @@ export class TopPickedPage implements OnInit {
 
   add(product, index) {
     console.log(product);
-    if (this.products[index].quantiy > 0) {
-      this.products[index].quantiy = this.products[index].quantiy + 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
+    if (this.products[index].quantity > 0) {
+      this.products[index].quantity = this.products[index].quantity + 1;
+      this.cart.addQuantity(this.products[index].quantity, product.uuid);
     }
   }
 
   remove(product, index) {
     console.log(product, index);
-    if (this.products[index].quantiy === 1) {
-      this.products[index].quantiy = 0;
+    if (this.products[index].quantity === 1) {
+      this.products[index].quantity = 0;
       this.cart.removeItem(product.uuid)
     } else {
-      this.products[index].quantiy = this.products[index].quantiy - 1;
-      this.cart.addQuantity(this.products[index].quantiy, product.uuid);
+      this.products[index].quantity = this.products[index].quantity - 1;
+      this.cart.addQuantity(this.products[index].quantity, product.uuid);
     }
   }
 
@@ -143,9 +143,9 @@ export class TopPickedPage implements OnInit {
           }
           if (this.cart.checkProductInCart(element.uuid)) {
             const index = this.cart.cart.filter(x => x.uuid === element.uuid);
-            element['quantiy'] = index[0].quantiy;
+            element['quantity'] = index[0].quantity;
           } else {
-            element['quantiy'] = 0;
+            element['quantity'] = 0;
           }
           this.products.push(element);
           this.dummyProduct.push(element);
@@ -176,7 +176,7 @@ export class TopPickedPage implements OnInit {
       cart.forEach(element => {
         if (this.cart.cart && this.cart.cart.length && this.cart.checkProductInCart(element.uuid)) {
           const index = this.products.findIndex(x => x.uuid === element.uuid);
-          this.products[index].quantiy = element.quantiy;
+          this.products[index].quantity = element.quantity;
         }
       });
     }
@@ -184,7 +184,7 @@ export class TopPickedPage implements OnInit {
 
   addToCart(item, index) {
     console.log(item);
-    this.products[index].quantiy = 1;
+    this.products[index].quantity = 1;
     this.cart.addItem(item);
   }
 

@@ -12,9 +12,13 @@ require_once APPPATH.'/core/Galyon_controller.php';
 
 class Orders extends Galyon_controller {
 
+    private $table_name = 'orders';
+    private $edit_column = ['uid','address_id','store_id','driver_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status',];
+    private $public_column = ['uuid','uid','address_id','store_id','driver_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status','timestamp','updated_at','deleted_at'];
+    private $required = ['uuid'];
+
     function __construct(){
 		parent::__construct();
-        //$this->load->helper();
     }
 
     function getByUser() {
@@ -115,7 +119,84 @@ class Orders extends Galyon_controller {
     }
 
     function createNewOrder() {
+        $auth = $this->is_authorized(true);
+        $request = $this->request_validation($_POST, ["uid","store_id"], $this->edit_column);
+        $request->data = array_merge(array(
+            "uuid" => $this->uuid->v4(),
+            "store_id" => $this->Crud_model->sanitize_param($this->input->post("store_id"))
+        ), $request->data);
 
+        $request->data['progress'] = json_encode([array(
+            "status" => 1,
+            "current" => "created",
+            "latest" => "created",
+            "timestamp" => get_my_local_time()
+        )]);
+
+        //Start the computation.
+        $total = 0;
+        $delivery = 0;
+        $discount = 0;
+        $tax = 0;
+        $grand = 0;
+
+        $items = json_decode($request->data['items']);
+        foreach($items as $item) {
+            //Product price with discount
+            $idiscount = $item->discount_type == "percent" ? 
+                ($item->price * ((int)$item->discount/100)) : (int)$item->discount;
+            $total += ($item->price - $idiscount)*$item->quantity;
+
+            //Product variant with price and discount
+            foreach($item->variations as $option) {
+                $vdiscount = ($option->price * ((int)$option->discount/100));
+                $total += ($option->price - $vdiscount)*$item->quantity;
+            }
+        }
+
+        //Process coupon discount
+        if($request->data['coupon']) {
+            $coupon = json_decode($request->data['coupon']);
+            $discount = $coupon->type == "percent" ? ($total * ((int)$coupon->off/100)) : (int)$coupon->off;
+
+            if($discount > (int)$coupon->min) {
+                if($discount > (int)$coupon->upto) {
+                    $discount = $coupon->upto;
+                }
+            }
+        }
+
+        //Prepare billing statement
+        if($request->data['factor']) {
+            $factor = json_decode($request->data['factor']);
+            $tax = $total * ($tax/100);
+            if($factor->ship_mode == "fixed") {
+                $delivery = $factor->ship_price;
+            } else {
+                $delivery = $factor->ship_price * ((int)$factor->distance/1000); //per km
+            }
+            if($total > (int)$factor->min_order) {
+                if($total > (int)$factor->free_delivery) {
+                    $delivery = 0;
+                }
+            }
+        }
+        $grand = ($total - $discount) + $tax + $delivery;
+        $request->data['total'] = $total;
+        $request->data['discount'] = $discount;
+        $request->data['tax'] = $tax;
+        $request->data['delivery'] = $delivery;
+        $request->data['grand_total'] = $grand;
+
+        $inserted = $this->Crud_model->insert($this->table_name, $request->data);
+
+        if($inserted) {
+            $current = $this->Crud_model->get($this->table_name, $this->public_column, "id = '$inserted'", null, 'row' );
+            //$current = $this->getProductMetaItem($current);
+            $this->json_response($current);
+        } else {
+            $this->json_response(null, false, "Failed submition of order!");
+        }
     }
 
     function editOrderCurrent() {

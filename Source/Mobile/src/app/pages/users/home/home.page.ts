@@ -269,7 +269,7 @@ export class HomePage {
           }
           if (this.cart.checkProductInCart(element.uuid)) {
             let filterprod: any = this.cart.cart.filter(x => x.uuid === element.uuid);
-            element['quantiy'] = filterprod[0].quantiy;
+            element['quantity'] = filterprod[0].quantity;
             element.variations.forEach(variant => {
               let cartVariant: any = filterprod[0].variations.filter( x => x.title == variant.title);
               if(cartVariant.length) {
@@ -277,7 +277,7 @@ export class HomePage {
               }
             });
           } else {
-            element['quantiy'] = 0;
+            element['quantity'] = 0;
           }
           this.topProducts.push(element);
           // if (this.util.active_store.includes(element.store_id)) {
@@ -377,13 +377,13 @@ export class HomePage {
   }
 
   addToCart(item, index) {
-    this.topProducts[index].quantiy = 1;
+    this.topProducts[index].quantity = 1;
     this.cart.addItem(item);
   }
 
   getQuanity(id) {
     const data = this.cart.cart.filter(x => x.uuid === id);
-    return data[0].quantiy;
+    return data[0].quantity;
   }
 
   openMenu() {
@@ -391,21 +391,21 @@ export class HomePage {
   }
 
   add(product, index) {
-    this.topProducts[index].quantiy = this.getQuanity(product.uuid);
-    if (this.topProducts[index].quantiy > 0) {
-      this.topProducts[index].quantiy = this.topProducts[index].quantiy + 1;
-      this.cart.addQuantity(this.topProducts[index].quantiy, product.uuid);
+    this.topProducts[index].quantity = this.getQuanity(product.uuid);
+    if (this.topProducts[index].quantity > 0) {
+      this.topProducts[index].quantity = this.topProducts[index].quantity + 1;
+      this.cart.addQuantity(this.topProducts[index].quantity, product.uuid);
     }
   }
 
   remove(product, index) {
-    this.topProducts[index].quantiy = this.getQuanity(product.uuid);
-    if (this.topProducts[index].quantiy === 1) {
-      this.topProducts[index].quantiy = 0;
+    this.topProducts[index].quantity = this.getQuanity(product.uuid);
+    if (this.topProducts[index].quantity === 1) {
+      this.topProducts[index].quantity = 0;
       this.cart.removeItem(product.uuid)
     } else {
-      this.topProducts[index].quantiy = this.topProducts[index].quantiy - 1;
-      this.cart.addQuantity(this.topProducts[index].quantiy, product.uuid);
+      this.topProducts[index].quantity = this.topProducts[index].quantity - 1;
+      this.cart.addQuantity(this.topProducts[index].quantity, product.uuid);
     }
   }
 

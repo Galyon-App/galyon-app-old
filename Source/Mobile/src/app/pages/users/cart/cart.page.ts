@@ -42,19 +42,19 @@ export class CartPage implements OnInit {
   }
 
   add(product, index) {
-    if (this.cart.cart[index].quantiy > 0) {
-      this.cart.cart[index].quantiy = this.cart.cart[index].quantiy + 1;
-      this.cart.addQuantity(this.cart.cart[index].quantiy, product.uuid);
+    if (this.cart.cart[index].quantity > 0) {
+      this.cart.cart[index].quantity = this.cart.cart[index].quantity + 1;
+      this.cart.addQuantity(this.cart.cart[index].quantity, product.uuid);
     }
   }
 
   remove(product, index) {
-    if (this.cart.cart[index].quantiy === 1) {
-      this.cart.cart[index].quantiy = 0;
+    if (this.cart.cart[index].quantity === 1) {
+      this.cart.cart[index].quantity = 0;
       this.cart.removeItem(product.uuid)
     } else {
-      this.cart.cart[index].quantiy = this.cart.cart[index].quantiy - 1;
-      this.cart.addQuantity(this.cart.cart[index].quantiy, product.uuid);
+      this.cart.cart[index].quantity = this.cart.cart[index].quantity - 1;
+      this.cart.addQuantity(this.cart.cart[index].quantity, product.uuid);
     }
   }
 

@@ -120,7 +120,7 @@
       <div class="small_flex_div">
 
         <div class="addBtn"
-          *ngIf="!cart.checkProductInCart(product.uuid) && product.quantiy <= 0 && product.in_stock === '1'">
+          *ngIf="!cart.checkProductInCart(product.uuid) && product.quantity <= 0 && product.in_stock === '1'">
           <div class="ion-activatable ripple-parent" (click)="addToCart()">
             {{util.getString('Add to Cart')}}
             <ion-ripple-effect></ion-ripple-effect>
@@ -129,7 +129,7 @@
 
         <div class="abs_add" *ngIf="cart.checkProductInCart(id)">
           <img src="assets/imgs/remove.png" (click)="remove()">
-          <ion-label>{{product.quantiy}}</ion-label>
+          <ion-label>{{product.quantity}}</ion-label>
           <img src="assets/imgs/add.png" (click)="add()">
         </div>
       </div>

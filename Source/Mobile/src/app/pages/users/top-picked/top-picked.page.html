@@ -128,7 +128,7 @@
               </ion-label>
             </div>
             <div class="btnBtm"
-              *ngIf="!cart.checkProductInCart(item.uuid) && item.quantiy <= 0 && item.in_stock === '1'">
+              *ngIf="!cart.checkProductInCart(item.uuid) && item.quantity <= 0 && item.in_stock === '1'">
               <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
                 {{util.getString('Add to Cart')}}
                 <ion-ripple-effect></ion-ripple-effect>
@@ -138,8 +138,8 @@
             <div class="cartBtn" *ngIf="cart.checkProductInCart(item.uuid)">
               <div class="abs_add">
                 <img src="assets/imgs/remove.png" (click)="remove(item,i)">
-                <ion-label *ngIf="item.quantiy !== 0">{{item.quantiy}}</ion-label>
-                <ion-label *ngIf="item.quantiy === 0">
+                <ion-label *ngIf="item.quantity !== 0">{{item.quantity}}</ion-label>
+                <ion-label *ngIf="item.quantity === 0">
                   <ion-spinner name="circles" color="light"></ion-spinner>
                 </ion-label>
                 <img src="assets/imgs/add.png" (click)="add(item,i)">
@@ -222,7 +222,7 @@
             </ion-label>
           </div>
           <div class="btnBtm"
-            *ngIf="!cart.checkProductInCart(item.uuid) && item.quantiy <= 0 && item.in_stock === '1'">
+            *ngIf="!cart.checkProductInCart(item.uuid) && item.quantity <= 0 && item.in_stock === '1'">
             <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
               {{util.getString('Add to Cart')}}
               <ion-ripple-effect></ion-ripple-effect>
@@ -231,7 +231,7 @@
           <div class="cartBtn" *ngIf="cart.checkProductInCart(item.uuid)">
             <div class="abs_add">
               <img src="assets/imgs/remove.png" (click)="remove(item,i)">
-              <ion-label>{{item.quantiy}}</ion-label>
+              <ion-label>{{item.quantity}}</ion-label>
               <img src="assets/imgs/add.png" (click)="add(item,i)">
             </div>
           </div>

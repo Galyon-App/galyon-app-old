@@ -47,5 +47,5 @@ export class Product {
     verified_at: string;
     updated_at: string;
 
-    quantiy: number = 0;
+    quantity: number = 0;
 }

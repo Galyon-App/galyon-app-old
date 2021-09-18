@@ -41,7 +41,7 @@
             <p *ngFor="let order of item.orders;let ol = index" class="items">
               <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
                 </span> </span>
-              <span>X {{order.quantiy}}</span>
+              <span>X {{order.quantity}}</span>
             </p>
             <p class="itemss">
               <span> {{util.getString('Total')}} </span>
