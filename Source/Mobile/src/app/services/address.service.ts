@@ -62,4 +62,18 @@ export class AddressService {
       }
     });
   }
+
+  public getByStore(store_id: string) {
+    const response = () => new Promise((resolve, reject) => {
+      this.api.posts('galyon/v1/address/getByStore', {
+        store_id: store_id
+      }).then((res: any) => {
+        resolve(res.success ? res.data:null);
+      }).catch(error => {
+        console.log('error', error);
+        reject(null);
+      });
+    });
+    return response();
+  }
 }
