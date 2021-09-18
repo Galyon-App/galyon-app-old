@@ -7,7 +7,7 @@
 
  -->
  
-<ion-tabs>
+<ion-tabs #userTabs (ionTabsDidChange)="onTabChanged()">
 
   <ion-header class="ion-no-border">
     <ion-toolbar color="primary" style="background: var(--ion-color-light); padding: 5px 15px;">
