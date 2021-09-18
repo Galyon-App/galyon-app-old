@@ -35,6 +35,7 @@
         </div>
         <div class="second_div">
           <ion-label class="name_lbl">{{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}</ion-label>
+          <ion-label class="store_lbl">{{ (item.store_name.length>30)? (item.store_name | slice:0:30)+'..':(item.store_name) }}</ion-label>
           <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
           <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
           <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
