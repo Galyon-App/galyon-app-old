@@ -47,7 +47,7 @@ class Address extends Galyon_controller {
         }
 
         $addresses = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, ["store_id = '$store_id'", "uid IS NULL"]), null, 'result' );
+            $this->compileWhereClause($auth->where, ["store_id = '$store_id'"]), null, 'result' );
 
         if($addresses) {
             $this->json_response($addresses);

@@ -26,7 +26,7 @@ class Galyon_model extends CI_Model
 	 * @param  mixed $result
 	 * @return object
 	 */
-	public function get($table, $field = "*", $where = NULL, $whereOr = NULL, $result = 'row') {
+	public function get($table, $field = "*", $where = NULL, $whereOr = NULL, $result = 'row', $limits = null) {
 		if($where == NULL) {
 			$this->db->select($field);
 			$this->db->from($table);
@@ -44,6 +44,7 @@ class Galyon_model extends CI_Model
 				$limit_start = $this->input->post('limit_start');
 				$limit_length = $this->input->post('limit_length');
 				$limit_length = $limit_length ? (int)$limit_length : 10;
+				$limit_length = $limits != null && (int)$limits > 0 ? $limits : $limit_length;
 				$this->db->limit($limit_length, $limit_start);
 				return $this->db->get()->result();
 			}

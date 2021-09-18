@@ -156,7 +156,7 @@ class Settings extends Galyon_controller {
     }
 
     function getGroupOptions($group_name = '', $returnOnly = false) {
-        $options = $this->Crud_model->get($this->table_name, 'opt_key, opt_val', array( "guard" => $group_name ), null, 'result' );
+        $options = $this->Crud_model->get($this->table_name, 'opt_key, opt_val', array( "guard" => $group_name ), null, 'result', 100 );
         $option_array = new stdClass;
         foreach($options as $option) {
             $option_array->{$option->opt_key} = $option->opt_val;
