@@ -9,6 +9,7 @@ import { UtilService } from '../../../services/util.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import * as moment from 'moment';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -17,12 +18,14 @@ import * as moment from 'moment';
 export class OrdersPage implements OnInit {
 
   dummy: any[] = [];
-  orders: any[] = [];
+  public orders: any[] = [];
+
   constructor(
     public util: UtilService,
     private router: Router,
-    public api: ApiService,) {
-
+    public api: ApiService,
+    private auth: AuthService
+  ) {
   }
 
   ionViewWillEnter() {
@@ -32,38 +35,26 @@ export class OrdersPage implements OnInit {
   getOrders(event, haveRefresh) {
     this.dummy = Array(15);
     this.orders = [];
-    const param = {
-      id: localStorage.getItem('uid')
-    }
-    this.api.post('orders/getByUid', param).subscribe((data: any) => {
-      console.log(data);
+    this.api.post('galyon/v1/orders/getOrdersByUser', {
+      uid: this.auth.userToken.uuid
+    }).subscribe((response: any) => {
+      console.log(response);
       this.dummy = [];
-      if (data && data.status === 200 && data.data.length > 0) {
+      if (response && response.success  && response.data) {
+
         // this.orders = data.data;
-        const orders = data.data;
+        const orders = response.data;
         orders.forEach(element => {
           if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.orders)) {
-            element.orders = JSON.parse(element.orders);
+            element.orders = JSON.parse(element.items);
             element.date_time = moment(element.date_time).format('dddd, MMMM Do YYYY');
-            element.orders.forEach(order => {
-              //console.log(element.id, '=>', order.variations);
-              if (order.variations && order.variations !== '' && typeof order.variations === 'string') {
-                //console.log('strings', element.id);
-                order.variations = JSON.parse(order.variations);
-                //console.log(order['variant']);
-                if (order["variant"] === undefined) {
-                  order['variant'] = 0;
-                }
-              }
-            });
           }
-
         });
         this.orders = orders;
         if (haveRefresh) {
           event.target.complete();
         }
-        //console.log('orderss==>?', this.orders);
+        console.log('orderss==>?', this.orders[0].uuid);
       }
     }, error => {
       console.log(error);
@@ -80,13 +71,13 @@ export class OrdersPage implements OnInit {
     this.util.openMenu();
   }
 
-  goToOrder(val) {
+  goToOrder(id) {
     const navData: NavigationExtras = {
       queryParams: {
-        uuid: val.id
+        uuid: id
       }
     }
-    this.router.navigate(['/order-details'], navData);
+    this.router.navigate(['user/orders/order-details'], navData);
   }
 
   doRefresh(event) {

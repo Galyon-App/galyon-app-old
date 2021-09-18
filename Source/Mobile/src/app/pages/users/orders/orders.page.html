@@ -29,27 +29,26 @@
 
     <div class="content_div">
 
-      <div class="card_div" *ngFor="let item of orders" (click)="goToOrder(item)">
+      <div class="card_div" *ngFor="let item of orders" (click)="goToOrder(item.uuid)">
 
         <div class="image_div">
-          <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
+          <img [src]="api.mediaURL + item.store_cover" (error)="assets/imgs/product.png">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold;color: gray;font-size: 12px;"> {{util.getString('ORDER')}} #{{item.uuid}}
+          <ion-label style="font-weight: bold;color: var(--ion-color-primary);font-size: 12px;"> 
+             {{ (item.store_name.length>30)? (item.store_name | slice:0:30)+'..':(item.store_name) }}
           </ion-label>
-          <div *ngIf="item.orders?.length" class="border_bottom">
-            <p *ngFor="let order of item.orders;let ol = index" class="items">
-              <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
-                </span> </span>
-              <span>X {{order.quantity}}</span>
-            </p>
+          <ion-label style="font-weight: bold;color: var(--ion-color-primary);font-size: 12px;"> 
+            {{util.getString('Order ID')}}: #{{(item.uuid | slice:0:8)}} ({{item.stage}})
+          </ion-label>
+          <div class="border_bottom">
             <p class="itemss">
-              <span> {{util.getString('Total')}} </span>
+              <span> {{util.getString('Grand Total')}} </span>
               <span *ngIf="util.cside ==='left'"> {{util.currecny}}{{item.grand_total}} </span>
               <span *ngIf="util.cside ==='right'">{{item.grand_total}} {{util.currecny}} </span>
             </p>
           </div>
-          <ion-label class="datetime">{{ item.date_time}}</ion-label>
+          <ion-label class="datetime">{{ item.timestamp}}</ion-label>
         </div>
         <!-- <div class="status">
           {{item.status}}

@@ -13,16 +13,52 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Orders extends Galyon_controller {
 
     private $table_name = 'orders';
-    private $edit_column = ['uid','address_id','store_id','driver_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status',];
-    private $public_column = ['uuid','uid','address_id','store_id','driver_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status','timestamp','updated_at','deleted_at'];
+    private $edit_column = ['uid','address_id','store_id','driver_id','order_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status',];
+    private $public_column = ['uuid','uid','address_id','store_id','driver_id','order_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
     function __construct(){
 		parent::__construct();
     }
 
-    function getByUser() {
-        
+    protected function getOrderMeta($orders) {
+        foreach($orders as $order) {
+            //get store cover.
+            $store = $this->Crud_model->get("stores", ['cover','name'], ["'uuid' = $order->store_id"], NULL, 'row' );
+            if($store) {
+                $order->store_cover = $store->cover;
+                $order->store_name = $store->name;
+            }
+
+            if($order->progress && $order->progress != null && !empty($order->progress)) {
+                $order->progress = json_decode($order->progress);
+            }
+            if($order->matrix && $order->matrix != null && !empty($order->matrix)) {
+                $order->matrix = json_decode($order->matrix);
+            }
+            if($order->items && $order->items != null && !empty($order->items)) {
+                $order->items = json_decode($order->items);
+            }
+            if($order->factor && $order->factor != null && !empty($order->factor)) {
+                $order->factor = json_decode($order->factor);
+            }
+        }
+    }
+
+    function getOrdersByUser() {
+        $auth = $this->is_authorized(true);
+        $request = $this->request_validation($_POST, ["uid"], $this->public_column);
+
+        //TODO: Check if Admin or Operator or Owner of store or User owned the order.
+
+        $orders = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result' );
+        if($orders) {
+            $stoordersres = $this->getOrderMeta($orders);
+            $this->json_response($orders);
+        } else {
+            $this->json_response(null, false, "No orders was found!");
+        }
     }
 
     function getByDriver() {
