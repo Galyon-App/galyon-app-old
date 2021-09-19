@@ -137,7 +137,7 @@ const routes: Routes = [
 
         {
           path: 'orders',
-          loadChildren: () => import('./pages/admin/orders/orders.module').then(m => m.OrdersModule)
+          loadChildren: () => import('./pages/tables/orders/orders.module').then(m => m.OrdersModule)
         },
         {
           path: 'manage-orders',
@@ -232,6 +232,10 @@ const routes: Routes = [
       {
         path: 'manage-orders',
         loadChildren: () => import('./pages/merchant/manage-orders/manage-orders.module').then(m => m.ManageOrdersModule)
+      },
+      {
+        path: 'orders',
+        loadChildren: () => import('./pages/tables/orders/orders.module').then(m => m.OrdersModule)
       },
       {
         path: 'products',

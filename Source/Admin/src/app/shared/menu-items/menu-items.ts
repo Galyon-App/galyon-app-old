@@ -217,6 +217,12 @@ const MERCHANT_ITEMS = [
         icon: 'ti-home'
       },
       {
+        state: 'orders',
+        name: 'Orders',
+        type: 'link',
+        icon: 'ti-shopping-cart'
+      },
+      {
         state: 'products',
         name: 'Products',
         type: 'link',
