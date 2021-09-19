@@ -4,17 +4,46 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
  -->
+ <ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title"> {{util.getString('Select Driver')}} </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p *ngIf="!dummyDrivers?.length"> {{util.getString('No Active Driver Found')}} </p>
+        <select name="select" class="form-control" [(ngModel)]="selectedDriver">
+            <option *ngFor="let item of dummyDrivers;" [value]="item.id">
+                <span>
+                    <a href="javascript:;"><img class="img-responsive" style="height: 40px;border-radius: 50%;"
+                            [src]="api.mediaURL+item.cover" onError="this.src='assets/images/user.png'"
+                            alt="chat-user"></a>
+                    <label style="font-weight: bold;margin-left: 10px;"> {{item.first_name}}
+                        {{item.last_name}} </label>
+                </span>
+            </option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="close()"> {{util.getString('Save')}} </button>
+    </div>
+</ng-template>
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c"> {{util.getString('updating')}} </p>
+</ngx-spinner>
+
 <div class="row">
     <!-- counter-card-1 start-->
-    <div class="col-md-12 col-xl-4">
+    <div class="col-md-6 col-xl-3">
         <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
             <div class="row" (click)="openIt('orders')" style="cursor: pointer;">
                 <div class="col-6 counter-card-icon">
-                    <i class="icofont icofont-chart-histogram"></i>
+                    <i class="icofont icofont-basket"></i>
                 </div>
                 <div class="col-6  text-right">
                     <div class="counter-card-text">
-                        <h3> {{allOrders.length}} </h3>
+                        <h3> {{dash_head.totol_completed_orders}} </h3>
                         <p>{{api.translate('Orders')}} </p>
                     </div>
                 </div>
@@ -24,16 +53,16 @@
     <!-- counter-card-1 end-->
 
     <!-- counter-card-2 start -->
-    <div class="col-md-6 col-xl-4">
+    <div class="col-md-6 col-xl-3">
         <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
             <div class="row" (click)="openIt('users')" style="cursor: pointer;">
                 <div class="col-6 counter-card-icon">
-                    <i class="icofont icofont-chart-line-alt"></i>
+                    <i class="icofont icofont-users"></i>
                 </div>
                 <div class="col-6 text-right">
                     <div class="counter-card-text">
-                        <h3> {{users.length}} </h3>
-                        <p>{{api.translate('Users')}} </p>
+                        <h3> {{dash_head.totol__customers}} </h3>
+                        <p>{{api.translate('Customers')}} </p>
                     </div>
                 </div>
             </div>
@@ -42,16 +71,16 @@
     <!-- counter-card-2 end -->
 
     <!-- counter-card-3 start -->
-    <div class="col-md-6 col-xl-4">
+    <div class="col-md-6 col-xl-3">
         <app-card [cardClass]="'counter-card-3'" [blockClass]="'card-body-big'">
             <div class="row" (click)="openIt('stores')" style="cursor: pointer;">
                 <div class="col-6 counter-card-icon">
-                    <i class="icofont icofont-chart-line"></i>
+                    <i class="icofont icofont-cubes"></i>
                 </div>
                 <div class="col-6 text-right">
                     <div class="counter-card-text">
-                        <h3> {{stores.length}} </h3>
-                        <p>{{api.translate('Stores')}} </p>
+                        <h3> {{dash_head.totol_active_products}} </h3>
+                        <p>{{api.translate('Products')}} </p>
                     </div>
                 </div>
             </div>
@@ -59,25 +88,69 @@
     </div>
     <!-- counter-card-3 end -->
 
+    <!-- counter-card-4 start -->
+    <div class="col-md-6 col-xl-3">
+        <app-card [cardClass]="'counter-card-4'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('stores')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-building"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3> {{dash_head.totol_stores}} </h3>
+                        <p>{{api.translate('Merchants')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-4 end -->
+
 
     <!-- Reset Order Start -->
     <div class="col-md-12">
+        <!-- Reset Order Start -->
+    <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h5>{{api.translate('Recent 10 Order')}} </h5>
+                <h5> {{util.getString('Order List')}} </h5>
             </div>
             <div class="card-body reset-table p-t-0">
+                <div class="form-group row">
+                    <label class="col-sm-6 col-form-label"></label>
+                    
+                    <div class="col-sm-3">
+                        <select name="select" [(ngModel)]="stage_term" (ngModelChange)="searchFilter()"
+                            class="form-control">
+                            <option value='all'> {{util.getString('All Orders')}} </option>
+                            <option value='created'> {{util.getString('Created')}} </option>
+                            <option value='rejected'> {{util.getString('Rejected')}} </option>
+                            <option value='ongoing'> {{util.getString('Ongoing')}} </option>
+                            <option value='shipping'> {{util.getString('Shipping')}} </option>
+                            <option value='cancelled'> {{util.getString('Cancelled')}} </option>
+                            <option value='delivered'> {{util.getString('Delivered')}} </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control form-control-round" [(ngModel)]="search_term"
+                            [placeholder]="util.getString('Search Order By ID')" (input)="searchFilter()">
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr class="text-uppercase">
-                                <th>{{api.translate('User')}} </th>
-                                <th>{{api.translate('User Name')}} </th>
-                                <th>{{api.translate('Stores')}} </th>
-                                <th>{{api.translate('Ordered on')}} </th>
-                                <th>{{api.translate('Total')}} </th>
-                                <th>{{api.translate('Quantity')}} </th>
-                                <th>{{api.translate('Action')}} </th>
+                                <th>{{util.getString('Order ID')}} </th>
+                                <th>{{util.getString('Store')}} </th>
+                                <th>{{util.getString('User')}} </th>
+                                <th>{{util.getString('Items')}} </th>
+                                <th>{{util.getString('Sub Total')}} </th>
+                                <th>{{util.getString('Discount')}} </th>
+                                <th>{{util.getString('Tax')}} </th>
+                                <th>{{util.getString('Grand Total')}} </th>
+                                <th>{{util.getString('Date')}} </th>
+                                <th>{{util.getString('Status')}} </th>
+                                <th>{{util.getString('Action')}} </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -107,7 +180,11 @@
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
                                     </ngx-skeleton-loader>
                                 </td>
-
+                                <td>
+                                    <ngx-skeleton-loader count="1"
+                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
+                                    </ngx-skeleton-loader>
+                                </td>
                                 <td>
                                     <ngx-skeleton-loader count="1"
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
@@ -119,31 +196,43 @@
                                     </ngx-skeleton-loader>
                                 </td>
                             </tr>
-                            <tr *ngFor="let item of orders;let i = index">
-                                <td><a href="javascript:;"><img class="img-responsive"
-                                            style="height: 40px;border-radius: 50%;" [src]="api.mediaURL+item.cover"
-                                            onError="this.src='assets/images/user.png'" alt="chat-user"></a>
-                                </td>
-                                <td> {{item.first_name}} {{item.last_name}} </td>
-                                <td> from {{item.store_id.length }} stores </td>
-
-                                <td>{{getDates(item.date_time)}}</td>
+                            <tr *ngFor="let item of orders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                                <td>{{((item.uuid | slice:0:8)+'').toUpperCase()}} </td>
+                                <td>{{(item.store_name | slice:0:20)}}</td>
+                                <td>{{(item.user_name | slice:0:20)}}</td>
+                                <td>{{item.items.length}} item(s)</td>
+                                <td>{{util.currecny}}{{item.total}} </td>
+                                <td>{{util.currecny}}{{item.discount}} </td>
+                                <td>{{util.currecny}}{{item.tax}} </td>
+                                <td>{{util.currecny}}{{item.grand_total}} </td>
+                                <td>{{getDates(item.timestamp)}}</td>
                                 <td>
-                                    $
-                                    {{item.grand_total}}
+                                    <select name="select" [(ngModel)]="item.stage"
+                                        (ngModelChange)="changeStatus(item)" class="form-control">
+                                        <option value='created'> {{util.getString('Created')}} </option>
+                                        <option value='rejected'>{{util.getString('Rejected')}} </option>
+                                        <option value='ongoing'>{{util.getString('Ongoing')}} </option>
+                                        <option value='shipping'>{{util.getString('Shipping')}} </option>
+                                        <option value='cancelled'>{{util.getString('Cancelled')}} </option>
+                                        <option value='delivered'>{{util.getString('Delivered')}} </option>
+                                    </select>
                                 </td>
-                                <td>{{item.orders.length}}</td>
                                 <td><button type="button" (click)="openOrder(item)"
-                                        class="btn btn-success btn-round btn-outline-success">{{api.translate('View')}}
+                                        class="btn btn-info btn-round btn-outline-info">{{util.getString('MANAGE')}}
                                     </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="has-text-centered">
+                    <pagination-controls id="pagin1" (pageChange)="page = $event"></pagination-controls>
+                </div>
 
             </div>
         </div>
+    </div>
+    <!-- Reset Order End -->
     </div>
     <!-- Reset Order End -->
 </div>

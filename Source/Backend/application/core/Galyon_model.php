@@ -26,14 +26,16 @@ class Galyon_model extends CI_Model
 	 * @param  mixed $result
 	 * @return object
 	 */
-	public function get($table, $field = "*", $where = NULL, $whereOr = NULL, $result = 'row', $limits = null) {
+	public function get($table, $field = "*", $where = NULL, $whereOr = NULL, $result = 'row', $limits = null, $order = []) {
+		$this->db->select($field);
+		$this->db->from($table);
+		if(count($order) == 2) {
+			$this->db->order_by($order[0],$order[1]);
+		}
+		
 		if($where == NULL) {
-			$this->db->select($field);
-			$this->db->from($table);
 			return $this->db->get()->result();	
 		} else {
-			$this->db->select($field);
-			$this->db->from($table);
 			$this->db->where($where);
 			if($whereOr != NULL) {
 				$this->db->or_where($whereOr);

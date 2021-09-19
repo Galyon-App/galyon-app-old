@@ -4,61 +4,77 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { NavigationExtras, Router } from '@angular/router';
 import { ApisService } from 'src/app/services/apis.service';
+import { StoresService } from 'src/app/services/stores.service';
+import { UtilService } from 'src/app/services/util.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  dummy = Array(5);
+  @ViewChild('content', { static: false }) content: any;
+
   page: number = 1;
-
   orders: any[] = [];
-  stores: any[] = [];
-  users: any[] = [];
+  dummyOrders: any[] = [];
+  dummy = Array(5);
 
-  allOrders: any[] = [];
+  dash_head = {
+    totol_completed_orders: 0,
+    totol__customers: 0,
+    totol_active_products: 0,
+    totol_stores: 0
+  };
+
+  stage_term: any = 'all';
+  search_term: any = '';
+
+  newOrders: any[] = [];
+  onGoingOrders: any[] = [];
+  oldOrders: any[] = [];
+  dummyDrivers: any[] = [];
+  selectedDriver: any = '';
+
   constructor(
     public api: ApisService,
-    private router: Router
+    private router: Router,
+    private storeServ: StoresService,
+    public util: UtilService,
+    private modalService: NgbModal,
   ) {
-    //this.getData();
+    this.getOrdersRecently();
   }
 
-  getData() {
-    this.api.get('users/adminHome').then((data: any) => {
-      console.log(data);
+  getOrdersRecently() {
+    this.api.post('galyon/v1/orders/getOrdersRecently', {
+      limit_start: 0,
+      limit_length: 100,
+      has_store_name: "1",
+      has_user_name: "1",
+    }).then((response: any) => {
+
       this.dummy = [];
-      if (data && data.status === 200) {
-        const orders = data.data.orders;
-        this.stores = data.data.stores;
-        this.users = data.data.users;
-        this.allOrders = data.data.allOrders;
+      if (response && response.success  && response.data) {
+        // this.orders = data.data;
+        const orders = response.data;
         orders.forEach(element => {
-          if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.orders)) {
-            element.orders = JSON.parse(element.orders);
-            element.store_id = element.store_id.split(',');
-            element.orders.forEach(order => {
-              if (order.variations && order.variations !== '' && typeof order.variations === 'string') {
-                order.variations = JSON.parse(order.variations);
-                if (order["variant"] === undefined) {
-                  order['variant'] = 0;
-                }
-              }
-            });
+          if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.items)) {
+            element.orders = JSON.parse(element.items);
+            element.date_time = moment(element.date_time).format('dddd, MMMM Do YYYY');
           }
         });
         this.orders = orders;
-        console.log(this.users);
+        this.dummyOrders = orders;
       }
     }, error => {
       console.log(error);
-    }).catch(error => {
-      console.log(error);
+      this.dummy = [];
     });
   }
 
@@ -66,7 +82,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getCurrency() {
-    // return this.api.getCurrencySymbol();
+    return environment.general.symbol;
   }
 
   getClass(item) {
@@ -85,16 +101,55 @@ export class DashboardComponent implements OnInit {
   }
 
   openOrder(item) {
-    console.log(item);
     const navData: NavigationExtras = {
       queryParams: {
-        id: item.id
+        uuid: item.uuid
       }
     };
-    this.router.navigate(['manage-orders'], navData);
+    this.router.navigate(['merchant/manage-orders'], navData);
+  }
+
+  async open(status) {
+    console.log(status);
+    try {
+      this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+        console.log(result);
+      }, (reason) => {
+        console.log(reason);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   openIt(item) {
     this.router.navigate([item]);
+  }
+
+  changeStatus(value) {
+  }
+
+  searchFilter() {
+    this.resetChanges();
+    this.orders = this.filterItems();
+  }
+
+  protected resetChanges = () => {
+    this.orders = this.dummyOrders;
+  }
+
+  filterItems() {
+    if(this.stage_term != "all") {
+      return this.orders.filter((item) => {
+        return item.stage.toLowerCase().indexOf(this.stage_term) > -1 && item.uuid.toLowerCase().indexOf(this.search_term.toLowerCase()) > -1;
+      });
+    } else {
+      return this.orders.filter((item) => {
+        return item.uuid.toLowerCase().indexOf(this.search_term.toLowerCase()) > -1;
+      });
+    }    
+  }
+
+  close() {
   }
 }
