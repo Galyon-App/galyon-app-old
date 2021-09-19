@@ -6,8 +6,8 @@
 */
 export const environment = {
   production: true,
-  baseURL: 'https://api.brilliantskinessentialsinc.com/',
-  mediaURL: 'https://api.brilliantskinessentialsinc.com/uploads/',
+  baseURL: 'https://api.brilliantskinessentials.ph/',
+  mediaURL: 'https://api.brilliantskinessentials.ph/uploads/',
   firebase: {
     apiKey: "AIzaSyCmJaB6O6et28ChK2yACmGEjV-i0f3UbN4",
     authDomain: "spartan-figure-294709.firebaseapp.com",
