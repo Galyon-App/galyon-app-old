@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2021 at 04:59 PM
+-- Generation Time: Sep 19, 2021 at 10:32 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -270,9 +270,10 @@ CREATE TABLE `orders` (
   `address_id` varchar(36) DEFAULT NULL,
   `store_id` varchar(36) DEFAULT NULL,
   `driver_id` varchar(36) DEFAULT NULL,
-  `items` longtext NOT NULL COMMENT '[{uuid,name,price,discount_type,discount,pcs,kg,gram,liter,ml,length,width,height,category_id,subcategory_id,quantity,variantions[]}]\r\n',
   `progress` mediumtext NOT NULL COMMENT '[{status,message,timestamp}]',
-  `factor` text NOT NULL COMMENT '{schedule,distance,tax,ship_mode,ship_price}',
+  `matrix` text DEFAULT NULL COMMENT '{origin,destinations[],distances[{distance,duration}]}',
+  `items` longtext NOT NULL COMMENT '[{uuid,name,price,discount_type,discount,pcs,kg,gram,liter,ml,length,width,height,category_id,subcategory_id,quantity,variantions[]}]\r\n',
+  `factor` text NOT NULL COMMENT '{schedule,tax,ship_mode,ship_price}',
   `coupon` text NOT NULL DEFAULT '{}' COMMENT '{uuid,name,description,type,off,min,upto,expires}',
   `total` decimal(20,2) NOT NULL,
   `delivery` decimal(20,2) NOT NULL,
@@ -511,6 +512,7 @@ CREATE TABLE `users` (
   `lng` varchar(20) NOT NULL,
   `others` text NOT NULL,
   `subscriber` enum('1','0') NOT NULL DEFAULT '1',
+  `activation_key` text DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `verified_at` timestamp NULL DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
