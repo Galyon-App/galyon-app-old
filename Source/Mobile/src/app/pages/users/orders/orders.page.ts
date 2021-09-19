@@ -36,9 +36,9 @@ export class OrdersPage implements OnInit {
     this.dummy = Array(15);
     this.orders = [];
     this.api.post('galyon/v1/orders/getOrdersByUser', {
-      uid: this.auth.userToken.uuid
+      uid: this.auth.userToken.uuid,
+      has_store_name: "1",
     }).subscribe((response: any) => {
-      console.log(response);
       this.dummy = [];
       if (response && response.success  && response.data) {
 
