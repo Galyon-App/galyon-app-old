@@ -39,7 +39,7 @@
              {{ (item.store_name.length>30)? (item.store_name | slice:0:30)+'..':(item.store_name) }}
           </ion-label>
           <ion-label style="font-weight: bold; font-size: 12px;"> 
-            {{util.getString('Order ID')}}: #{{(item.uuid | slice:0:8)}} ({{item.stage}})
+            {{util.getString('Order ID')}}: #{{((item.uuid | slice:0:8)+'').toUpperCase()}} ( {{item.stage}} )
           </ion-label>
           <div class="border_bottom">
             <p class="itemss">

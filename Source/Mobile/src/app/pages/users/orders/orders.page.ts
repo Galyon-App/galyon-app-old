@@ -54,7 +54,6 @@ export class OrdersPage implements OnInit {
         if (haveRefresh) {
           event.target.complete();
         }
-        console.log('orderss==>?', this.orders[0].uuid);
       }
     }, error => {
       console.log(error);

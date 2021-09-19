@@ -21,34 +21,61 @@ class Orders extends Galyon_controller {
 		parent::__construct();
     }
 
+    protected function getOrderMetaItem($order) {
+        if($this->input->post("has_user_name") == "1") {
+            $user = $this->Crud_model->get("users", ['cover','first_name','last_name'], ["'uuid' = $order->uid"], NULL, 'row' );
+            if($user) {
+                $order->user_cover = $user->cover;
+                $order->user_name = $user->first_name." ".$user->last_name ;
+            }
+        }
+        if($this->input->post("has_store_name") == "1") {
+            $store = $this->Crud_model->get("stores", ['cover','name'], ["'uuid' = $order->store_id"], NULL, 'row' );
+            if($store) {
+                $order->store_cover = $store->cover;
+                $order->store_name = $store->name;
+            }
+        }
+        if($this->input->post("has_address_name") == "1" && isset($order->address_id) && !empty($order->address_id)) {
+            $address = $this->Crud_model->get("address", ['house','address'], ["'uuid' = $order->address_id"], NULL, 'row' );
+            if($address) {
+                $order->address_name = $address->house.", ".$address->address;
+            }
+        }
+        if($order->progress && $order->progress != null && !empty($order->progress)) {
+            $order->progress = json_decode($order->progress);
+        }
+        if($order->matrix && $order->matrix != null && !empty($order->matrix)) {
+            $order->matrix = json_decode($order->matrix);
+        }
+        if($order->items && $order->items != null && !empty($order->items)) {
+            $order->items = json_decode($order->items);
+        }
+        if($order->factor && $order->factor != null && !empty($order->factor)) {
+            $order->factor = json_decode($order->factor);
+        }
+        return $order;
+    }
+
     protected function getOrderMeta($orders) {
         foreach($orders as $order) {
-            if($this->input->post("has_user_name") == "1") {
-                $user = $this->Crud_model->get("users", ['cover','first_name','last_name'], ["'uuid' = $order->uid"], NULL, 'row' );
-                if($user) {
-                    $order->user_cover = $user->cover;
-                    $order->user_name = $user->first_name." ".$user->last_name ;
-                }
-            }
-            if($this->input->post("has_store_name") == "1") {
-                $store = $this->Crud_model->get("stores", ['cover','name'], ["'uuid' = $order->store_id"], NULL, 'row' );
-                if($store) {
-                    $order->store_cover = $store->cover;
-                    $order->store_name = $store->name;
-                }
-            }
-            if($order->progress && $order->progress != null && !empty($order->progress)) {
-                $order->progress = json_decode($order->progress);
-            }
-            if($order->matrix && $order->matrix != null && !empty($order->matrix)) {
-                $order->matrix = json_decode($order->matrix);
-            }
-            if($order->items && $order->items != null && !empty($order->items)) {
-                $order->items = json_decode($order->items);
-            }
-            if($order->factor && $order->factor != null && !empty($order->factor)) {
-                $order->factor = json_decode($order->factor);
-            }
+            $order = $this->getOrderMetaItem($order);
+        }
+    }
+
+    function getOrdersById() {
+        $auth = $this->is_authorized(true);
+        $request = $this->request_validation($_POST, ["uuid"], $this->public_column, ["uuid"]);
+
+        //TODO: Check if Admin or Operator or Owner of store or User owned the order.
+
+        $order = $this->Crud_model->get($this->table_name, $this->public_column, 
+            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'row' );
+        if($order) {
+            $order = $this->getOrderMetaItem($order);
+            $this->json_response($order);
+        } else {
+            $this->json_response(null, false, "No orders was found!");
         }
     }
 
@@ -61,7 +88,7 @@ class Orders extends Galyon_controller {
         $orders = $this->Crud_model->get($this->table_name, $this->public_column, 
             $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result' );
         if($orders) {
-            $stoordersres = $this->getOrderMeta($orders);
+            $order = $this->getOrderMeta($orders);
             $this->json_response($orders);
         } else {
             $this->json_response(null, false, "No orders was found!");

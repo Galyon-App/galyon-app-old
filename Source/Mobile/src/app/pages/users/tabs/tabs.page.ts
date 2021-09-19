@@ -21,6 +21,7 @@ export class TabsPage {
   @ViewChild('userTabs', {static: false}) userTabs: IonTabs;
 
   currentCity: any = '';
+  currenturl: any = '';
 
   constructor(
     public cart: CartService,
@@ -43,6 +44,10 @@ export class TabsPage {
   }
 
   onTabChanged() {
+    if(!this.currenturl) {
+      this.currenturl = this.router.url;
+      return;
+    }
     var currentTab: string = this.userTabs.getSelected();
     this.navCtrl.navigateRoot('user/' + currentTab);
   }

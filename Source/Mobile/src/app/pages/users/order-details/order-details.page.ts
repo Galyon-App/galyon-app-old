@@ -18,8 +18,12 @@ import * as moment from 'moment';
 })
 export class OrderDetailsPage implements OnInit {
 
+  public order: any;
   id: any;
   loaded: boolean;
+  isDelivered: boolean;
+  canCancel: boolean;
+
   orderDetail: any[] = [];
   orders: any[] = [];
   payMethod: any;
@@ -33,13 +37,11 @@ export class OrderDetailsPage implements OnInit {
   userLat: any;
   userLng: any;
   driverId: any;
-
   stores: any[] = [];
-
-  canCancle: boolean;
-
-  isDelivered: boolean;
+  
+  
   assigneeDriver: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     public util: UtilService,
@@ -50,133 +52,158 @@ export class OrderDetailsPage implements OnInit {
     private iab: InAppBrowser
   ) {
     this.route.queryParams.subscribe((data) => {
-      console.log(data);
       if (data && data.uuid) {
         this.id = data.uuid;
         this.loaded = false;
         this.getOrder();
       } else {
-        this.navCtrl.back();
+        this.back();
       }
     });
   }
 
   back() {
-    this.navCtrl.back();
+    this.navCtrl.navigateBack(['user/orders']);
   }
 
+  getItemPrice(item, quantity = 1){
+    if(item) {
+      let sell_price = 0;
+      const item_price = parseFloat(item.price);
+      const item_discount = parseFloat(item.discount);
+      const item_discounted = item.dicount_type == "percent" ? item_price*(item_discount/100) : item_discount;
+      sell_price = item_price-item_discounted;
+
+      item.variations.forEach(pvar => {
+        const var_price = parseFloat(pvar.price);
+        const var_discount = parseFloat(pvar.discount);
+        const var_discounted = var_price-(var_price*(var_discount/100));
+        sell_price += var_discounted;
+      });
+      sell_price *= quantity;
+
+      return sell_price.toFixed(2);
+    }
+  }
 
   getOrder() {
-    const param = {
-      uuid: this.id
-    };
-    this.api.post('orders/getById', param).subscribe((data: any) => {
-      console.log(data);
+    this.api.post('galyon/v1/orders/getOrdersById', {
+      uuid: this.id,
+      has_store_name: "1",
+      has_address_name: "1"
+    }).subscribe((reponse: any) => {
       this.loaded = true;
-      if (data && data.status === 200 && data.data.length > 0) {
-        const info = data.data[0];
-        console.log(info);
-        this.orderDetail = JSON.parse(info.notes);
-        console.log('driver???? ======>', this.orderDetail);
-        const order = JSON.parse(info.orders);
-        console.log('order=====>>', order);
-        const finalOrder = [];
-        if (info.assignee && info.assignee !== '') {
-          this.assigneeDriver = JSON.parse(info.assignee);
-          console.log('ASSSIGNEE---->>>>', this.assigneeDriver);
-        }
-        const ids = [...new Set(order.map(item => item.store_id))];
-        ids.forEach(element => {
-          const param = {
-            id: element,
-            order: []
-          };
-          finalOrder.push(param);
-        });
-
-        ids.forEach((element, index) => {
-          order.forEach(cart => {
-            console.log('cart->>>???', cart);
-            if (cart.variations && cart.variations !== '' && typeof cart.variations === 'string') {
-              cart.variations = JSON.parse(cart.variations);
-              console.log(cart['variant']);
-              if (cart["variant"] === undefined) {
-                cart['variant'] = 0;
-              }
-            }
-            if (cart.store_id === element) {
-              finalOrder[index].order.push(cart);
-            }
-          })
-        });
-        console.log('final order', finalOrder);
-        this.orders = finalOrder;
-        this.status = JSON.parse(info.status);
-        console.log('order status--------------------', this.status);
-
-        const status = this.status.filter(x => x.status === 'created');
-        if (status.length === this.status.length) {
-          this.canCancle = true;
-        } else {
-          this.canCancle = false;
-        }
-
-        const delivered = this.status.filter(x => x.status === 'delivered');
-        if (delivered.length === this.status.length) {
-          this.isDelivered = true;
-        } else {
-          this.isDelivered = false;
-        }
-
-        // if()
-        this.datetime = moment(info.date_time).format('dddd, MMMM Do YYYY');
-        this.payMethod = info.paid_method === 'cod' ? 'COD' : 'PAID';
-        this.orderAt = info.order_to;
-        this.driverId = info.driver_id;
-        if (this.driverId && this.driverId !== '') {
-          const userinfo = {
-            id: this.driverId
-          };
-          this.api.post('drivers/getDriversData', userinfo).subscribe((data: any) => {
-            console.log('driverid>', data);
-            if (data && data.status === 200 && data.data && data.data.length) {
-              this.driverInfo = data.data;
-              console.log(this.driverInfo);
-            }
-          }, error => {
-            console.log(error);
-          });
-        }
-
-        const stores = {
-          id: info.store_id
-        };
-        this.api.post('stores/getStoresData', stores).subscribe((data: any) => {
-          console.log('store=-============>>', data);
-          console.log('store=-============>>', data);
-          if (data && data.status === 200 && data.data.length) {
-            this.stores = data.data;
-
-          } else {
-            this.util.showToast(this.util.getString('No Stores Found'), 'danger', 'bottom');
-            this.back();
-          }
-        }, error => {
-          console.log('error', error);
-          this.util.showToast(this.util.getString('Something went wrong'), 'danger', 'bottom');
-        });
-        if (this.orderAt === 'home') {
-          const address = JSON.parse(info.address);
-          console.log('---address', address);
-          if (address && address.address) {
-            this.userLat = address.lat;
-            this.userLng = address.lng;
-            this.address = address.landmark + ' ' + address.house + ' ' + address.address + ' ' + address.pincode;
-          }
-        }
-      } else {
-        this.util.errorToast(this.util.getString('Something went wrong'));
+      if (reponse && reponse.success && reponse.data) {
+        this.order = reponse.data;
+        this.isDelivered = this.order.stage == "delivered";
+        this.canCancel = this.order.stage == "created";
       }
+      console.log(reponse);
+      // this.loaded = true;
+      // if (data && data.status === 200 && data.data.length > 0) {
+      //   const info = data.data[0];
+      //   console.log(info);
+      //   this.orderDetail = JSON.parse(info.notes);
+      //   console.log('driver???? ======>', this.orderDetail);
+      //   const order = JSON.parse(info.orders);
+      //   console.log('order=====>>', order);
+      //   const finalOrder = [];
+      //   if (info.assignee && info.assignee !== '') {
+      //     this.assigneeDriver = JSON.parse(info.assignee);
+      //     console.log('ASSSIGNEE---->>>>', this.assigneeDriver);
+      //   }
+      //   const ids = [...new Set(order.map(item => item.store_id))];
+      //   ids.forEach(element => {
+      //     const param = {
+      //       id: element,
+      //       order: []
+      //     };
+      //     finalOrder.push(param);
+      //   });
+
+      //   ids.forEach((element, index) => {
+      //     order.forEach(cart => {
+      //       console.log('cart->>>???', cart);
+      //       if (cart.variations && cart.variations !== '' && typeof cart.variations === 'string') {
+      //         cart.variations = JSON.parse(cart.variations);
+      //         console.log(cart['variant']);
+      //         if (cart["variant"] === undefined) {
+      //           cart['variant'] = 0;
+      //         }
+      //       }
+      //       if (cart.store_id === element) {
+      //         finalOrder[index].order.push(cart);
+      //       }
+      //     })
+      //   });
+      //   console.log('final order', finalOrder);
+      //   this.orders = finalOrder;
+      //   this.status = JSON.parse(info.status);
+      //   console.log('order status--------------------', this.status);
+
+      //   const status = this.status.filter(x => x.status === 'created');
+      //   if (status.length === this.status.length) {
+      //     this.canCancle = true;
+      //   } else {
+      //     this.canCancle = false;
+      //   }
+
+      //   const delivered = this.status.filter(x => x.status === 'delivered');
+      //   if (delivered.length === this.status.length) {
+      //     this.isDelivered = true;
+      //   } else {
+      //     this.isDelivered = false;
+      //   }
+
+      //   // if()
+      //   this.datetime = moment(info.date_time).format('dddd, MMMM Do YYYY');
+      //   this.payMethod = info.paid_method === 'cod' ? 'COD' : 'PAID';
+      //   this.orderAt = info.order_to;
+      //   this.driverId = info.driver_id;
+      //   if (this.driverId && this.driverId !== '') {
+      //     const userinfo = {
+      //       id: this.driverId
+      //     };
+      //     this.api.post('drivers/getDriversData', userinfo).subscribe((data: any) => {
+      //       console.log('driverid>', data);
+      //       if (data && data.status === 200 && data.data && data.data.length) {
+      //         this.driverInfo = data.data;
+      //         console.log(this.driverInfo);
+      //       }
+      //     }, error => {
+      //       console.log(error);
+      //     });
+      //   }
+
+      //   const stores = {
+      //     id: info.store_id
+      //   };
+      //   this.api.post('stores/getStoresData', stores).subscribe((data: any) => {
+      //     console.log('store=-============>>', data);
+      //     console.log('store=-============>>', data);
+      //     if (data && data.status === 200 && data.data.length) {
+      //       this.stores = data.data;
+
+      //     } else {
+      //       this.util.showToast(this.util.getString('No Stores Found'), 'danger', 'bottom');
+      //       this.back();
+      //     }
+      //   }, error => {
+      //     console.log('error', error);
+      //     this.util.showToast(this.util.getString('Something went wrong'), 'danger', 'bottom');
+      //   });
+      //   if (this.orderAt === 'home') {
+      //     const address = JSON.parse(info.address);
+      //     console.log('---address', address);
+      //     if (address && address.address) {
+      //       this.userLat = address.lat;
+      //       this.userLng = address.lng;
+      //       this.address = address.landmark + ' ' + address.house + ' ' + address.address + ' ' + address.pincode;
+      //     }
+      //   }
+      // } else {
+      //   this.util.errorToast(this.util.getString('Something went wrong'));
+      // }
     }, error => {
       console.log(error);
       this.loaded = true;
@@ -186,8 +213,6 @@ export class OrderDetailsPage implements OnInit {
 
   ngOnInit() {
   }
-
-
 
   call() {
     if (this.userInfo.mobile) {
@@ -288,7 +313,7 @@ export class OrderDetailsPage implements OnInit {
       }
       if (data && data.status === 200) {
         this.sendNotification('cancelled');
-        this.back();
+        //this.back();
       } else {
         this.util.errorToast(this.util.getString('Something went wrong'));
       }

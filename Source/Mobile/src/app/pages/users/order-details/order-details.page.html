@@ -6,108 +6,122 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header>
-  <ion-toolbar color="primary">
+
+<ion-content>
+  <ion-toolbar style="margin: 15px 5px 10px;">
     <ion-buttons slot="start">
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center"> {{util.getString('Order')}} #{{id}}</ion-title>
+    <ion-title> {{util.getString('Order Details')}} </ion-title>
   </ion-toolbar>
-</ion-header>
 
-<ion-content>
-  <div *ngIf="!loaded" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+  <div *ngIf="!loaded" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
     <ion-spinner color="primary" name="crescent"></ion-spinner>
   </div>
-  <div class="main_content_div" *ngIf="loaded">
-    
-    <div class="desc_div">
-      <div *ngIf="orders?.length" class="border_bottom">
-        <div *ngFor="let item of orders">
-          <p class="storeName">
-            <span class="name"> {{getStoreName(item.uuid)}} </span>
-            <span class="status"> {{getOrderStatus(item.uuid)}} </span>
-          </p>
 
-          <ion-label class="titles"> {{util.getString('Order Details')}} </ion-label>
-          <p *ngFor="let order of item.order;let ol = index" class="items">
-            <span *ngIf="!order.size">{{order.name}} -
-              <span *ngIf="order.have_gram === '1'"> {{order.gram}} grams </span>
-              <span *ngIf="order.have_kg === '1'"> {{order.kg}} kg </span>
-              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} ltr </span>
-              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} ml</span>
-              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} pcs </span>
-              <span *ngIf="util.cside ==='left'">
-                {{util.currecny}} {{order.discount ==='0' ? order.orig_price : order.sell_price}}
-              </span>
-              <span *ngIf="util.cside ==='right'">
-                {{order.discount ==='0' ? order.orig_price : order.sell_price}} {{util.currecny}}
-              </span>
+  <div class="main_content_div" *ngIf="loaded && order">
+    
+    <ion-label class="titles"> {{util.getString('Information')}} </ion-label>
+    <div class="option_div">
+      
+      <div class="flex_div">
+        <ion-label> {{util.getString('Order ID')}} </ion-label>
+        <ion-label class="values" style="font-weight: bold;">{{ ((order.uuid | slice:0:7)+'').toUpperCase() }}</ion-label>
+      </div>
+
+      <div class="flex_div">
+        <ion-label> {{util.getString('Merchant')}} </ion-label>
+        <ion-label class="values">{{ (order.store_name | slice:0:25)+'...' }}</ion-label>
+      </div>
+
+      <div class="flex_div">
+        <ion-label> {{util.getString('Payment Method')}} </ion-label>
+        <ion-label class="values"> {{order.paid_method.toUpperCase()}} </ion-label>
+      </div>
+
+      <div class="flex_div">
+        <ion-label> {{util.getString('Schedule')}} </ion-label>
+        <ion-label class="values"> {{order.factor.schedule}} </ion-label>
+      </div>
+
+      <div class="flex_div" *ngIf="order.address_id">
+        <ion-label> {{util.getString('Address')}} </ion-label>
+        <ion-label class="values" style="text-align: right;width: 60%;">
+          {{order.address_name}}
+        </ion-label>
+      </div>
+      
+    </div>
+
+    <ion-label class="titles"> {{util.getString('Description')}} </ion-label>
+    <div class="desc_div">
+      <div *ngIf="order.items?.length" class="border_bottom">
+        
+        <div *ngFor="let item of order.items">
+          <p class="items">
+            <span style="width: 80%;">
+              {{item.name}} ( {{util.currecny}}{{getItemPrice(item)}} ) x{{item.quantity}}
             </span>
-            <span *ngIf="order.size ==='0'">{{order.name}} -
-              <span *ngIf="order.have_gram === '1'"> {{order.gram}} {{util.getString('grams')}} </span>
-              <span *ngIf="order.have_kg === '1'"> {{order.kg}} {{util.getString('kg')}} </span>
-              <span *ngIf="order.have_liter ==='1'"> {{order.liter}} {{util.getString('ltr')}} </span>
-              <span *ngIf="order.have_ml ==='1'"> {{order.ml}} {{util.getString('ml')}} </span>
-              <span *ngIf="order.have_pcs === '1'"> {{order.pcs}} {{util.getString('pcs')}} </span>
+            <span style="float: right;">
+              {{util.currecny}} {{getItemPrice(item,item.quantity)}}
             </span>
-            <span *ngIf="order.size ==='1'">
-              {{order.name}} - <span> {{order.variations[0].items[order.variant].title}} </span>
-            </span>
-            <span>X {{order.quantity}}</span>
           </p>
         </div>
+        <div style="padding: 2px 10px 0;">
+          <p class="footer">
+            <span style="width: 80%;">{{util.getString('Sub Total')}}</span>
+            <span style="float: right;">{{util.currecny}} {{order.total}}</span>
+          </p>
+        </div>
+        <div style="padding: 2px 10px 0;">
+          <p class="footer">
+            <span style="width: 80%;">{{util.getString('Discount')}}</span>
+            <span style="float: right;">{{util.currecny}} {{order.discount}}</span>
+          </p>
+        </div>
+        <div style="padding: 2px 10px 0;">
+          <p class="footer">
+            <span style="width: 80%;">{{util.getString('Tax')}}</span>
+            <span style="float: right;">{{util.currecny}} {{order.tax}}</span>
+          </p>
+        </div>
+        <div style="padding: 2px 10px 0;">
+          <p class="footer">
+            <span style="width: 80%;">{{util.getString('Delivery Charge')}}</span>
+            <span style="float: right;">{{util.currecny}} {{order.delivery}}</span>
+          </p>
+        </div>
+        <div style="padding: 10px 10px 0;">
+          <p class="footer" style="font-size: 14px; font-weight: bold;">
+            <span style="width: 70%;">{{util.getString('Grand Total')}}</span>
+            <span style="float: right;">{{util.currecny}} {{order.grand_total}}</span>
+          </p>
+        </div>
+
       </div>
-    </div>
+    </div>    
 
-    <div class="flex_div">
-      <ion-label> {{util.getString('Order ID')}} </ion-label>
-      <ion-label class="values">{{id}}</ion-label>
-    </div>
-
-    <div class="flex_div">
-      <ion-label> {{util.getString('Payment Method')}} </ion-label>
-      <ion-label class="values"> {{payMethod}} </ion-label>
-    </div>
-
-    <div class="flex_div">
-      <ion-label> {{util.getString('Delivery On')}} </ion-label>
-      <ion-label class="values"> {{datetime}} </ion-label>
-    </div>
-
-    <div class="flex_div">
-      <ion-label> {{util.getString('Deliver to')}} </ion-label>
-      <ion-label class="values">{{orderAt}}</ion-label>
-    </div>
-    <div class="flex_div" *ngIf="orderAt ==='home'">
-      <ion-label class="values">
-        <ion-icon slot="start" name="location-outline" color="primary"></ion-icon> {{address}}
-      </ion-label>
-    </div>
-    
-    <ion-label class="titles"> {{util.getString('Order Tracking')}} </ion-label>
-
+    <ion-label class="titles"> {{util.getString('Tracking')}} </ion-label>
     <div class="tracking_div">
 
       <div class="left">
-        <span *ngFor="let item of orderDetail">
+        <span *ngFor="let item of order.progress">
           <div class="line_div" [class.line_div_darkgray]="item.status === 1"></div>
           <ion-icon *ngIf="item.status === 1" name="checkmark-sharp"></ion-icon>
         </span>
-
       </div>
 
       <div class="right">
-        <span *ngFor="let item of orderDetail">
+        <span *ngFor="let item of order.progress">
           <div class="line_div">
             <ion-label [class.round_div_red]="item.status === 1" [class.round_div_darkgray]="item.status === 1">
-              {{item.time}}</ion-label>
+              {{item.timestamp}}
+            </ion-label>
           </div>
-          <div class="round_div_gray" [class.round_div_red]="item.status === 1"
-            [class.round_div_darkgray]="item.status === 1">
-            {{item.value}}
+          <div class="round_div_gray" [class.round_div_red]="item.status === 1" [class.round_div_darkgray]="item.status === 1">
+            {{item.latest}}
           </div>
         </span>
       </div>
@@ -173,18 +187,18 @@
     </div>
 
   </div>
-</ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <div class="btn_div">
-      <ion-button *ngIf="isDelivered" (click)="presentAlertConfirm()" class="ratae">
-        <ion-icon name="star" color="light" slot="start"></ion-icon>
-        {{util.getString('Rate Order')}}
-      </ion-button>
-      <ion-button *ngIf="canCancle" (click)="changeStatus()" class="reject">
-        {{util.getString('Cancel Order')}}
-      </ion-button>
-    </div>
-  </ion-toolbar>
-</ion-footer>
+  <ion-footer style="margin: 15px 0 20px;">
+    <ion-toolbar>
+      <div class="btn_div">
+        <ion-button *ngIf="isDelivered" (click)="presentAlertConfirm()" class="ratae" style="font-weight: 100; margin-top: 20px;">
+          <!-- <ion-icon name="star" color="light" slot="start"></ion-icon> -->
+          {{util.getString('Rate Order')}}
+        </ion-button>
+        <ion-button *ngIf="canCancel" (click)="changeStatus()" class="reject" style="font-weight: 100; margin-top: 20px;">
+          {{util.getString('Cancel Order')}}
+        </ion-button>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
