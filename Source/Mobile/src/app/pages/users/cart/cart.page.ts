@@ -6,7 +6,7 @@
 */
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from '../../../services/util.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { CartService } from 'src/app/services/cart.service';
 import { ApiService } from 'src/app/services/api.service';
 import { AlertController, NavController } from '@ionic/angular';
@@ -70,6 +70,15 @@ export class CartPage implements OnInit {
       return false;
     }
     this.router.navigate(['user/cart/payment']);
+  }
+
+  singleProduct(item) {
+    const param: NavigationExtras = {
+      queryParams: {
+        uuid: item.uuid,
+      }
+    };
+    this.router.navigate(['user/home/product'], param);
   }
 
   back() {

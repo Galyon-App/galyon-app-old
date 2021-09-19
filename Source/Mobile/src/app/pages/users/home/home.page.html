@@ -34,7 +34,7 @@
     <div class="sliders">
       <div class="categoryIcon" *ngFor="let item of parentCategories" (click)="viewSubCategories(item)">
         <div class="imgs">
-          <img [src]="api.mediaURL + item.cover" alt="..." (error)="assets/imgs/category.png" style="border-radius: 50px;" class="icon">
+          <img [src]="api.mediaURL + item.cover" alt="..." (error)="'assets/imgs/category.png'" style="border-radius: 50px;" class="icon">
         </div>
         <ion-label class="name">{{ (item.name.length>15)? (item.name | slice:0:15)+'..':(item.name) }}</ion-label>
       </div>
@@ -209,7 +209,7 @@
     </div>
     <div class="topProducts">
       <ion-list>
-        <ion-item lines="none" *ngFor="let item of dummyTopStores">
+        <ion-item lines="none" *ngFor="let item of dummyFeaturedStores">
           <div class="content_div">
             <div class="card_div">
               <div class="image_div">

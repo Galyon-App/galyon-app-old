@@ -37,7 +37,7 @@ export class AddressPage implements OnInit {
     private popoverController: PopoverController,
     public cart: CartService,
     private auth: AuthService,
-    private address: AddressService
+    public address: AddressService
   ) {
     this.route.queryParams.subscribe(data => {
       if (data && data.from) {

@@ -50,8 +50,6 @@ export class TopStoresPage implements OnInit {
   }
 
   openStore(item) {
-    console.log('open store', item);
-
     const param: NavigationExtras = {
       queryParams: {
         id: item.uid

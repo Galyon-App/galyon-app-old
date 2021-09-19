@@ -32,7 +32,7 @@
       <div class="card_div" *ngFor="let item of orders" (click)="goToOrder(item.uuid)">
 
         <div class="image_div">
-          <img [src]="api.mediaURL + item.store_cover" (error)="assets/imgs/product.png">
+          <img [src]="api.mediaURL + item.store_cover" (error)="'assets/imgs/product.png'">
         </div>
         <div class="desc_div">
           <ion-label style="font-weight: bold;color: var(--ion-color-primary);font-size: 12px;"> 

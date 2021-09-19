@@ -94,12 +94,12 @@
   <div *ngIf="deliveryOption === 'home'">
     <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray; font-weight: bold;"> {{util.getString('Address')}} </p>
     <div *ngIf="!cart.deliveryAddress" class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
-      (click)="chooseAddress($event)">
+      (click)="chooseAddress()">
       <ion-label> Choose Address - <label style="color: rgb(243, 67, 67);">Required!</label> </ion-label>
       <ion-ripple-effect type="bounded"></ion-ripple-effect>
     </div>
     <div *ngIf="cart.deliveryAddress" class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
-      (click)="chooseAddress($event)">
+      (click)="chooseAddress()">
       <ion-label> Choose Another </ion-label>
       <ion-ripple-effect type="bounded"></ion-ripple-effect>
     </div>
