@@ -28,10 +28,10 @@ export class DashboardComponent implements OnInit {
   dummy = Array(5);
   page: number = 1;
 
+  users: any[] = [];
   orders: any[] = [];
   dummOrders: any[] = [];
   stores: any[] = [];
-  users: any[] = [];
 
   newOrders: any[] = [];
   onGoingOrders: any[] = [];
@@ -53,6 +53,13 @@ export class DashboardComponent implements OnInit {
   dummyDrivers: any[] = [];
   selectedDriver: any = '';
   current: any = 'all';
+
+  dash_head = {
+    totol_completed_orders: 0,
+    totol__customers: 0,
+    totol_active_products: 0,
+    totol_reviews: 0
+  };
 
   constructor(
     public api: ApisService,
@@ -101,6 +108,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  openIt(event) {
+
+  }
 
   ngOnInit(): void {
   }

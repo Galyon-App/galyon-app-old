@@ -13648,32 +13648,48 @@ table {
   color: #222;
 }
 
-.counter-card-1 [class*="card-"] > i, .counter-card-2 [class*="card-"] > i, .counter-card-3 [class*="card-"] > i {
+.counter-card-1 [class*="card-"] > i, .counter-card-2 [class*="card-"] > i, .counter-card-3 [class*="card-"] > i, .counter-card-4 [class*="card-"] > i {
   position: relative;
   font-size: 40px;
-  border: 4px solid #2ecc71;
-  border-left: 4px solid #ccc;
   border-radius: 50%;
   padding: 21px 24px;
-  color: #2ecc71;
   top: 20px;
   left: 5px;
 }
 
-.counter-card-1 .counter-card-text, .counter-card-2 .counter-card-text, .counter-card-3 .counter-card-text {
+.counter-card-1 .counter-card-text, .counter-card-2 .counter-card-text, .counter-card-3 .counter-card-text, .counter-card-4 .counter-card-text {
   display: inline-block;
   text-align: center;
 }
 
+.counter-card-1 [class*="card-"] > i {
+  border: 4px solid #ececec;
+  // border-left: 4px solid #ccc;
+  color: #4ec547;
+}
+
+
 .counter-card-2 [class*="card-"] > i {
-  border: 4px solid #f51f83;
-  border-left: 4px solid #ccc;
-  color: #f51f83;
+  border: 4px solid #ececec;
+  // border-left: 4px solid #ccc;
+  color: #2ecc71;
+}
+
+.counter-card-2 [class*="card-"] > i {
+  border: 4px solid #ececec;
+  // border-left: 4px solid #ccc;
+  color: #ff2b2b;
 }
 
 .counter-card-3 [class*="card-"] > i {
-  border: 4px solid #f1c40f;
-  border-left: 4px solid #ccc;
+  border: 4px solid #ececec;
+  //border-left: 4px solid #ccc;
+  color: #4173ff;
+}
+
+.counter-card-4 [class*="card-"] > i {
+  border: 4px solid #ececec;
+  //border-left: 4px solid #ccc;
   color: #f1c40f;
 }
 

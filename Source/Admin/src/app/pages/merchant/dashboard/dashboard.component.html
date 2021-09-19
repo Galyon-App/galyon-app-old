@@ -32,6 +32,80 @@
 <ngx-spinner type="ball-pulse-sync" color="#e74c3c">
     <p style="font-size: 20px; color: #e74c3c"> {{util.getString('updating')}} </p>
 </ngx-spinner>
+
+<div class="row">
+    <!-- counter-card-1 start-->
+    <div class="col-md-6 col-xl-3">
+        <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('orders')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-basket"></i>
+                </div>
+                <div class="col-6  text-right">
+                    <div class="counter-card-text">
+                        <h3> {{dash_head.totol_completed_orders}} </h3>
+                        <p>{{api.translate('Orders')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-1 end-->
+
+    <!-- counter-card-2 start -->
+    <div class="col-md-6 col-xl-3">
+        <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('users')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-users"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3> {{dash_head.totol__customers}} </h3>
+                        <p>{{api.translate('Customers')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-2 end -->
+
+    <!-- counter-card-3 start -->
+    <div class="col-md-6 col-xl-3">
+        <app-card [cardClass]="'counter-card-3'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('stores')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-cubes"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3> {{dash_head.totol_active_products}} </h3>
+                        <p>{{api.translate('Products')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-3 end -->
+
+    <!-- counter-card-4 start -->
+    <div class="col-md-6 col-xl-3">
+        <app-card [cardClass]="'counter-card-4'" [blockClass]="'card-body-big'">
+            <div class="row" (click)="openIt('stores')" style="cursor: pointer;">
+                <div class="col-6 counter-card-icon">
+                    <i class="icofont icofont-comment"></i>
+                </div>
+                <div class="col-6 text-right">
+                    <div class="counter-card-text">
+                        <h3> {{dash_head.totol_reviews}} </h3>
+                        <p>{{api.translate('Reviews')}} </p>
+                    </div>
+                </div>
+            </div>
+        </app-card>
+    </div>
+    <!-- counter-card-4 end -->
+</div>
 <div class="row">
     <!-- Reset Order Start -->
     <div class="col-md-12">
