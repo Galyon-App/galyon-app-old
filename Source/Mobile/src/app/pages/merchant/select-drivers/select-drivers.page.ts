@@ -26,7 +26,7 @@ export class SelectDriversPage implements OnInit {
     this.drivers = this.navParam.get('item');
     console.log('drivers->', this.drivers);
     if (this.drivers.length && this.drivers.length > 0) {
-      this.selectedDriver = this.drivers[0].id;
+      this.selectedDriver = this.drivers[0].uuid;
     }
   }
 
@@ -35,7 +35,7 @@ export class SelectDriversPage implements OnInit {
 
   select() {
     console.log(this.selectedDriver);
-    const driver = this.drivers.filter(x => x.id === this.selectedDriver);
+    const driver = this.drivers.filter(x => x.uuid === this.selectedDriver);
     console.log(driver);
     this.modalController.dismiss(driver, 'selected');
   }

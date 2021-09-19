@@ -96,70 +96,70 @@ export class AnalyticsPage implements OnInit {
 
         // }
 
-        if (data && data.status === 200 && data.data.length) {
-          let total = 0;
-          data.data.forEach(async (element) => {
-            if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.orders)) {
-              element.orders = JSON.parse(element.orders);
-              element.date_time = moment(element.date_time).format('dddd, MMMM Do YYYY');
-              element.orders = await element.orders.filter(x => x.store_id === localStorage.getItem('uid'));
-              if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.status)) {
-                const info = JSON.parse(element.status);
-                await element.orders.forEach(calc => {
-                  if (calc.variations && calc.variations !== '' && typeof calc.variations === 'string') {
-                    console.log('strings', calc.id);
-                    calc.variations = JSON.parse(calc.variations);
-                    console.log(calc['variant']);
-                    if (calc["variant"] === undefined) {
-                      calc['variant'] = 0;
-                    }
-                  }
-                  if (calc && calc.discount === '0') {
-                    if (calc.size === '1' || calc.size === 1) {
-                      if (calc.variations[0].calc[calc.variant].discount && calc.variations[0].items[calc.variant].discount !== 0) {
-                        total = total + (parseFloat(calc.variations[0].items[calc.variant].discount) * calc.quantiy);
-                      } else {
-                        total = total + (parseFloat(calc.variations[0].items[calc.variant].price) * calc.quantiy);
-                      }
-                    } else {
-                      total = total + (parseFloat(calc.orig_price) * calc.quantiy);
-                    }
-                  } else {
-                    if (calc.size === '1' || calc.size === 1) {
-                      if (calc.variations[0].items[calc.variant].discount && calc.variations[0].items[calc.variant].discount !== 0) {
-                        total = total + (parseFloat(calc.variations[0].items[calc.variant].discount) * calc.quantiy);
-                      } else {
-                        total = total + (parseFloat(calc.variations[0].items[calc.variant].price) * calc.quantiy);
-                      }
-                    } else {
-                      total = total + (parseFloat(calc.sell_price) * calc.quantiy);
-                    }
-                  }
-                });
-                const selected = await info.filter(x => x.id === localStorage.getItem('uid'));
-                if (selected && selected.length) {
-                  if (selected[0].status === 'delivered') {
-                    this.storeOrder.push(element);
-                  }
-                }
-              }
-            }
-          });
+        // if (data && data.status === 200 && data.data.length) {
+        //   let total = 0;
+        //   data.data.forEach(async (element) => {
+        //     if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.orders)) {
+        //       element.orders = JSON.parse(element.orders);
+        //       element.date_time = moment(element.date_time).format('dddd, MMMM Do YYYY');
+        //       element.orders = await element.orders.filter(x => x.store_id === localStorage.getItem('uid'));
+        //       if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.status)) {
+        //         const info = JSON.parse(element.status);
+        //         await element.orders.forEach(calc => {
+        //           if (calc.variations && calc.variations !== '' && typeof calc.variations === 'string') {
+        //             console.log('strings', calc.id);
+        //             calc.variations = JSON.parse(calc.variations);
+        //             console.log(calc['variant']);
+        //             if (calc["variant"] === undefined) {
+        //               calc['variant'] = 0;
+        //             }
+        //           }
+        //           if (calc && calc.discount > 0) {
+        //             if (calc.size === '1' || calc.size === 1) {
+        //               if (calc.variations[0].calc[calc.variant].discount && calc.variations[0].items[calc.variant].discount !== 0) {
+        //                 total = total + (parseFloat(calc.variations[0].items[calc.variant].discount) * calc.quantity);
+        //               } else {
+        //                 total = total + (parseFloat(calc.variations[0].items[calc.variant].price) * calc.quantity);
+        //               }
+        //             } else {
+        //               total = total + (parseFloat(calc.orig_price) * calc.quantity);
+        //             }
+        //           } else {
+        //             if (calc.size === '1' || calc.size === 1) {
+        //               if (calc.variations[0].items[calc.variant].discount && calc.variations[0].items[calc.variant].discount !== 0) {
+        //                 total = total + (parseFloat(calc.variations[0].items[calc.variant].discount) * calc.quantity);
+        //               } else {
+        //                 total = total + (parseFloat(calc.variations[0].items[calc.variant].price) * calc.quantity);
+        //               }
+        //             } else {
+        //               total = total + (parseFloat(calc.sell_price) * calc.quantity);
+        //             }
+        //           }
+        //         });
+        //         const selected = await info.filter(x => x.id === localStorage.getItem('uid'));
+        //         if (selected && selected.length) {
+        //           if (selected[0].status === 'delivered') {
+        //             this.storeOrder.push(element);
+        //           }
+        //         }
+        //       }
+        //     }
+        //   });
 
-          setTimeout(() => {
-            function percentage(num, per) {
-              return (num / 100) * per;
-            }
-            console.log(this.storeOrder);
-            console.log(total, this.storecommission);
-            const totalPrice = percentage(total, parseFloat(this.storecommission));
-            console.log('commistion=====>>>>>', totalPrice.toFixed(2));
-            this.commisionAmount = totalPrice.toFixed(2);
-            this.totalAmount = total;
-            this.toPay = this.commisionAmount;
-          }, 1000);
+        //   setTimeout(() => {
+        //     function percentage(num, per) {
+        //       return (num / 100) * per;
+        //     }
+        //     console.log(this.storeOrder);
+        //     console.log(total, this.storecommission);
+        //     const totalPrice = percentage(total, parseFloat(this.storecommission));
+        //     console.log('commistion=====>>>>>', totalPrice.toFixed(2));
+        //     this.commisionAmount = totalPrice.toFixed(2);
+        //     this.totalAmount = total;
+        //     this.toPay = this.commisionAmount;
+        //   }, 1000);
 
-        }
+        // }
       }, error => {
         this.util.hide();
         console.log(error);

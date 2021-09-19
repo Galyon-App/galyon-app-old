@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { ApiService } from 'src/app/services/api.service';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -30,6 +31,7 @@ export class OrdersPage implements OnInit {
     public api: ApiService,
     public util: UtilService,
     private router: Router,
+    private authServ: AuthService
   ) {
     this.getOrder();
     this.util.subscribeOrder().subscribe((data) => {
@@ -57,7 +59,7 @@ export class OrdersPage implements OnInit {
     console.log(ids);
     const navData: NavigationExtras = {
       queryParams: {
-        id: ids.id
+        uuid: ids.id
       }
     };
     this.router.navigate(['merchant/order-detail'], navData);
@@ -90,7 +92,7 @@ export class OrdersPage implements OnInit {
             if (((x) => { try { JSON.parse(x); return true; } catch (e) { return false } })(element.status)) {
 
               const info = JSON.parse(element.status);
-              const selected = info.filter(x => x.id === localStorage.getItem('uid'));
+              const selected = info.filter(x => x.uuid === this.authServ.userToken.uuid);
 
               if (selected && selected.length) {
 

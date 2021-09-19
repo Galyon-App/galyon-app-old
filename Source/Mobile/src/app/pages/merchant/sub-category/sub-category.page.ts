@@ -56,9 +56,9 @@ export class SubCategoryPage implements OnInit {
   }
 
   selected() {
-    const name = this.category.filter(x => x.id === this.id);
+    const name = this.category.filter(x => x.uuid === this.id);
     console.log('name', name);
-    this.modalCtrl.dismiss({ id: this.id, name: name[0].name }, 'selected');
+    this.modalCtrl.dismiss({ uuid: this.id, name: name[0].name }, 'selected');
   }
 
   onSearchChange(event) {

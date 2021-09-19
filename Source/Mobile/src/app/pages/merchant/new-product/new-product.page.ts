@@ -78,9 +78,9 @@ export class NewProductPage implements OnInit {
   ) {
     this.route.queryParams.subscribe((data) => {
       console.log('=>', data);
-      if (data && data.id) {
+      if (data && data.uuid) {
         this.isNew = false;
-        this.id = data.id;
+        this.id = data.uuid;
         this.getProduct();
       } else {
         this.isNew = true;
@@ -96,7 +96,7 @@ export class NewProductPage implements OnInit {
   getProduct() {
     this.util.show();
     const param = {
-      id: this.id
+      uuid: this.id
     };
     this.api.post('products/getById', param).subscribe((data: any) => {
       console.log(data);
@@ -163,8 +163,7 @@ export class NewProductPage implements OnInit {
           if (cates && cates.status === 200 && cates.data && cates.data.length) {
             console.log(cates.data);
 
-            const name = cates.data.filter(x => x.id === this.cateId);
-            console.log('cate name=-=====>>>', name);
+            const name = cates.data.filter(x => x.uuid === this.cateId);
             this.cateName = name[0].name;
           } else {
             this.util.errorToast(this.util.getString('No category found'));
@@ -213,7 +212,7 @@ export class NewProductPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       console.log(data);
       if (data && data.data && data.role === 'selected') {
-        this.cateId = data.data.id;
+        this.cateId = data.data.uuid;
         this.cateName = data.data.name;
       }
     });
@@ -375,7 +374,7 @@ export class NewProductPage implements OnInit {
       this.image6 ? this.image6 : ''
     ];
     const param = {
-      id: this.id,
+      uuid: this.id,
       store_id: localStorage.getItem('uid'),
       cover: this.coverImage,
       name: this.name,

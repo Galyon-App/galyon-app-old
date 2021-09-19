@@ -68,7 +68,7 @@ export class ProductsPage implements OnInit {
   viewProduct(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id
+        id: item.uuid
       }
     };
     this.router.navigate(['merchant/new-product'], param);

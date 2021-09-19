@@ -26,8 +26,7 @@ export class CategoryPage implements OnInit {
     private navParam: NavParams
   ) {
     this.getCategory();
-    this.id = this.navParam.get('id');
-    console.log(this.id);
+    this.id = this.navParam.get('uuid');
   }
 
   ngOnInit() {
@@ -56,7 +55,7 @@ export class CategoryPage implements OnInit {
   }
 
   selected() {
-    const name = this.category.filter(x => x.id === this.id);
+    const name = this.category.filter(x => x.uuid === this.id);
     console.log('name', name);
     this.modalCtrl.dismiss({ id: this.id, name: name[0].name }, 'selected');
   }

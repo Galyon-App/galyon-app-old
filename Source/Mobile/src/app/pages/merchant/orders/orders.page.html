@@ -45,13 +45,13 @@
           <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold;color: var(--ion-color-primary); font-size: 12px;"> {{util.getString('ORDER')}} #{{item.id}}
+          <ion-label style="font-weight: bold;color: var(--ion-color-primary); font-size: 12px;"> {{util.getString('ORDER')}} #{{item.uuid}}
           </ion-label>
           <div *ngIf="item.orders?.length" class="border_bottom">
             <p *ngFor="let order of item.orders;let ol = index" class="items">
               <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
                 </span> </span>
-              <span>X {{order.quantiy}}</span>
+              <span>X {{order.quantity}}</span>
             </p>
 
           </div>
@@ -73,13 +73,13 @@
           <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold;color: var(--ion-color-primary); font-size: 12px;"> {{util.getString('ORDER')}} #{{item.id}}
+          <ion-label style="font-weight: bold;color: var(--ion-color-primary); font-size: 12px;"> {{util.getString('ORDER')}} #{{item.uuid}}
           </ion-label>
           <div *ngIf="item.orders?.length" class="border_bottom">
             <p *ngFor="let order of item.orders;let ol = index" class="items">
               <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
                 </span> </span>
-              <span>X {{order.quantiy}}</span>
+              <span>X {{order.quantity}}</span>
             </p>
 
           </div>
@@ -101,13 +101,13 @@
           <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold; color: var(--ion-color-primary); font-size: 14px;"> {{util.getString('ORDER')}} #{{item.id}}
+          <ion-label style="font-weight: bold; color: var(--ion-color-primary); font-size: 14px;"> {{util.getString('ORDER')}} #{{item.uuid}}
           </ion-label>
           <div *ngIf="item.orders?.length" class="border_bottom">
             <p *ngFor="let order of item.orders;let ol = index" class="items">
               <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
                 </span> </span>
-              <span>X {{order.quantiy}}</span>
+              <span>X {{order.quantity}}</span>
             </p>
           </div>
           <ion-label class="datetime">{{ item.date_time}}</ion-label>

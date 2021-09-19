@@ -59,8 +59,8 @@ export class OrderDetailPage implements OnInit {
   ) {
     this.route.queryParams.subscribe((data) => {
       console.log(data);
-      if (data && data.id) {
-        this.id = data.id;
+      if (data && data.uuid) {
+        this.id = data.uuid;
         this.loaded = false;
         this.getOrder();
         console.log('store=-============---=-=0-=-=-=-', this.util.store);
@@ -123,7 +123,7 @@ export class OrderDetailPage implements OnInit {
 
   getOrder() {
     const param = {
-      id: this.id
+      uuid: this.id
     };
     this.api.post('orders/getById', param).subscribe((data: any) => {
       console.log(data);
@@ -140,37 +140,37 @@ export class OrderDetailPage implements OnInit {
         this.orders.forEach((element) => {
           let price = 0;
           if (element.variations && element.variations !== '' && typeof element.variations === 'string') {
-            console.log('strings', element.id);
+            console.log('strings', element.uuid);
             element.variations = JSON.parse(element.variations);
             console.log(element['variant']);
             if (element["variant"] === undefined) {
               element['variant'] = 0;
             }
           }
-          if (element && element.discount === '0') {
+          if (element && element.discount > 0) {
             if (element.size === '1' || element.size === 1) {
               if (element.variations[0].items[element.variant].discount && element.variations[0].items[element.variant].discount !== 0) {
-                price = price + (parseFloat(element.variations[0].items[element.variant].discount) * element.quantiy);
+                price = price + (parseFloat(element.variations[0].items[element.variant].discount) * element.quantity);
               } else {
-                price = price + (parseFloat(element.variations[0].items[element.variant].price) * element.quantiy);
+                price = price + (parseFloat(element.variations[0].items[element.variant].price) * element.quantity);
               }
             } else {
-              price = price + (parseFloat(element.orig_price) * element.quantiy);
+              price = price + (parseFloat(element.orig_price) * element.quantity);
             }
           } else {
             if (element.size === '1' || element.size === 1) {
               if (element.variations[0].items[element.variant].discount && element.variations[0].items[element.variant].discount !== 0) {
-                price = price + (parseFloat(element.variations[0].items[element.variant].discount) * element.quantiy);
+                price = price + (parseFloat(element.variations[0].items[element.variant].discount) * element.quantity);
               } else {
-                price = price + (parseFloat(element.variations[0].items[element.variant].price) * element.quantiy);
+                price = price + (parseFloat(element.variations[0].items[element.variant].price) * element.quantity);
               }
             } else {
-              price = price + (parseFloat(element.sell_price) * element.quantiy);
+              price = price + (parseFloat(element.sell_price) * element.quantity);
             }
           }
           console.log('PRICEEE-->', price);
           // const price = element.sell_price === '0.00' ? parseFloat(element.orig_price) : parseFloat(element.sell_price);
-          const items = '<div style="border-bottom:1px dashed lightgray;display:flex;flex-direction:row;justify-content:space-between;"> <p style="font-weight:bold">' + element.name + ' X ' + element.quantiy + '</p> <p style="font-weight:bold">' + price + this.util.currecny + ' </p>  </div>';
+          const items = '<div style="border-bottom:1px dashed lightgray;display:flex;flex-direction:row;justify-content:space-between;"> <p style="font-weight:bold">' + element.name + ' X ' + element.quantity + '</p> <p style="font-weight:bold">' + price + this.util.currecny + ' </p>  </div>';
           this.orderString.push(items);
           console.log(total, price);
           total = total + price;
@@ -180,7 +180,7 @@ export class OrderDetailPage implements OnInit {
         const storesStatus = JSON.parse(info.status);
         console.log('------------------', storesStatus);
         this.orderStatus = storesStatus;
-        const current = storesStatus.filter(x => x.id === localStorage.getItem('uid'));
+        const current = storesStatus.filter(x => x.uuid === localStorage.getItem('uid')); //TODO: Verify
         console.log('*************************', current);
         if (current && current.length) {
           this.status = current[0].status;
@@ -323,15 +323,15 @@ export class OrderDetailPage implements OnInit {
 
           this.util.show();
           const assignee = {
-            driver: this.drivers[0].id,
+            driver: this.drivers[0].uuid,
             assignee: localStorage.getItem('uid')
           };
           this.assignee.push(assignee);
           console.log('*********************************', this.assignee);
-          this.assigneeDriver.push(this.drivers[0].id);
+          this.assigneeDriver.push(this.drivers[0].uuid);
           console.log('////////////////////////////', this.assigneeDriver);
           const param = {
-            id: this.id,
+            uuid: this.id,
             notes: JSON.stringify(this.orderDetail),
             status: JSON.stringify(this.orderStatus),
             driver_id: this.assigneeDriver.join(),
@@ -341,7 +341,7 @@ export class OrderDetailPage implements OnInit {
           this.api.post('orders/editList', param).subscribe((data: any) => {
             console.log('order', data);
             this.util.hide();
-            this.updateDriver(this.drivers[0].id, 'busy');
+            this.updateDriver(this.drivers[0].uuid, 'busy');
             if (data && data.status === 200) {
               this.sendNotification('accepted');
               this.back();
@@ -382,7 +382,7 @@ export class OrderDetailPage implements OnInit {
 
     this.util.show();
     const param = {
-      id: this.id,
+      uuid: this.id,
       notes: JSON.stringify(this.orderDetail),
       status: JSON.stringify(this.orderStatus)
     };
@@ -406,9 +406,10 @@ export class OrderDetailPage implements OnInit {
     console.log(value);
 
     this.orderStatus.forEach(element => {
-      if (element.id === localStorage.getItem('uid')) {
-        element.status = value;
-      }
+      //TODO: Verify code
+      // if (element.uuid === localStorage.getItem('uid')) {
+      //   element.status = value;
+      // }
     });
     console.log(this.orderDetail);
     if (value === 'accepted' && this.orderAt === 'home') {
@@ -422,7 +423,7 @@ export class OrderDetailPage implements OnInit {
       };
       this.orderDetail.push(newOrderNotes);
       const param = {
-        id: this.id,
+        uuid: this.id,
         notes: JSON.stringify(this.orderDetail),
         status: JSON.stringify(this.orderStatus),
       };
@@ -463,9 +464,10 @@ export class OrderDetailPage implements OnInit {
     console.log(this.orderDetail);
     if (this.changeStatusOrder) {
       this.orderStatus.forEach(element => {
-        if (element.id === localStorage.getItem('uid')) {
-          element.status = this.changeStatusOrder;
-        }
+        //TODO: Verify
+        // if (element.id === localStorage.getItem('uid')) {
+        //   element.status = this.changeStatusOrder;
+        // }
       });
       if (this.changeStatusOrder !== 'ongoing' && this.orderAt === 'home' && this.driverId !== '0') {
         // release driver from this order
@@ -480,7 +482,7 @@ export class OrderDetailPage implements OnInit {
 
         this.util.show();
         const param = {
-          id: this.id,
+          uuid: this.id,
           notes: JSON.stringify(this.orderDetail),
           status: JSON.stringify(this.orderStatus),
         };
@@ -512,7 +514,7 @@ export class OrderDetailPage implements OnInit {
 
         this.util.show();
         const param = {
-          id: this.id,
+          uuid: this.id,
           notes: JSON.stringify(this.orderDetail),
           status: JSON.stringify(this.orderStatus),
         };

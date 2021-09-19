@@ -78,7 +78,7 @@ export class MessagesPage implements OnInit {
   onChat(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.id,
+        id: item.uuid,
         name: item.first_name + ' ' + item.last_name
       }
     };
