@@ -40,7 +40,7 @@ CREATE TABLE `address` (
   `lat` varchar(100) NOT NULL,
   `lng` varchar(100) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -60,7 +60,7 @@ CREATE TABLE `banners` (
   `type` varchar(50) NOT NULL,
   `position` varchar(50) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -79,7 +79,7 @@ CREATE TABLE `category` (
   `name` varchar(200) NOT NULL,
   `cover` text NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -99,7 +99,7 @@ CREATE TABLE `chat_message` (
   `message` text NOT NULL,
   `type` varchar(50) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -115,7 +115,7 @@ CREATE TABLE `chat_room` (
   `uid` varchar(36) DEFAULT NULL,
   `participants` text NOT NULL COMMENT 'arrays of uid''s',
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -132,7 +132,7 @@ CREATE TABLE `cities` (
   `lat` text NOT NULL,
   `lng` text NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -175,7 +175,7 @@ CREATE TABLE `feeds` (
   `uid` varchar(36) NOT NULL,
   `tag_uid` text NOT NULL COMMENT 'user tagged',
   `content` text NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -191,7 +191,7 @@ CREATE TABLE `feeds_comments` (
   `uid` varchar(36) DEFAULT NULL,
   `reaction` text NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -207,7 +207,7 @@ CREATE TABLE `feeds_reacts` (
   `uid` varchar(36) DEFAULT NULL,
   `reaction` enum('1','2','3','4','5') NOT NULL COMMENT 'like, laugh, wow, heart, angry',
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -251,7 +251,7 @@ CREATE TABLE `offers` (
   `min` decimal(20,2) NOT NULL,
   `upto` decimal(20,2) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `expired_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -274,7 +274,7 @@ CREATE TABLE `orders` (
   `matrix` text DEFAULT NULL COMMENT '{origin,destinations[],distances[{distance,duration}]}',
   `items` longtext NOT NULL COMMENT '[{uuid,name,price,discount_type,discount,pcs,kg,gram,liter,ml,length,width,height,category_id,subcategory_id,quantity,variantions[]}]\r\n',
   `factor` text NOT NULL COMMENT '{schedule,tax,ship_mode,ship_price}',
-  `coupon` text NOT NULL DEFAULT '{}' COMMENT '{uuid,name,description,type,off,min,upto,expires}',
+  `coupon` text NOT NULL COMMENT '{uuid,name,description,type,off,min,upto,expires}',
   `total` decimal(20,2) NOT NULL,
   `delivery` decimal(20,2) NOT NULL,
   `discount` decimal(20,2) NOT NULL,
@@ -284,7 +284,7 @@ CREATE TABLE `orders` (
   `pay_key` varchar(100) DEFAULT NULL,
   `stage` enum('created','rejected','ongoing','shipping','cancelled','delivered') NOT NULL DEFAULT 'created',
   `status` set('1','0') NOT NULL DEFAULT '1',
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -315,7 +315,7 @@ CREATE TABLE `pages` (
   `name` varchar(200) NOT NULL,
   `content` longtext CHARACTER SET utf8 NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -332,7 +332,7 @@ CREATE TABLE `popups` (
   `message` text NOT NULL,
   `shown` tinyint(1) NOT NULL DEFAULT 0,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -377,7 +377,7 @@ CREATE TABLE `products` (
   `variations` text NOT NULL,
   `pending_update` text DEFAULT NULL,
   `verified_at` timestamp NULL DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `status` tinyint(4) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -399,7 +399,7 @@ CREATE TABLE `rating` (
   `msg` text NOT NULL,
   `way` enum('direct','transact') NOT NULL,
   `status` tinyint(4) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -485,7 +485,7 @@ CREATE TABLE `stores` (
   `pending_update` text DEFAULT NULL,
   `verified_at` timestamp NULL DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -515,7 +515,7 @@ CREATE TABLE `users` (
   `activation_key` text DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `verified_at` timestamp NULL DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -535,7 +535,7 @@ CREATE TABLE `vehicles` (
   `year` varchar(5) NOT NULL,
   `plate` varchar(10) NOT NULL,
   `status` enum('1','0') NOT NULL DEFAULT '0',
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `timestamp` datetime DEFAULT NULL,
   `verified_at` timestamp NULL DEFAULT NULL,
   `delete_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
