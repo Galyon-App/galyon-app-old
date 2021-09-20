@@ -184,7 +184,7 @@ export class ManageBannersComponent {
   }
 
   create() {
-    if (!this.position || this.position === '' || !this.type || this.type === '' || !this.link || this.link === '' ) {
+    if (this.position === '' || this.type === '' ) {
       this.util.error('All Fields are required');
       return false;
     }
@@ -222,7 +222,7 @@ export class ManageBannersComponent {
   }
 
   update() {
-    if (!this.position || this.position === '' || !this.type || this.type === '' || !this.link || this.link === '' ) {
+    if (this.position === '' || this.type === '' ) {
       this.util.error('All Fields are required');
       return false;
     }

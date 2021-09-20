@@ -88,7 +88,7 @@ class Banners extends Galyon_controller {
         $message = $this->input->post('message');
         $cover = $this->input->post('cover');
 
-        if(empty($position) || empty($type) || empty($link) || empty($cover)) {
+        if(empty($cover)) {
             $this->json_response(null, false, "Required fields cannot be empty.");
         }
 
@@ -123,10 +123,6 @@ class Banners extends Galyon_controller {
         $type = $this->input->post('type');
         $message = $this->input->post('message');
         $cover = $this->input->post('cover');
-
-        if(empty($uuid) || empty($position) || empty($type || empty($link)) ) {
-            $this->json_response(null, false, "Required fields cannot be empty.");
-        }
 
         $banner = array( 
             "position" => $position, 
