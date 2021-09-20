@@ -67,6 +67,9 @@ export class ResetPasswordPage implements OnInit {
   changeMode(event) {
     this.email = '';
     this.key = '';
+    this.password = '';
+    this.confirm_password = '';
+    this.key = '';
     this.action = event;
   }
 
@@ -94,7 +97,7 @@ export class ResetPasswordPage implements OnInit {
       if (response && response.success) {
         this.util.showToast("Please check your email for reset key!", "dark", "bottom");
       } else {
-        this.util.errorToast(response.data.message);
+        this.util.errorToast(response.message);
       }
       this.sending = false;
     }, error => {
@@ -135,7 +138,7 @@ export class ResetPasswordPage implements OnInit {
         this.util.showToast("You're account is now activated!", "dark", "bottom");
         //Todo: modal to ask user to login the user automatically.
       } else {
-        this.util.errorToast(response.data.message);
+        this.util.errorToast(response.message);
       }
       this.sending = false;
     }, error => {
