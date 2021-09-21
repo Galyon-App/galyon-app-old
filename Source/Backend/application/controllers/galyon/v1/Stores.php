@@ -80,6 +80,7 @@ class Stores extends Galyon_controller {
     function getAllStores() {
         $auth = $this->is_authorized(false);
 
+        $filter_term = $this->input->post('filter_term');
         $city_id = $this->input->post('city_id');
         $limit_start = (int)$this->input->post('limit_start');
         $limit_length = (int)$this->input->post('limit_length');
@@ -102,12 +103,13 @@ class Stores extends Galyon_controller {
         foreach($this->public_column as $column) {
             $query .= ",`$column` ";
         }
-        $query .= " FROM `stores` 
-        WHERE deleted_at IS NULL 
-        ";
+        $query .= " FROM `stores` ";
+        $query .= " WHERE deleted_at IS NULL ";
         $query .= empty($city_id) ? "" : " AND `city_id` = ? ";
         $query .= $auth->role == "user" || $auth->role == "store" ? " AND `status`='1' AND deleted_at IS NULL":"";
+        $query .= empty($filter_term) ? "" : " AND name LIKE '%".$filter_term."%' ";
         $query .= " LIMIT ?, ?";
+        
 
         $stores = $this->Crud_model->custom($query, $params, 'result');
         if($stores) {

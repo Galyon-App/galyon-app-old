@@ -509,7 +509,7 @@ export class HomePage {
   search(event: string) {
     this.products = [];
     if (event && event !== '') {
-      this.api.post('galyon/v1/products/getSearchProducts', {
+      this.api.post('galyon/v1/stores/getAllStores', {
         filter_term: event,
         limit_start: 0,
         limit_length: 10

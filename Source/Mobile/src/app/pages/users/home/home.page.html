@@ -26,8 +26,8 @@
     </ion-searchbar>
   </div>
   <div class="searchList" *ngIf="products?.length && haveStores == true" style="margin-bottom: 15px;">
-    <ion-item *ngFor="let item of products" (click)="goToSingleProduct(item)">
-      <img [src]="api.mediaURL + item.cover" alt="..." (error)="'assets/imgs/product.png'" 
+    <ion-item *ngFor="let item of products" (click)="openStore(item)">
+      <img [src]="api.mediaURL + item.cover" alt="..." (error)="'assets/imgs/store.png'" 
       style="object-fit: cover;
       border-radius: 50px;
       border: 1px solid #ededed;
