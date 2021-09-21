@@ -50,8 +50,8 @@
       </div>
       <div class="second_div">
         <ion-label class="name_lbl">{{item.name}}</ion-label>
-        <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
-        <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
+        <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
+        <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
         <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
         <ion-label class="desc">
           {{ (item.descriptions.length>50)? (item.descriptions | slice:0:50)+'..':(item.descriptions) }} </ion-label>

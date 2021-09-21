@@ -123,8 +123,8 @@
             <div class="details">
               <ion-label class="pro_name" (click)="goToSingleProduct(item)">
                 {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
-                <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
-                <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
+                <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
+                <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
               </ion-label>
               <ion-label class="itemsKind">
                 <span class="quantity" *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>

@@ -72,8 +72,8 @@
             <div *ngIf="item.in_stock === '0'" class="notInStock">
               <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
             </div>
-            <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
-            <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
+            <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
+            <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
           </div>
           <div class="second_div">
             <ion-label class="name_lbl" (click)="singleProduct(item)">
@@ -170,8 +170,8 @@
           <ion-label class="name_lbl">
             {{ item.name }}
           </ion-label>
-          <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at !== null">
-          <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at === null">
+          <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
+          <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
           <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
           <ion-label class="itemsKind" *ngIf="item.variations">
             <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
