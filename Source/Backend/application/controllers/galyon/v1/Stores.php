@@ -199,13 +199,14 @@ class Stores extends Galyon_controller {
     function getStoreFeatured() {
         $auth = $this->is_authorized(false);
 
+        $where = [" is_featured = '1'"];
         $city_id = $this->input->post('city_id');
         if(!empty($city_id)) {
-            $city_id = "city_id = '$city_id'";
+            $where[] = "city_id = '$city_id'";
         }
 
         $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, [" is_featured = '1'", $city_id]), null, 'result' );
+            $this->compileWhereClause($auth->where, $where), null, 'result' );
 
         if($stores) {
             $stores = $this->getStoreMeta($stores);
