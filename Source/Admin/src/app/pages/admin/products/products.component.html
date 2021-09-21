@@ -111,7 +111,7 @@
                                 </td>
                                 <td> {{item.store_name}}</td>
                                 <td> {{item.name}}</td>
-                                <td> {{item.orig_price}}</td>
+                                <td> {{getSellPrice(item)}} ({{item.discount_type == 'percent'?item.discount+'%':item.discount+'off'}})</td>
                                 <td> None</td>
                                 <td>
                                     <button disabled type="button" [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</button>

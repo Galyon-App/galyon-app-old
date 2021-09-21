@@ -63,6 +63,11 @@ export class ProductsComponent {
     }
   }
 
+  getSellPrice(item) {
+    let discount = item.discount_type == 'percent' ? item.orig_price*(item.discount/100):item.discount;
+    return item.orig_price - discount;
+  }
+
   getDates(date) {
     return moment(date).format('llll');
   }
