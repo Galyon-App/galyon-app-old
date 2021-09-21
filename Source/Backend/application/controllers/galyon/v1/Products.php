@@ -13,7 +13,7 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Products extends Galyon_controller {
 
     private $table_name = 'products';
-    private $edit_column = ['store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','status'];
+    private $edit_column = ['store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','status','timestamp'];
     private $public_column = ['uuid','store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','verified_at','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
@@ -112,6 +112,30 @@ class Products extends Galyon_controller {
         } else {
             $this->json_response(null, false, "No product was found!");
         }
+    }
+
+    function getSearchProducts() {
+        $auth = $this->is_authorized(false);
+
+        $filter_term = "%".$this->input->post('filter_term')."%";
+        $limit_start = (int)$this->input->post('limit_start');
+        $limit_length = (int)$this->input->post('limit_length');
+        $limit_length = $limit_length ? $limit_length : 10;
+
+        $params = array(
+            $filter_term, 
+            $limit_start,
+            $limit_length
+        );
+
+        $query = " SELECT `uuid`,`name`,`cover` 
+        FROM `products` 
+        WHERE status = '1' AND deleted_at IS NULL AND `name` LIKE ? LIMIT ?, ?
+        ";
+
+        $products = $this->Crud_model->custom($query, $params, 'result');
+        $products = $this->getProductMeta($products);
+        $this->json_response($products);
     }
 
     function getAllProducts() {
@@ -253,7 +277,8 @@ class Products extends Galyon_controller {
         $request = $this->request_validation($_POST, ["name"], $this->edit_column);
         $request->data = array_merge(array(
             "uuid" => $this->uuid->v4(),
-            "store_id" => $this->Crud_model->sanitize_param($this->input->post("store_id"))
+            "store_id" => $this->Crud_model->sanitize_param($this->input->post("store_id")),
+            "timestamp" => get_current_utc_time() 
         ), $request->data);
 
         if($auth->role == "operator") {

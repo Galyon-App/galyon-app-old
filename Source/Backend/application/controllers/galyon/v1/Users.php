@@ -14,7 +14,7 @@ class Users extends Galyon_controller {
 
     private $table_name = 'users';
     private $required = ['uuid'];
-    private $edit_column = ['uuid','username','email','phone','cover','first_name','last_name','gender','type','subscriber','status'];
+    private $edit_column = ['uuid','username','email','phone','cover','first_name','last_name','gender','type','subscriber','status','timestamp'];
     private $public_column = ['uuid','username','email','phone','cover','first_name','last_name','gender','type','subscriber','status','activation_key','verified_at','timestamp','updated_at', 'deleted_at'];
 
     private $template = '<div style="background-color: #eeeeef; padding: 50px 0; ">
@@ -103,7 +103,8 @@ class Users extends Galyon_controller {
         $request->data = array_merge(array(
             "uuid" => $this->uuid->v4(),
             "password" => password_hash($activation.get_current_utc_time(), PASSWORD_BCRYPT),
-            "activation_key" => password_hash($activation, PASSWORD_BCRYPT)
+            "activation_key" => password_hash($activation, PASSWORD_BCRYPT),
+            "timestamp" => get_current_utc_time() 
         ), $request->data);
         $inserted = $this->Crud_model->insert($this->table_name, $request->data);
 

@@ -99,6 +99,7 @@ class Banners extends Galyon_controller {
             "type" => $type,
             "message" => $message, 
             "cover" => $cover,
+            "timestamp" => get_current_utc_time() 
         ));
 
         if($inserted) {

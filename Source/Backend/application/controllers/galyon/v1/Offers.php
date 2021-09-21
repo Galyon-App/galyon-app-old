@@ -90,7 +90,8 @@ class Offers extends Galyon_controller {
             "min" => $min,
             "upto" => $upto, 
             "image" => $image, 
-            "expired_at" => $expired_at
+            "expired_at" => $expired_at,
+            "timestamp" => get_current_utc_time() 
         ));
 
         if($inserted) {

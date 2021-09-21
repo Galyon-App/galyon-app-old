@@ -13,7 +13,7 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Stores extends Galyon_controller {
 
     private $table_name = 'stores';
-    private $edit_column = ['owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','status'];
+    private $edit_column = ['owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','status','timestamp'];
     private $public_column = ['uuid','owner','city_id','name','descriptions','phone','email','cover','images','commission','open_time','close_time','isClosed','is_featured','pending_update','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
@@ -80,13 +80,41 @@ class Stores extends Galyon_controller {
     function getAllStores() {
         $auth = $this->is_authorized(false);
 
-        $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, [], true), NULL, 'result' );
+        $city_id = $this->input->post('city_id');
+        $limit_start = (int)$this->input->post('limit_start');
+        $limit_length = (int)$this->input->post('limit_length');
+        $limit_length = $limit_length ? $limit_length : 10;
+
+        if(empty($city_id)) {
+            $params = array(
+                $limit_start,
+                $limit_length
+            );
+        } else {
+            $params = array(
+                $city_id, 
+                $limit_start,
+                $limit_length
+            );
+        }
+        
+        $query = " SELECT `id` ";
+        foreach($this->public_column as $column) {
+            $query .= ",`$column` ";
+        }
+        $query .= " FROM `stores` 
+        WHERE deleted_at IS NULL 
+        ";
+        $query .= empty($city_id) ? "" : " AND `city_id` = ? ";
+        $query .= $auth->role == "user" || $auth->role == "store" ? " AND `status`='1' AND deleted_at IS NULL":"";
+        $query .= " LIMIT ?, ?";
+
+        $stores = $this->Crud_model->custom($query, $params, 'result');
         if($stores) {
             $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
         } else {
-            $this->json_response(null, false, "No store was found!");
+            $this->json_response($stores, false, "No store associated to the city!");
         }
     }
 
@@ -218,8 +246,10 @@ class Stores extends Galyon_controller {
     }
 
     protected function getStoreMeta($stores) {
-        foreach($stores as $store) {
-            $store = $this->getStoreMetaItem($store);
+        if($stores) {
+            foreach($stores as $store) {
+                $store = $this->getStoreMetaItem($store);
+            }
         }
         return $stores;
     }
@@ -301,7 +331,8 @@ class Stores extends Galyon_controller {
         $request = $this->request_validation($_POST, ["name"], $this->edit_column);
         $request->data = array_merge(array(
             "uuid" => $this->uuid->v4(),
-            "parent_id" => $this->Crud_model->sanitize_param($this->input->post("parent"))
+            "parent_id" => $this->Crud_model->sanitize_param($this->input->post("parent")),
+            "timestamp" => get_current_utc_time() 
         ), $request->data);
 
         $inserted = $this->Crud_model->insert($this->table_name, $request->data);

@@ -107,7 +107,8 @@ class Category extends Galyon_controller {
             "uuid" => $this->uuid->v4(), 
             "name" => $name,
             "parent_id" => $parent, 
-            "cover" => $cover, 
+            "cover" => $cover,
+            "timestamp" => get_current_utc_time() 
         ));
 
         if($inserted) {

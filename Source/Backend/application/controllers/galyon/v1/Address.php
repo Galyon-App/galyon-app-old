@@ -99,6 +99,7 @@ class Address extends Galyon_controller {
             "lat" => $lat,
             "lng" => $lng, 
             "status" => "1",
+            "timestamp" => get_current_utc_time() 
         ));
 
         if($inserted) {

@@ -13,7 +13,7 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Orders extends Galyon_controller {
 
     private $table_name = 'orders';
-    private $edit_column = ['uid','address_id','store_id','driver_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status',];
+    private $edit_column = ['uid','address_id','store_id','driver_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status','timestamp'];
     private $public_column = ['uuid','uid','address_id','store_id','driver_id','progress','matrix','items','factor','coupon','total','delivery','discount','tax','grand_total','paid_method','pay_key','stage','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
@@ -183,14 +183,14 @@ class Orders extends Galyon_controller {
         $request = $this->request_validation($_POST, ["uid","store_id"], $this->edit_column);
         $request->data = array_merge(array(
             "uuid" => $this->uuid->v4(),
-            "store_id" => $this->Crud_model->sanitize_param($this->input->post("store_id"))
+            "store_id" => $this->Crud_model->sanitize_param($this->input->post("store_id")),
+            "timestamp" => get_current_utc_time()
         ), $request->data);
 
         $request->data['progress'] = json_encode([array(
             "status" => 1,
             "current" => "created",
-            "latest" => "created",
-            "timestamp" => get_my_local_time()
+            "latest" => "created"
         )]);
 
         //Start the computation.

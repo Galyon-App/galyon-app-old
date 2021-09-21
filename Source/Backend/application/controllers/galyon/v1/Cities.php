@@ -35,21 +35,36 @@ class Cities extends Galyon_controller {
     }
 
     function getAllCities() {
-        $user = $this->is_authorized(false);
-        $where = "status = '1' AND deleted_at IS NULL";
-        if($user) {
-            $basic  = $this->input->get_request_header('Basic');
-            if($user->role === "admin" &&  $basic == "admin") {
-                $where = null; 
-            }
-        }
+        $auth = $this->is_authorized(false);
 
-        $cities = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
-        if($cities) {
-            $this->json_response($cities);
+        $no_term = empty($this->input->post('filter_term'));
+        $filter_term = "%".$this->input->post('filter_term')."%";
+        $limit_start = (int)$this->input->post('limit_start');
+        $limit_length = (int)$this->input->post('limit_length');
+        $limit_length = $limit_length ? $limit_length : 10;
+
+        if($no_term) {
+            $params = array(
+                $limit_start,
+                $limit_length
+            );
         } else {
-            $this->json_response(null, false, "No city was found!");
+            $params = array(
+                $filter_term, 
+                $limit_start,
+                $limit_length
+            );
         }
+        
+        $query = " SELECT `uuid`,`name`,`lat`,`lng`,`status`,`timestamp`,`updated_at`,`deleted_at`    
+        FROM `cities` 
+        WHERE deleted_at IS NULL 
+        ";
+        $query .= $no_term ? "" : " AND `name` LIKE ? ";
+        $query .= " LIMIT ?, ?";
+
+        $cities = $this->Crud_model->custom($query, $params, 'result');
+        $this->json_response($cities);
     }
 
     function createNewCity() {
@@ -73,6 +88,7 @@ class Cities extends Galyon_controller {
             "name" => $name, 
             "lat" => $lat, 
             "lng" => $lng,
+            "timestamp" => get_current_utc_time() 
         ));
 
         if($inserted) {

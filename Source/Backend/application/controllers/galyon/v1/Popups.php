@@ -96,7 +96,8 @@ class Popups extends Galyon_controller {
 
         $inserted = $this->Crud_model->insert($this->table_name, array( 
             "uuid" => $this->uuid->v4(), 
-            "message" => $message, 
+            "message" => $message,
+            "timestamp" => get_current_utc_time() 
         ));
 
         if($inserted) {

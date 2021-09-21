@@ -79,7 +79,8 @@ class Pages extends Galyon_controller {
         $inserted = $this->Crud_model->insert($this->table_name, array( 
             "ukey" => $ukey, 
             "name" => $name, 
-            "content" => $content
+            "content" => $content,
+            "timestamp" => get_current_utc_time() 
         ));
 
         if($inserted) {
