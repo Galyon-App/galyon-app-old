@@ -9,5 +9,6 @@
         <domain>localhost</domain>
         <domain includeSubdomains="true">galyon.dev</domain>
         <domain includeSubdomains="true">galyon.app</domain>
+        <domain includeSubdomains="true">brilliantskinessentials.ph</domain>
     </domain-config>
 </network-security-config>

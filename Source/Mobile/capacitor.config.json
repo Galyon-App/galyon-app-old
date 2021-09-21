@@ -1,17 +1,24 @@
 {
-  "appId": "app.galyon.user",
-  "appName": "BSEI Shop",
+  "appId": "ph.brilliantskinessentials.shop",
+  "appName": "Brilliant e-Shop",
   "bundledWebRuntime": true,
   "npmClient": "npm",
   "webDir": "dist",
   "plugins": {
     "SplashScreen": {
+      "launchShowDuration": 3000,
       "launchAutoHide": true,
       "backgroundColor": "#58585a",
       "androidSplashResourceName": "splash",
       "androidScaleType": "CENTER_CROP",
+      "showSpinner": true,
+      "androidSpinnerStyle": "large",
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#999999",
       "splashFullScreen": true,
-      "splashImmersive": true
+      "splashImmersive": true,
+      "layoutName": "launch_screen",
+      "useDialog": true
     }
   },
   "cordova": {
