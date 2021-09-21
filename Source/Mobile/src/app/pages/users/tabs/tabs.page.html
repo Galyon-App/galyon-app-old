@@ -11,9 +11,9 @@
 
   <ion-header class="ion-no-border">
     <ion-toolbar color="primary" style="background: var(--ion-color-light); padding: 5px 15px;">
-        <ion-thumbnail slot="start">
+        <div slot="start">
           <img src="assets/imgs/logo.png" class="menu-logo">
-        </ion-thumbnail>
+        </div>
         <div slot="end" *ngIf="currentCity" style="width: 50vw;height: auto;">
           <strong style="padding: 10px;" (click)="changeCity()">
             {{ city.current.name }}
