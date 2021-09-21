@@ -19,29 +19,53 @@ class Maintainance extends Galyon_controller
 
     public function execute() {
         //Execute all fixing here.
-        $user_uuid = $this->add_uuidto_users();
-        $store_uuid = $this->update_store_owner_uuid();
-        $products_uuid = $this->update_products_uuid();
-        $orders_uuid = $this->update_orders_uuid(); 
-        $addresses_uuid = $this->update_addresses_uuid();
-        $cities_uuid = $this->update_cities_uuid();
-        $categories_uuid = $this->update_categories_uuid();
+        $store_uuid = $this->generate_store_uuid();
+        // $user_uuid = $this->add_uuidto_users();
+        // $store_uuid = $this->update_store_owner_uuid();
+        // $products_uuid = $this->update_products_uuid();
+        // $orders_uuid = $this->update_orders_uuid(); 
+        // $addresses_uuid = $this->update_addresses_uuid();
+        // $cities_uuid = $this->update_cities_uuid();
+        // $categories_uuid = $this->update_categories_uuid();
 
         //$product_category = $this->update_products_category();
 
         //TODO: save utc datetime on setting as last check and fix.
         $this->json_response(array(
-            "user_uuid" => $user_uuid,
             "store_uuid" => $store_uuid,
-            "products_uuid" => $products_uuid,
-            "orders_uuid" => $orders_uuid,
-            "addresses_uuid" => $addresses_uuid,
-            "cities_uuid" => $cities_uuid,
-            "categories_uuid" => $categories_uuid,
+
+            //"user_uuid" => $user_uuid,
+            //"store_uuid" => $store_uuid,
+            // "products_uuid" => $products_uuid,
+            // "orders_uuid" => $orders_uuid,
+            // "addresses_uuid" => $addresses_uuid,
+            // "cities_uuid" => $cities_uuid,
+            // "categories_uuid" => $categories_uuid,
 
             //"product_categories" => $product_category
+
         ));
     }
+
+    protected function generate_store_uuid() {
+        $stores = $this->Crud_model->get_stores_without_uuid();
+
+        if($stores && is_array($stores)) {
+            foreach($stores as $store) {
+                $uuid = $this->uuid->v4();
+                $this->Crud_model->set_store_with_uuid($store->id, $uuid);
+            }
+            return count($stores);
+        }
+
+        return 0;
+    }
+
+
+
+
+
+
 
     protected function update_categories_uuid() {
         $categories = $this->Crud_model->get_categories_without_uid();

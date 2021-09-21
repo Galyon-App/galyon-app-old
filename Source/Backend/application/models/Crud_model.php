@@ -14,6 +14,26 @@ class Crud_model extends Galyon_model {
 		parent::__construct();
   }
 
+  function get_stores_without_uuid() {
+    $query = "SELECT * FROM stores WHERE CHAR_LENGTH(uuid) < 36 AND owner IS NULL;";
+    return $this->custom($query, array(), 'result');
+  }
+
+  function set_store_with_uuid($id, $uuid) {
+    return $this->update('stores', array("uuid" => $uuid), array( "id" => $id ) );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   function get_users_without_uuid() {
     return $this->get('users', 'id', array( "uuid" => null ), array( "uuid" => '' ), 'result' );
   }
