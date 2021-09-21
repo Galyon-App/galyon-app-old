@@ -95,6 +95,10 @@ export class PaymentPage implements OnInit {
   }
 
   chooseAddress() {
+    if(!this.authServ.is_authenticated) {
+      this.router.navigate(['login'])
+      return;
+    }
     const param: NavigationExtras = {
       queryParams: {
         from: 'payment'

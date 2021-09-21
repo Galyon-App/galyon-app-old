@@ -40,6 +40,8 @@ export class LoginPage implements OnInit {
       this.util.user_login = '0';
     }
     this.mobileccCode = '+91';
+    this.email = '';
+    this.password = '';
   }
 
   ngOnInit() {
