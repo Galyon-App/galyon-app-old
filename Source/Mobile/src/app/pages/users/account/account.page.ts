@@ -37,8 +37,9 @@ export class AccountPage implements OnInit {
     public api: ApiService,
     public cart: CartService,
     public user: UserService,
+    private authServ: AuthService,
   ) { 
-    
+    this.user.request(this.authServ.userToken.uuid);
   }
 
   ngOnInit() {

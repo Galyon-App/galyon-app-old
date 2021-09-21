@@ -15,10 +15,10 @@
     </ion-buttons>
     <ion-title class="ion-text-center"> {{util.getString('Profile')}} </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="edit_flag = !edit_flag" *ngIf="edit_flag">
+      <ion-button (click)="edit_flag = !edit_flag" *ngIf="edit_flag" disabled>
         <ion-icon slot="icon-only" name="pencil"></ion-icon>
       </ion-button>
-      <ion-button (click)="update()" *ngIf="!edit_flag">
+      <ion-button (click)="update()" *ngIf="!edit_flag" disabled>
         <ion-icon slot="icon-only" name="checkmark"></ion-icon>
       </ion-button>
     </ion-buttons>

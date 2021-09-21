@@ -56,6 +56,7 @@ export class LoginPage implements OnInit {
     //   return false;
     // }
     this.auth.login(this.email, this.password, (response) => {
+      console.log(response);
       if(response && response.success == true && response.data) {
         // get return url from query parameters or default to home page
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';

@@ -22,12 +22,13 @@ export class AuthService {
     private userServ: UserService
   ) {
     const _token = localStorage.getItem(this.userServ.localKey);
+    let token = new Token();
     if(_token != null && _token != '') {
       let token = this.util.jwtDecode(_token);
       //const isExpired = jwt.isTokenExpired(token);
-      this.subject = new BehaviorSubject<Token>(token);
-      this.observable = this.subject.asObservable();
     }
+    this.subject = new BehaviorSubject<Token>(token);
+    this.observable = this.subject.asObservable();
   }
 
   public get is_authenticated(): boolean {

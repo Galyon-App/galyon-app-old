@@ -10,6 +10,7 @@ import { UtilService } from 'src/app/services/util.service';
 import { NavController, ActionSheetController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -24,44 +25,29 @@ export class ProfilePage implements OnInit {
   email: any;
   cover: any = '';
   edit_flag: boolean;
+
   constructor(
     public api: ApiService,
     public util: UtilService,
     private navCtrl: NavController,
     private actionSheetController: ActionSheetController,
     private camera: Camera,
+    private authServ: AuthService,
     public user: UserService
   ) {
     this.edit_flag = true;
-    //this.getProfile();
+    this.user.request(this.authServ.userToken.uuid, (user) => {
+      this.util.userInfo = user;
+      this.fname = user.first_name;
+      this.lname = user.last_name;
+      this.mobile = user.phone;
+      this.gender = user.gender;
+      this.cover = user.cover;
+      this.email = user.email;
+    });
   }
 
   ngOnInit() {
-  }
-
-  getProfile() {
-    const param = {
-      id: localStorage.getItem('uid')
-    };
-    this.util.show();
-    this.api.post('users/getById', param).subscribe((data: any) => {
-      this.util.hide();
-      console.log('user info=>', data);
-      if (data && data.status === 200 && data.data && data.data.length) {
-        const info = data.data[0];
-        this.util.userInfo = info;
-        this.fname = info.first_name;
-        this.lname = info.last_name;
-        this.mobile = info.mobile;
-        this.gender = info.gender;
-        this.cover = info.cover;
-        this.email = info.email;
-      }
-    }, error => {
-      console.log(error);
-      this.util.hide();
-      this.util.errorToast(this.util.getString('Something went wrong'));
-    })
   }
 
   async updateProfile() {
@@ -114,7 +100,6 @@ export class ProfilePage implements OnInit {
     this.api.post('users/edit_profile', param).subscribe((data: any) => {
       this.util.hide();
       console.log(data);
-      this.getProfile();
     }, error => {
       this.util.hide();
       console.log(error);
