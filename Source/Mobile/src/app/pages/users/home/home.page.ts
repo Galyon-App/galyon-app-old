@@ -12,11 +12,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { CartService } from 'src/app/services/cart.service';
 import * as moment from 'moment';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { CityService } from 'src/app/services/city.service';
-import { City } from 'src/app/models/city.model';
-import { Store } from 'src/app/models/store.model';
-import { Console } from 'console';
 import { StoreService } from 'src/app/services/store.service';
 import { OptionService } from 'src/app/services/option.service';
 
@@ -32,7 +29,7 @@ export class HomePage {
   };
   slideTops = {
     slidesPerView: 1.7,
-    //spaceBetween: 5,
+    spaceBetween: 5,
     slideShadows: true,
   }
   categories: any[] = [];
@@ -51,7 +48,6 @@ export class HomePage {
   topProducts: any[] = [];
 
   products: any[] = [];
-  dummyProducts: any[] = [];
 
   dummyFeaturedStores: any[] = [];
   featuredStores: any[] = [];
@@ -60,8 +56,6 @@ export class HomePage {
   stores: any[] = [];
 
   terms: any;
-
-  parentCategories: any[] = [];
 
   haveStores: boolean;
   
@@ -75,16 +69,20 @@ export class HomePage {
     private alertCtrl: AlertController,
     public city: CityService,
     private storeServ: StoreService,
+    public navCtrl: NavController,
     private optServ: OptionService
   ) {
+    this.initHome();
+  }
+
+  initHome() {
     this.dummyCates = Array(6);
     this.dummyBanners = Array(5);
-    this.bottomDummy = Array(5);
     this.betweenDummy = Array(5);
     this.dummyTopProducts = Array(5);
-    this.dummyProducts = Array(5);
-    this.dummyStores = Array(5);
     this.dummyFeaturedStores = Array(3);
+    this.bottomDummy = Array(5);
+    this.dummyStores = Array(5);
 
     if (!this.util.appClosed) {
       this.resetAllArrays(null);
@@ -99,7 +97,9 @@ export class HomePage {
 
   getStoreByCityAndFeatured() {
     this.api.post('galyon/v1/stores/getStoreFeatured', {
-      city_id: this.city.activeCity
+      city_id: this.city.activeCity,
+      limit_start: 0,
+      limit_length: 5
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         this.featuredStores = response.data;
@@ -126,27 +126,19 @@ export class HomePage {
   }
 
   resetAllArrays(message) {
-    // this.haveStores = true; //TEMP
-    // this.stores = [];
-    // this.parentCategories = [];
-    // this.categories = [];
-    // this.banners = [];
-    // this.bottomBanners = [];
-    // this.betweenBanners = [];
-    // this.topProducts = [];
-    // this.products = [];
-    // if(message != null) {
-    //   this.chMod.detectChanges();
-    //   this.util.errorToast(message);
-    // }
-    //this.dummyCates = [];
-    //this.dummyBanners = [];
-    //this.bottomDummy = [];
-    //this.betweenDummy = [];
-    //this.dummyTopProducts = [];
-    //this.dummyProducts = [];
-    //this.dummyTopStores = [];
-    //this.dummyStores = [];
+    this.products = [];
+    this.categories = [];
+    this.banners = [];
+    this.topProducts = [];
+    this.betweenBanners = [];
+    this.featuredStores = [];
+    this.bottomBanners = [];
+    this.stores = [];
+
+    if(message != null) {
+      this.chMod.detectChanges();
+      this.util.errorToast(message);
+    }
   }
 
   limit_start: number = 0;
@@ -166,14 +158,16 @@ export class HomePage {
       limit_length: this.limit_length
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
+        
         if(this.stores) {
           response.data.forEach(element => {
             this.stores.push(element);;
           });
         } else {
           this.stores = response.data;
+          this.dummyStores = [];
         }
-        this.dummyStores = [];
+        this.haveStores = true;
 
         this.stores.forEach(async (store) => {
           store['isOpen'] = await this.isOpen(store.open_time, store.close_time);
@@ -181,9 +175,7 @@ export class HomePage {
             store.address = "Not yet set...";
           }
         });
-
         this.util.active_store = [...new Set(this.stores.map(item => item.uuid))];
-        this.haveStores = true;
       } else {
         this.no_stores_follows = true;
         this.resetAllArrays(response.message);
@@ -204,7 +196,7 @@ export class HomePage {
     this.api.get('galyon/v1/category/getParentCategorys').subscribe((response: any) => {
       if (response && response.success && response.data) {
         response.data.forEach(element => {
-          this.parentCategories.push(element);
+          this.categories.push(element);
           if (element.status === '1') {
             this.categories.push(element);
           }
@@ -237,9 +229,15 @@ export class HomePage {
             }
           }
         });
-        this.dummyBanners = [];
-        this.betweenDummy = [];
-        this.bottomDummy = [];
+        if(this.banners.length > 0) {
+          this.dummyBanners = [];
+        }
+        if(this.bottomBanners.length > 0) {
+          this.bottomDummy = [];
+        }
+        if(this.betweenBanners.length > 0) {
+          this.betweenDummy = [];
+        }
       }
     }, error => {
       console.log(error);
@@ -247,11 +245,9 @@ export class HomePage {
   }
 
   getFeaturedProducts() {
-    this.dummyTopProducts = Array(5);
-
     this.api.post('galyon/v1/products/getFeaturedProduct', {
-      limit_start: this.limit_start,
-      limit_length: this.limit_length
+      limit_start: 0,
+      limit_length: 10
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         response.data.forEach(element => {
@@ -289,7 +285,6 @@ export class HomePage {
     }, error => {
       console.log(error);
     });
-
   }
 
   async variant(item, var_id) {
@@ -332,8 +327,8 @@ export class HomePage {
             text: this.util.getString('Confirm'),
             handler: (data) => {
               console.log('Confirm Ok', data);
-              let prod_index = this.products.indexOf(item);
-              this.products[prod_index].variations[var_id].current = data;
+              let prod_index = this.topProducts.indexOf(item);
+              this.topProducts[prod_index].variations[var_id].current = data;
           
               let cartProduct: any = this.cart.cart.filter( x => x.uuid == item.uuid);
               if(cartProduct.length) {
@@ -350,13 +345,6 @@ export class HomePage {
     }
   }
 
-
-
-
-  
-
-  
-
   isOpen(start, end) {
     const format = 'H:mm:ss';
     const ctime = moment().format('HH:mm:ss');
@@ -371,8 +359,6 @@ export class HomePage {
   }
 
   getTime(time) {
-    // const date = moment().format('DD-MM-YYYY');
-    // return moment(date + ' ' + time).format('hh:mm a');
     return moment(time, ['h:mm A']).format('hh:mm A');
   }
 
@@ -474,13 +460,12 @@ export class HomePage {
   }
 
   onSearchChange(event) {
-    if (event.detail.value) {
-    } else {
-      this.products = [];
-    }
+    // if (event.detail.value) {
+    // } else {
+    //   this.products = [];
+    // }
+    this.search(this.terms);
   }
-
-  
 
   openStore(item) {
     const param: NavigationExtras = {
@@ -504,21 +489,32 @@ export class HomePage {
   }
 
   search(event: string) {
+    this.products = [];
     if (event && event !== '') {
-      const param = {
-        id: this.city.current.uuid,
-        search: event
-      };
-      this.util.show();
-      this.api.post('products/getSearchItems', param).subscribe((data: any) => {
-        this.util.hide();
-        if (data && data.status === 200 && data.data) {
-          this.products = data.data;
+      this.api.post('galyon/v1/products/getSearchProducts', {
+        filter_term: event,
+        limit_start: 0,
+        limit_length: 10
+      }).subscribe((response: any) => {
+        if (response && response.success && response.data) {
+          this.products = response.data;
         }
       }, error => {
-        this.util.hide();
-        this.util.errorToast(this.util.getString('Something went wrong'));
+        console.log(error);
       });
     }
+  }
+
+  homeRefresh(event) {
+    event.target.complete();
+    this.initHome();
+  }
+
+  ionViewDidLoad() {
+    console.log("I'm alive!");
+  }
+
+  ionViewWillLeave() {
+    console.log("Looks like I'm about to leave :(");
   }
 }

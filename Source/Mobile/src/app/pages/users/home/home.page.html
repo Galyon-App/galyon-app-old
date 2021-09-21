@@ -8,15 +8,33 @@
  -->
 
 <ion-content>
+  <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="homeRefresh($event)">
+    <ion-refresher-content
+      style="padding-top: 30px;"
+      closeDuration="1000"
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div class="flx">
     <ion-searchbar [placeholder]="util.getString('Search...')" [(ngModel)]="terms" inputmode="text" type="search"
       (keyup.enter)="search(q.value)" (ionChange)="onSearchChange($event)" #q [debounce]="250" mode="ios"
       showCancelButton="never">
     </ion-searchbar>
   </div>
-  <div class="searchList" *ngIf="products?.length">
+  <div class="searchList" *ngIf="products?.length" style="margin-bottom: 15px;">
     <ion-item *ngFor="let item of products" (click)="goToSingleProduct(item)">
-      <ion-label>{{item.name}}</ion-label>
+      <img [src]="api.mediaURL + item.cover" alt="..." (error)="'assets/imgs/product.png'" 
+      style="object-fit: cover;
+      border-radius: 50px;
+      border: 1px solid #ededed;
+      height: 30px;
+      width: 30px;
+      padding: 0 10px;">
+      <ion-label style="padding: 10px;">{{item.name}}</ion-label>
       <ion-icon name="arrow-redo-outline" slot="end"></ion-icon>
     </ion-item>
   </div>
@@ -32,7 +50,7 @@
       </ion-label>
     </div>
     <div class="sliders">
-      <div class="categoryIcon" *ngFor="let item of parentCategories" (click)="viewSubCategories(item)">
+      <div class="categoryIcon" *ngFor="let item of categories" (click)="viewSubCategories(item)">
         <div class="imgs">
           <img [src]="api.mediaURL + item.cover" alt="..." (error)="'assets/imgs/category.png'" style="border-radius: 50px;" class="icon">
         </div>
@@ -46,7 +64,7 @@
     <!-- END CATEGORIES -->
 
     <!-- START BILLBOARDS -->
-    <div class="segment-title" style="margin-top: 15px;">
+    <div *ngIf="banners.length > 0 && dummyBanners.length == 0" class="segment-title" style="margin-top: 15px;">
       <ion-label class="all"> {{util.getString('Digital Billboards')}} </ion-label>
       <ion-label class="view" (click)="allOffers()">{{util.getString('More')}}
         <div class="ion-activatable">
@@ -55,7 +73,7 @@
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
       </ion-label>
     </div>
-    <div class="slider_div">
+    <div *ngIf="banners.length > 0 && dummyBanners.length == 0" class="slider_div">
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of dummyBanners">
           <div class="card">
@@ -77,7 +95,7 @@
     <!-- END BILLBOARDS -->
 
     <!-- START TOP PRODUCTS -->
-    <div class="segment-title" style="margin-top: 15px;">
+    <div *ngIf="topProducts.length > 0 && dummyTopProducts.length == 0" class="segment-title" style="margin-top: 15px;">
       <ion-label class="all"> {{util.getString('Trending Products')}} </ion-label>
       <ion-label class="view" (click)="topicked()">{{util.getString('More')}}
         <div class="ion-activatable">
@@ -86,7 +104,7 @@
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
       </ion-label>
     </div>
-    <div class="listView">
+    <div *ngIf="topProducts.length > 0 && dummyTopProducts.length == 0" class="listView">
       <ion-slides [options]="slideTops">
         <ion-slide *ngFor="let item of dummyTopProducts">
           <div class="box">
@@ -176,7 +194,7 @@
     <!-- START TOP PRODUCTS -->
 
     <!-- START BETWEEN BANNER -->
-    <div class="slider_div" *ngIf="!betweenDummy?.length && betweenBanners?.length">
+    <div class="slider_div" *ngIf="betweenBanners.length > 0 && betweenDummy.length == 0">
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of betweenDummy">
           <div class="card">
@@ -198,7 +216,7 @@
     <!-- END BETWEEN BANNER -->
 
     <!-- START TOP STORES -->
-    <div class="segment-title" style="margin-top: 15px;">
+    <div *ngIf="featuredStores.length > 0 && dummyFeaturedStores.length == 0" class="segment-title" style="margin-top: 15px;">
       <ion-label class="all"> {{util.getString('Featured Stores')}} </ion-label>
       <ion-label class="view" (click)="topStores()">{{util.getString('More')}}
         <div class="ion-activatable">
@@ -207,7 +225,7 @@
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
       </ion-label>
     </div>
-    <div class="topProducts">
+    <div *ngIf="featuredStores.length > 0 && dummyFeaturedStores.length == 0" class="topProducts">
       <ion-list>
         <ion-item lines="none" *ngFor="let item of dummyFeaturedStores">
           <div class="content_div">
@@ -257,7 +275,7 @@
     <!-- END TOP PRODUCTS -->
     
     <!-- START BOTTOM BANNER -->
-    <div class="slider_div" *ngIf="!bottomDummy?.length && bottomBanners?.length">
+    <div class="slider_div" *ngIf="bottomBanners.length > 0 && bottomDummy.length == 0">
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of bottomDummy">
           <div class="card">
