@@ -13,7 +13,14 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  
+  <div class="flx">
+    <ion-searchbar [placeholder]="util.getString('Search...')" [(ngModel)]="terms" inputmode="text" type="search"
+      (keyup.enter)="search(q.value)" (ionChange)="onSearchChange($event)" #q [debounce]="500" mode="ios" showCancelButton="never">
+    </ion-searchbar>
+  </div>
   <p *ngIf="!dummy?.length && !cities?.length" class="ion-text-center"> {{util.getString('No Cities Found')}} </p>
+  
   <ion-item *ngFor="let item of dummy">
     <ion-label>
       <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
@@ -28,6 +35,11 @@
       </ion-item>
     </ion-radio-group>
   </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [ngStyle]="{'display': no_stores_follows ? 'none':'block'}" style="padding: 20px;">
+    <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="cities.length && id">
     <ion-fab-button (click)="selected()">

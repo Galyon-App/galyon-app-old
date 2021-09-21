@@ -19,13 +19,13 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div class="flx">
+  <div class="flx" *ngIf="haveStores == true">
     <ion-searchbar [placeholder]="util.getString('Search...')" [(ngModel)]="terms" inputmode="text" type="search"
       (keyup.enter)="search(q.value)" (ionChange)="onSearchChange($event)" #q [debounce]="250" mode="ios"
       showCancelButton="never">
     </ion-searchbar>
   </div>
-  <div class="searchList" *ngIf="products?.length" style="margin-bottom: 15px;">
+  <div class="searchList" *ngIf="products?.length && haveStores == true" style="margin-bottom: 15px;">
     <ion-item *ngFor="let item of products" (click)="goToSingleProduct(item)">
       <img [src]="api.mediaURL + item.cover" alt="..." (error)="'assets/imgs/product.png'" 
       style="object-fit: cover;
@@ -39,7 +39,7 @@
     </ion-item>
   </div>
   
-  <div class="main_content_div" *ngIf="haveStores === true">
+  <div class="main_content_div" *ngIf="haveStores == true">
 
     <!-- START CATEGORIES -->
     <div class="segment-title">
@@ -361,11 +361,11 @@
 
   </div>
 
-  <div *ngIf="haveStores === true && no_stores_follows === true" style="display: flex; flex-direction: column; margin: 0 0 20px;">
+  <div *ngIf="haveStores == true && no_stores_follows == true" style="display: flex; flex-direction: column; margin: 0 0 20px;">
     <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
   </div>
 
-  <div *ngIf="haveStores === false" class="nothing">
+  <div *ngIf="haveStores == false" class="nothing">
     <img src="assets/imgs/nothing.png" alt="" srcset="" class="imgs">
     <p class="ion-text-center bolder"> {{util.getString('No Stores Found Near You!')}} </p>
   </div>

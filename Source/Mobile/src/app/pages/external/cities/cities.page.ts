@@ -11,6 +11,7 @@ import { UtilService } from 'src/app/services/util.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CityService } from 'src/app/services/city.service';
 import { City } from 'src/app/models/city.model';
+import { NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-cities',
@@ -24,6 +25,8 @@ export class CitiesPage {
   dummy = Array(10);
   cities: City[] = [];
 
+  terms: any = '';
+  
   constructor(
     public api: ApiService,
     public util: UtilService,
@@ -39,15 +42,39 @@ export class CitiesPage {
     this.getCities();
   }
 
-  getCities() {
-    this.api.get('galyon/v1/cities/getAllCities').subscribe((response: any) => {
+  limit_start: number = 0;
+  limit_length: number = 15;
+  no_stores_follows: boolean = false;
+
+  getCities(event = null) {
+    this.api.post('galyon/v1/cities/getAllCities', {
+      filter_term: this.terms,
+      limit_start: this.limit_start,
+      limit_length: this.limit_length
+    }).subscribe((response: any) => {
       if (response && response.success && response.data) {
-        this.dummy = [];
-        this.cities = response.data.filter(x => x.status === '1');
+
+        if(this.cities.length > 0) {
+          response.data.forEach(element => {
+            if(element.status === '1') {
+              this.cities.push(element);
+            }
+          });
+        } else {
+          this.cities = response.data.filter(x => x.status === '1');
+          this.dummy = [];
+        }
       } else {
+        this.no_stores_follows = true;
         this.util.errorToast(this.util.getString('No Cities Found'));
       }
+      if(event) {
+        event.complete();
+      }
     }, error => {
+      if(event) {
+        event.complete();
+      }
       console.log('error', error);
       this.dummy = [];
       this.util.errorToast(this.util.getString('Something went wrong'));
@@ -63,8 +90,43 @@ export class CitiesPage {
     this.city.setActiveCity(this.id);
     const city: City[] = this.cities.filter(x => x.uuid === this.id);
     this.city.setCurrent(city[0]);
-
     this.cart.clearCart();
-    this.navCtrl.navigateRoot(['']);
+
+    const param: NavigationExtras = {
+      queryParams: {
+        action: "refresh"
+      }
+    };
+    this.navCtrl.navigateRoot(['user/home'], param);
   }
+
+  loadData(event) {
+    this.limit_start += this.limit_length;
+    this.getCities(event.target);
+  }
+
+  onSearchChange(event) {
+    this.search(this.terms);
+  }
+
+  search(event: string) {
+    this.id = '';
+    this.clicked = false;
+
+    if (event && event !== '') {
+      this.api.post('galyon/v1/cities/getAllCities', {
+        filter_term: event,
+        limit_start: 0,
+        limit_length: 15
+      }).subscribe((response: any) => {
+        if (response && response.success && response.data) {
+          this.cities = response.data.filter(x => x.status === '1');
+          this.dummy = [];
+        }
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
+
 }

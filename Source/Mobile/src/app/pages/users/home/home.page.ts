@@ -7,7 +7,7 @@
 
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UtilService } from '../../../services/util.service';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras, Route, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { CartService } from 'src/app/services/cart.service';
 import * as moment from 'moment';
@@ -57,11 +57,12 @@ export class HomePage {
 
   terms: any;
 
-  haveStores: boolean;
+  haveStores: boolean = false;
   
   constructor(
     public util: UtilService,
     private router: Router,
+    private route: ActivatedRoute,
     public api: ApiService,
     public cart: CartService,
     private chMod: ChangeDetectorRef,
@@ -72,10 +73,22 @@ export class HomePage {
     public navCtrl: NavController,
     private optServ: OptionService
   ) {
-    this.initHome();
+    this.route.queryParams.subscribe((data) => {
+      if (data && data.action) {
+        if(data.action == "refresh") {
+          this.initHome("refresh");
+        }
+      } else {
+        this.initHome();
+      }
+    });
+    
   }
 
-  initHome() {
+  initHome(event = null) {
+    this.limit_start = 0;
+    this.terms = '';
+
     this.dummyCates = Array(6);
     this.dummyBanners = Array(5);
     this.betweenDummy = Array(5);
@@ -91,7 +104,7 @@ export class HomePage {
       this.getFeaturedProducts();
       this.getPopup();
       this.getStoreByCityAndFeatured();
-      this.getStoreByCity(null);
+      this.getStoreByCity(event);
     }
   }
 
@@ -153,21 +166,24 @@ export class HomePage {
 
   getStoreByCity(event) {
     this.api.post('galyon/v1/stores/getAllStores', {
-      uuid: this.city.activeCity,
+      city_id: this.city.activeCity,
       limit_start: this.limit_start,
       limit_length: this.limit_length
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         
-        if(this.stores) {
-          response.data.forEach(element => {
+        let new_store: any[] = [];
+        new_store = response.data;
+
+        if(this.stores.length > 0) {
+          new_store.forEach(element => {
             this.stores.push(element);;
           });
         } else {
-          this.stores = response.data;
+          this.stores = new_store;
           this.dummyStores = [];
+          this.haveStores = true;
         }
-        this.haveStores = true;
 
         this.stores.forEach(async (store) => {
           store['isOpen'] = await this.isOpen(store.open_time, store.close_time);
@@ -177,8 +193,10 @@ export class HomePage {
         });
         this.util.active_store = [...new Set(this.stores.map(item => item.uuid))];
       } else {
+        if(event == "refresh") {
+          this.haveStores = false;
+        }
         this.no_stores_follows = true;
-        this.resetAllArrays(response.message);
       }
 
       if(event) {
