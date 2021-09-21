@@ -51,4 +51,12 @@ export class TabsPage {
     var currentTab: string = this.userTabs.getSelected();
     this.navCtrl.navigateRoot('user/' + currentTab);
   }
+
+  ionViewWillEnter() {
+    //Enter before did.
+  }
+
+  ionViewDidEnter() {
+    document.documentElement.style.setProperty('--background-primary-app', '#ededed');
+  }
 }

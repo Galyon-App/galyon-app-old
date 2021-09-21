@@ -9,8 +9,11 @@
 
 /** Ionic CSS Variables **/
 :root {
+  background-color: #C82180;
+  --background-primary-app: #f7f7f700;
+
   /** primary **/
-  --ion-color-primary:#C82180;
+  --ion-color-primary: #C82180;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;

@@ -6,7 +6,7 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { IonRouterOutlet, MenuController, NavController, Platform } from '@ionic/angular';
+import { IonRouterOutlet, LoadingController, MenuController, NavController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { environment } from 'src/environments/environment';
@@ -14,7 +14,7 @@ import { ApiService } from './services/api.service';
 import { UtilService } from './services/util.service';
 import { CartService } from './services/cart.service';
 import * as moment from 'moment';
-import { Router } from '@angular/router';
+import { Event, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { UserService } from './services/user.service';
 import { User } from './models/user.model';
@@ -42,10 +42,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private navCtrl: NavController,
-    private api: ApiService,
     public util: UtilService,
     public cart: CartService,
     private auth: AuthService,
@@ -54,11 +52,38 @@ export class AppComponent implements OnInit {
     private storage: Storage,
     private user: UserService,
     private address: AddressService,
-    private optServ: OptionService
+    private optServ: OptionService,
+    public loadCtrl: LoadingController
   ) {
+    // this.presentLoading();
+    // this.router.events.subscribe((event: Event) => {
+    //   if (event instanceof NavigationStart) {
+    //       console.log('NavigationStart');
+    //   }
+
+    //   if (event instanceof NavigationEnd) {
+    //       console.log('NavigationEnd');
+    //   }
+
+    //   if (event instanceof NavigationError) {
+    //       console.log(event.error);
+    //   }
+    // });
     this.selectedIndex = 0;
     this.initialize();
     this.menuCtrl.enable(false, 'menu1');
+  }
+
+  async presentLoading() {
+    const loading = await this.loadCtrl.create({
+      showBackdrop: true,
+      translucent: false,
+      duration: 500
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
   }
 
   async ngOnInit() {

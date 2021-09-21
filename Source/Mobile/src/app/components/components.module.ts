@@ -16,12 +16,14 @@ import { TimeComponent } from './time/time.component';
 import { PopoverComponent } from './popover/popover.component';
 import { FiltersComponent } from './filters/filters.component';
 import { ClosedComponent } from './closed/closed.component';
+import { SplashComponent } from './splash/splash.component';
 
 const components = [
     TimeComponent,
     PopoverComponent,
     FiltersComponent,
-    ClosedComponent
+    ClosedComponent,
+    SplashComponent
 ];
 @NgModule({
     declarations: [

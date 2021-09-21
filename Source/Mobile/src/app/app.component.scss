@@ -8,6 +8,10 @@ ion-menu ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
 }
 
+.ion-page {
+  background-color: var(--background-primary-app) !important;
+}
+
 .infoSection{
   background: var(--ion-color-primary);
   display: flex;
