@@ -14,14 +14,76 @@ class Crud_model extends Galyon_model {
 		parent::__construct();
   }
 
-  function get_stores_without_uuid() {
-    $query = "SELECT * FROM stores WHERE CHAR_LENGTH(uuid) < 36 AND owner IS NULL;";
+  function get_table_rows_without_uuid($current_table) {
+    $query = "SELECT * FROM $current_table WHERE CHAR_LENGTH(uuid) < 36;";
     return $this->custom($query, array(), 'result');
   }
 
-  function set_store_with_uuid($id, $uuid) {
-    return $this->update('stores', array("uuid" => $uuid), array( "id" => $id ) );
+  function set_table_rows_with_uuid($id, $uuid, $current_table) {
+    return $this->update($current_table, array("uuid" => $uuid), array( "id" => $id ) );
   }
+
+  function get_stores_without_city() {
+    $query = "SELECT * FROM stores WHERE city_id LIKE '%:%';";
+    return $this->custom($query, array(), 'result');
+  }
+
+  function set_store_with_city($id, $city_id) {
+    return $this->update('stores', array("city_id" => $city_id), array( "id" => $id ) );
+  }
+
+  function check_if_city_exist($name) {
+    $query = "SELECT * FROM cities WHERE name = ?;";
+    return $this->custom($query, array($name), 'row');
+  }
+
+  function insert_new_city($name, $lat, $lng, $province, $country) {
+    $inserted = $this->insert("cities", array( 
+      "uuid" => $this->uuid->v4(), 
+      "name" => $name, 
+      "province" => $province, 
+      "country" => $country, 
+      "lat" => $lat, 
+      "lng" => $lng,
+      "status" => "1",
+      "timestamp" => get_current_utc_time() 
+    ));
+    return $inserted;
+  }
+
+  function insert_store_address($store_id, $address, $lat, $lng) {
+    $query = "SELECT * FROM address WHERE store_id = ? AND status = '1' AND deleleted_at IS NULL;";
+    $has_address = $this->custom($query, array($store_id), 'row');
+    if($has_address) {
+      return;
+    }
+
+    $inserted = $this->insert("address", array( 
+      "uuid" => $this->uuid->v4(), 
+      "store_id" => $store_id, 
+      "type" => "other",
+      "address" => $address, 
+      "house" => "",
+      "landmark" => "",
+      "zipcode" => "",
+      "lat" => $lat, 
+      "lng" => $lng,
+      "status" => "1",
+      "timestamp" => get_current_utc_time() 
+    ));
+  }
+
+  function get_stores_without_address() {
+    $query = "SELECT `stores`.*, `address`.`uuid` as address_id 
+    FROM `stores` 
+      LEFT JOIN `address` ON `stores`.uuid = `address`.`store_id`
+    WHERE `address`.`uuid` IS NULL";
+    return $this->custom($query, array(), 'result');
+  }
+
+
+
+
 
 
 
