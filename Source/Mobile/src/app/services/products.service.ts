@@ -41,7 +41,7 @@ export class ProductsService {
     private api: ApiService,
   ) { 
     //TODO: Get the data from localdatabase then load.
-    let instance = Product[0];
+    let instance = [] as Product[];
     this.subject = new BehaviorSubject<Product[]>(instance);
     this.observable = this.subject.asObservable();
   }
@@ -54,7 +54,7 @@ export class ProductsService {
     } else {
       this.api.posts('galyon/v1/products/getAllProducts', params).then((res: any) => {
         if(res && res.success == true && res.data && persist) {
-          this.subject = new BehaviorSubject<Product[]>(res.data);
+          this.subject.next(res.data)
         }
         if(callback != null) {
           callback(res.success ? this.current : null);

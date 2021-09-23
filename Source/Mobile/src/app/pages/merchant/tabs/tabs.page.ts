@@ -8,6 +8,8 @@ import { UtilService } from 'src/app/services/util.service';
 })
 export class TabsPage implements OnInit {
 
+  isReady: boolean = false;
+
   constructor(
     public util: UtilService
   ) { }
@@ -15,4 +17,7 @@ export class TabsPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewDidEnter() {
+    this.isReady = true;
+  }
 }

@@ -10,7 +10,7 @@
   <div class="main_div">
     <ion-row>
       <ion-col size="4">
-        <img [src]="getCover()" alt="" class="profilePic" onError="this.src='assets/imgs/user.png'">
+        <div class="profilePic" [ngStyle]="{'background-image':'url('+api.mediaURL+store_cover+'),url(assets/imgs/store.png)'}"> </div>
       </ion-col>
       <ion-col size="8">
         <p class="username">{{getName()}}</p>
@@ -23,11 +23,11 @@
 
   <div class="options">
 
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="getProducts()">
+    <!-- <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="getProducts()">
       <ion-icon name="file-tray-stacked-outline" slot="start"></ion-icon>
       <ion-label>{{util.getString('Manage Products')}} </ion-label>
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-    </ion-item>
+    </ion-item> -->
 
     <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToSupport()">
       <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>

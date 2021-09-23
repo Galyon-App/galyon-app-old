@@ -21,6 +21,8 @@ import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
 import { AddressService } from './services/address.service';
 import { OptionService } from './services/option.service';
+import { MerchantService } from './services/merchant.service';
+import { Store } from './models/store.model';
 
 @Component({
   selector: 'app-root',
@@ -53,7 +55,8 @@ export class AppComponent implements OnInit {
     private user: UserService,
     private address: AddressService,
     private optServ: OptionService,
-    public loadCtrl: LoadingController
+    public loadCtrl: LoadingController,
+    private merchant: MerchantService
   ) {
     // this.presentLoading();
     // this.router.events.subscribe((event: Event) => {
@@ -137,6 +140,11 @@ export class AppComponent implements OnInit {
         this.user.request(this.auth.userToken.uuid);
         this.address.request(this.auth.userToken.uuid);
 
+        if(this.auth.is_merchant) {
+          this.merchant.request((stores: Store[]) => {
+            console.log("My Stores", stores);
+          })
+        }
       }
 
       // if (this.platform.is('cordova')) {

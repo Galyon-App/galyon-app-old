@@ -40,7 +40,7 @@ export class AddressService {
   constructor(
     private api: ApiService,
   ) { 
-    let instance = Address[0];
+    let instance = [] as Address[];
     this.subject = new BehaviorSubject<Address[]>(instance);
     this.observable = this.subject.asObservable();
   }
@@ -50,7 +50,7 @@ export class AddressService {
       uuid: userId,
     }).then((res: any) => {
       if(res && res.success == true && res.data) {
-        this.subject = new BehaviorSubject<Address[]>(res.data);
+        this.subject.next(res.data)
       }
       if(callback != null) {
         callback(res.success);

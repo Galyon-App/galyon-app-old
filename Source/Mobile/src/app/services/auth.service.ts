@@ -6,6 +6,7 @@ import { UtilService } from './util.service';
 import { Store } from '../models/store.model';
 import { UserService } from './user.service';
 import { Token } from '../models/token.model';
+import { Role } from '../models/role.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,10 @@ export class AuthService {
     } else {
       return true;
     }
+  }
+
+  public get is_merchant(): boolean {
+    return this.subject.value ? this.subject.value.role === Role.Merchant : false;
   }
 
   public get userToken(): Token {

@@ -9,6 +9,11 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
+        path: '',
+        redirectTo: 'orders',
+        pathMatch: 'full'
+      },
+      {
         path: 'orders',
         loadChildren: () => import('../orders/orders.module').then(m => m.OrdersPageModule)
       },

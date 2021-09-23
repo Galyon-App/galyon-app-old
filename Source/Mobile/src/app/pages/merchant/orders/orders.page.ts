@@ -27,6 +27,7 @@ export class OrdersPage implements OnInit {
   dummy = Array(50);
   olders: any[] = [];
   limit: any;
+
   constructor(
     public api: ApiService,
     public util: UtilService,
@@ -47,7 +48,7 @@ export class OrdersPage implements OnInit {
     this.newOrders = [];
     this.onGoingOrders = [];
     this.oldOrders = [];
-    this.dummy = Array(50);
+    this.dummy = Array(5);
     this.getOrders('', false);
   }
 

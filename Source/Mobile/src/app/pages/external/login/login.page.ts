@@ -11,8 +11,8 @@ import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import Swal from 'sweetalert2';
 import { SelectCountryPage } from '../../users/select-country/select-country.page';
-import { VerifyPage } from '../verify/verify.page';
 import { AuthService } from 'src/app/services/auth.service';
+import { MerchantService } from 'src/app/services/merchant.service';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +34,8 @@ export class LoginPage implements OnInit {
     private auth: AuthService,
     private api: ApiService,
     private route: ActivatedRoute,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private merchant: MerchantService
   ) {
     if (!this.util.user_login || this.util.user_login === '') {
       this.util.user_login = '0';
@@ -57,10 +58,12 @@ export class LoginPage implements OnInit {
     //   this.util.error('Please enter valid email');
     //   return false;
     // }
+    
     this.auth.login(this.email, this.password, (response) => {
-      console.log(response);
       if(response && response.success == true && response.data) {
-        // get return url from query parameters or default to home page
+        this.merchant.clearData();
+        this.merchant.request();
+        
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigateByUrl(returnUrl);
       } else {

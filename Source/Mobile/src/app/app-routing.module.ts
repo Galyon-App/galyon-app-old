@@ -23,27 +23,7 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./pages/merchant/tabs/tabs.module').then( m => m.TabsPageModule)
-      },
-      {
-        path: 'orders',
-        loadChildren: () => import('./pages/merchant/orders/orders.module').then( m => m.OrdersPageModule)
-      },
-      {
-        path: 'messages',
-        loadChildren: () => import('./pages/merchant/messages/messages.module').then( m => m.MessagesPageModule)
-      },
-      {
-        path: 'reviews',
-        loadChildren: () => import('./pages/merchant/reviews/reviews.module').then( m => m.ReviewsPageModule)
-      },
-      {
-        path: 'analytics',
-        loadChildren: () => import('./pages/merchant/analytics/analytics.module').then( m => m.AnalyticsPageModule)
-      },
-      {
-        path: 'accounts',
-        loadChildren: () => import('./pages/merchant/accounts/accounts.module').then( m => m.AccountsPageModule)
-      },
+      }
     ],
     canActivate: [AuthGuard],
     data: { roles: [Role.Merchant] }
@@ -67,9 +47,7 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('./pages/users/tabs/tabs.module').then( m => m.TabsPageModule)
       }
-    ],
-    // canActivate: [AuthGuard],
-    // data: { roles: [Role.User] }
+    ]
   },
   {
     path: 'editor',

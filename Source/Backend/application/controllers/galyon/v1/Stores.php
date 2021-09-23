@@ -169,10 +169,10 @@ class Stores extends Galyon_controller {
         }
 
         $stores = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, [" owner = '$uuid'"]), null, 'row' );
+            $this->compileWhereClause($auth->where, [" owner = '$uuid'"]), null, 'result' );
 
         if($stores) {
-            $stores = $this->getStoreMetaItem($stores);
+            $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
         } else {
             $this->json_response(null, false, "No store associated to this account!");

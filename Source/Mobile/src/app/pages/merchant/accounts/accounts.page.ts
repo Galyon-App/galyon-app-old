@@ -3,6 +3,8 @@ import { NavController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
+import { UserService } from 'src/app/services/user.service';
+import { MerchantService } from 'src/app/services/merchant.service';
 
 @Component({
   selector: 'app-accounts',
@@ -11,11 +13,20 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class AccountsPage implements OnInit {
 
+  public get store_cover(): any {
+    return this.merchant.stores.length > 0 ? this.merchant.stores[0].cover : "";
+  }
+
   constructor(
     private navCtrl: NavController,
     private router: Router,
     public util: UtilService,
-    private api: ApiService) { }
+    private api: ApiService,
+    private user: UserService,
+    private merchant: MerchantService
+  ) { 
+
+  }
 
   ngOnInit() {
   }
@@ -33,7 +44,7 @@ export class AccountsPage implements OnInit {
   }
 
   goToContact() {
-    this.router.navigate(['contact']);
+    this.router.navigate(['contacts']);
   }
 
   goToSupport() {
@@ -43,20 +54,16 @@ export class AccountsPage implements OnInit {
         name: 'Technical Support'
       }
     };
-    this.router.navigate(['chat'], param);
+    this.router.navigate(['user/message/chat'], param);
   }
 
 
   getName() {
-    return localStorage.getItem('name') ? localStorage.getItem('name') : 'Galyon';
+    return this.merchant.stores.length > 0 ? this.merchant.stores[0].name : "Unknown";
   }
 
   getEmail() {
-    return localStorage.getItem('email') ? localStorage.getItem('email') : 'support@bytescrafter.net';
-  }
-
-  getCover() {
-    return this.util.store && this.util.store.cover ? this.api.mediaURL + this.util.store.cover : 'assets/imgs/user.png';
+    return this.user.getCurrent.first_name + ' ' + this.user.getCurrent.last_name;
   }
 
   openMenu() {

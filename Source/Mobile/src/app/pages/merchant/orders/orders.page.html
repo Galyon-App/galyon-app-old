@@ -9,7 +9,8 @@
   
   <div class="segment_div">
     <ion-label style="margin: 11px 2px 0; width: auto; height: 45px;">
-      <img src="assets/imgs/logo.png" onError="this.src='assets/imgs/logo.png'" alt="">
+      <img src="assets/imgs/icon.png" alt="" 
+        style="max-height: -webkit-fill-available; width: fit-content; padding: 0 15px;">
     </ion-label>
     <ion-label [class.active]="segment == 1" (click)="onClick(1)"> {{util.getString('New')}} </ion-label>
     <ion-label [class.active]="segment == 2" (click)="onClick(2)"> {{util.getString('Ongoing')}} </ion-label>

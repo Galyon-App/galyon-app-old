@@ -1,40 +1,34 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Store } from '../models/store.model';
 import { ApiService } from './api.service';
+import { Store } from '../models/store.model';
 import * as moment from 'moment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StoreService {
-
-  private date_init = new Date(); 
-	private date_new = new Date(); 
-  
-  public has_fresh_data(timer: number = 10000) {
-    this.date_new = new Date(); 
-    let counting = (this.date_new.getTime() - this.date_init.getTime())/1000; 
-    if(counting > timer) {
-      this.date_init = new Date(); 
-      
-    } return counting > timer ? true : false;
-  }
+export class MerchantService {
 
   private subject: BehaviorSubject<Store[]>;
   private observable: Observable<Store[]>;
 
-  public get current(): Store[] {
+  public get stores(): Store[] {
     return this.subject.value;
   }
 
   constructor(
     private api: ApiService,
+    private auth: AuthService
   ) { 
-    //TODO: Get the data from localdatabase then load.
     let instance = [] as Store[];
     this.subject = new BehaviorSubject<Store[]>(instance);
     this.observable = this.subject.asObservable();
+  }
+
+  public clearData() {
+    let cleared = [] as Store[];
+    this.subject.next(cleared);
   }
 
   public isOpen(start, end) {
@@ -51,25 +45,23 @@ export class StoreService {
   }
 
   public request(callback = null, persist: boolean = true) {
-    if(this.has_fresh_data()) {
-      if(callback != null) {
-        callback(this.current);
-      }
-    } else {
-      this.api.gets('galyon/v1/stores/getAllStores').then((res: any) => {
-        if(res && res.success == true && res.data && persist) {
+    this.api.posts('galyon/v1/stores/getStoreByOwner', {
+      uuid: this.auth.userToken.uuid
+    }).then((res: any) => {
+      if(res && res.success == true && res.data) {
+        if(persist) {
           this.subject.next(res.data);
         }
-        if(callback != null) {
-          callback(res.success ? this.current : null);
-        }
-      }).catch(error => {
-        console.log('error', error);
-        if(callback != null) {
-          callback(null);
-        }
-      });
-    }
+      }
+      if(callback != null) {
+        callback(res.success ? this.stores : null);
+      }
+    }).catch(error => {
+      console.log('error', error);
+      if(callback != null) {
+        callback(null);
+      }
+    });
   }
 
   public getById(store_id: string, callback = null) {

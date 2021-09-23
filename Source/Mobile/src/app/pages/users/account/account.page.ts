@@ -14,6 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { AddressService } from 'src/app/services/address.service';
+import { MerchantService } from 'src/app/services/merchant.service';
 
 @Component({
   selector: 'app-account',
@@ -23,11 +24,11 @@ import { AddressService } from 'src/app/services/address.service';
 export class AccountPage implements OnInit {
 
   get hasStore(): boolean {
-    return localStorage.getItem('suid') != null && localStorage.getItem('suid') != '';
+    return this.merchant.stores.length > 0;
   }
 
   manageStore() {
-    this.router.navigate(['/merchant/orders']);
+    this.router.navigate(['merchant']);
   }
 
   constructor(
@@ -38,6 +39,7 @@ export class AccountPage implements OnInit {
     public cart: CartService,
     public user: UserService,
     private authServ: AuthService,
+    private merchant: MerchantService
   ) { 
     this.user.request(this.authServ.userToken.uuid);
   }
@@ -86,9 +88,6 @@ export class AccountPage implements OnInit {
     };
     this.router.navigate(['user/message/chat'], param);
   }
-
-
-
 
   reset() {
     this.router.navigate(['reset']);
