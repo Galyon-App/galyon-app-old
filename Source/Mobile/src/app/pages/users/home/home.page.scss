@@ -22,6 +22,20 @@ ion-thumbnail {
     }
 }
 
+.headerSlides {
+    ion-slide {
+        .whole {
+            height: fit-content; 
+            width: -webkit-fill-available;
+            .image {
+                height: 24vh;
+                background-size: cover;
+                background-position: center;
+            }
+        }
+    }
+}
+
 .searchbar{
     padding: 0px 10px;
 }
@@ -37,7 +51,10 @@ ion-thumbnail {
     width: 100%;
     padding: 16px;
     padding-bottom: 20px;
-    ion-label { display: block; }
+    
+    ion-label { 
+        display: block; 
+    }
 
     .segment-title{
         display: flex;
@@ -75,22 +92,15 @@ ion-thumbnail {
             .imgs{
                 border-radius: 50%;
                 padding: 5px;
-                line-height: 60px;
-                height: 50px;
-                width: 75px;
+                height: 70px;
+                width: 70px;
                 position: relative;
+                background-size: cover;
+                background-position: center;
             }
-            .icon{
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%,-50%);
-            }
-
             .name{
-                font-size: 12px;
+                font-size: 14px;
                 font-weight: bold;
-                color: gray;
                 margin: 15px 0px 10px;
             }
         }

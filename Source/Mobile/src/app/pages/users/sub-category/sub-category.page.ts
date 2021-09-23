@@ -63,11 +63,15 @@ export class SubCategoryPage implements OnInit {
   ) {
     this.dummys = Array(20);
     this.route.queryParams.subscribe((data) => {
-      console.log(data);
-      if (data && data.uuid && data.name) {
+      if (data && data.uuid) {
+        let linked: boolean = data.name == 'link'? true:false;
         this.limit = 1;
         this.id = data.uuid;
-        this.name = data.name ? data.name : 'Top Picked';
+        if(linked) {
+          this.name = "Sponsored";
+        } else {
+          this.name = data.name ? data.name : 'Top Picked';
+        }
         this.getCates();
       }
     });

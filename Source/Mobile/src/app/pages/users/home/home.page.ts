@@ -24,6 +24,18 @@ import { OptionService } from 'src/app/services/option.service';
 })
 export class HomePage {
 
+  homeLayout: any = '0';
+
+  slideHead = {
+    autoplay: true,
+    effect: "fade",
+    speed: 700,
+    loop: true,
+    pager: true,
+    initialSlide: 0,
+    slidesPerView: 1,
+  };
+
   slideOpts = {
     slidesPerView: 1.3,
   };
@@ -216,6 +228,9 @@ export class HomePage {
             this.categories.push(element);
           }
         });
+        // this.categories.push({
+          //TODO: More button here using default cover.
+        // });
         this.dummyCates = [];
       }
     }, error => {
@@ -432,34 +447,26 @@ export class HomePage {
 
   openLink(item) {
     if (item.type === '0') {
-      // Category
-      console.log('open category');
-      const name = this.categories.filter(x => x.uuid === item.uuid);
-      let cateName: any = '';
-      if (name && name.length) {
-        cateName = name[0].name
-      }
       const param: NavigationExtras = {
         queryParams: {
-          id: item.link,
-          name: cateName
+          uuid: item.link,
+          name: "link"
         }
       };
       this.router.navigate(['user/home/sub-category'], param);
     } else if (item.type === '1') {
-      // product
-      console.log('open product');
       const param: NavigationExtras = {
         queryParams: {
-          id: item.link
+          uuid: item.link
         }
       };
-
       this.router.navigate(['user/home/product'], param);
     } else {
-      // link
-      console.log('open link');
-      this.iab.create(item.link, '_blank');
+      let link = item.link;
+      if( !item.link.includes('http') ){
+        link = 'http://'+item.link;
+      }
+      this.iab.create(link, '_blank');
     }
   }
 

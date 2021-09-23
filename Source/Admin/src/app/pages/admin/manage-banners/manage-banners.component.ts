@@ -78,43 +78,43 @@ export class ManageBannersComponent {
   }
 
   getDatas() {
-    // this.api.get('products').then((data: any) => {
-    //   console.log('products', data);
-    //   this.dummyProducts = [];
-    //   if (data && data.status === 200 && data.data && data.data.length > 0) {
-    //     this.dummyProducts = data.data;
-    //     if (this.id && this.type === '1') {
-    //       const name = this.dummyProducts.filter(x => x.id === this.link);
-    //       console.log('nama,maa==>>>', name);
-    //       if (name && name.length) {
-    //         this.search = name[0].name;
-    //       }
-    //     }
-    //   }
-    // }).catch(error => {
-    //   console.log(error);
-    // });
+    this.api.post('galyon/v1/products/getAllProducts',{
+      limit_length: 10000
+    }).then((response: any) => {
+      this.dummyProducts = [];
+      if (response && response.success && response.data) {
+        this.dummyProducts = response.data;
+        if (this.id && this.type === '1') {
+          const name = this.dummyProducts.filter(x => x.uuid === this.link);
+          if (name && name.length) {
+            this.search = name[0].name;
+          }
+        }
+      }
+    }).catch(error => {
+      console.log(error);
+    });
 
-    // this.api.get('categories').then((datas: any) => {
-    //   console.log(datas);
-    //   this.dummyCate = [];
-    //   if (datas && datas.data && datas.data.length) {
-    //     this.dummyCate = datas.data;
-    //     if (this.id && this.type === '0') {
-    //       const name = this.dummyCate.filter(x => x.id === this.link);
-    //       console.log('nama,maa==>>>', name);
-    //       if (name && name.length) {
-    //         this.search = name[0].name;
-    //       }
-    //     }
-    //   }
-    // }, error => {
-    //   console.log(error);
-    //   this.util.error(this.api.translate('Something went wrong'));
-    // }).catch(error => {
-    //   console.log(error);
-    //   this.util.error(this.api.translate('Something went wrong'));
-    // });
+    this.api.post('galyon/v1/category/getParentCategorys',{
+      limit_length: 10000
+    }).then((response: any) => {
+      this.dummyCate = [];
+      if (response && response.success && response.data) {
+        this.dummyCate = response.data;
+        if (this.id && this.type === '0') {
+          const name = this.dummyCate.filter(x => x.uuid === this.link);
+          if (name && name.length) {
+            this.search = name[0].name;
+          }
+        }
+      }
+    }, error => {
+      console.log(error);
+      this.util.error(this.api.translate('Something went wrong'));
+    }).catch(error => {
+      console.log(error);
+      this.util.error(this.api.translate('Something went wrong'));
+    });
   }
 
   searchCate(str) {
@@ -129,13 +129,13 @@ export class ManageBannersComponent {
   }
 
   selectCate(item) {
-    this.link = item.id;
+    this.link = item.uuid;
     this.search = item.name;
     this.cate = [];
   }
 
   selectProduct(item) {
-    this.link = item.id;
+    this.link = item.uuid;
     this.search = item.name;
     this.products = [];
   }
