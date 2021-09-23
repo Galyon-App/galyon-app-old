@@ -143,7 +143,7 @@ ion-thumbnail {
             margin-right: 10px;
 
             .image_div{
-                height: 120px;
+                height: 40vw;
                 width: 40vw;
                 object-fit: cover;
                 display: table;
@@ -577,7 +577,7 @@ ion-thumbnail {
             }
 
             .image_div{
-                height: 120px;
+                height: 40vw;
                 width: 40vw;
                 display: table;
                 margin: 5px;
@@ -750,7 +750,7 @@ ion-thumbnail {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 100px;
+    padding: 45px 40px;
     .imgs{
         height: 100px;
         width: 100px;

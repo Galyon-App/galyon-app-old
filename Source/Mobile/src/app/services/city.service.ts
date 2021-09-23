@@ -49,6 +49,7 @@ export class CityService {
       uuid: this.activeCity,
     }).then((res: any) => {
       if(res && res.success == true && res.data) {
+        res.data.name = res.data.name ? res.data.name : "Unknown";
         this.subject = new BehaviorSubject<City>(res.data);
         callback(res.data);
       } else {

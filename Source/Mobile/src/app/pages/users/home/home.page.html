@@ -19,13 +19,13 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div class="flx" *ngIf="haveStores == true">
+  <div class="flx">
     <ion-searchbar [placeholder]="util.getString('Search...')" [(ngModel)]="terms" inputmode="text" type="search"
       (keyup.enter)="search(q.value)" (ionChange)="onSearchChange($event)" #q [debounce]="250" mode="ios"
       showCancelButton="never">
     </ion-searchbar>
   </div>
-  <div class="searchList" *ngIf="products?.length && haveStores == true" style="margin-bottom: 15px;">
+  <div class="searchList" *ngIf="products?.length" style="margin-bottom: 15px;">
     <ion-item *ngFor="let item of products" (click)="openStore(item)">
       <img [src]="api.mediaURL + item.cover" alt="..." (error)="'assets/imgs/store.png'" 
       style="object-fit: cover;
@@ -39,7 +39,7 @@
     </ion-item>
   </div>
   
-  <div class="main_content_div" *ngIf="haveStores == true">
+  <div class="main_content_div">
 
     <!-- START CATEGORIES -->
     <div class="segment-title">
@@ -253,7 +253,7 @@
               </div>
               <div class="desc_div" (click)="openStore(item)">
                 <ion-label class="pro_name">
-                  {{ (item.name.length>12)? (item.name | slice:0:29):(item.name) }}</ion-label>
+                  {{ (item.name.length>55)? (item.name | slice:0:55):(item.name) }}</ion-label>
                 <ion-label class="pro_detail">
                   {{ (item.address.length>20)? (item.address | slice:0:40)+'..':(item.address) }}
                 </ion-label>
@@ -275,7 +275,7 @@
     <!-- END TOP PRODUCTS -->
     
     <!-- START BOTTOM BANNER -->
-    <div class="slider_div" *ngIf="bottomBanners.length > 0 && bottomDummy.length == 0">
+    <div class="slider_div" *ngIf="bottomBanners.length > 0 && bottomDummy.length == 0 && featuredStores.length > 0 && dummyFeaturedStores.length == 0">
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of bottomDummy">
           <div class="card">
@@ -306,8 +306,7 @@
         <ion-icon name="chevron-forward-outline" color="primary"></ion-icon>
       </ion-label> -->
     </div>
-
-    <ion-list>
+    <ion-list *ngIf="haveStores == true">
       <ion-item lines="none" *ngFor="let item of dummyStores">
         <div class="allstore_div">
           <div class="card_div">
@@ -352,21 +351,20 @@
         </div>
       </ion-item>
     </ion-list>
-
+    <div *ngIf="haveStores == true && no_stores_follows == true" style="display: flex; flex-direction: column; margin: 0 0 20px;">
+      <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
+    </div>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [ngStyle]="{'display': no_stores_follows ? 'none':'block'}" style="padding: 20px;">
       <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
+    <div *ngIf="haveStores == false" class="nothing">
+      <img src="assets/imgs/nothing.png" alt="" srcset="" class="imgs">
+      <p class="ion-text-center">Sorry, no stores near you! <br>Try selecting the another city.</p>
+    </div>
     <!--  END INFINITY STORES -->
 
   </div>
 
-  <div *ngIf="haveStores == true && no_stores_follows == true" style="display: flex; flex-direction: column; margin: 0 0 20px;">
-    <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
-  </div>
-
-  <div *ngIf="haveStores == false" class="nothing">
-    <img src="assets/imgs/nothing.png" alt="" srcset="" class="imgs">
-    <p class="ion-text-center bolder"> {{util.getString('No Stores Found Near You!')}} </p>
-  </div>
+  
 </ion-content>

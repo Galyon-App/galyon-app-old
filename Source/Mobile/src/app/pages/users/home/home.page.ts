@@ -110,7 +110,7 @@ export class HomePage {
 
   getStoreByCityAndFeatured() {
     this.api.post('galyon/v1/stores/getStoreFeatured', {
-      city_id: this.city.activeCity,
+      //city_id: this.city.activeCity,
       limit_start: 0,
       limit_length: 5
     }).subscribe((response: any) => {
@@ -121,11 +121,9 @@ export class HomePage {
         this.featuredStores.forEach(async (store) => {
           store['isOpen'] = await this.isOpen(store.open_time, store.close_time);
         });
-      } else {
-        this.resetAllArrays(response.message);
       }
     }, error => {
-      this.resetAllArrays('Something went wrong');
+      console.log(error);
     });
   }
 
@@ -199,11 +197,11 @@ export class HomePage {
         this.no_stores_follows = true;
       }
 
-      if(event) {
+      if(event && typeof event.complete == 'function') {
         event.complete();
       }
     }, error => {
-      if(event) {
+      if(event && typeof event.complete == 'function') {
         event.complete();
       }
       this.resetAllArrays('Something went wrong');
@@ -214,7 +212,6 @@ export class HomePage {
     this.api.get('galyon/v1/category/getParentCategorys').subscribe((response: any) => {
       if (response && response.success && response.data) {
         response.data.forEach(element => {
-          this.categories.push(element);
           if (element.status === '1') {
             this.categories.push(element);
           }
