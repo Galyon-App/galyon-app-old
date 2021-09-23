@@ -284,7 +284,7 @@ CREATE TABLE `orders` (
   `grand_total` decimal(20,2) NOT NULL,
   `paid_method` enum('cod','google','gcash','paypal','stripe') NOT NULL,
   `pay_key` varchar(100) DEFAULT NULL,
-  `stage` enum('created','rejected','ongoing','shipping','cancelled','delivered') NOT NULL DEFAULT 'created',
+  `stage` enum('draft','created','rejected','ongoing','shipping','cancelled','delivered') NOT NULL DEFAULT 'created',
   `status` set('1','0') NOT NULL DEFAULT '1',
   `timestamp` datetime DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
