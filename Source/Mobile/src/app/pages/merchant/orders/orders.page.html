@@ -41,87 +41,103 @@
       <p *ngIf="!dummy?.length && !newOrders?.length" class="ion-text-center"> {{util.getString('No Orders Found')}}
       </p>
       <div class="card_div" *ngFor="let item of newOrders" (click)="goToOrder(item)">
-
         <div class="image_div">
-          <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
+          <img [src]="api.mediaURL+item.store_cover" onError="this.src='assets/imgs/store.png'">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold;color: var(--ion-color-primary); font-size: 12px;"> {{util.getString('ORDER')}} #{{item.uuid}}
+          <ion-label style="font-weight: bold; color: var(--ion-color-primary); font-size: 12px; padding-bottom: 7px;">
+            {{ item.user_name }}
           </ion-label>
-          <div *ngIf="item.orders?.length" class="border_bottom">
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Order ID')}}: #{{((item.uuid | slice:0:8)+'').toUpperCase() }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Number of Items') }}: {{ item.items.length }} item(s)
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Grand Total') }}: {{ util.currecny }}{{ item.grand_total }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Date') }}: {{ item.timestamp }}
+          </ion-label>
+          <!-- <div *ngIf="item.orders?.length" class="border_bottom">
             <p *ngFor="let order of item.orders;let ol = index" class="items">
               <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
                 </span> </span>
               <span>X {{order.quantity}}</span>
             </p>
-
-          </div>
-          <ion-label class="datetime">{{ item.date_time}}</ion-label>
+          </div> -->
+          <!-- <ion-label class="datetime">{{ item.timestamp}}</ion-label> -->
         </div>
         <div class="status">
-          {{item.storeStatus}}
+          {{item.stage}}
         </div>
       </div>
-
     </div>
 
     <div class="content_div" *ngIf="segment === 2">
       <p *ngIf="!dummy?.length && !onGoingOrders?.length" class="ion-text-center"> {{util.getString('No Orders Found')}}
       </p>
       <div class="card_div" *ngFor="let item of onGoingOrders" (click)="goToOrder(item)">
-
         <div class="image_div">
-          <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
+          <img [src]="api.mediaURL+item.store_cover" onError="this.src='assets/imgs/store.png'">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold;color: var(--ion-color-primary); font-size: 12px;"> {{util.getString('ORDER')}} #{{item.uuid}}
+          <ion-label style="font-weight: bold; color: var(--ion-color-primary); font-size: 12px; padding-bottom: 7px;">
+            {{ item.user_name }}
           </ion-label>
-          <div *ngIf="item.orders?.length" class="border_bottom">
-            <p *ngFor="let order of item.orders;let ol = index" class="items">
-              <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
-                </span> </span>
-              <span>X {{order.quantity}}</span>
-            </p>
-
-          </div>
-          <ion-label class="datetime">{{ item.date_time}}</ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Order ID')}}: #{{((item.uuid | slice:0:8)+'').toUpperCase() }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Number of Items') }}: {{ item.items.length }} item(s)
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Grand Total') }}: {{ util.currecny }}{{ item.grand_total }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Date') }}: {{ item.timestamp }}
+          </ion-label>
         </div>
         <div class="status">
-          {{item.storeStatus}}
+          {{item.stage}}
         </div>
       </div>
-
     </div>
 
     <div class="content_div" *ngIf="segment === 3">
       <p *ngIf="!dummy?.length && !oldOrders?.length" class="ion-text-center"> {{util.getString('No Orders Found')}}
       </p>
       <div class="card_div" *ngFor="let item of oldOrders" (click)="goToOrder(item)">
-
         <div class="image_div">
-          <img [src]="api.mediaURL+ item.orders[0].cover" onError="this.src='assets/imgs/product.png'">
+          <img [src]="api.mediaURL+item.store_cover" onError="this.src='assets/imgs/store.png'">
         </div>
         <div class="desc_div">
-          <ion-label style="font-weight: bold; color: var(--ion-color-primary); font-size: 14px;"> {{util.getString('ORDER')}} #{{item.uuid}}
+          <ion-label style="font-weight: bold; color: var(--ion-color-primary); font-size: 12px; padding-bottom: 7px;">
+            {{ item.user_name }}
           </ion-label>
-          <div *ngIf="item.orders?.length" class="border_bottom">
-            <p *ngFor="let order of item.orders;let ol = index" class="items">
-              <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
-                </span> </span>
-              <span>X {{order.quantity}}</span>
-            </p>
-          </div>
-          <ion-label class="datetime">{{ item.date_time}}</ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Order ID')}}: #{{((item.uuid | slice:0:8)+'').toUpperCase() }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Number of Items') }}: {{ item.items.length }} item(s)
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Grand Total') }}: {{ util.currecny }}{{ item.grand_total }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Date') }}: {{ item.timestamp }}
+          </ion-label>
         </div>
         <div class="status">
-          {{item.storeStatus}}
+          {{item.stage}}
         </div>
       </div>
-      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event,true)">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
     </div>
 
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event,true)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </div>
 </ion-content>

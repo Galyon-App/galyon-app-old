@@ -97,7 +97,7 @@ class Orders extends Galyon_controller {
 
     function getOrdersByStore() {
         $auth = $this->is_authorized(true);
-        $request = $this->request_validation($_POST, [], $this->public_column,["store_id"]);
+        $request = $this->request_validation($_POST, [], $this->public_column, ["store_id"]);
 
         //TODO: Check if Admin or Operator or Owner of store.
 

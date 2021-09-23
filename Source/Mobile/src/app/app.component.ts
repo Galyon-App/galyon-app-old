@@ -142,7 +142,7 @@ export class AppComponent implements OnInit {
 
         if(this.auth.is_merchant) {
           this.merchant.request((stores: Store[]) => {
-            console.log("My Stores", stores);
+            //console.log("My Stores", stores);
           })
         }
       }
