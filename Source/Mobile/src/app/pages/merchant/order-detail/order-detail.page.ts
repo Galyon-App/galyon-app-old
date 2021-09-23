@@ -6,8 +6,8 @@
 */
 import { SelectDriversPage } from '../select-drivers/select-drivers.page';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, ModalController } from '@ionic/angular';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
 import { Printer, PrintOptions } from '@ionic-native/printer/ngx';
@@ -56,6 +56,7 @@ export class OrderDetailPage implements OnInit {
     public api: ApiService,
     private modalController: ModalController,
     private printer: Printer,
+    private alertController: AlertController,
     private iab: InAppBrowser
   ) {
     this.route.queryParams.subscribe((data) => {
@@ -278,6 +279,91 @@ export class OrderDetailPage implements OnInit {
       this.loaded = true;
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
+  }
+
+  callStore(item) {
+    if (item) {
+      // window.open('tel:' + item);
+      this.iab.create('tel:' + item, '_system');
+    } else {
+      this.util.errorToast(this.util.getString('Number not found'));
+    }
+  }
+
+  emailStore(item) {
+    if (item) {
+      // window.open('mailto:' + item);
+      this.iab.create('mailto:' + item, '_system');
+    } else {
+      this.util.errorToast(this.util.getString('Email not found'));
+    }
+  }
+
+  async contanct(item) {
+    console.log(item);
+    const alert = await this.alertController.create({
+      header: this.util.getString('Contact') + ' ' + item.name,
+      inputs: [
+        {
+          name: 'mail',
+          type: 'radio',
+          label: this.util.getString('Email'),
+          value: 'mail',
+        },
+        {
+          name: 'call',
+          type: 'radio',
+          label: this.util.getString('Call'),
+          value: 'call'
+        },
+        {
+          name: 'msg',
+          type: 'radio',
+          label: this.util.getString('Message'),
+          value: 'msg'
+        },
+      ],
+      buttons: [
+        {
+          text: this.util.getString('Cancel'),
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: this.util.getString('Ok'),
+          handler: (data) => {
+            console.log('Confirm Ok', data);
+            if (data && data === 'mail') {
+              this.emailStore(item.email);
+            } else if (data && data === 'call') {
+              this.callStore(item.mobile);
+            } else if (data && data === 'msg') {
+              console.log('none');
+              const param: NavigationExtras = {
+                queryParams: {
+                  id: item.uid,
+                  name: item.name,
+                  uid: localStorage.getItem('uid')
+                }
+              };
+              this.router.navigate(['inbox'], param);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  getOrderStatus(uuid) {
+    const item = this.status.filter(x => x.uuid === uuid);
+    if (item && item.length) {
+      return this.util.getString(item[0].status);
+    }
+    return 'created';
   }
 
   ngOnInit() {

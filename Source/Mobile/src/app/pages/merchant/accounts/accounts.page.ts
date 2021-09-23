@@ -21,7 +21,7 @@ export class AccountsPage implements OnInit {
     private navCtrl: NavController,
     private router: Router,
     public util: UtilService,
-    private api: ApiService,
+    public api: ApiService,
     private user: UserService,
     private merchant: MerchantService
   ) { 
