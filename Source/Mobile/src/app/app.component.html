@@ -6,9 +6,6 @@
   Created : 01-Sep-2020
 
  -->
-<app-splash></app-splash>
-
-<app-closed *ngIf="util.appClosed"></app-closed>
 
 <ion-app *ngIf="!util.appClosed">
   <ion-split-pane contentId="main-content">
@@ -34,9 +31,8 @@
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
-    </ion-menu> -->
-
-    <!-- <ion-menu side="end" menuId="menu1" contentId="main-content">
+    </ion-menu>
+    <ion-menu side="end" menuId="menu1" contentId="main-content">
       <ion-header>
         <ion-toolbar color="primary">
           <ion-title>Filter</ion-title>
@@ -95,7 +91,10 @@
         </ion-toolbar>
       </ion-footer>
     </ion-menu> -->
-
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
+
+<app-closed *ngIf="util.appClosed"></app-closed>
+
+<app-splash *ngIf="!appServ.isReady"></app-splash>

@@ -5,10 +5,11 @@
   Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
-import { AlertController, MenuController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, MenuController, ModalController, NavController, NavParams } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { AppService } from 'src/app/services/app.service';
 import { UtilService } from 'src/app/services/util.service';
+import Swal from 'sweetalert2';
 import { SelectCountryPage } from '../../users/select-country/select-country.page';
 import { VerifyPage } from '../verify/verify.page';
 
@@ -49,15 +50,17 @@ export class ActivatePage implements OnInit {
     private navCtrl: NavController,
     private modalController: ModalController,
     private alertController: AlertController,
-    private appServ: AppService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private navParam: NavParams,
   ) {
     this.div_type = 1;
     this.sent = false;
-    this.email = '';
-    this.otp = '';
+
+    this.email = this.navParam.get('email') ? this.navParam.get('email') : "";
+    this.key = '';
     this.password = '';
-    this.repass = '';
+    this.confirm_password = '';
+
     this.verified = false;
     if (!this.util.reset_pwd || this.util.reset_pwd === '') {
       this.util.reset_pwd = '0';
@@ -68,67 +71,31 @@ export class ActivatePage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewDidEnter() {
-    this.appServ.setAppReady();
-  }
-
   changeMode(event) {
     this.email = '';
     this.key = '';
     this.password = '';
     this.confirm_password = '';
-    this.key = '';
     this.action = event;
   }
 
-  resetPassword() {
-    if (!this.email) {
-      this.util.showToast(this.util.getString('Reset password is temporarily disabled'), 'dark', 'bottom');
-      return false;
-    }
-
-    if (!this.email) {
-      this.util.showToast(this.util.getString('Email is requried'), 'dark', 'bottom');
-      return false;
-    }
-
-    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-    if (!emailfilter.test(this.email)) {
-      this.util.showToast(this.util.getString('Please enter valid email'), 'dark', 'bottom');
-      return false;
-    }
-
-    this.sending = true;
-    this.api.post('galyon/v1/users/resetPassword', {
-      email: this.email,
-    }).subscribe((response: any) => {
-      if (response && response.success) {
-        this.util.showToast("Please check your email for reset key!", "dark", "bottom");
-      } else {
-        this.util.errorToast(response.message);
-      }
-      this.sending = false;
-    }, error => {
-      console.log(error);
-      this.loggedIn = false;
-      this.util.errorToast(this.util.getString('Something went wrong'));
-      this.sending = false;
-    });
-  }
-
   activateAccount() {
-    if (!this.email || !this.key || !this.password || !this.confirm_password) {
-      this.util.showToast(this.util.getString('Activation key is requried'), 'dark', 'bottom');
+    if (this.email == '' || this.key == '' || this.password == '' || this.confirm_password == '') {
+      this.util.showToast(this.util.getString('All fields are required'), 'light', 'bottom');
+      console.log('email', this.email == '');
+      console.log('key', this.key);
+      console.log('password', this.password);
+      console.log('confirm_password', this.confirm_password);
       return false;
     }
 
     if(this.password != this.confirm_password) {
-      this.util.showToast(this.util.getString('Password not the same'), 'dark', 'bottom');
+      this.util.showToast(this.util.getString('Password not the same'), 'light', 'bottom');
       return false;
     }
 
     if(this.password.length < 7) {
-      this.util.showToast(this.util.getString('Password length is less than 7 character.'), 'dark', 'bottom');
+      this.util.showToast(this.util.getString('Password length is less than 7 character.'), 'light', 'bottom');
       return false;
     }
 
@@ -138,13 +105,12 @@ export class ActivatePage implements OnInit {
       activation_key: this.key,
       password: this.password,
     }).subscribe((response: any) => {
-      if (response && response.success) {
+      if (response && response.success && response.data) {
         this.email = '';
         this.key = '';
         this.password = '';
         this.confirm_password = '';
-        this.util.showToast("You're account is now activated!", "dark", "bottom");
-        //Todo: modal to ask user to login the user automatically.
+        this.modalCtrl.dismiss(response.data, "success");
       } else {
         this.util.errorToast(response.message);
       }

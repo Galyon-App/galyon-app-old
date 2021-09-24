@@ -527,6 +527,7 @@ CREATE TABLE `users` (
   `others` text NOT NULL,
   `subscriber` enum('1','0') NOT NULL DEFAULT '1',
   `activation_key` text DEFAULT NULL,
+  `reset_key` text DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `verified_at` timestamp NULL DEFAULT NULL,
   `timestamp` datetime DEFAULT NULL,

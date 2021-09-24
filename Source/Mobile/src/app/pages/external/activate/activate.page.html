@@ -8,15 +8,11 @@
       </span>
     </ion-label>
   </div>  
-  
+
   <div class="main_content_div">
 
-    <div class="iconDiv">
-      <img src="assets/icon.png" alt="" class="icon">
-    </div>
-
     <div class="form_div">
-      <ion-label class="main_head"> {{util.getString('Activation')}} </ion-label>
+      <ion-label class="main_head"> {{util.getString('Activations')}} </ion-label>
       <div>
         <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email" [attr.disabled]="sending">
           <ion-icon name="mail" slot="icon-only"></ion-icon>
@@ -35,15 +31,7 @@
           <ion-spinner name="circular" *ngIf="sending"></ion-spinner>
         </ion-button>
       </div>
-    </div>  
-    <div style="text-align: center;" *ngIf="action == 'activate'">
-      <ion-label class="lbl" (click)="changeMode('reset')" [attr.disabled]="sending"> 
-        {{util.getString("Forgot password?")}} 
-        <span style="font-weight: bold;">
-          {{util.getString('Reset Password')}} 
-        </span>
-      </ion-label>
-    </div>  
+    </div>
     
   </div>
 </ion-content>

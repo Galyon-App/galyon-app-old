@@ -54,20 +54,25 @@
 
       <div class="div_chk">
         <ion-checkbox [checked]="check" [(ngModel)]="check" color="light" class="chk" style="--size: 30px;" [disabled]="isRegistering"></ion-checkbox>
-        <ion-label class="lbl_police"><span class="span_term">
-            {{util.getString('By clicking on the I agree button click, download or if you use the Application, you agree to be bound by the')}}
+        <ion-label class="lbl_police">
+          <span class="span_term">
+            {{util.getString('By clicking on the I agree button click, you agree to be bound to the')}}
           </span>
-          <u> <a style="color: white;" (click)="open('privacy')"> {{util.getString('Privacy Policy')}} </a> </u>
+          <u><a style="color: white;" (click)="open('privacy')">{{util.getString('Privacy Policy')}}</a></u>
           {{util.getString('of this app')}}.
         </ion-label>
       </div>
       <ion-button expand="block" (click)="register()" [disabled]="isRegistering">
         <span *ngIf="!loggedIn"> {{util.getString('REGISTER')}} </span>
-        <ion-spinner name="circular" *ngIf="loggedIn"></ion-spinner>
+        <ion-spinner name="circular" *ngIf="isRegistering"></ion-spinner>
       </ion-button>
 
-      <ion-label class="lbl" (click)="goToLogin()"> {{util.getString('Already have an account ?')}} <span
-          class="signup_span"> {{util.getString('Sign In')}} </span>
+      <ion-label class="lbl" (click)="verifyAccount()"> {{util.getString('Pending Account?')}} <span
+          class="signup_span"> {{util.getString('Activate Now')}} </span>
+      </ion-label>
+      
+      <ion-label class="lbl" (click)="goToLogin()" style="margin-top: 20px; padding: 10px;">
+        <span class="signup_span"> {{util.getString('Back to Signin')}} </span>
       </ion-label>
     </div>
   </div>

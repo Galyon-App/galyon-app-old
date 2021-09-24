@@ -6,23 +6,19 @@
 */
 
 import { Component, OnInit } from '@angular/core';
-import { IonRouterOutlet, LoadingController, MenuController, NavController, Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { LoadingController, MenuController, Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { environment } from 'src/environments/environment';
-import { ApiService } from './services/api.service';
 import { UtilService } from './services/util.service';
 import { CartService } from './services/cart.service';
-import * as moment from 'moment';
-import { Event, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { UserService } from './services/user.service';
-import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
 import { AddressService } from './services/address.service';
 import { OptionService } from './services/option.service';
 import { MerchantService } from './services/merchant.service';
 import { Store } from './models/store.model';
+import { AppService } from './services/app.service';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +27,6 @@ import { Store } from './models/store.model';
 })
 export class AppComponent implements OnInit {
 
-  public appPages: any[] = [];
   selectedIndex: any;
   discountValue: any;
   min: any;
@@ -42,10 +37,11 @@ export class AppComponent implements OnInit {
   };
   fromFilter: any;
 
+  public appPages: any[] = [];
+
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
-    private navCtrl: NavController,
     public util: UtilService,
     public cart: CartService,
     private auth: AuthService,
@@ -56,28 +52,27 @@ export class AppComponent implements OnInit {
     private address: AddressService,
     private optServ: OptionService,
     public loadCtrl: LoadingController,
-    private merchant: MerchantService
+    private merchant: MerchantService,
+    public appServ: AppService
   ) {
-    // this.presentLoading();
-    // this.router.events.subscribe((event: Event) => {
-    //   if (event instanceof NavigationStart) {
-    //       console.log('NavigationStart');
-    //   }
-
-    //   if (event instanceof NavigationEnd) {
-    //       console.log('NavigationEnd');
-    //   }
-
-    //   if (event instanceof NavigationError) {
-    //       console.log(event.error);
-    //   }
-    // });
     this.selectedIndex = 0;
     this.initialize();
     this.menuCtrl.enable(false, 'menu1');
   }
 
   async presentLoading() {
+    // this.presentLoading();
+    // this.router.events.subscribe((event: Event) => {
+    //   if (event instanceof NavigationStart) {
+    //       console.log('NavigationStart');
+    //   }
+    //   if (event instanceof NavigationEnd) {
+    //       console.log('NavigationEnd');
+    //   }
+    //   if (event instanceof NavigationError) {
+    //       console.log(event.error);
+    //   }
+    // });
     const loading = await this.loadCtrl.create({
       showBackdrop: true,
       translucent: false,
@@ -97,8 +92,8 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
       console.log('%c Copyright 2021 © BytesCrafter', 'background: #222; color: #bada55');
       this.statusBar.show();
+      this.appServ.setTheme('light');
       this.appPages = this.util.appPage;
-      document.body.setAttribute('color-theme', 'light');
 
       this.optServ.request((response) => {
         if(response) {
@@ -139,86 +134,48 @@ export class AppComponent implements OnInit {
       if(this.auth.is_authenticated) {
         this.user.request(this.auth.userToken.uuid);
         this.address.request(this.auth.userToken.uuid);
+        //TODO: Load all favorites.
+        // this.util.haveFav = true;
+        // this.util.favIds = data.data[0].ids.split(',');
+
+        //TODO: Register listener to push notifications.
+        // if (this.platform.is('cordova')) {
+        //   setTimeout(async () => {
+        //     await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
+        //     this.oneSignal.getIds().then((data) => {
+        //       localStorage.setItem('fcm', data.userId);
+        //       const uid = localStorage.getItem('uid');
+        //       if (uid && uid !== null && uid !== 'null') {
+        //         const param = {
+        //           id: uid,
+        //           fcm_token: data.userId
+        //         };
+        //         this.api.post('users/edit_profile', param).subscribe((data: any) => {
+        //           //console.log('user info=>', data);
+        //         }, error => {
+        //           console.log(error);
+        //         });
+        //       }
+        //     });
+        //     await this.oneSignal.endInit();
+        //   }, 1000);
+        // }
 
         if(this.auth.is_merchant) {
           this.merchant.request((stores: Store[]) => {
             //console.log("My Stores", stores);
           })
         }
-      }
+      }      
 
-      // if (this.platform.is('cordova')) {
-      //   setTimeout(async () => {
-      //     await this.oneSignal.startInit(environment.onesignal.appId, environment.onesignal.googleProjectNumber);
-      //     this.oneSignal.getIds().then((data) => {
-      //       localStorage.setItem('fcm', data.userId);
-
-      //       const uid = localStorage.getItem('uid');
-      //       if (uid && uid !== null && uid !== 'null') {
-      //         const param = {
-      //           id: uid,
-      //           fcm_token: data.userId
-      //         };
-      //         this.api.post('users/edit_profile', param).subscribe((data: any) => {
-      //           //console.log('user info=>', data);
-      //         }, error => {
-      //           console.log(error);
-      //         });
-      //       }
-      //     });
-      //     await this.oneSignal.endInit();
-      //   }, 1000);
-      // }
-
-      
-
-      // const uid = localStorage.getItem('uid');
-      // if (uid && uid !== null && uid !== 'null') {
-      //   const param = {
-      //     id: uid
-      //   };
-      //   this.api.post('users/getById', param).subscribe((data: any) => {
-      //     if (data && data.status === 200 && data.data && data.data.length) {
-      //       
-      //     } else {
-      //       localStorage.removeItem('uid');
-      //     }
-      //   }, error => {
-      //     console.log(error);
-      //   });
-
-      //   this.api.post('favourite/getByUid', param).subscribe((data: any) => {
-      //     if (data && data.status === 200 && data.data.length > 0) {
-      //       this.util.haveFav = true;
-      //       try {
-      //         this.util.favIds = data.data[0].ids.split(',');
-      //       } catch (error) {
-      //         console.log('eroor', error);
-      //       }
-      //     } else {
-      //       this.util.haveFav = false;
-      //     }
-      //   }, error => {
-      //     this.util.haveFav = false;
-      //     console.log('fav error', error);
-      //   });
-      // }
-
-      // this.platform.backButton.subscribe(async () => {
-      //   if (this.router.url === '/categories' || this.router.url === '/cart' ||
-      //     this.router.url === '/orders' || this.router.url === '/account'
-      //     || this.router.url === '/login') {
-      //     this.navCtrl.navigateRoot(['/home']);
-      //   } else if (this.router.url === '/home' || this.router.url === '/cities') {
-      //     navigator['app'].exitApp();
-      //   }
-      // });
+      this.platform.backButton.subscribe(async () => {
+        if (this.router.url === '/login' || this.router.url === '/user/home') {
+          navigator['app'].exitApp();
+        } else {
+          console.log('do nothing...');
+        }
+      });
     });
-  }
-
-  logout() {
-    localStorage.clear();
-    this.navCtrl.navigateRoot(['/login']);
   }
 
   getTranslate(str) {

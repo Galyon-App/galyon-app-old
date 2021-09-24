@@ -10,11 +10,16 @@ import { UtilService } from 'src/app/services/util.service';
 })
 export class VerifyPage implements OnInit {
 
-  resendCode: boolean;
+  resendCode: boolean = false;
   textCode: any = '';
+
+  uuid: any = '';
+  email: any = '';
+  userCode: any = '';
+
   mobile: any;
   id: any;
-  userCode: any = '';
+
   constructor(
     private api: ApiService,
     public util: UtilService,
@@ -22,13 +27,21 @@ export class VerifyPage implements OnInit {
     private navCtrl: NavController,
     private modalCtrl: ModalController
   ) {
-
-    this.resendCode = false;
-    console.log('cc code', this.navParam.get('code'));
-    this.sendOTP();
     setTimeout(() => {
-      this.resendCode = true;
+      //this.resendCode = true;
     }, 30000);
+
+    this.uuid = this.navParam.get('uuid');
+    this.email = this.navParam.get('email');
+
+    if(this.uuid == '' && this.email == '') {
+      setTimeout(() => {
+        this.close();
+      }, 1000);
+    }
+  }
+
+  ngOnInit() {
   }
 
   sendOTP() {
@@ -53,50 +66,29 @@ export class VerifyPage implements OnInit {
     // });
   }
 
-  ngOnInit() {
-  }
   onOtpChange(event) {
-    console.log(event);
     this.userCode = event;
   }
 
   resend() {
     this.sendOTP();
   }
+
   continue() {
-    // console.log(this.userCode);
-    // if (this.userCode === '' || !this.userCode) {
-    //   this.util.errorToast(this.util.getString('Not valid code'));
-    //   return false;
-    // }
-    // if (this.userCode) {
-    //   const param = {
-    //     id: this.id,
-    //     otp: this.userCode
-    //   };
-    //   this.util.show();
-    //   this.api.post('users/verifyOTP', param).subscribe((data: any) => {
-    //     console.log(data);
-    //     this.util.hide();
-    //     if (data && data.status === 200) {
-    //       this.modalCtrl.dismiss('', 'ok');
-    //     } else {
-    //       if (data && data.status === 500 && data.data && data.data.message) {
-    //         this.util.errorToast(data.data.message);
-    //         return false;
-    //       }
-    //       this.util.errorToast(this.util.getString('Something went wrong'));
-    //       return false;
-    //     }
-    //   }, error => {
-    //     this.util.hide();
-    //     console.log(error);
-    //     this.util.errorToast(this.util.getString('Something went wrong'));
-    //   });
-    // } else {
-    //   this.util.errorToast(this.util.getString('Not valid code'));
-    //   return false;
-    // }
+    this.api.post('galyon/v1/users/verifyAccount', {
+      uuid: this.uuid,
+      email: this.email,
+      activation_key: this.userCode,
+    }).subscribe((response: any) => {
+      if (response && response.success && response.data) {
+        this.modalCtrl.dismiss(response.data, 'success')
+      } else {
+        this.util.errorToast(response.data.message);
+      }
+    }, error => {
+      console.log(error);
+      this.util.errorToast(this.util.getString('Something went wrong'));
+    });
   }
 
   close() {

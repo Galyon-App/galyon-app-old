@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { SelectCountryPage } from '../../users/select-country/select-country.page';
 import { AuthService } from 'src/app/services/auth.service';
 import { MerchantService } from 'src/app/services/merchant.service';
+import { AppService } from 'src/app/services/app.service';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,8 @@ export class LoginPage implements OnInit {
     private api: ApiService,
     private route: ActivatedRoute,
     private modalController: ModalController,
-    private merchant: MerchantService
+    private merchant: MerchantService,
+    private appServ: AppService
   ) {
     if (!this.util.user_login || this.util.user_login === '') {
       this.util.user_login = '0';
@@ -46,6 +48,10 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.appServ.setAppReady();
   }
 
   login() {

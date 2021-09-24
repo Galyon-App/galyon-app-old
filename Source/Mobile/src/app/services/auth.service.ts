@@ -56,6 +56,12 @@ export class AuthService {
     } //TODO: Verify if okay to not return anything when nulled.
   }
 
+  public set setToken(_token: string) {
+    localStorage.setItem(this.userServ.localKey, _token);
+    let token = this.util.jwtDecode(_token);
+    this.subject.next(token);
+  }
+
   login(username: string, password: string, callback) {
     this.api.posts('galyon/v1/users/login', {
       uname: username,

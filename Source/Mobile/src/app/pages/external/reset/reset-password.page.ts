@@ -5,10 +5,15 @@
   Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, MenuController, ModalController, NavController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
+import { AppService } from 'src/app/services/app.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { UtilService } from 'src/app/services/util.service';
+import Swal from 'sweetalert2';
 import { SelectCountryPage } from '../../users/select-country/select-country.page';
+import { ActivatePage } from '../activate/activate.page';
 import { VerifyPage } from '../verify/verify.page';
 @Component({
   selector: 'app-reset-password',
@@ -35,10 +40,6 @@ export class ResetPasswordPage implements OnInit {
 
 
   email: any;
-  key: any;
-  password: any;
-  confirm_password: any;
-  action: any = 'reset';
   sending: boolean = false;
 
   constructor(
@@ -46,13 +47,16 @@ export class ResetPasswordPage implements OnInit {
     public util: UtilService,
     private navCtrl: NavController,
     private modalController: ModalController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private appServ: AppService,
+    private modalCtrl: ModalController,
+    private auth: AuthService,
+    private router: Router 
   ) {
     this.div_type = 1;
     this.sent = false;
     this.email = '';
     this.otp = '';
-    this.password = '';
     this.repass = '';
     this.verified = false;
     if (!this.util.reset_pwd || this.util.reset_pwd === '') {
@@ -64,13 +68,43 @@ export class ResetPasswordPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewDidEnter() {
+    this.appServ.setAppReady();
+  }
+
   changeMode(event) {
-    this.email = '';
-    this.key = '';
-    this.password = '';
-    this.confirm_password = '';
-    this.key = '';
-    this.action = event;
+    if(event == 'activate') {
+      this.email = '';
+      this.openActivation();
+    }
+  }
+
+  async openActivation() {
+
+    const modal = await this.modalCtrl.create({
+      component: ActivatePage,
+      componentProps: { email: this.email }
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data && data.data && data.role === 'success') {
+        Swal.fire({
+          title: 'Account Verified',
+          text: "Automatically login your account now?",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: 'grey',
+          confirmButtonText: 'Yes, login!',
+          cancelButtonText: 'Skip'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.auth.setToken = data.data;
+            this.router.navigate(['/user/home']);
+          }
+        });
+      }
+    });
+    modal.present();
   }
 
   resetPassword() {
@@ -95,7 +129,7 @@ export class ResetPasswordPage implements OnInit {
       email: this.email,
     }).subscribe((response: any) => {
       if (response && response.success) {
-        this.util.showToast("Please check your email for reset key!", "dark", "bottom");
+        this.openActivation();
       } else {
         this.util.errorToast(response.message);
       }
@@ -107,55 +141,6 @@ export class ResetPasswordPage implements OnInit {
       this.sending = false;
     });
   }
-
-  activateAccount() {
-    if (!this.email || !this.key || !this.password || !this.confirm_password) {
-      this.util.showToast(this.util.getString('Activation key is requried'), 'dark', 'bottom');
-      return false;
-    }
-
-    if(this.password != this.confirm_password) {
-      this.util.showToast(this.util.getString('Password not the same'), 'dark', 'bottom');
-      return false;
-    }
-
-    if(this.password.length < 7) {
-      this.util.showToast(this.util.getString('Password length is less than 7 character.'), 'dark', 'bottom');
-      return false;
-    }
-
-    this.sending = true;
-    this.api.post('galyon/v1/users/activateAccount', {
-      email: this.email,
-      activation_key: this.key,
-      password: this.password,
-    }).subscribe((response: any) => {
-      if (response && response.success) {
-        this.email = '';
-        this.key = '';
-        this.password = '';
-        this.confirm_password = '';
-        this.util.showToast("You're account is now activated!", "dark", "bottom");
-        //Todo: modal to ask user to login the user automatically.
-      } else {
-        this.util.errorToast(response.message);
-      }
-      this.sending = false;
-    }, error => {
-      console.log(error);
-      this.loggedIn = false;
-      this.util.errorToast(this.util.getString('Something went wrong'));
-      this.sending = false;
-    });
-  }
-
-
-
-
-
-
-
-
 
 
   sendOTP() {
@@ -227,76 +212,75 @@ export class ResetPasswordPage implements OnInit {
     // });
   }
 
-  sendEmail() {
-    console.log('pwddd0<<<<<<', this.password);
-    if (!this.password || !this.repass || this.password === '' || this.repass === '') {
-      this.util.errorToast(this.util.getString('All Field are required'));
-      return false;
-    }
-    const param = {
-      email: this.email,
-      pwd: this.password
-    };
-    this.loggedIn = true;
-    this.api.post('users/update_password', param).subscribe((data: any) => {
-      console.log(data);
-      this.loggedIn = false;
-      if (data && data.status === 200) {
-        this.loggedIn = false;
-        this.util.errorToast(this.util.getString('Password Updated'));
-        this.back();
-      } else {
-        if (data && data.status === 500 && data.data && data.data.message) {
-          this.util.errorToast(data.data.message);
-          return false;
-        }
-        this.util.errorToast(this.util.getString('Something went wrong'));
-        return false;
-      }
-    }, error => {
-      console.log(error);
-      this.loggedIn = false;
-      this.util.errorToast(this.util.getString('Something went wrong'));
-    });
-  }
+  // sendEmail() {
+  //   console.log('pwddd0<<<<<<', this.password);
+  //   if (!this.password || !this.repass || this.password === '' || this.repass === '') {
+  //     this.util.errorToast(this.util.getString('All Field are required'));
+  //     return false;
+  //   }
+  //   const param = {
+  //     email: this.email,
+  //     pwd: this.password
+  //   };
+  //   this.loggedIn = true;
+  //   this.api.post('users/update_password', param).subscribe((data: any) => {
+  //     console.log(data);
+  //     this.loggedIn = false;
+  //     if (data && data.status === 200) {
+  //       this.loggedIn = false;
+  //       this.util.errorToast(this.util.getString('Password Updated'));
+  //       this.back();
+  //     } else {
+  //       if (data && data.status === 500 && data.data && data.data.message) {
+  //         this.util.errorToast(data.data.message);
+  //         return false;
+  //       }
+  //       this.util.errorToast(this.util.getString('Something went wrong'));
+  //       return false;
+  //     }
+  //   }, error => {
+  //     console.log(error);
+  //     this.loggedIn = false;
+  //     this.util.errorToast(this.util.getString('Something went wrong'));
+  //   });
+  // }
 
-  resetPasswordWithPhone() {
-    console.log('pwddd0<<<<<<', this.password);
-    if (!this.password || !this.repass || this.password === '' || this.repass === '') {
-      this.util.errorToast(this.util.getString('All Field are required'));
-      return false;
-    }
-    const param = {
-      phone: this.phone,
-      pwd: this.password
-    };
-    this.loggedIn = true;
-    this.api.post('users/resetPasswordWithPhone', param).subscribe((data: any) => {
-      console.log(data);
-      this.loggedIn = false;
-      if (data && data.status === 200) {
-        this.loggedIn = false;
-        this.util.errorToast(this.util.getString('Password Updated'));
-        this.back();
-      } else {
-        if (data && data.status === 500 && data.data && data.data.message) {
-          this.util.errorToast(data.data.message);
-          return false;
-        }
-        this.util.errorToast(this.util.getString('Something went wrong'));
-        return false;
-      }
-    }, error => {
-      console.log(error);
-      this.loggedIn = false;
-      this.util.errorToast(this.util.getString('Something went wrong'));
-    });
-  }
+  // resetPasswordWithPhone() {
+  //   console.log('pwddd0<<<<<<', this.password);
+  //   if (!this.password || !this.repass || this.password === '' || this.repass === '') {
+  //     this.util.errorToast(this.util.getString('All Field are required'));
+  //     return false;
+  //   }
+  //   const param = {
+  //     phone: this.phone,
+  //     pwd: this.password
+  //   };
+  //   this.loggedIn = true;
+  //   this.api.post('users/resetPasswordWithPhone', param).subscribe((data: any) => {
+  //     console.log(data);
+  //     this.loggedIn = false;
+  //     if (data && data.status === 200) {
+  //       this.loggedIn = false;
+  //       this.util.errorToast(this.util.getString('Password Updated'));
+  //       this.back();
+  //     } else {
+  //       if (data && data.status === 500 && data.data && data.data.message) {
+  //         this.util.errorToast(data.data.message);
+  //         return false;
+  //       }
+  //       this.util.errorToast(this.util.getString('Something went wrong'));
+  //       return false;
+  //     }
+  //   }, error => {
+  //     console.log(error);
+  //     this.loggedIn = false;
+  //     this.util.errorToast(this.util.getString('Something went wrong'));
+  //   });
+  // }
 
   back() {
     this.navCtrl.back();
   }
-
 
   async openCountry() {
     console.log('open ccode');
