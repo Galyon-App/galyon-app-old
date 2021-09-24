@@ -8,6 +8,7 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonTabs, NavController } from '@ionic/angular';
 import { City } from 'src/app/models/city.model';
+import { AppService } from 'src/app/services/app.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CityService } from 'src/app/services/city.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -30,6 +31,7 @@ export class TabsPage {
     public city: CityService,
     private chMod: ChangeDetectorRef,
     private navCtrl: NavController,
+    private appServ: AppService
   ) { 
     this.city.getActiveCity((returnCity: City) => {
       if(returnCity) {
@@ -57,6 +59,6 @@ export class TabsPage {
   }
 
   ionViewDidEnter() {
-    document.documentElement.style.setProperty('--background-primary-app', '#ededed');
+    this.appServ.setAppReady();
   }
 }
