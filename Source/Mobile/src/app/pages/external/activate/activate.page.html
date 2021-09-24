@@ -1,0 +1,49 @@
+
+<ion-content>
+  <div style="text-align: right; margin-top: 20px; margin-right: 20px; color: rgb(218, 49, 49);">
+    <ion-label class="lbl" (click)="close()"> 
+      <!-- <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon> -->
+      <span style="font-weight: bold;">
+        {{util.getString('CLOSE')}} 
+      </span>
+    </ion-label>
+  </div>  
+  
+  <div class="main_content_div">
+
+    <div class="iconDiv">
+      <img src="assets/icon.png" alt="" class="icon">
+    </div>
+
+    <div class="form_div">
+      <ion-label class="main_head"> {{util.getString('Activation')}} </ion-label>
+      <div>
+        <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email" [attr.disabled]="sending">
+          <ion-icon name="mail" slot="icon-only"></ion-icon>
+        </ion-input>
+        <ion-input type="text" [placeholder]="util.getString('Activation')" [(ngModel)]="key" [attr.disabled]="sending">
+          <ion-icon name="barcode" slot="icon-only"></ion-icon>
+        </ion-input>
+        <ion-input type="password" [placeholder]="util.getString('Current Password')" [(ngModel)]="password" [attr.disabled]="sending">
+          <ion-icon name="medical" slot="icon-only"></ion-icon>
+        </ion-input>
+        <ion-input type="password" [placeholder]="util.getString('Confirm Password')" [(ngModel)]="confirm_password" [attr.disabled]="sending">
+          <ion-icon name="medical" slot="icon-only"></ion-icon>
+        </ion-input>
+        <ion-button expand="block" (click)="activateAccount()" [attr.disabled]="sending">
+          <span> {{util.getString('Activate Now')}} </span>
+          <ion-spinner name="circular" *ngIf="sending"></ion-spinner>
+        </ion-button>
+      </div>
+    </div>  
+    <div style="text-align: center;" *ngIf="action == 'activate'">
+      <ion-label class="lbl" (click)="changeMode('reset')" [attr.disabled]="sending"> 
+        {{util.getString("Forgot password?")}} 
+        <span style="font-weight: bold;">
+          {{util.getString('Reset Password')}} 
+        </span>
+      </ion-label>
+    </div>  
+    
+  </div>
+</ion-content>
