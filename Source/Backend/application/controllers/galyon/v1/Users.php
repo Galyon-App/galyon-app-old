@@ -116,7 +116,10 @@ class Users extends Galyon_controller {
 
             $is_sent = $this->send_mail($email, "Account Activation", $html_message);
             if($is_sent["success"]) {
-                $this->json_response(null);
+                $new_user = $this->Crud_model->get($this->table_name, $this->public_column, array( "id" => $inserted ), null, 'row' );
+                unset($new_user->password);
+                unset($new_user->activation_key);
+                $this->json_response($new_user);
             } else {
                 $this->json_response(null, false, "Failed sending email, contact us!");
             }
@@ -130,15 +133,55 @@ class Users extends Galyon_controller {
         //TODO: 
     }
 
+    function verifyAccount() {
+        $request = $this->request_validation($_POST, ["uuid", "email", "activation_key"], $this->edit_column);
+        $request->data = array_merge(array(
+            "verified_at" => get_current_utc_time() //TODO: Temporary, should from admin.
+        ), $request->data);
+
+        $uuid = $request->data["uuid"];
+        $email = $request->data["email"];
+        $activation_key = $request->data["activation_key"];
+        $request->data["activation_key"] = NULL;
+
+        $user = $this->Crud_model->get($this->table_name, $this->public_column, "uuid = '$uuid' AND email = '$email' AND activation_key IS NOT NULL", null, 'row' );
+        if($user) {
+            if(password_verify($activation_key, $user->activation_key)) {
+                $update = $this->Crud_model->update(
+                    $this->table_name, 
+                    $request->data, 
+                    array( "uuid" => $user->uuid ));
+                if($update) {
+                    $user_object = array(
+                        'uuid' => $user->uuid,
+                        'email' => $user->email,
+                        'role' => $user->type,
+                        'status' => $user->status,
+                        'logged_in' => true,
+                        'expiry' => strtotime(get_current_utc_time())
+                    );
+                    $token = JWT::encode($user_object, $this->config->item('jwt_secret_phrase'));
+                    $this->json_response($token);
+                } else {
+                    $this->json_response(null, false, "Failed to verify account! Reset password");
+                }
+            } else {
+                $this->json_response(null, false, "Verification key is incorrect!".$activation_key);
+            }
+        } else {
+            $this->json_response(null, false, "No user verification was found!");
+        }
+    }
+
     function activateAccount() {
         $request = $this->request_validation($_POST, ["email", "activation_key", "password"], $this->edit_column);
         $request->data = array_merge(array(
-            "activation_key" => NULL,
             "verified_at" => get_current_utc_time() //TODO: Temporary, should from admin.
         ), $request->data);
         $request->data["password"] = password_hash($request->data["password"], PASSWORD_BCRYPT);
         $email = $request->data["email"];
         $activation_key = $request->data["activation_key"];
+        $request->data["activation_key"] = NULL;
 
         $user = $this->Crud_model->get($this->table_name, $this->public_column, "email = '$email' AND activation_key IS NOT NULL", null, 'row' );
         
