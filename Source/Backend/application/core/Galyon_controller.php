@@ -197,9 +197,10 @@ class Galyon_controller extends CI_Controller{
 
     $notfound_keys = [];
     foreach($required as $key) {
-        if(!in_array($key, $request_keys)) {
-            array_push($notfound_keys, $key);
-        }
+      $vals = $this->input->post($key);
+      if(empty($vals) || !in_array($key, $request_keys)) {
+        array_push($notfound_keys, $key);
+      }
     }
 
     $data->{"where"} = [];
