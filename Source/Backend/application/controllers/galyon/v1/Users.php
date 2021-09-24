@@ -32,7 +32,7 @@ class Users extends Galyon_controller {
                         Email Address: {EMAIL}
                     </p>
                     <p style="color: rgb(85, 85, 85); font-size: 14px;">
-                        Activation Key: {KEY}
+                        Security Key: {KEY}
                     </p>
                     <hr>
                     <p style="color: rgb(85, 85, 85); font-size: 14px;">
@@ -96,6 +96,11 @@ class Users extends Galyon_controller {
 
     function registerUser() {
         $email = $this->input->post('email');
+        $email_existing = $this->Crud_model->get($this->table_name, $this->public_column, "email = '$email'", null, 'row' );
+        if($email_existing) {
+            $this->json_response(null, false, "You're email is already been used!");
+        }
+
         $fullname = $this->input->post('first_name')." ".$this->input->post('last_name');
         $activation = get_random_string(5, "123456789ABCDEFGHJKLMNPQRSTUVWXYZ");
 
@@ -114,7 +119,7 @@ class Users extends Galyon_controller {
             $html_message = str_replace('{KEY}', $activation, $html_message);
             $html_message = str_replace('{FULLNAME}', $fullname, $html_message);
 
-            $is_sent = $this->send_mail($email, "Account Activation", $html_message);
+            $is_sent = $this->send_mail($email, "Verify Account", $html_message);
             if($is_sent["success"]) {
                 $new_user = $this->Crud_model->get($this->table_name, $this->public_column, array( "id" => $inserted ), null, 'row' );
                 unset($new_user->password);
@@ -130,7 +135,39 @@ class Users extends Galyon_controller {
     }
 
     function resetPassword() {
-        //TODO: 
+        $email = $this->input->post('email');
+        $activation = get_random_string(5, "123456789ABCDEFGHJKLMNPQRSTUVWXYZ");
+
+        $request = $this->request_validation($_POST, ["email"], $this->edit_column);
+        $request->data = array_merge(array(
+            "reset_key" => password_hash($activation, PASSWORD_BCRYPT),
+        ), $request->data);
+        unset($request->data['email']);
+
+        $user = $this->Crud_model->get($this->table_name, $this->public_column, "email = '$email'", null, 'row' );
+        if($user) {
+            $update = $this->Crud_model->update(
+                $this->table_name, 
+                $request->data, 
+                array( "email" => $email ));
+            if($update) {
+                $html_message = $this->template;
+                $html_message = str_replace('{EMAIL}', $user->email, $html_message);
+                $html_message = str_replace('{KEY}', $activation, $html_message);
+                $html_message = str_replace('{FULLNAME}', $user->first_name." ".$user->last_name, $html_message);
+
+                $is_sent = $this->send_mail($email, "Account Activation", $html_message);
+                if($is_sent["success"]) {
+                    $this->json_response(null);
+                } else {
+                    $this->json_response(null, false, "Failed sending email, contact us!");
+                }
+            } else {
+                $this->json_response(null, false, "Failed to activate account!");
+            }
+        } else {
+            $this->json_response(null, false, "The email is not yet registered!");
+        }
     }
 
     function verifyAccount() {
