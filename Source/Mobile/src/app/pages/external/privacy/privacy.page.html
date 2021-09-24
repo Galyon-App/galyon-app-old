@@ -1,0 +1,38 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">{{util.getString('Privacy Policy')}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="!loaded">
+    <div *ngFor="let item of [1,2,3,4,5,6,7,8]">
+      <h3>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </h3>
+      <p>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </p>
+      <p>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </p>
+      <h3>
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </h3>
+    </div>
+  </div>
+  <p [innerHTML]="getContent()" *ngIf="loaded"></p>
+</ion-content>
