@@ -86,6 +86,13 @@ class Stores extends Galyon_controller {
         $limit_length = (int)$this->input->post('limit_length');
         $limit_length = $limit_length ? $limit_length : 10;
 
+        $order_by = [];
+        $order_column = $this->input->post('order_column');
+        $order_mode = $this->input->post('order_mode');
+        if(isset($order_column) && isset($order_mode)) {
+            $order_by = [$order_column, $order_mode];
+        }
+
         if(empty($city_id)) {
             $params = array(
                 $limit_start,
@@ -108,8 +115,8 @@ class Stores extends Galyon_controller {
         $query .= empty($city_id) ? "" : " AND `city_id` = ? ";
         $query .= $auth->role == "user" || $auth->role == "store" ? " AND `status`='1' AND deleted_at IS NULL":"";
         $query .= empty($filter_term) ? "" : " AND name LIKE '%".$filter_term."%' ";
-        $query .= " LIMIT ?, ?";
-        
+        $query .= count($order_by) == 2 ? " ORDER BY $order_by[0] $order_by[1]" : "";
+        $query .= " LIMIT ?, ?";   
 
         $stores = $this->Crud_model->custom($query, $params, 'result');
         if($stores) {

@@ -34,13 +34,16 @@ export class StoresComponent {
     private util: UtilService,
     private toastyService: ToastyService,
   ) {
-    this.getAllStores();
+    this.getAllStores(null);
   }
 
-  getAllStores() {
+  getAllStores(search) {
     this.api.post('galyon/v1/stores/getAllStores', {
+      filter_term: search ? this.searchText : "",
       limit_start: 0,
-      limit_length: 1000
+      limit_length: 100,
+      order_column: 'id',
+      order_mode: 'DESC',
     }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];
@@ -56,7 +59,11 @@ export class StoresComponent {
     });
   }
 
-  search(string) {
+  search() {
+    this.getAllStores(this.searchText);
+  }
+
+  filter(string) {
     this.resetChanges();
     this.stores = this.filterItems(string);
   }
@@ -72,8 +79,13 @@ export class StoresComponent {
 
   filterItems(searchTerm) {
     return this.stores.filter((item) => {
-      if(item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 || 
-        item.address.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+
+      let has_name: boolean = item.name ? item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 : false;
+      let has_address: boolean = item.address ? item.address.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 : false;
+      let has_city: boolean = item.city_name ? item.city_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 : false;
+      let has_owner: boolean = item.owner_name ? item.owner_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 : false;
+
+      if(has_name || has_address || has_city || has_owner) {
         return true;
       }
       return false;
