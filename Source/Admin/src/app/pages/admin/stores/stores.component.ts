@@ -13,6 +13,7 @@ import { ApisService } from 'src/app/services/apis.service';
 import { ToastData, ToastOptions, ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
 import { UtilService } from 'src/app/services/util.service';
+import { StoresService } from 'src/app/services/stores.service';
 
 @Component({
   selector: 'app-stores',
@@ -32,30 +33,20 @@ export class StoresComponent {
     private router: Router,
     private spinner: NgxSpinnerService,
     private util: UtilService,
-    private toastyService: ToastyService,
+    private storeServ: StoresService
   ) {
     this.getAllStores(null);
   }
 
   getAllStores(search) {
-    this.api.post('galyon/v1/stores/getAllStores', {
-      filter_term: search ? this.searchText : "",
-      limit_start: 0,
-      limit_length: 100,
-      order_column: 'updated_at',
-      order_mode: 'DESC',
-    }).then((response: any) => {
-      if (response && response.success && response.data) {
+    this.storeServ.searchStore({
+      search: search ? this.searchText : ""
+    }, (stores) => {
+      if(stores) {
         this.dummy = [];
-        this.stores = response.data;
-        this.dummyStores = response.data;
+        this.stores = stores;
+        this.dummyStores = stores;
       }
-    }, error => {
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    }).catch(error => {
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
     });
   }
 
