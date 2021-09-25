@@ -80,25 +80,24 @@
    <div class="modal-body">
       <div class="form-group row">
          <div class="col-sm-12">
-            <label>{{util.getString('Select Store')}} </label>
-            <input style="background: transparent !important;" [(ngModel)]="storeString"
-               (ngModelChange)="searchStore($event)" type="text" class="form-control" placeholder="Search Store">
+            <label>{{util.getString('Search a Store')}} </label>
+            <input type="text" class="form-control" style="background: transparent !important;" [(ngModel)]="storeString" 
+               placeholder="Search..." (ngModelChange)="filterStore($event)" (keydown.enter)="searchStore()">
          </div>
       </div>
 
       <div class="form-group row">
          <div class="col-sm-12">
-            <div *ngFor="let item of stores" (click)="storeId = item.uuid"
-               style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;margin-bottom: 5px; border-bottom: 1px solid lightgray; padding-bottom: 5px;">
-               <p style="margin: 0px;"> {{item.name}}</p>
+            <div *ngFor="let item of stores" (click)="storeId = item.uuid" class="store-dropdown-items">
                <i class="ti-check-box" *ngIf="item.uuid === storeId"></i>
+               <p style="margin: 0px;"> {{item.name}}</p>
             </div>
          </div>
       </div>
 
    </div>
    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="close4()">{{util.getString('Save')}} </button>
+      <button type="button" class="btn btn-outline-dark" (click)="close4()">{{util.getString('Confirm')}} </button>
    </div>
 </ng-template>
 

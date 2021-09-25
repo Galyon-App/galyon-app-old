@@ -34,3 +34,15 @@
 .sub-title {
   color: #eb4291 !important;
 }
+
+.store-dropdown-items {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  border-bottom: 1px solid lightgray;
+  padding: 10px;
+}
+
+.ti-check-box {
+  padding-right: 15px;
+}

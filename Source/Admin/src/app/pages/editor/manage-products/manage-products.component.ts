@@ -1,10 +1,11 @@
-import { Location } from '@angular/common';
 /*
   Name: Galyon App
   Authors : Bytes Crafter
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
+
+import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApisService } from 'src/app/services/apis.service';
@@ -13,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/models/role.model';
+import { StoresService } from 'src/app/services/stores.service';
 
 @Component({
   selector: 'app-manage-products',
@@ -94,7 +96,8 @@ export class ManageProductsComponent {
     private spinner: NgxSpinnerService,
     private router: Router,
     private modalService: NgbModal,
-    public authServ: AuthService
+    public authServ: AuthService,
+    private storeServ: StoresService
   ) {
     this.route.queryParams.subscribe((data: any) => {
       if (data && data.uuid) {
@@ -243,24 +246,6 @@ export class ManageProductsComponent {
     this.storeId = info.store_id;
     this.storeName = info.store_name;
     this.get_discounted();
-
-    if(this.canHighManage) {
-      this.api.post('galyon/v1/stores/getAllStores', {
-        status: "1",
-        limit_start: 0,
-        limit_length: 100
-      }).then((response: any) => {
-        if (response && response.success && response.data) {
-          this.stores = response.data;
-          this.dummyStores = this.stores;
-        } else {
-          this.util.error(this.util.getString('No category found'));
-        }
-      }, error => {
-        this.util.error(this.util.getString('Something went wrong'));
-        console.log(error);
-      });
-    }
 
     this.cateId = info.category_id;
     this.subId = info.subcategory_id;
@@ -466,6 +451,15 @@ export class ManageProductsComponent {
   }
 
   openCate() {
+    this.api.post('galyon/v1/category/getParentCategorys', {
+      status: "1",
+      limit_start: 0,
+      limit_length: 100
+    }).then((response: any) => {
+      if (response && response.success && response.data) {
+        this.category = response.data;
+      }
+    });
     try {
       this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
         console.log(result);
@@ -548,29 +542,31 @@ export class ManageProductsComponent {
   }
 
   openStore() {
-    if(!this.canHighManage) {
-      return;
-    }
-
-    if (this.storeId) {
-      this.spinner.show();
-      this.api.get('galyon/v1/stores/getAllStores').then((response: any) => {
-        this.spinner.hide();
-        if (response && response.success && response.data) {
-          this.stores = response.data;
-          this.dummyStores = this.stores;
-          const child = this.stores.filter(x => x.uuid === this.storeId);
-          if(child.length > 0) {
-            this.storeName = child[0].name;
+    if(this.canHighManage) {
+      if (this.storeId) {
+        this.stores = [];
+        this.storeServ.getStoreById(this.storeId, (store) => {
+          if(store) {
+            this.storeName = this.stores.name;
+            this.stores.push(store);
+            this.dummyStores = this.stores;
           }
-        } else {
-          this.util.error(this.util.getString('No category found'));
-        }
-      }, error => {
-        this.spinner.hide();
-        this.util.error(this.util.getString('Something went wrong'));
-        console.log(error);
-      });
+        });
+        this.storeServ.searchStore({ limit_length: 10 }, (stores) => {
+          if(stores) {
+            stores.forEach(element => {
+              this.stores.push(element);
+            });
+            this.dummyStores = this.stores;
+          }
+        });
+      } else {
+        this.storeServ.searchStore({ limit_length: 10 }, (stores) => {
+          if(stores) {
+            this.stores = stores;
+          }
+        });
+      }
       try {
         this.modalService.open(this.contentStore, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
           console.log(result);
@@ -580,8 +576,6 @@ export class ManageProductsComponent {
       } catch (error) {
         console.log(error);
       }
-    } else {
-      this.util.error('Please select parent category first');
     }
   }
 
@@ -597,11 +591,20 @@ export class ManageProductsComponent {
     this.modalService.dismissAll();
   }
 
-  searchStore(str) {
-    if(!this.canHighManage) {
-      return;
+  searchStore() {
+    if(this.canHighManage) {
+      this.storeServ.searchStore({
+        search: this.storeString,
+        limit_length: 10
+      }, (stores) => {
+        if(stores) {
+          this.stores = stores;
+        }
+      });
     }
+  }
 
+  filterStore(str) {
     this.stores = this.dummyStores.filter((ele: any) => {
       return ele.name.toLowerCase().includes(str.toLowerCase());
     });
