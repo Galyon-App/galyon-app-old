@@ -13,6 +13,10 @@
     <ngb-highlight [result]="r.first_name +' '+ r.last_name" [term]="t" style="padding-left: 5px;"></ngb-highlight>
 </ng-template>
 
+<ng-template #ct let-r="result" let-t="term">
+    <ngb-highlight [result]="r.name +', '+ r.province" [term]="t" style="padding-left: 5px;"></ngb-highlight>
+</ng-template>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -34,53 +38,6 @@
                 </label>
             </div>
             <div class="card-body reset-table p-t-0">
-                <h4 class="sub-title" *ngIf="new">Owner Details</h4>
-                <div class="form-group row" *ngIf="new">
-                    <div class="col-sm-6">
-                        <label>First Name</label>
-                        <input type="text" [(ngModel)]="fname" class="form-control" placeholder="First Name">
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Last Name</label>
-                        <input type="text" [(ngModel)]="lname" class="form-control" placeholder="Last Name">
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Email</label>
-                        <input type="email" [disabled]="!new" [(ngModel)]="email" class="form-control"
-                            placeholder="Email">
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Password</label>
-                        <input type="password" [(ngModel)]="password" class="form-control" placeholder="Password">
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Contact No</label>
-                        <!-- <input type="number" [(ngModel)]="phone" class="form-control" placeholder="Contact No"> -->
-                        <div class="row">
-                            <div class="col-3" *ngIf="new ===true">
-                                <select name="select" class="form-control" [(ngModel)]="mobileCcode">
-                                    <option *ngFor="let item of util.countrys;" [value]="item.dialling_code">
-                                        {{item.country_name}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="col-9">
-                                <input type="number" class="form-control" [placeholder]="api.translate('Mobile Number')"
-                                    [(ngModel)]="phone" [ngModelOptions]="{standalone: true}">
-                                <span class="md-line"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <label>Gender</label>
-                        <select name="select" [(ngModel)]="gender" class="form-control">
-                            <option value="1">Male</option>
-                            <option value="0">Female</option>
-                        </select>
-                    </div>
-                </div>
-
-                <h4 class="sub-title">Stores Details</h4>
                 <div class="form-group row">
                     <div class="col-sm-4">
                         <img [src]="coverImage" alt="" style="height: 250px; width: 250px; object-fit: cover; padding-bottom: 20px;"
@@ -92,90 +49,96 @@
                         <label *ngIf="pending_cover" style="padding-top: 5px; color: #e74c3c;"><strong>Pending:</strong> Cover Image...</label>
                     </div>
                     <div class="col-sm-8">
+                        <h4 class="sub-title">General</h4>
                         <div class="form-group row">
                             <div class="col-sm-12">
-                                <label>Stores Name</label>
-                                <input type="text" [(ngModel)]="name" class="form-control" placeholder="Stores Name">
+                                <label>Name</label>
+                                <input type="text" [(ngModel)]="name" class="form-control" placeholder="Name...">
                                 <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_name"><strong>Pending:</strong> {{pending_name}}</label>
                             </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Select city</label>
-                                <select name="select" [(ngModel)]="city" class="form-control">
-                                    <option *ngFor="let item of cities" [value]="item.uuid">{{item.name}}</option>
-                                </select>
+                            <div class="col-sm-12">
+                                <label style="margin-top: 10px;">Description</label>
+                                <textarea [(ngModel)]="descritions" rows="5" cols="5" class="form-control"
+                                    placeholder="Description..."></textarea>
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_description"><strong>Pending:</strong> {{pending_description}}</label>
                             </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Opening Time</label>
-                                <input [(ngModel)]="openTime" type="time" class="form-control" placeholder="Opening Time">
-                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_open"><strong>Pending:</strong> {{pending_open}}</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Closing Time</label>
-                                <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
-                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_close"><strong>Pending:</strong> {{pending_close}}</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <label style="margin-top: 10px;">{{util.getString('Featured')}} </label>
+                                <label>{{util.getString('Featured')}} </label>
                                 <select name="select" [(ngModel)]="is_featured" class="form-control">
                                     <option value='0'>{{util.getString('Regular')}} </option>
                                     <option value='1'>{{util.getString('Featured')}} </option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <label style="margin-top: 10px;">{{util.getString('Field Status')}} </label>
+                                <label>{{util.getString('Field Status')}} </label>
                                 <select name="select" [(ngModel)]="isClosed" class="form-control">
                                     <option value='1'>{{util.getString('Closed')}} </option>
                                     <option value='0'>{{util.getString('Open')}} </option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <label style="margin-top: 10px;"> {{util.getString('Status')}}</label>
+                                <label> {{util.getString('Status')}}</label>
                                 <select name="select" [(ngModel)]="status" class="form-control">
                                     <option value='0'>{{util.getString('Unavailable')}} </option>
                                     <option value='1'>{{util.getString('Available')}} </option>
                                 </select>
                             </div>
-                            <div class="col-sm-8">
+                        </div>
+
+                        <h4 class="sub-title" style="margin-top: 30px;">Assignment</h4>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label style="margin-top: 10px;">Select city</label>
+                                <input id="typeahead-basic" type="text" class="form-control" 
+                                [(ngModel)]="searchCityTerm" [editable]='false' [ngbTypeahead]="searchCity" (keyup.enter)="checkCity()"
+                                [resultFormatter]="resultFormatBandListValueCity" [inputFormatter]="inputFormatBandListValueCity" [resultTemplate]="ct"/>
+                            </div>
+                            <div class="col-sm-6">
                                 <label style="margin-top: 10px;">Select owner</label>
                                 <input id="typeahead-basic" type="text" class="form-control" 
                                 [(ngModel)]="searchTerm" [editable]='false' [ngbTypeahead]="search" (keyup.enter)="checkUser()"
                                 [resultFormatter]="resultFormatBandListValue" [inputFormatter]="inputFormatBandListValue" [resultTemplate]="rt"/>
                             </div>
                             <div class="col-sm-4">
-                                <label style="margin-top: 10px;">Store Commision (%)</label>
+                                <label style="margin-top: 15px;">Commision (%)</label>
                                 <input [(ngModel)]="commission" type="number" class="form-control"
-                                    placeholder="Store commission %">
+                                    placeholder="0.00">
                             </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 15px;">Opening Time</label>
+                                <input [(ngModel)]="openTime" type="time" class="form-control" placeholder="Opening Time">
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_open"><strong>Pending:</strong> {{pending_open}}</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label style="margin-top: 15px;">Closing Time</label>
+                                <input [(ngModel)]="closeTime" type="time" class="form-control" placeholder="Closing Time">
+                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_close"><strong>Pending:</strong> {{pending_close}}</label>
+                            </div>
+                        </div>
+
+                        <h4 class="sub-title" style="margin-top: 30px;">Contacts</h4>
+                        <div class="form-group row">
                             <div class="col-sm-6">
                                 <label style="margin-top: 10px;">Email Address</label>
-                                <input type="text" [(ngModel)]="store_email" class="form-control" placeholder="Email">
+                                <input type="text" [(ngModel)]="store_email" class="form-control" placeholder="Email...">
                                 <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_email"><strong>Pending:</strong> {{pending_email}}</label>
                             </div>
                             <div class="col-sm-6">
                                 <label style="margin-top: 10px;">Phone Number</label>
-                                <input [(ngModel)]="store_phone" type="text" class="form-control" placeholder="Phone">
+                                <input [(ngModel)]="store_phone" type="text" class="form-control" placeholder="Phone...">
                                 <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_phone"><strong>Pending:</strong> {{pending_phone}}</label>
                             </div>
-                            <div class="col-sm-12">
-                                <label style="margin-top: 10px;">Store Description</label>
-                                <textarea [(ngModel)]="descritions" rows="5" cols="5" class="form-control"
-                                    placeholder="Store Description"></textarea>
-                                <label style="padding-top: 5px; color: #e74c3c;" *ngIf="pending_description"><strong>Pending:</strong> {{pending_description}}</label>
-                            </div>
-                            <!-- <div class="col-sm-12">
-                                <label>Address</label>
-                                <input type="text" [(ngModel)]="address" ngx-google-places-autocomplete #placesRef="ngx-places"
-                                    (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Address">
-                            </div> -->
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <button class="btn btn-primary btn-round float-right" (click)="create()" *ngIf="new">
+                        <button class="btn btn-primary btn-round float-right" (click)="createStore()" *ngIf="new">
                             Create Store
                         </button>
-                        <button class="btn btn-primary btn-round float-right" (click)="updateVenue()" *ngIf="!new">
+                        <button class="btn btn-primary btn-round float-right" (click)="updateStore()" *ngIf="!new">
                             Update Store
                         </button>
                         <button class="btn btn-primary btn-round float-right" (click)="editAddress(!storeAddress)" *ngIf="!storeAddress" style="margin-right: 15px;">

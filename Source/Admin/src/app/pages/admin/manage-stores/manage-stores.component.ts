@@ -35,22 +35,32 @@ export class ManageStoresComponent {
   latitude: any;
   longitude: any;
 
+  haveData: boolean = false;
+
   coverImage: any;
   gender: any = 1;
 
   name: any = '';
   descritions: any = '';
-  haveData: boolean = false;
-  time: any = '';
+
+  is_featured: any = '0';
+  isClosed: any = '0';
+  status: any = '0';
+ 
   commission: any;
+  city: any = '';
+  openTime: any = '08:00';
+  closeTime: any = '17:00';
+  time: any = '';
+
   email: any = '';
-  openTime;
-  closeTime;
+  phone: any = '';
+
+
   fname: any = '';
   lname: any = '';
   password: any = '';
-  phone: any = '';
-  city: any = '';
+  
   totalSales: any = 0;
   totalOrders: any = 0;
   reviews: any[] = [];
@@ -64,12 +74,9 @@ export class ManageStoresComponent {
   
   searching = false;
   searchFailed = false;
+
   public searchTerm: any = '';
   private selectedUserId: any = '';
-
-  is_featured: any = '';
-  isClosed: any = '';
-  status: any = '';
 
   search: OperatorFunction<string, readonly {first_name, cover}[]> = (text$: Observable<string>) =>
     text$.pipe(
@@ -151,6 +158,7 @@ export class ManageStoresComponent {
             this.storeAddress = response.address;
             this.name = response.name;
             this.city = response.city_id;
+            this.searchCityTerm = response.city_name;
             this.latitude = response.lat;
             this.longitude = response.lng;
             this.fileURL = response.cover;
@@ -204,9 +212,46 @@ export class ManageStoresComponent {
         //this.getReviews();
       }
     });
-    this.cityServ.request(activeCities => {
-      this.cities = activeCities;
-    });
+  }
+
+  
+  public searchCityTerm: any = '';
+  private selectedCityId: any = '';
+
+  searchingCity = false;
+  searchCityFailed = false;
+
+  searchCity: OperatorFunction<string, readonly {name, province}[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      tap(() => this.searchingCity = true),
+      switchMap(term =>
+        this.api.search(term, 'galyon/v1/cities/searchCity').pipe(
+          tap(() => this.searchCityFailed = false),
+          catchError(() => {
+            this.searchCityFailed = true;
+            return of([]);
+          }))
+      ),
+      tap(() => this.searchingCity = false)
+    )
+
+  checkCity() {
+    if(typeof this.searchCityTerm === 'undefined') {
+      this.searchCityTerm = '';
+    }
+  }
+
+  resultFormatBandListValueCity(value: any) {            
+    return value.name + ', ' + value.province;
+  } 
+
+  inputFormatBandListValueCity(value: any)   {
+    if(value.name || value.province) {
+      return value.name + ', ' + value.province;
+    }
+    return value;
   }
 
   decideRequest(action) {
@@ -321,7 +366,7 @@ export class ManageStoresComponent {
     this.longitude = address.geometry.location.lng();
   }
 
-  updateVenue() {
+  updateStore() {
 
     if (this.name === '' || this.openTime === '' || this.closeTime === '' || !this.openTime || !this.closeTime) {
       this.util.error(this.api.translate('All Fields are required'));
@@ -349,7 +394,7 @@ export class ManageStoresComponent {
       cover: this.fileURL,
       open_time: this.openTime,
       close_time: this.closeTime,
-      city_id: this.city,
+      city_id: this.searchCityTerm.uuid,
       owner: localStorage.getItem('store-owner'),
       email: this.store_email,
       phone: this.store_phone,
@@ -374,7 +419,12 @@ export class ManageStoresComponent {
     });
   }
 
-  create() {
+  createStore() {
+    let city_id: string = this.searchCityTerm.uuid;
+    console.log(city_id)
+
+    return;
+
     console.log('mobile code', this.mobileCcode);
     console.log(this.email, this.fname, this.lname, this.phone, this.password, this.name, this.address, this.descritions, this.time)
     if (this.email === '' || this.fname === '' || this.lname === '' || this.phone === '' || this.password === ''
