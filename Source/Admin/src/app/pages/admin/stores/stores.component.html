@@ -84,8 +84,7 @@
                                     </ngx-skeleton-loader>
                                 </td>
                             </tr>
-                            <tr
-                                *ngFor="let item of stores  | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
+                            <tr *ngFor="let item of stores  | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
                                 <td><a href="javascript:;"><img class="img-responsive"
                                             style="height: 70px;width: 100px; border-radius: 10px;"
                                             [src]="api.mediaURL+ item.cover" onError="this.src='assets/images/store.png'"

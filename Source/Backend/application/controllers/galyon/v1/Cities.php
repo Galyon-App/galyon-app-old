@@ -71,6 +71,13 @@ class Cities extends Galyon_controller {
         $limit_length = (int)$this->input->post('limit_length');
         $limit_length = $limit_length ? $limit_length : 10;
 
+        $order_by = [];
+        $order_column = $this->input->post('order_column');
+        $order_mode = $this->input->post('order_mode');
+        if(isset($order_column) && isset($order_mode)) {
+            $order_by = [$order_column, $order_mode];
+        }
+
         if($no_term) {
             $params = array(
                 $limit_start,
@@ -84,11 +91,12 @@ class Cities extends Galyon_controller {
             );
         }
         
-        $query = " SELECT `uuid`,`name`,`lat`,`lng`,`status`,`timestamp`,`updated_at`,`deleted_at`    
+        $query = " SELECT `uuid`,`name`,`province`,`country`,`lat`,`lng`,`status`,`timestamp`,`updated_at`,`deleted_at`    
         FROM `cities` 
         WHERE deleted_at IS NULL 
         ";
         $query .= $no_term ? "" : " AND `name` LIKE ? ";
+        $query .= count($order_by) == 2 ? " ORDER BY $order_by[0] $order_by[1]" : "";
         $query .= " LIMIT ?, ?";
 
         $cities = $this->Crud_model->custom($query, $params, 'result');

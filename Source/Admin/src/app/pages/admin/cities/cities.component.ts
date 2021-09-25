@@ -32,16 +32,21 @@ export class CitiesComponent {
     private util: UtilService,
     private toastyService: ToastyService,
   ) {
-    this.getAllCities();
+    this.getAllCities(null);
   }
 
-  getAllCities() {
+  searchText: any = '';
+
+  getAllCities(search) {
     this.api.post('galyon/v1/cities/getAllCities', {
+      filter_term: this.searchText,
       limit_start: 0,
-      limit_length: 1000
+      limit_length: 100,
+      order_column: 'id',
+      order_mode: 'DESC',
     }).then((response: any) => {
+      this.dummy = [];
       if (response && response.success && response.data) {
-        this.dummy = [];
         this.cities = response.data;
         this.dummyCities = response.data;
       }
@@ -54,7 +59,11 @@ export class CitiesComponent {
     });
   }
 
-  search(str) {
+  search() {
+    this.getAllCities(this.searchText);
+  }
+
+  filter(str) {
     this.resetChanges();
     this.cities = this.filterItems(str);
   }
