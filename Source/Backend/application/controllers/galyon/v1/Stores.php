@@ -123,7 +123,7 @@ class Stores extends Galyon_controller {
             $stores = $this->getStoreMeta($stores);
             $this->json_response($stores);
         } else {
-            $this->json_response(null, false, "No store associated to the city!");
+            $this->json_response(null, false, "No store is found!");
         }
     }
 
