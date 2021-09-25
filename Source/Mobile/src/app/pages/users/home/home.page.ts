@@ -132,6 +132,9 @@ export class HomePage {
 
         this.featuredStores.forEach(async (store) => {
           store['isOpen'] = await this.isOpen(store.open_time, store.close_time);
+          if(!store.address) {
+            store.address = "Not yet set...";
+          }
         });
       }
     }, error => {
