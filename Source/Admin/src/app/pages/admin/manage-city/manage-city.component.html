@@ -11,18 +11,20 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h5>Add City </h5>
+                <h5>Manage City</h5>
             </div>
             <div class="card-body reset-table p-t-0">
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <label>Address</label>
+                        <label>Search for City</label>
                         <input type="text" [(ngModel)]="address" ngx-google-places-autocomplete #placesRef="ngx-places"
-                            [options]="{types: ['(cities)']}" (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Address">
+                            [options]="{types: ['(cities)']}" (onAddressChange)="handleAddressChange($event)" class="form-control" placeholder="Type here...">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-4"><p *ngIf="province"><strong>Province:</strong> {{province}}</p></div>
+                    <div class="col-sm-4"><p *ngIf="country"><strong>Country:</strong> {{country}}</p></div>
+                    <div class="col-sm-4">
                         <button class="btn btn-primary btn-round float-right" (click)="create()">Add City</button>
                     </div>
                 </div>

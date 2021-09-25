@@ -21,6 +21,8 @@ import { UtilService } from 'src/app/services/util.service';
 export class ManageCityComponent {
 
   city: any;
+  province: any;
+  country: any;
   lat: any;
   lng: any;
   address: any;
@@ -34,9 +36,22 @@ export class ManageCityComponent {
   ) { }
 
   public handleAddressChange(address: Address) {
-    this.city = address.name;
-    this.lat = address.geometry.location.lat();
-    this.lng = address.geometry.location.lng();
+    if(address) {
+      this.city = address.name;
+      address.address_components.forEach(item => {
+        if(item.types.includes('administrative_area_level_2')) {
+          this.province = item.long_name;
+        }
+        if(item.types.includes('administrative_area_level_1')) {
+          this.province = this.province == '' ? item.long_name : this.province +', '+ item.long_name;
+        }
+        if(item.types.includes('country')) {
+          this.country = item.long_name;
+        }        
+      });
+      this.lat = address.geometry.location.lat();
+      this.lng = address.geometry.location.lng();
+    }
   }
 
   create() {
@@ -48,6 +63,8 @@ export class ManageCityComponent {
     this.spinner.show();
     this.api.post('galyon/v1/cities/createNewCity', {
       name: this.city,
+      province: this.province,
+      country: this.country,
       lat: this.lat,
       lng: this.lng
     }).then(data => {

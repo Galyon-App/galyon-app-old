@@ -112,6 +112,8 @@ class Cities extends Galyon_controller {
         }
 
         $name = $this->input->post('name');
+        $province = $this->input->post('province');
+        $country = $this->input->post('country');
         $lat = $this->input->post('lat');
         $lng = $this->input->post('lng');
 
@@ -122,6 +124,8 @@ class Cities extends Galyon_controller {
         $inserted = $this->Crud_model->insert($this->table_name, array( 
             "uuid" => $this->uuid->v4(), 
             "name" => $name, 
+            "province" => $province, 
+            "country" => $country, 
             "lat" => $lat, 
             "lng" => $lng,
             "timestamp" => get_current_utc_time() 
