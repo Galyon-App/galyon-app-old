@@ -37,6 +37,7 @@ export class ActivatePage implements OnInit {
   ccCode: any = '+91';
 
 
+  lock_email: boolean = false;
   email: any;
   key: any;
   password: any;
@@ -57,6 +58,7 @@ export class ActivatePage implements OnInit {
     this.sent = false;
 
     this.email = this.navParam.get('email') ? this.navParam.get('email') : "";
+    this.lock_email = this.email ? true : false;
     this.key = '';
     this.password = '';
     this.confirm_password = '';
@@ -79,13 +81,13 @@ export class ActivatePage implements OnInit {
     this.action = event;
   }
 
+  onChange(event:any,value:any){
+    console.log(event)
+  }
+
   activateAccount() {
     if (this.email == '' || this.key == '' || this.password == '' || this.confirm_password == '') {
       this.util.showToast(this.util.getString('All fields are required'), 'light', 'bottom');
-      console.log('email', this.email == '');
-      console.log('key', this.key);
-      console.log('password', this.password);
-      console.log('confirm_password', this.confirm_password);
       return false;
     }
 
@@ -102,7 +104,7 @@ export class ActivatePage implements OnInit {
     this.sending = true;
     this.api.post('galyon/v1/users/activateAccount', {
       email: this.email,
-      activation_key: this.key,
+      reset_key: this.key,
       password: this.password,
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {

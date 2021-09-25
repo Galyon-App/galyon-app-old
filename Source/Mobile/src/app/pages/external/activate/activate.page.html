@@ -14,7 +14,7 @@
     <div class="form_div">
       <ion-label class="main_head"> {{util.getString('Activations')}} </ion-label>
       <div>
-        <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email" [attr.disabled]="sending">
+        <ion-input type="email" [placeholder]="util.getString('Email')" [(ngModel)]="email" [attr.disabled]="sending || lock_email">
           <ion-icon name="mail" slot="icon-only"></ion-icon>
         </ion-input>
         <ion-input type="text" [placeholder]="util.getString('Activation')" [(ngModel)]="key" [attr.disabled]="sending">
