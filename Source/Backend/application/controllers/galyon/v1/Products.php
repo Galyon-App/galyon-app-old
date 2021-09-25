@@ -140,16 +140,51 @@ class Products extends Galyon_controller {
 
     function getAllProducts() {
         $auth = $this->is_authorized(false);
-        $request = $this->request_validation($_POST, [], [], ["store_id"]); 
 
-        $products = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result' );
+        $filter_term = $this->input->post('filter_term');
+        $store_id = $this->input->post('store_id');
+        $limit_start = (int)$this->input->post('limit_start');
+        $limit_length = (int)$this->input->post('limit_length');
+        $limit_length = $limit_length ? $limit_length : 10;
+
+        $order_by = [];
+        $order_column = $this->input->post('order_column');
+        $order_mode = $this->input->post('order_mode');
+        if(isset($order_column) && isset($order_mode)) {
+            $order_by = [$order_column, $order_mode];
+        }
+
+        if(empty($store_id)) {
+            $params = array(
+                $limit_start,
+                $limit_length
+            );
+        } else {
+            $params = array(
+                $store_id, 
+                $limit_start,
+                $limit_length
+            );
+        }
         
+        $query = " SELECT `id` ";
+        foreach($this->public_column as $column) {
+            $query .= ",`$column` ";
+        }
+        $query .= " FROM `products` ";
+        $query .= " WHERE deleted_at IS NULL ";
+        $query .= empty($store_id) ? "" : " AND `store_id` = ? ";
+        $query .= $auth->role == "user" || $auth->role == "store" ? " AND `status`='1' AND deleted_at IS NULL":"";
+        $query .= empty($filter_term) ? "" : " AND name LIKE '%".$filter_term."%' ";
+        $query .= count($order_by) == 2 ? " ORDER BY $order_by[0] $order_by[1]" : "";
+        $query .= " LIMIT ?, ?";   
+
+        $products = $this->Crud_model->custom($query, $params, 'result');
         if($products) {
             $products = $this->getProductMeta($products);
             $this->json_response($products);
         } else {
-            $this->json_response(null, false, "No product was found!");
+            $this->json_response(null, false, "No store products found!");
         }
     }
     

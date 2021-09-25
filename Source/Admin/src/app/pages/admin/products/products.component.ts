@@ -22,6 +22,7 @@ import { UtilService } from 'src/app/services/util.service';
 })
 export class ProductsComponent {
 
+  searchText: string = '';
   products: any[] = [];
   dummProducts: any[] = [];
   dummy = Array(5);
@@ -34,14 +35,17 @@ export class ProductsComponent {
     private toastyService: ToastyService,
     private util: UtilService
   ) {
-    this.getAllProducts();
+    this.getAllProducts(null);
   }
 
-  getAllProducts(filter = '') {
+  getAllProducts(filter) {
     this.api.post('galyon/v1/products/getAllProducts', {
+      filter_term: filter ? filter:"",
       search: filter,
       limit_start: 0,
-      limit_length: 1000
+      limit_length: 100,
+      order_column: 'updated_at',
+      order_mode: 'DESC',
     }).then((response: any) => {
       if (response && response.success == true && response.data) {
         let product_list = response.data;
@@ -76,7 +80,11 @@ export class ProductsComponent {
     return this.api.getCurrecySymbol();
   }
 
-  search(string) {
+  search() {
+    this.getAllProducts(this.searchText);
+  }
+
+  filter(string) {
     this.resetChanges();
     this.products = this.filterItems(string);
   }
@@ -119,6 +127,10 @@ export class ProductsComponent {
       }
     };
     this.router.navigate(['admin/manage-products'], navData);
+  }
+
+  createNew() {
+    this.router.navigate(['admin/manage-products']);
   }
 
   /**
