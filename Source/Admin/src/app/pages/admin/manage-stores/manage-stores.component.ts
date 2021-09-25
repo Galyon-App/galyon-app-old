@@ -373,20 +373,6 @@ export class ManageStoresComponent {
       return false;
     }
 
-    //TODO: Add Geocoder
-    // const geocoder = new google.maps.Geocoder;
-    // geocoder.geocode({ address: this.address }, (results, status) => {
-    //   console.log(results, status);
-    //   if (status === 'OK' && results && results.length) {
-    //     this.latitude = results[0].geometry.location.lat();
-    //     this.longitude = results[0].geometry.location.lng();
-    //     console.log('----->', this.latitude, this.longitude);
-    //   } else {
-    //     alert('Geocode was not successful for the following reason: ' + status);
-    //     return false;
-    //   }
-    // });
-
     const param = {
       uuid: this.id,
       name: this.name,
@@ -394,8 +380,8 @@ export class ManageStoresComponent {
       cover: this.fileURL,
       open_time: this.openTime,
       close_time: this.closeTime,
-      city_id: this.searchCityTerm.uuid,
-      owner: localStorage.getItem('store-owner'),
+      city_id: this.searchCityTerm.uuid ? this.searchCityTerm.uuid : "",
+      owner: this.searchTerm.uuid ? this.searchTerm.uuid : "",
       email: this.store_email,
       phone: this.store_phone,
       commission: this.commission,
@@ -420,122 +406,55 @@ export class ManageStoresComponent {
   }
 
   createStore() {
-    let city_id: string = this.searchCityTerm.uuid;
-    console.log(city_id)
-
-    return;
-
-    console.log('mobile code', this.mobileCcode);
-    console.log(this.email, this.fname, this.lname, this.phone, this.password, this.name, this.address, this.descritions, this.time)
-    if (this.email === '' || this.fname === '' || this.lname === '' || this.phone === '' || this.password === ''
-      || this.name === '' || this.address === '' || this.descritions === ''
-      || this.city === '' || !this.city || this.openTime === '' || this.closeTime === '' ||
-      !this.openTime || !this.closeTime || !this.commission || this.commission === '') {
+    if (this.name === '' || this.openTime === '' || this.closeTime === '' || !this.openTime || !this.closeTime) {
       this.util.error(this.api.translate('All Fields are required'));
       return false;
     }
 
-    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-    if (!(emailfilter.test(this.email))) {
-      this.util.error(this.api.translate('Please enter valid email'));
-      return false;
-    }
-
-    if (!this.coverImage || this.coverImage === '') {
-      this.util.error(this.api.translate('Please add your cover image'));
-      return false;
-    }
-
-    const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({ address: this.address }, (results, status) => {
-      console.log(results, status);
-      if (status === 'OK' && results && results.length) {
-        this.latitude = results[0].geometry.location.lat();
-        this.longitude = results[0].geometry.location.lng();
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+    if(this.email && this.email != '') {
+      const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+      if (!(emailfilter.test(this.email))) {
+        this.util.error(this.api.translate('Please enter valid email'));
         return false;
       }
-    });
+    }
 
-    const userParam = {
-      first_name: this.fname,
-      last_name: this.lname,
-      email: this.email,
-      password: this.password,
-      gender: this.gender,
-      fcm_token: 'NA',
-      type: 'store',
-      lat: this.latitude,
-      lng: this.longitude,
+    const param = {
+      name: this.name,
+      descriptions: this.descritions,
       cover: this.fileURL,
-      mobile: this.phone,
-      status: 1,
-      verified: 1,
-      others: 1,
-      date: moment().format('YYYY-MM-DD'),
-      stripe_key: '',
-      country_code: '+' + this.mobileCcode
+      open_time: this.openTime,
+      close_time: this.closeTime,
+      city_id: this.searchCityTerm.uuid ? this.searchCityTerm.uuid : "",
+      owner: this.searchTerm.uuid ? this.searchTerm.uuid : "",
+      email: this.store_email,
+      phone: this.store_phone,
+      commission: this.commission,
+      is_featured: this.is_featured,
+      isClosed: this.isClosed,
+      status: this.status
     };
 
-    console.log('user param', userParam);
-
     this.spinner.show();
-    this.api.post('users/registerUser', userParam).then((data: any) => {
-      console.log('datatatrat=a=ta=t=at=', data);
-      if (data && data.data && data.status === 200) {
-        const storeParam = {
-          uid: data.data.id,
-          name: this.name,
-          mobile: this.phone,
-          lat: this.latitude,
-          lng: this.longitude,
-          verified: 1,
-          address: this.address,
-          descriptions: this.descritions,
-          images: '[]',
-          cover: this.fileURL,
-          status: 1,
-          open_time: this.openTime,
-          close_time: this.closeTime,
-          isClosed: 1,
-          certificate_url: '',
-          certificate_type: '',
-          rating: 0,
-          total_rating: 0,
-          cid: this.city,
-          commission: this.commission
-        };
-        console.log('****', storeParam);
-        this.api.post('stores/save', storeParam).then((salons: any) => {
-          this.spinner.hide();
-          this.util.success(null);
-        }, error => {
-          this.spinner.hide();
-          console.log(error);
-          this.util.error(this.api.translate('Something went wrong'));
-        }).catch(error => {
-          this.spinner.hide();
-          console.log(error);
-          this.util.error(this.api.translate('Something went wrong'));
+    this.api.post('galyon/v1/stores/createNewStore', param).then((response: any) => {
+      this.spinner.hide();
+      if (response && response.success && response.data) {
+        this.util.success(null, () => {
+          const navData: NavigationExtras = {
+            queryParams: {
+              uuid: response.data.uuid,
+              register: false
+            }
+          };
+          this.router.navigate(['admin/manage-stores'], navData);
         });
       } else {
-        this.spinner.hide();
-        if (data && data.data && data.data.message) {
-          this.util.error(data.data.message);
-          return false;
-        }
-        this.util.error(data.message);
-        return false;
+        this.util.error(response.message);
       }
     }, error => {
       this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    }).catch(error => {
-      this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
+      this.util.error(this.util.getString('Something went wrong'));
+      console.log('error', error);
     });
   }
 

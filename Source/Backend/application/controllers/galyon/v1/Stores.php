@@ -337,16 +337,18 @@ class Stores extends Galyon_controller {
     }
 
     function createNewStore() {
-        $auth = $this->is_authorized(true, ["admin"]);
-        $request = $this->request_validation($_POST, ["name"], $this->edit_column);
+        $auth = $this->is_authorized(true, ["admin","operator"]);
+        $request = $this->request_validation($_POST, ["name", "open_time", "close_time"], $this->edit_column);
         $request->data = array_merge(array(
             "uuid" => $this->uuid->v4(),
-            "parent_id" => $this->Crud_model->sanitize_param($this->input->post("parent")),
             "timestamp" => get_current_utc_time() 
         ), $request->data);
+        
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        }
 
         $inserted = $this->Crud_model->insert($this->table_name, $request->data);
-
         if($inserted) {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "id = '$inserted'", null, 'row' );
             $this->json_response($current);
@@ -357,7 +359,7 @@ class Stores extends Galyon_controller {
 
     function editStoreCurrent() {
         $auth = $this->is_authorized(true, ["admin","operator","store"]);
-        $request = $this->request_validation($_POST, ["uuid", "name"], $this->edit_column);
+        $request = $this->request_validation($_POST, ["uuid", "name", "open_time", "close_time"], $this->edit_column);
         $store_id = $request->data['uuid'];
         
         $previous = $this->Crud_model->get(
