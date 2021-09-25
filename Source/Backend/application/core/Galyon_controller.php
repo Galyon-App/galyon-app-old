@@ -12,6 +12,7 @@ class Galyon_controller extends CI_Controller{
 
   function __construct() {
     parent ::__construct();
+    $this->set_timezone();
 
     //TODO: Finalized the header returned.
     header('Access-Control-Allow-Origin: *');
@@ -313,5 +314,13 @@ class Galyon_controller extends CI_Controller{
     } else {
       return array("success" => false, 'message' => $this->email->print_debugger());
     }
+  }
+
+  /**
+   * TODO: If user has a timezone then use that instead.
+   */
+  public function set_timezone() {
+    $timezone = $this->config->item('app_timezone');
+    date_default_timezone_set($timezone);
   }
 }
