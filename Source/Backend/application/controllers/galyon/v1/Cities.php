@@ -13,7 +13,7 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Cities extends Galyon_controller {
 
     private $table_name = 'cities';
-    private $public_column = ['uuid','name','lat','lng','status','timestamp','updated_at','deleted_at'];
+    private $public_column = ['uuid','name','lat','lng','province','country','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
     function __construct(){
@@ -31,6 +31,34 @@ class Cities extends Galyon_controller {
             $this->json_response($cities);
         } else {
             $this->json_response(null, false, "No city was found!");
+        }
+    }
+
+    function searchCity() {
+        $user = $this->is_authorized(false);
+        $where = "status = '1' AND deleted_at IS NULL";
+        if($user) {
+            $basic  = $this->input->get_request_header('Basic');
+            if($user->role === "admin" &&  $basic == "admin") {
+                $where = null; 
+            }
+        }
+
+        $search = $this->input->post('search');
+        if(!empty($search)) {
+            $searching = "(name LIKE '%$search%' OR province LIKE '%$search%' OR country LIKE '%$search%')";
+            if($where == null) {
+                $where = $searching;
+            } else {
+                $where .= " AND ".$searching;
+            }
+        }
+
+        $cities = $this->Crud_model->get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        if($cities) {
+            $this->json_response($cities);
+        } else {
+            $this->json_response(null, false, "No store was found!");
         }
     }
 
