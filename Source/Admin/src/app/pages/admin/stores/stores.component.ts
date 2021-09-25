@@ -42,7 +42,7 @@ export class StoresComponent {
       filter_term: search ? this.searchText : "",
       limit_start: 0,
       limit_length: 100,
-      order_column: 'id',
+      order_column: 'updated_at',
       order_mode: 'DESC',
     }).then((response: any) => {
       if (response && response.success && response.data) {
