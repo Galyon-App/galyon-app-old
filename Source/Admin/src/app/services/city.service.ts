@@ -44,6 +44,23 @@ export class CityService {
     this.observable = this.subject.asObservable();
   }
 
+  public getCityId(city_id: string = '', callback = null) {
+    this.api.post('galyon/v1/cities/getCityById', {
+      uuid: city_id,
+    }).then((res: any) => {
+      if(res && res.success == true && res.data) {
+        res.data.name = res.data.name ? res.data.name : "Unknown";
+        callback(res.data);
+      } else {
+        console.log('error', res.message);
+        callback(null);
+      }
+    }).catch(error => {
+      console.log('error', error);
+      callback(null);
+    });
+  }
+
   public request(callback = null) {
     this.api.get('galyon/v1/cities/getAllCities').then((res: any) => {
       if(res && res.success == true && res.data) {
