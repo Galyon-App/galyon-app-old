@@ -6,7 +6,7 @@
 */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { NavController, PopoverController } from '@ionic/angular';
+import { AlertController, NavController, PopoverController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
@@ -54,6 +54,7 @@ export class PaymentPage implements OnInit {
     private addressServ: AddressService,
     private orderServ: OrderService,
     private route: ActivatedRoute,
+    private alertController: AlertController,
   ) {
     this.util.getCouponObservable().subscribe((data) => {
       this.cart.calcuate();
@@ -233,62 +234,87 @@ export class PaymentPage implements OnInit {
       }
     }
 
-    const store_ids = [...new Set(this.cart.cart.map(item => item.store_id))];
+    this.presentAlertConfirm(method);
+  }
 
-    await store_ids.forEach(async(store_id, index) => {
+  async presentAlertConfirm(method) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Thank you for placing your order!',
+      buttons: [
+        {
+          text: 'Go Back',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Registration');
+          }
+        }, {
+          text: 'Checkout',
+          handler: async () => {
+            console.log('Confirm Okay');
+            const store_ids = [...new Set(this.cart.cart.map(item => item.store_id))];
 
-      //Prepare data
-      let orderPackage = {
-        uid: this.authServ.userToken.uuid,
-        address_id: null, //Set on delivery options.
-        store_id: store_id,
-        
-        items: JSON.stringify(this.cart.getOrderItemObject(store_id)),
-        matrix: null,
-        factor: null,
-        coupon: this.cart.coupon ? JSON.stringify(this.cart.getCouponObjectForOrder()) : '',
+            await store_ids.forEach(async(store_id, index) => {
 
-        paid_method: method,
-      }
+              //Prepare data
+              let orderPackage = {
+                uid: this.authServ.userToken.uuid,
+                address_id: null, //Set on delivery options.
+                store_id: store_id,
+                
+                items: JSON.stringify(this.cart.getOrderItemObject(store_id)),
+                matrix: null,
+                factor: null,
+                coupon: this.cart.coupon ? JSON.stringify(this.cart.getCouponObjectForOrder()) : '',
 
-      let factor = {
-        schedule: this.datetime == 'custom' ? this.get_custom_datetime : this.curTime,
-        delivered: this.deliveryOption == "home",
-        distance: 0, //meter
-        duration: 0, //secs
-        tax: this.optServ.current.general.tax,
-        ship_mode: this.optServ.current.general.shipping,
-        ship_price: this.optServ.current.general.shippingPrice,
-        ship_base: this.optServ.current.general.shippingBase,
-        min_order: this.optServ.current.general.minimum_order,
-        free_delivery: this.optServ.current.general.free_delivery,
-        currency_code: this.optServ.current.settings.currency_code
-      };
+                paid_method: method,
+              }
 
-      //Add delievery details if posible.
-      let cur_store: any = this.storeAddress.filter( x => x.uuid == store_id );
-        cur_store = cur_store.length > 0 ? cur_store[0]:null;
-      orderPackage.matrix = cur_store.matrix ? JSON.stringify(cur_store.matrix):"";
-      if(this.deliveryOption == "home" && this.cart.deliveryAddress && cur_store.matrix) {
-        orderPackage.address_id = this.cart.deliveryAddress.uuid;
-        if(cur_store) {
-          factor.distance = cur_store.matrix.distance.value;
-          factor.duration = cur_store.matrix.duration.value;
+              let factor = {
+                schedule: this.datetime == 'custom' ? this.get_custom_datetime : this.curTime,
+                delivered: this.deliveryOption == "home",
+                distance: 0, //meter
+                duration: 0, //secs
+                tax: this.optServ.current.general.tax,
+                ship_mode: this.optServ.current.general.shipping,
+                ship_price: this.optServ.current.general.shippingPrice,
+                ship_base: this.optServ.current.general.shippingBase,
+                min_order: this.optServ.current.general.minimum_order,
+                free_delivery: this.optServ.current.general.free_delivery,
+                currency_code: this.optServ.current.settings.currency_code
+              };
+
+              //Add delievery details if posible.
+              let cur_store: any = this.storeAddress.filter( x => x.uuid == store_id );
+                cur_store = cur_store.length > 0 ? cur_store[0]:null;
+              orderPackage.matrix = cur_store.matrix ? JSON.stringify(cur_store.matrix):"";
+              if(this.deliveryOption == "home" && this.cart.deliveryAddress && cur_store.matrix) {
+                orderPackage.address_id = this.cart.deliveryAddress.uuid;
+                if(cur_store) {
+                  factor.distance = cur_store.matrix.distance.value;
+                  factor.duration = cur_store.matrix.duration.value;
+                }
+              }
+              orderPackage.factor = JSON.stringify(factor);
+            
+              //TODO: You can do better than this.
+              let orderStatus = await this.orderServ.submitOrder(orderPackage);
+              if(orderStatus && this.deliveryOption == "home") {
+                this.util.errorToast(this.util.getString('Order not accepted by one of the store.'));
+              }
+
+              if((index+1) == store_ids.length) {
+                this.cart.clearCart();
+                this.router.navigate(['user/orders']);
+              }
+            });  
+          }
         }
-      }
-      orderPackage.factor = JSON.stringify(factor);
-    
-      //TODO: You can do better than this.
-      let orderStatus = await this.orderServ.submitOrder(orderPackage);
-      if(orderStatus && this.deliveryOption == "home") {
-        this.util.errorToast(this.util.getString('Order not accepted by one of the store.'));
-      }
+      ]
+    });
 
-      if((index+1) == store_ids.length) {
-        this.cart.clearCart();
-        this.router.navigate(['user/orders']);
-      }
-    });  
+    await alert.present();
   }
 
   async makeOrder(method, key) {
