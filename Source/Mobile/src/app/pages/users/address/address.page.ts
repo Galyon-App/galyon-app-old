@@ -72,9 +72,14 @@ export class AddressPage implements OnInit {
       const selecte = this.address.current.filter(x => x.uuid === this.selectedAddress);
       const item = selecte[0];
       this.cart.deliveryAddress = item;
-      console.log(item);
       //this.cart.calcuate();
-      this.router.navigate(['user/cart/payment']);
+
+      const navData: NavigationExtras = {
+        queryParams: {
+          address: JSON.stringify(item)
+        }
+      };
+      this.router.navigate(['user/cart/payment'], navData);
     }
   }
 

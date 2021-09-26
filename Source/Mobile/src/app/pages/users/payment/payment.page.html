@@ -18,55 +18,39 @@
   </ion-toolbar>
 
   <div class="header" style="margin-top: 0;">
-    <ion-label class="title"> {{util.getString('Order Summary')}} </ion-label>
+    <ion-label class="title"> {{util.getString('Merchants')}} </ion-label>
   </div>
-  <div class="billing">
-    <div class="singleRow">
-      <ion-label class="headerTitle"> {{util.getString('Item Total')}} </ion-label>
-      <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice.toFixed(2)}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.totalPrice.toFixed(2)}} {{util.currecny}} </span>
-      </ion-label>
+  <div>
+    <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray; font-weight: bold;"> {{util.getString('Stores')}} </p>
+    <div *ngFor="let item of storeAddress" class="stores" style="padding-left: 10px;">
+      <p class="name" style="font-weight: bold; margin-bottom: 2px; padding-left: 20px; font-size: 15px; padding-bottom: 5px;">
+        {{item.name}}
+      </p>
+      <p style="padding-left: 20px; margin: 0 0 3px; font-size: 14px;">
+        <ion-icon name="time"></ion-icon>
+        Operation: {{getTime(item.open_time)}} - {{getTime(item.close_time)}}
+      </p>
+      <p class="address" style="margin-top: 2px; padding-left: 20px; font-size: 14px; margin-bottom: 5px;">
+        <ion-icon name="location"></ion-icon>
+        {{item.noaddress? "":"Address: "+item.address}}
+        <span style="color: rgb(243, 67, 67);">
+          {{item.noaddress? item.noaddress:""}}
+        </span>
+      </p>
+      <p *ngIf="item.delivery_fee" class="address" style="margin-top: 2px; padding-left: 20px; font-size: 14px; margin-bottom: 5px;">
+        <ion-icon name="airplane"></ion-icon>
+        <span>
+          Delivery: {{util.currecny}}{{item.delivery_fee}} - {{item.delivery_distance}} km
+          <!-- {{item.delivery_duration}} -->
+       </span>
+      </p>
+      <p *ngIf="item.total_bill" class="address" style="margin-top: 2px; padding-left: 20px; font-size: 14px; margin-bottom: 5px;">
+        <ion-icon name="cash"></ion-icon>
+        <span>
+          Total Bill: {{util.currecny}}{{item.total_bill}}
+       </span>
+      </p>
     </div>
-
-    <div class="singleRow" *ngIf="cart.coupon">
-      <ion-label class="headerTitle"> {{util.getString('Discount')}} </ion-label>
-      <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.discount}} {{util.currecny}} </span>
-      </ion-label>
-    </div>
-
-    <div class="singleRow">
-      <ion-label class="headerTitle"> {{util.getString('Taxes & Charges')}} </ion-label>
-      <ion-label class="price">
-        <span *ngIf="util.cside ==='left'">({{cart.orderTax}}%)&nbsp;{{util.currecny}}{{cart.orderTaxAmt}} </span>
-        <span *ngIf="util.cside ==='right'">({{cart.orderTax}}%)&nbsp;{{cart.orderTaxAmt}}{{util.currecny}} </span>
-      </ion-label>
-    </div>
-
-    <div class="singleRow">
-      <ion-label class="headerTitle"> {{util.getString('Delivery Charges')}} </ion-label>
-      <ion-label class="price">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice.toFixed(2)}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.deliveryPrice.toFixed(2)}} {{util.currecny}} </span>
-      </ion-label>
-    </div>
-
-    <div class="singleRow">
-      <ion-label class="headerTotal"> {{util.getString('Grand Total')}} </ion-label>
-      <ion-label class="priceTotal boldClass">
-        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}}</span>
-        <span *ngIf="util.cside ==='right'">{{cart.grandTotal}} {{util.currecny}} </span>
-      </ion-label>
-    </div>
-
-  </div>
-  <div class="coupones" (click)="openCoupon()">
-    <img src="assets/imgs/discount.png" class="badge" />
-    <ion-label class="title">{{util.getString('Apply coupon code')}} <br>
-      <p *ngIf="cart.coupon">{{util.getString('Coupon Applied')}} </p>
-    </ion-label>
   </div>
 
   <div class="header">
@@ -93,12 +77,12 @@
   </ion-list>
   <div *ngIf="deliveryOption === 'home'">
     <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray; font-weight: bold;"> {{util.getString('Address')}} </p>
-    <div *ngIf="!cart.deliveryAddress" class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
+    <div *ngIf="!cart.deliveryAddress" class="ion-activatable" style="position: relative; overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid; margin: 0 30px;"
       (click)="chooseAddress()">
       <ion-label> Choose Address - <label style="color: rgb(243, 67, 67);">Required!</label> </ion-label>
       <ion-ripple-effect type="bounded"></ion-ripple-effect>
     </div>
-    <div *ngIf="cart.deliveryAddress" class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
+    <div *ngIf="cart.deliveryAddress" class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid; margin: 0 30px;"
       (click)="chooseAddress()">
       <ion-label> Choose Another </ion-label>
       <ion-ripple-effect type="bounded"></ion-ripple-effect>
@@ -111,23 +95,66 @@
       <p class="address" style="margin-top: 2px; padding-left: 20px; font-size: 12px;" *ngIf="cart.deliveryAddress && cart.deliveryAddress.landmark"> Landmark: {{cart.deliveryAddress.landmark}} </p>
     </div>
   </div>
-  <div *ngIf="deliveryOption === 'store'">
-    <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray; font-weight: bold;"> {{util.getString('Stores')}} </p>
-    <div *ngFor="let item of storeAddress" class="stores">
-      <p class="name" style="font-weight: bold; margin-bottom: 2px; padding-left: 20px; font-size: 14px;">
-        <ion-icon name="location-outline"></ion-icon> {{item.name}}
-      </p>
-      <p style="padding-left: 20px; margin: 0 0 3px; font-size: 12px;"> Operating Hours: {{getTime(item.open_time)}} - {{getTime(item.close_time)}}</p>
-      <p class="address" style="margin-top: 2px; padding-left: 20px; font-size: 12px;"> {{item.address}} </p>
-    </div>
-  </div>
   <div>
     <p style="margin-left: 15px; padding-left: 5px; border-left: 2px solid lightgray; font-weight: bold;"> {{util.getString('Schedule')}} </p>
-    <div class="ion-activatable" style="position: relative;overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid;"
+    <div class="ion-activatable" style="position: relative; overflow: hidden;padding: 10px 20px; border: 1px lightgrey solid; margin-bottom: 20px; margin: 0 30px;"
       (click)="openTime($event)">
       <ion-label> {{time}} </ion-label>
       <ion-ripple-effect type="bounded"></ion-ripple-effect>
     </div>
+    <div style="margin: 15px 30px 0;">
+      <input [(ngModel)]="delivery_date" type="date" class="form-control style-picker date-picker" placeholder="Date"
+        *ngIf="datetime == 'custom'" [min]="min_date_picker" [max]="max_date_picker">
+      <input [(ngModel)]="delivery_time" type="time" class="form-control style-picker time-picker" placeholder="Time"
+        *ngIf="datetime == 'custom'">
+    </div>
+  </div>
+
+  <div class="header" style="margin-top: 0;">
+    <ion-label class="title"> {{util.getString('Order Summary')}} </ion-label>
+  </div>
+  <div class="billing">
+    <div class="singleRow">
+      <ion-label class="headerTitle"> {{util.getString('Item Total')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.totalPrice.toFixed(2)}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow" *ngIf="cart.coupon">
+      <ion-label class="headerTitle"> {{util.getString('Discount')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.discount}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow">
+      <ion-label class="headerTitle"> {{util.getString('Taxes & Charges')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'">({{cart.orderTax}}%)&nbsp;{{util.currecny}}{{cart.orderTaxAmt}} </span>
+        <span *ngIf="util.cside ==='right'">({{cart.orderTax}}%)&nbsp;{{cart.orderTaxAmt}}{{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow">
+      <ion-label class="headerTitle"> {{util.getString('Delivery Charges')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.deliveryPrice.toFixed(2)}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow">
+      <ion-label class="headerTotal"> {{util.getString('Grand Total')}} </ion-label>
+      <ion-label class="priceTotal boldClass">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.grandTotal}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+  </div>
+  <div class="coupones" (click)="openCoupon()">
+    <img src="assets/imgs/discount.png" class="badge" />
+    <ion-label class="title">{{util.getString('Apply coupon code')}} <br>
+      <p *ngIf="cart.coupon">{{util.getString('Coupon Applied')}}: <strong>{{cart.coupon.name}}</strong> </p>
+    </ion-label>
   </div>
 
   <div class="header">

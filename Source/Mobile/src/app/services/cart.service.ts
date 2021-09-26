@@ -9,6 +9,8 @@ import { ApiService } from './api.service';
 import { UtilService } from './util.service';
 import { element } from 'protractor';
 import { ProductsService } from './products.service';
+import { OptionService } from './option.service';
+import { Option } from '../models/option.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,7 @@ export class CartService {
   public discount: any = 0;
   public orderTax: any = 0;
   public get orderTaxAmt(): any {
-    return (this.totalPrice * (this.orderTax/100)).toFixed(2);
+    return ((this.totalPrice-this.discount) * (this.orderTax/100)).toFixed(2);
   }
   public orderPrice: any;
   public shipping: any;
@@ -41,8 +43,16 @@ export class CartService {
   constructor(
     public api: ApiService,
     public util: UtilService,
-    private productServ: ProductsService
+    private productServ: ProductsService,
+    private optServ: OptionService
   ) {
+   this.optServ.observe.subscribe((option: Option)=> {
+     if(option.general) {
+        this.orderTax = this.optServ.current.general.tax;
+        this.calcuate();
+     }
+   });
+
     this.util.getKeys('cart')
       .then((data: any) => {
         if (data && data !== null && data !== 'null') {
@@ -74,9 +84,39 @@ export class CartService {
       });
   }
 
-  getOrderItemObject() {
+  //TODO: Implement coupon.
+  getTotalBillByStore(store_id = '', discounted = false): number {
+    let store_total_bill: number = 0.00;
+
+    let store_cart: any[] = this.cart.filter(x => x.store_id == store_id);
+    store_cart.forEach(element => {
+      let item_price = parseFloat(element.orig_price);
+      let item_discount: number = 0;
+      if(element.discount_type == 'percent') {
+        item_discount = (parseFloat(element.orig_price)*(parseFloat(element.discount)/100));
+      } else if(element.discount_type == 'fixed') {
+        item_discount = parseFloat(element.discount);
+      }
+      let item_options: number = 0;
+      element.variations.forEach(variant => {
+        let varitem = variant.items[variant.current];
+          varitem.variant = variant.title;
+        let discounts = parseFloat(varitem.price)*(parseFloat(varitem.discount)/100);
+        item_options += parseFloat(varitem.price)-discounts;
+      });
+      let item_quantity = element.quantity;
+      
+      store_total_bill += ((item_price-item_discount)*item_quantity) 
+        + (item_options * item_quantity);
+    });
+
+    return store_total_bill;
+  }
+
+  getOrderItemObject(store_id) {
     let items = [];
-    this.cart.forEach(element => {
+    let order_items: any[] = this.cart.filter(x => x.store_id == store_id);
+    order_items.forEach(element => {
       let current = {
         uuid: element.uuid,
         name: element.name,
@@ -144,10 +184,10 @@ export class CartService {
     this.cart = [];
     this.totalPrice = 0;
     this.grandTotal = 0;
-    this.coupon = undefined;
+    this.coupon = null;
     this.discount = 0;
     this.orderPrice = 0;
-    this.datetime = undefined;
+    this.datetime = null;
     this.util.clearKeys('cart');
   }
 
@@ -155,38 +195,22 @@ export class CartService {
     this.userOrderTaxByStores = [];
     let sub_total: number = 0;
 
-
     this.cart.forEach(element => {
-
-      //Determine the Discount of the total items.
+      let orig_price: number = parseFloat(element.orig_price);
       let calcdiscount: number = 0;
       if(element.discount_type == 'fixed') {
         calcdiscount = parseFloat(element.discount);
       } else if(element.discount_type == 'percent') {
-        calcdiscount = parseFloat(element.orig_price) * (parseFloat(element.discount)/100);
-      } else {
-        calcdiscount = 0;
+        calcdiscount = orig_price * (parseFloat(element.discount)/100);
       }
-      calcdiscount *= element.quantity;
-
-      sub_total += (parseFloat(element.orig_price) * element.quantity);
-      if(calcdiscount > 0) {
-        sub_total -= calcdiscount;
-      }
-      
-      //Add each variant total to the grand.
+      let opt_prices: number = 0;
       element.variations.forEach(variant => {
         let curVarIndex = variant.current;
-        let varPrice = parseFloat(variant.items[curVarIndex].price);
-        let varDiscount = parseFloat(variant.items[curVarIndex].discount)/100;
-
-        if(varDiscount > 0) {          
-          sub_total += ((varPrice - (varPrice*varDiscount)) * element.quantity)
-        } else {
-          sub_total += (varPrice * element.quantity);
-        }
+        let varPrice: number = parseFloat(variant.items[curVarIndex].price);
+        let varDiscount: number = parseFloat(variant.items[curVarIndex].discount)/100;
+        opt_prices += varPrice - (varPrice*varDiscount);
       });
-
+      sub_total += ( ((orig_price-calcdiscount)+opt_prices)*element.quantity );
     });
     this.totalPrice = sub_total;
 
@@ -209,84 +233,11 @@ export class CartService {
       }
     }
 
-    this.deliveryPrice = 0;
-    if (this.deliveryAddress && this.deliveryAt === 'home') {
-      let totalKM = 0;
-      let taxEach = 0;
-
-      console.log("cart => ", this.cart);
-      //TODO: Very important computinf the delivery.
-    //   this.stores.forEach(async (element) => {
-    //     const distance = await this.distanceInKmBetweenEarthCoordinates(this.deliveryAddress.lat, this.deliveryAddress.lng, element.lat, element.lng);
-    //     totalKM = totalKM + distance;
-    //     // const storeCount = this.stores.length + 1;
-    //     taxEach = this.orderTax / this.stores.length;
-    //     const extraChargeParam = {
-    //       store_id: element.uid,
-    //       distance: distance.toFixed(2),
-    //       tax: taxEach.toFixed(2),
-    //       shipping: this.shipping,
-    //       shippingPrice: this.shippingPrice
-    //     };
-    //     console.log('extraChargeParam', extraChargeParam);
-    //     this.userOrderTaxByStores.push(extraChargeParam);
-    // });
-
-    console.log("Tax=>", this.orderTax);
-      //TODO: Very important computinf the delivery after the delivery fee.
-      setTimeout(() => {
-        if (this.freeShipping > this.totalPrice) {
-          if (this.shipping === 'km') {
-            const distancePricer = totalKM * this.shippingPrice;
-            this.deliveryPrice = Math.floor(distancePricer).toFixed(2);
-            if (!this.discount || this.discount === null) {
-              this.discount = 0;
-            }
-            this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + distancePricer;
-            this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-          } else {
-            this.deliveryPrice = this.shippingPrice;
-            if (!this.discount || this.discount === null) {
-              this.discount = 0;
-            }
-            this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax + this.shippingPrice;
-            this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-          }
-        } else {
-          this.deliveryPrice = 0;
-          if (!this.discount || this.discount === null) {
-            this.discount = 0;
-          }
-          this.grandTotal = (this.totalPrice - parseFloat(this.discount)) + this.orderTax;
-          this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
-        }
-      }, 1000);
-    } else {
-    //   //console.log('no delivery address, no shipping price valid');
-    //   //TODO: Very important computing the delivery and store fee.
-    //   // let taxEach = 0;
-    //   // this.stores.forEach(async (element) => {
-    //   //   taxEach = this.orderTax / this.stores.length;
-    //   //   const extraChargeParam = {
-    //   //     store_id: element.uid,
-    //   //     distance: 0,
-    //   //     tax: taxEach.toFixed(2),
-    //   //     shipping: this.shipping,
-    //   //     shippingPrice: this.shippingPrice
-    //   //   };
-    //   //   console.log(extraChargeParam);
-    //   //   this.userOrderTaxByStores.push(extraChargeParam);
-    //   // });
-    }
-
-    //this.orderTax = this.totalPrice * this.orderTax; //TODO
-    console.log(this.orderTax);
-    this.grandTotal = this.totalPrice - parseFloat(this.discount);
-    //this.grandTotal -= parseFloat(this.orderTax); //TODO
-
-    this.grandTotal = parseFloat(this.grandTotal).toFixed(2);
+    let current_calculation: number = parseFloat(this.totalPrice) - parseFloat(this.discount);
+    current_calculation += parseFloat(this.orderTaxAmt);
+    current_calculation += parseFloat(this.deliveryPrice);
+    this.grandTotal = current_calculation.toFixed(2);
     this.saveLocalToStorage();
-    //this.createBulkOrder();
   }
 
   /**

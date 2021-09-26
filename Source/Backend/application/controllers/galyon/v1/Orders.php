@@ -29,15 +29,15 @@ class Orders extends Galyon_controller {
                 $order->user_name = $user->first_name." ".$user->last_name ;
             }
         }
-        if($this->input->post("has_store_name") == "1") {
-            $store = $this->Crud_model->get("stores", ['cover','name'], ["'uuid' = $order->store_id"], NULL, 'row' );
+        if($this->input->post("has_store_name") == "1" && isset($order->store_id) && !empty($order->store_id)) {
+            $store = $this->Crud_model->get("stores", ['cover','name'], array("uuid" => $order->store_id), NULL, 'row' );
             if($store) {
                 $order->store_cover = $store->cover;
                 $order->store_name = $store->name;
             }
         }
         if($this->input->post("has_address_name") == "1" && isset($order->address_id) && !empty($order->address_id)) {
-            $address = $this->Crud_model->get("address", ['house','address'], ["'uuid' = $order->address_id"], NULL, 'row' );
+            $address = $this->Crud_model->get("address", ['house','address'], array("uuid" => $order->address_id), NULL, 'row' );
             if($address) {
                 $order->address_name = $address->house.", ".$address->address;
             }
@@ -81,7 +81,7 @@ class Orders extends Galyon_controller {
 
     function getOrdersByUser() {
         $auth = $this->is_authorized(true);
-        $request = $this->request_validation($_POST, ["uid"], $this->public_column);
+        $request = $this->request_validation($_POST, ["uid"], $this->public_column, ["uid"]);
 
         //TODO: Check if Admin or Operator or Owner of store or User owned the order.
 
@@ -187,11 +187,20 @@ class Orders extends Galyon_controller {
             "timestamp" => get_current_utc_time()
         ), $request->data);
 
-        $request->data['progress'] = json_encode([array(
-            "status" => 1,
-            "current" => "created",
-            "latest" => "created"
-        )]);
+        if(empty($request->data['matrix'])) {
+            $request->data['progress'] = json_encode([array(
+                "status" => 1,
+                "current" => "created",
+                "latest" => "draft"
+            )]);
+            $request->data['stage'] = "draft";
+        } else {
+            $request->data['progress'] = json_encode([array(
+                "status" => 1,
+                "current" => "created",
+                "latest" => "created"
+            )]);            
+        }        
 
         //Start the computation.
         $total = 0;
@@ -229,11 +238,11 @@ class Orders extends Galyon_controller {
         //Prepare billing statement
         if($request->data['factor']) {
             $factor = json_decode($request->data['factor']);
-            $tax = $total * ($tax/100);
+            $tax = ($total-$discount) * ($factor->tax/100);
             if($factor->ship_mode == "fixed") {
-                $delivery = $factor->ship_price;
+                $delivery = $factor->ship_base + $factor->ship_price;
             } else {
-                $delivery = $factor->ship_price * ((int)$factor->distance/1000); //per km
+                $delivery = $factor->ship_base + ($factor->ship_price * ((int)$factor->distance/1000)); //per km
             }
             if($total > (int)$factor->min_order) {
                 if($total > (int)$factor->free_delivery) {

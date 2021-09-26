@@ -6,6 +6,7 @@ import { environment } from './environments/environment';
 
 if (environment.production) {
   enableProdMode();
+  window.console.log = function(){}; //Disabled console.log
 }
 
 const script = document.createElement('script');

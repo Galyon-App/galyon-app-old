@@ -10,6 +10,7 @@ export class General {
     province: any ='';
     shipping: any ='';
     shippingPrice: any ='';
+    shippingBase: any ='';
     tax: any ='';
     zipcode: any ='';
 }

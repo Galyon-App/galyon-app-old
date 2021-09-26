@@ -27,6 +27,10 @@ export class OptionService {
     return this.subject.value;
   }
 
+  public get observe(): Observable<Option> {
+    return this.observable;
+  }
+
   public setCurrent = (cur: Option) => {
     this.subject.next(cur);
   }
@@ -48,7 +52,7 @@ export class OptionService {
     } else {
       this.api.gets('galyon/v1/settings/initialize').then((res: any) => {
         if(res && res.success == true && res.data) {
-          this.subject = new BehaviorSubject<Option>(res.data);
+          this.subject.next(res.data);
         }
         if(callback != null) {
           callback(res.success ? this.current : null);

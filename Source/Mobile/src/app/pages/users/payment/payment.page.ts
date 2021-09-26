@@ -5,7 +5,7 @@
   Created : 01-Jan-2021
 */
 import { Component, OnInit } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NavController, PopoverController } from '@ionic/angular';
 import { CartService } from 'src/app/services/cart.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -19,6 +19,8 @@ import { GmapService } from 'src/app/services/gmap.service';
 import { StoreService } from 'src/app/services/store.service';
 import { AddressService } from 'src/app/services/address.service';
 import { OrderService } from 'src/app/services/order.service';
+import { FaqsPage } from '../../external/faqs/faqs.page';
+import { General } from 'src/app/models/option.model';
 
 @Component({
   selector: 'app-payment',
@@ -34,6 +36,9 @@ export class PaymentPage implements OnInit {
   haveGCash: boolean;
   havePaymongo: boolean;
 
+  delivery_date: any;
+  delivery_time: any;
+
   constructor(
     private router: Router,
     private navCtrl: NavController,
@@ -47,14 +52,19 @@ export class PaymentPage implements OnInit {
     private gmapServ: GmapService,
     private storeServ: StoreService,
     private addressServ: AddressService,
-    private orderServ: OrderService
+    private orderServ: OrderService,
+    private route: ActivatedRoute,
   ) {
     this.util.getCouponObservable().subscribe((data) => {
-      console.log(data);
       this.cart.calcuate();
-      console.log(this.cart.discount);
     }, error => {
       console.log(error);
+    });
+
+    this.route.queryParams.subscribe(data => {
+      if(data.address) {
+        this.calculateWithDelivery(JSON.parse(data.address));
+      }
     });
 
     this.optServ.request((response) => {
@@ -87,6 +97,16 @@ export class PaymentPage implements OnInit {
     }).subscribe((response: any) => {
       if (response && response.success && response.data) {
         this.storeAddress = response.data;
+        this.storeAddress.forEach(async (store) => {
+          store.total_bill = this.cart.getTotalBillByStore(store.uuid).toFixed(2);
+          if(!store.address) {
+            store.noaddress = "No Address, orders here will not be placed!";
+          } else {
+            let store_address: any = await this.addressServ.getByStore(store.uuid);
+            store.gps_lat = store_address[0].lat;
+            store.gps_lng = store_address[0].lng;
+          }
+        });
       }
     }, error => {
       console.log(error);
@@ -115,21 +135,84 @@ export class PaymentPage implements OnInit {
       event: ev,
       mode: 'ios',
     });
-    popover.onDidDismiss().then(data => {
-      console.log(data.data);
-      if (data.data) {
-        if (data.data === 'today') {
-          this.datetime = 'today';
-          this.time = this.util.getString('Today - ') + moment().format('dddd, MMMM Do YYYY');
-          this.curTime = moment().format('YYYY-MM-DD HH:mm:ss');
-        } else {
+    popover.onDidDismiss().then(selected => {
+      console.log(selected.data);
+      if (selected.data) {
+        if (selected.data === 'custom') {
+          this.datetime = 'custom';
+          this.time = this.util.getString('Custom - ') + 'Select Date & Time';
+          this.curTime = this.delivery_date && this.delivery_time ? this.delivery_date +' '+ this.delivery_time : null;
+        } else if(selected.data === 'tomorrow') {
           this.datetime = 'tomorrow';
           this.time = this.util.getString('Tomorrow - ') + moment().add(1, 'days').format('dddd, MMMM Do YYYY');
           this.curTime = moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+        } else {
+          this.datetime = 'today';
+          this.time = this.util.getString('Today - ') + moment().format('dddd, MMMM Do YYYY');
+          this.curTime = moment().format('YYYY-MM-DD HH:mm:ss');
         }
       }
     });
     await popover.present();
+  }
+
+  public get min_date_picker(): string {
+    return moment().format('YYYY-MM-DD');
+  }
+
+  public get max_date_picker(): string {
+    return moment().add(1, 'years').format('YYYY-MM-DD');
+  }
+
+  public get get_custom_datetime(): string {
+    if(this.delivery_date == null && this.delivery_time == null) {
+      return null;
+    }
+    this.delivery_time = moment(this.delivery_time, "HH:mm").format("HH:mm:ss")
+    return this.delivery_date+' '+this.delivery_time;
+  }
+
+  calculateWithDelivery(address) {
+    this.cart.deliveryPrice = 0;
+    this.storeAddress.forEach(async(store) => {
+      if(!store.noaddress) { //has address
+        let origin = {
+          lat: parseFloat(this.cart.deliveryAddress.lat), 
+          lng: parseFloat(this.cart.deliveryAddress.lng)
+        };
+        let store_address: any = await this.addressServ.getByStore(store.uuid);
+        let destination = {
+          lat: parseFloat(store_address[0].lat), 
+          lng: parseFloat(store_address[0].lng)
+        };
+        let matrix: any = await this.gmapServ.calculateDistance(origin, [destination]);
+        if(matrix) {
+          matrix = matrix.distances[0][0];
+        }
+        store.matrix = matrix;
+        store.delivery_distance = (matrix.distance.value/1000).toFixed(1);
+        store.delivery_duration = (matrix.duration.value/60).toFixed(0);
+        store.delivery_fee = this.getStoreDeliveryCharge(store.total_bill, store.delivery_distance).toFixed(2); //TODO: Store total to finalzied/.
+        this.cart.deliveryPrice = parseFloat(this.cart.deliveryPrice) + parseFloat(store.delivery_fee);
+        this.cart.calcuate();
+      }
+    });
+  }
+
+  getStoreDeliveryCharge(total: number = 0, distance = 0) {
+    let general: General = this.optServ.current.general;
+    if(total >= parseFloat(general.free_delivery)) {
+      return 0;
+    }
+
+    let total_delivery_price: number = parseFloat(general.shippingBase);
+    if(general.shipping == 'km') {
+      total_delivery_price += (parseFloat(general.shippingPrice) * distance);
+    } else if(general.shipping == 'fixed') {
+      total_delivery_price += parseFloat(general.shippingPrice);
+    } //if per kilo if per gram etc.
+
+    return total_delivery_price;
   }
 
   async createOrder(method = 'cod') {
@@ -139,83 +222,73 @@ export class PaymentPage implements OnInit {
       return;
     }
 
+    if(this.datetime == 'custom') {
+      if(!this.get_custom_datetime) {
+        this.util.errorToast(this.util.getString('Please set the delivery schedule!'));
+        return;
+      }
+    } else {
+      if(!this.curTime) {
+        this.util.errorToast(this.util.getString('Please set the delivery schedule!'));
+        return;
+      }
+    }
+
     const store_ids = [...new Set(this.cart.cart.map(item => item.store_id))];
 
-    store_ids.forEach(async(store_id) => {
+    await store_ids.forEach(async(store_id, index) => {
 
       //Prepare data
       let orderPackage = {
         uid: this.authServ.userToken.uuid,
-        address_id: null,
+        address_id: null, //Set on delivery options.
         store_id: store_id,
         
-        items: JSON.stringify(this.cart.getOrderItemObject()), //Minimize
-        //progress: [], //TODO: Should be done in the server.
+        items: JSON.stringify(this.cart.getOrderItemObject(store_id)),
         matrix: null,
         factor: null,
         coupon: this.cart.coupon ? JSON.stringify(this.cart.getCouponObjectForOrder()) : '',
 
-        // total: this.cart.totalPrice, //Check
-        // discount: this.cart.discount, //Check
-        // tax: this.cart.orderTaxAmt, //Check
-        // delivery: this.cart.deliveryPrice, //Check
-        // grand_total: this.cart.grandTotal, //Check
         paid_method: method,
       }
 
       let factor = {
-        schedule: this.curTime,
-        distance: 0,
+        schedule: this.datetime == 'custom' ? this.get_custom_datetime : this.curTime,
+        distance: 0, //meter
+        duration: 0, //secs
         tax: this.optServ.current.general.tax,
         ship_mode: this.optServ.current.general.shipping,
         ship_price: this.optServ.current.general.shippingPrice,
+        ship_base: this.optServ.current.general.shippingBase,
         min_order: this.optServ.current.general.minimum_order,
         free_delivery: this.optServ.current.general.free_delivery,
         currency_code: this.optServ.current.settings.currency_code
       };
 
-      let matrix: any;
-
       //Add delievery details if posible.
-      if(this.cart.deliveryAddress) {
+      let cur_store: any = this.storeAddress.filter( x => x.uuid == store_id );
+        cur_store = cur_store.length > 0 ? cur_store[0]:null;
+      orderPackage.matrix = cur_store.matrix ? JSON.stringify(cur_store.matrix):"";
+      if(this.deliveryOption == "home" && this.cart.deliveryAddress && cur_store.matrix) {
         orderPackage.address_id = this.cart.deliveryAddress.uuid;
-
-        let origin = {
-          lat: parseFloat(this.cart.deliveryAddress.lat), 
-          lng: parseFloat(this.cart.deliveryAddress.lng)
-        };
-        let destination = {
-          lat: origin.lat, 
-          lng: origin.lng
-        };
-
-        let store_address: any = await this.addressServ.getByStore(store_id);
-        if(!store_address) {
-          this.util.errorToast(this.util.getString('One store dont have a valid address.'));
-          return;
-        }
-
-        destination.lat = parseFloat(store_address[0].lat);
-        destination.lng = parseFloat(store_address[0].lng);
-        matrix = await this.gmapServ.calculateDistance(origin, [destination]);
-        if(matrix) {
-          factor.distance = matrix.distances[0][0].distance.value;
+        if(cur_store) {
+          factor.distance = cur_store.matrix.distance.value;
+          factor.duration = cur_store.matrix.duration.value;
         }
       }
       orderPackage.factor = JSON.stringify(factor);
-      orderPackage.matrix = JSON.stringify(matrix);
-
+    
+      //TODO: You can do better than this.
       let orderStatus = await this.orderServ.submitOrder(orderPackage);
-      if(!orderStatus) {
+      if(orderStatus) {
         this.util.errorToast(this.util.getString('Order not accepted by one of the store.'));
-        return;
       }
-    });
 
-    //this.api.createOrderNotification(this.cart.stores);
-    this.cart.clearCart();
-    //this.util.publishNewOrder();
-    this.navCtrl.navigateRoot(['user/orders'], { replaceUrl: true, skipLocationChange: true });
+      if((index+1) == store_ids.length) {
+        this.cart.clearCart();
+        this.navCtrl.navigateRoot(['user/orders'], { replaceUrl: true, skipLocationChange: true });
+      }
+    });  
   }
 
   async makeOrder(method, key) {

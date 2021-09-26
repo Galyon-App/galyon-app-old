@@ -36,7 +36,6 @@ export class OffersPage implements OnInit {
   getOffers() {
     // this.dummy = Array(5);
     this.api.get('offers').subscribe((data: any) => {
-      console.log(data);
       this.dummy = [];
       if (data && data.status === 200 && data.data && data.data.length) {
         const info = data.data.filter(x => x.status === '1');
@@ -54,7 +53,6 @@ export class OffersPage implements OnInit {
   }
 
   selected(item) {
-    console.log(item);
     const min = parseFloat(item.min);
     if (this.cart.totalPrice >= min) {
       this.cart.coupon = item;

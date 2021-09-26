@@ -7,9 +7,13 @@
 
  -->
 <ion-item (click)="selected('today')">
-  <p style="font-size: 12px;font-weight: bold;">{{util.getString('Today')}} {{today}}</p>
+  <p style="font-size: 14px; font-weight: bold;">{{util.getString('Today')}} {{today}}</p>
 </ion-item>
 
-<ion-item (click)="selected('next')">
-  <p style="font-size: 12px;font-weight: bold;">{{util.getString('Tomorrow')}} {{nextDay}}</p>
+<ion-item (click)="selected('tomorrow')">
+  <p style="font-size: 14px; font-weight: bold;">{{util.getString('Tomorrow')}} {{nextDay}}</p>
+</ion-item>
+
+<ion-item (click)="selected('custom')">
+  <p style="font-size: 14px; font-weight: bold;">{{util.getString('Custom')}} - Set Date & Time</p>
 </ion-item>

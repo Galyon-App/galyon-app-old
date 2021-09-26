@@ -68,16 +68,22 @@ export class OrderDetailsPage implements OnInit {
 
   getItemPrice(item, quantity = 1){
     if(item) {
-      let sell_price = 0;
-      const item_price = parseFloat(item.price);
-      const item_discount = parseFloat(item.discount);
-      const item_discounted = item.dicount_type == "percent" ? item_price*(item_discount/100) : item_discount;
-      sell_price = item_price-item_discounted;
+      let sell_price: number = 0;
+      let item_price: number = parseFloat(item.price);
+      let item_discount: number = parseFloat(item.discount);
+      if(item.discount_type == "percent") {
+        item_discount = item_price*(item_discount/100);
+      } else if(item.discount_type == "fixed") {
+        item_discount = item_discount;
+      } else {
+        item_discount = 0;
+      }
+      sell_price = item_price-item_discount;
 
       item.variations.forEach(pvar => {
-        const var_price = parseFloat(pvar.price);
-        const var_discount = parseFloat(pvar.discount);
-        const var_discounted = var_price-(var_price*(var_discount/100));
+        let var_price = parseFloat(pvar.price);
+        let var_discount = parseFloat(pvar.discount);
+        let var_discounted = var_price-(var_price*(var_discount/100));
         sell_price += var_discounted;
       });
       sell_price *= quantity;

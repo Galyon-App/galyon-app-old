@@ -53,3 +53,23 @@
         font-weight: bold;
     }
 }
+
+.style-picker {
+    padding: 10px 7px;
+    font-size: 15px;
+    background-color: white;
+    border: 1px solid lightgrey;
+}
+
+.date-picker {
+    width: 55%;
+}
+
+.time-picker {
+    float: right;
+    width: 40%;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}

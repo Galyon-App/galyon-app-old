@@ -228,7 +228,7 @@ class Stores extends Galyon_controller {
     protected function getStoreMetaItem($store, $with_pending = false) {
         unset($store->id);
     
-        $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row' );
+        $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row', [], ["id","DESC"] );
         $store->address = null;
         if($address){
             $store->address = $address->house.", ".$address->address;
