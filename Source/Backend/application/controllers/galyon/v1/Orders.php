@@ -54,7 +54,7 @@ class Orders extends Galyon_controller {
         if($order->factor && $order->factor != null && !empty($order->factor)) {
             $order->factor = json_decode($order->factor);
 
-            if(!$order->factor->delivered) {
+            if(isset($order->factor->delivered)) {
                 $order->delivery = 0;
             }
         }
