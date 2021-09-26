@@ -287,21 +287,46 @@ export class OrderDetailsPage implements OnInit {
   }
 
   cancelOrder() {
-    this.api.post('galyon/v1/orders/cancelOrder', {
-      uuid: this.id,
-      store_id: this.order.store_id
-    }).subscribe((response: any) => {
-      if(response && response.success && response.data) {
-        this.order.progress = JSON.parse(response.data.progress);
-        this.order.stage = response.data.stage;
-      } else {
-        this.util.errorToast(response.message);
-      }
-    }, error => {
-      console.log(error);
-      this.util.hide();
-      this.util.errorToast(this.util.getString('Something went wrong'));
+    this.presentAlertConfirmCancel();
+  }
+
+  async presentAlertConfirmCancel() {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Are you sure you want to cancel this order?',
+      buttons: [
+        {
+          text: 'Go Back',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Registration');
+          }
+        }, {
+          text: 'Cancel',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.api.post('galyon/v1/orders/cancelOrder', {
+              uuid: this.id,
+              store_id: this.order.store_id
+            }).subscribe((response: any) => {
+              if(response && response.success && response.data) {
+                this.order.progress = JSON.parse(response.data.progress);
+                this.order.stage = response.data.stage;
+              } else {
+                this.util.errorToast(response.message);
+              }
+            }, error => {
+              console.log(error);
+              this.util.hide();
+              this.util.errorToast(this.util.getString('Something went wrong'));
+            });
+          }
+        }
+      ]
     });
+
+    await alert.present();
   }
 
   sendNotification(value) {
