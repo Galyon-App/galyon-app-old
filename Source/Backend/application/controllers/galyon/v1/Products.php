@@ -309,24 +309,43 @@ class Products extends Galyon_controller {
 
     function createProductToStore() {
         $auth = $this->is_authorized(true, ["admin","operator","store"]);
-        $request = $this->request_validation($_POST, ["name"], $this->edit_column);
-        $request->data = array_merge(array(
-            "uuid" => $this->uuid->v4(),
-            "store_id" => $this->Crud_model->sanitize_param($this->input->post("store_id")),
-            "timestamp" => get_current_utc_time() 
-        ), $request->data);
+        $request = $this->request_validation($_POST, ["name", "category_id", "subcategory_id"], $this->public_column);
+            
+        if(isset($_POST['orig_price'])) {
+            $_POST['orig_price'] = number_format((float)$_POST['orig_price'], 2, '.', '');
+        }
+        if(isset($_POST['sell_price'])) {
+            $_POST['sell_price'] = number_format((float)$_POST['sell_price'], 2, '.', '');
+        }
+
+        if(isset($_POST['kg'])) {
+            $_POST['kg'] = number_format((float)$_POST['kg'], 2, '.', '');
+        }
+        if(isset($_POST['gram'])) {
+            $_POST['gram'] = number_format((float)$_POST['gram'], 2, '.', '');
+        }
+        if(isset($_POST['liter'])) {
+            $_POST['liter'] = number_format((float)$_POST['liter'], 2, '.', '');
+        }
+        if(isset($_POST['ml'])) {
+            $_POST['ml'] = number_format((float)$_POST['ml'], 2, '.', '');
+        }
+        if(isset($_POST['pcs'])) {
+            $_POST['pcs'] = number_format((float)$_POST['pcs'], 2, '.', '');
+        }
+        $request->data['uuid'] = $this->uuid->v4();
 
         if($auth->role == "operator") {
             //TODO: Add check if operator and this product belongs to this operation.
         } else if($auth->role == "store") {
-            $is_owner = $this->is_owner_of_store($auth->uuid, $request->data['store_id']);
-            if(!$is_owner) {
-                $this->json_response(null, false, "You are not authorized for this actions!"); 
+            $is_store_owner = $this->is_owner_of_store($auth->uuid, $store_id);
+            if(!$is_store_owner) {
+                $this->json_response(null, false, "You do not owned this store!"); 
             }
+            $request->data['status'] = "0";
         }
 
         $inserted = $this->Crud_model->insert($this->table_name, $request->data);
-
         if($inserted) {
             $current = $this->Crud_model->get($this->table_name, $this->public_column, "id = '$inserted'", null, 'row' );
             $current = $this->getProductMetaItem($current);
@@ -338,7 +357,7 @@ class Products extends Galyon_controller {
 
     function editProductToStore() {
         $auth = $this->is_authorized(true, ["admin","operator","store"]);
-        $request = $this->request_validation($_POST, ["uuid", "name"], $this->edit_column);
+        $request = $this->request_validation($_POST, ["uuid", "name", "category_id", "subcategory_id"], $this->edit_column);
         $product_id = $request->data['uuid'];
 
         $previous = $this->Crud_model->get(
@@ -383,9 +402,14 @@ class Products extends Galyon_controller {
         if($auth->role == "operator") {
             //TODO: Add check if operator and this product belongs to this operation.
         } else if($auth->role == "store") {
-            $is_owner = $this->is_owner_of_product($auth->uuid, $product_id);
-            if(!$is_owner) {
-                $this->json_response(null, false, "You are not authorized for this actions!"); 
+            $is_product_owner = $this->is_owner_of_product($auth->uuid, $product_id);
+            if(!$is_product_owner) {
+                $this->json_response(null, false, "You do not owned this product!"); 
+            }
+
+            $is_store_owner = $this->is_owner_of_store($auth->uuid, $store_id);
+            if(!$is_store_owner) {
+                $this->json_response(null, false, "You do not owned this store!"); 
             }
 
             $previous = $this->Crud_model->get($this->table_name, ["pending_update"], "uuid = '$product_id' AND pending_update IS NOT NULL", null, 'row' );

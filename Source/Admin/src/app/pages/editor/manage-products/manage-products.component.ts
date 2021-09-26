@@ -7,7 +7,7 @@
 
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ApisService } from 'src/app/services/apis.service';
 import { UtilService } from 'src/app/services/util.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -27,7 +27,7 @@ export class ManageProductsComponent {
   @ViewChild('contentVarient', { static: false }) contentVarient: any;
   @ViewChild('contentStore', { static: false }) contentStore: any;
 
-  id: any;
+  id: any = '';
 
   coverImage: any = '';
   images: any[] = [];
@@ -711,11 +711,34 @@ export class ManageProductsComponent {
   }
 
   submit() {
+    if(this.storeName == '') {
+      this.util.error("Please select a store for this product.");
+      return;
+    }
+
+    if(this.cateName == '') {
+      this.util.error("Please select a category for this product.");
+      return;
+    }
+
     if(this.subName == '') {
       this.util.error("Please select a sub-category for this product.");
       return;
     }
 
+    if(this.name == '') {
+      this.util.error("Please type a name for this product.");
+      return;
+    }
+
+    if(this.id == '') {
+      this.create();
+    } else {
+      this.update();
+    }
+  }
+
+  public get getParams(): any {
     this.images = this.images.filter((x) => x != '');
     const param = {
       uuid: this.id,
@@ -763,9 +786,35 @@ export class ManageProductsComponent {
       param['store_id'] = this.storeId;
       param['is_featured'] = this.is_featured;
     }
+    return param;
+  }
 
+  create() {
     this.spinner.show();
-    this.api.post('galyon/v1/products/editProductToStore', param).then((response: any) => {
+    this.api.post('galyon/v1/products/createProductToStore', this.getParams).then((response: any) => {
+      this.spinner.hide();
+      if (response && response.success && response.data) {
+        this.util.success(null, () => {
+          const navData: NavigationExtras = {
+            queryParams: {
+              uuid: response.data.uuid
+            }
+          };
+          this.router.navigate(['admin/manage-products'], navData);
+        });
+      } else {
+        this.util.error(response.message);
+      }
+    }, error => {
+      this.spinner.hide();
+      this.util.error(this.util.getString('Something went wrong'));
+      console.log('error', error);
+    });
+  }
+
+  update() {
+    this.spinner.show();
+    this.api.post('galyon/v1/products/editProductToStore', this.getParams).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
         this.util.success(null, () => {
