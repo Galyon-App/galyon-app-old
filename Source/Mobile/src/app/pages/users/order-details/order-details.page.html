@@ -75,19 +75,19 @@
             <span style="float: right;">{{util.currecny}} {{order.total}}</span>
           </p>
         </div>
-        <div style="padding: 2px 10px 0;">
+        <div style="padding: 2px 10px 0;" *ngIf="order.discount != '0.00'">
           <p class="footer">
             <span style="width: 80%;">{{util.getString('Discount')}}</span>
             <span style="float: right;">{{util.currecny}} {{order.discount}}</span>
           </p>
         </div>
-        <div style="padding: 2px 10px 0;">
+        <div style="padding: 2px 10px 0;" *ngIf="order.tax">
           <p class="footer">
             <span style="width: 80%;">{{util.getString('Tax')}}</span>
             <span style="float: right;">{{util.currecny}} {{order.tax}}</span>
           </p>
         </div>
-        <div style="padding: 2px 10px 0;">
+        <div style="padding: 2px 10px 0;" *ngIf="order.delivery != '0.00'">
           <p class="footer">
             <span style="width: 80%;">{{util.getString('Delivery Charge')}}</span>
             <span style="float: right;">{{util.currecny}} {{order.delivery}}</span>
