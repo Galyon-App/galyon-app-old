@@ -36,7 +36,7 @@ export class ManageProductsComponent {
   sellPrice: any = 0.00;
   discount_type: any = 'fixed';
   discount: any = 0.00;
-  status: any = '1';
+  status: any = '0';
   in_stock: any = '1';
   in_offer: any = '0';
   is_single: any = '1';
