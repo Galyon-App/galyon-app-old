@@ -21,8 +21,6 @@ export class OrderDetailsPage implements OnInit {
   public order: any;
   id: any;
   loaded: boolean;
-  isDelivered: boolean;
-  canCancel: boolean;
 
   orderDetail: any[] = [];
   orders: any[] = [];
@@ -38,6 +36,13 @@ export class OrderDetailsPage implements OnInit {
   userLng: any;
   driverId: any;
   stores: any[] = [];
+
+  public has_stage(string: any): boolean {
+    if(this.order?.stage) {
+      return this.order.stage == string;
+    }
+    return false;
+  }
   
   
   assigneeDriver: any[] = [];
@@ -63,7 +68,7 @@ export class OrderDetailsPage implements OnInit {
   }
 
   back() {
-    this.navCtrl.navigateBack(['user/orders']);
+    this.router.navigate(['user/orders']);
   }
 
   getItemPrice(item, quantity = 1){
@@ -101,10 +106,10 @@ export class OrderDetailsPage implements OnInit {
       this.loaded = true;
       if (reponse && reponse.success && reponse.data) {
         this.order = reponse.data;
-        this.isDelivered = this.order.stage == "delivered";
-        this.canCancel = this.order.stage == "created";
       }
-      console.log(reponse);
+
+
+
       // this.loaded = true;
       // if (data && data.status === 200 && data.data.length > 0) {
       //   const info = data.data[0];
@@ -152,13 +157,6 @@ export class OrderDetailsPage implements OnInit {
       //     this.canCancle = true;
       //   } else {
       //     this.canCancle = false;
-      //   }
-
-      //   const delivered = this.status.filter(x => x.status === 'delivered');
-      //   if (delivered.length === this.status.length) {
-      //     this.isDelivered = true;
-      //   } else {
-      //     this.isDelivered = false;
       //   }
 
       //   // if()
@@ -288,47 +286,22 @@ export class OrderDetailsPage implements OnInit {
     await alert.present();
   }
 
-  changeStatus() {
-    console.log('status');
-
-    const newOrderNotes = {
-      status: 1,
-      value: this.util.getString('Order ') + this.util.getString('cancelled by you'),
-      time: moment().format('lll'),
-    };
-    this.orderDetail.push(newOrderNotes);
-
-    this.status.forEach(element => {
-      if (element.status === 'created') {
-        element.status = 'cancelled';
-      }
-    });
-
-    this.util.show();
-    const param = {
+  cancelOrder() {
+    this.api.post('galyon/v1/orders/cancelOrder', {
       uuid: this.id,
-      notes: JSON.stringify(this.orderDetail),
-      status: JSON.stringify(this.status),
-    };
-    console.log('---->', this.status)
-    this.api.post('orders/editList', param).subscribe((data: any) => {
-      console.log('order', data);
-      this.util.hide();
-      if (this.orderAt === 'home' && this.driverId !== '0') {
-        this.updateDriver(this.driverId, 'active');
-      }
-      if (data && data.status === 200) {
-        this.sendNotification('cancelled');
-        //this.back();
+      store_id: this.order.store_id
+    }).subscribe((response: any) => {
+      if(response && response.success && response.data) {
+        this.order.progress = JSON.parse(response.data.progress);
+        this.order.stage = response.data.stage;
       } else {
-        this.util.errorToast(this.util.getString('Something went wrong'));
+        this.util.errorToast(response.message);
       }
     }, error => {
       console.log(error);
       this.util.hide();
       this.util.errorToast(this.util.getString('Something went wrong'));
     });
-
   }
 
   sendNotification(value) {

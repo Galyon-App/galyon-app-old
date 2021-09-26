@@ -76,11 +76,10 @@ export class OrdersPage implements OnInit {
         uuid: id
       }
     }
-    this.router.navigate(['user/orders/order-details'], navData);
+    this.router.navigate(['user/orders/details'], navData);
   }
 
   doRefresh(event) {
-    console.log(event);
     this.getOrders(event, true);
   }
 

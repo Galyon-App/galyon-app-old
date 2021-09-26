@@ -86,7 +86,7 @@ class Orders extends Galyon_controller {
         //TODO: Check if Admin or Operator or Owner of store or User owned the order.
 
         $orders = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result' );
+            $this->compileWhereClause($auth->where, $request->where, true), NULL, 'result', [], ["id", "DESC"]);
         if($orders) {
             $order = $this->getOrderMeta($orders);
             $this->json_response($orders);
@@ -178,6 +178,51 @@ class Orders extends Galyon_controller {
         }
     }
 
+    function cancelOrder() {
+        $auth = $this->is_authorized(true, ["admin","operator","store","user"]);
+        $request = $this->request_validation($_POST, ["uuid", "store_id"], $this->edit_column);
+        $order_id = $request->data['uuid'];
+
+        $previous = $this->Crud_model->get(
+            $this->table_name, 
+            $this->edit_column, 
+            "uuid = '$order_id'", 
+            null, 'row' );
+
+        if($auth->uuid != $previous->uid) {
+            $this->json_response(null, false, "You dont have the permission to execute such action!");
+        }
+
+        if($previous->stage == "cancelled") {
+            $this->json_response(null, false, "The order is already cancelled!");
+        }
+
+        $progress = json_decode($previous->progress);
+        array_push($progress, array(
+            "status" => 1,
+            "current" => $progress[0]->latest,
+            "latest" => "cancelled",
+            "timestamp" => get_current_utc_time()
+        ));
+        $changes = array(
+            "progress" => json_encode($progress),
+            "stage" => "cancelled"
+        );
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this product belongs to this operation.
+        } else if($auth->role == "store") {
+            //TODO: Check if owner of the said store.
+        }
+
+        $update = $this->Crud_model->update($this->table_name, $changes, array( "uuid" => $order_id ));
+        if($update) {
+            $this->json_response($changes);
+        } else {
+            $this->json_response(null, false, "No product or changes was found!");
+        }
+    }
+
     function createNewOrder() {
         $auth = $this->is_authorized(true);
         $request = $this->request_validation($_POST, ["uid","store_id"], $this->edit_column);
@@ -187,18 +232,22 @@ class Orders extends Galyon_controller {
             "timestamp" => get_current_utc_time()
         ), $request->data);
 
-        if(empty($request->data['matrix'])) {
+        $factor = json_decode($request->data['factor']);
+
+        if($factor->delivered && empty($request->data['matrix'])) {
             $request->data['progress'] = json_encode([array(
                 "status" => 1,
                 "current" => "created",
-                "latest" => "draft"
+                "latest" => "draft",
+                "timestamp" => get_current_utc_time()
             )]);
             $request->data['stage'] = "draft";
         } else {
             $request->data['progress'] = json_encode([array(
                 "status" => 1,
                 "current" => "created",
-                "latest" => "created"
+                "latest" => "created",
+                "timestamp" => get_current_utc_time()
             )]);            
         }        
 

@@ -136,7 +136,6 @@ export class PaymentPage implements OnInit {
       mode: 'ios',
     });
     popover.onDidDismiss().then(selected => {
-      console.log(selected.data);
       if (selected.data) {
         if (selected.data === 'custom') {
           this.datetime = 'custom';
@@ -254,6 +253,7 @@ export class PaymentPage implements OnInit {
 
       let factor = {
         schedule: this.datetime == 'custom' ? this.get_custom_datetime : this.curTime,
+        delivered: this.deliveryOption == "home",
         distance: 0, //meter
         duration: 0, //secs
         tax: this.optServ.current.general.tax,
@@ -280,13 +280,13 @@ export class PaymentPage implements OnInit {
     
       //TODO: You can do better than this.
       let orderStatus = await this.orderServ.submitOrder(orderPackage);
-      if(orderStatus) {
+      if(orderStatus && this.deliveryOption == "home") {
         this.util.errorToast(this.util.getString('Order not accepted by one of the store.'));
       }
 
       if((index+1) == store_ids.length) {
         this.cart.clearCart();
-        this.navCtrl.navigateRoot(['user/orders'], { replaceUrl: true, skipLocationChange: true });
+        this.router.navigate(['user/orders']);
       }
     });  
   }

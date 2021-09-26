@@ -191,11 +191,11 @@
   <ion-footer style="margin: 15px 0 20px;">
     <ion-toolbar>
       <div class="btn_div">
-        <ion-button *ngIf="isDelivered" (click)="presentAlertConfirm()" class="ratae" style="font-weight: 100; margin-top: 20px;">
+        <ion-button *ngIf="has_stage('delivered')" (click)="presentAlertConfirm()" class="ratae" style="font-weight: 100; margin-top: 20px;">
           <!-- <ion-icon name="star" color="light" slot="start"></ion-icon> -->
           {{util.getString('Rate Order')}}
         </ion-button>
-        <ion-button *ngIf="canCancel" (click)="changeStatus()" class="reject" style="font-weight: 100; margin-top: 20px;">
+        <ion-button *ngIf="has_stage('created')" (click)="cancelOrder()" class="reject" style="font-weight: 100; margin-top: 20px;">
           {{util.getString('Cancel Order')}}
         </ion-button>
       </div>
