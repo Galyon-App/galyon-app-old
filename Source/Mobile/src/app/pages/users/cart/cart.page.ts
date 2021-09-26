@@ -34,6 +34,10 @@ export class CartPage implements OnInit {
 
   }
 
+  ionViewDidEnter() {
+    this.cart.cart.sort((a, b) => (a.store_id > b.store_id ? 1 : -1));
+  }
+
   ngOnInit() {
   }
 

@@ -83,24 +83,24 @@
             <ion-label class="name_lbl" (click)="singleProduct(item)">
               {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
             </ion-label>
-            <ion-label class="itemsKind" *ngIf="item.variations">
+            <ion-label class="itemsKind">
               <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
               <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
               <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
               <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
               <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
             </ion-label>
-            <div *ngIf="item.variations">
-              <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='left'"> 
-                {{util.currecny}}
-                {{item.orig_price}} </ion-label>
-              <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='right'">
-                {{item.orig_price}}
-                {{util.currecny}}
+            <div>
+              <ion-label class="pro_price" style="color: #c82180" (click)="singleProduct(item)">
+                {{util.currecny}} {{ item.sell_price }}
               </ion-label>
-              <ion-label class="price_lbl" (click)="singleProduct(item)">
-                <span class="original" *ngIf="item.discount > 0"> {{util.currecny}}{{item.orig_price}} </span>
-                <span class="sell" style="color: #c82180;" >{{util.currecny}} {{item.sell_price}} </span>
+              <ion-label *ngIf="item.discount_type !=='none' && item.discount > 0" class="pro_discount" style="font-size: 12px;" (click)="singleProduct(item)">
+                <label style="text-decoration: line-through;;">
+                  {{util.currecny}} {{ item.orig_price }}
+                </label> 
+                ({{ item.discount_type == 'percent' ? '' : util.currecny }} 
+                {{ item.discount_type == 'percent' ? item.discount : item.discount }}
+                {{ item.discount_type == 'percent' ? '%' : 'off' }})
               </ion-label>
             </div>
             <div *ngIf="item.variations" class="variant">

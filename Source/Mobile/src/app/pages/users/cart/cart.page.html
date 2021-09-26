@@ -46,17 +46,17 @@
             <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}}</span>
             <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
           </ion-label>
-          <div *ngIf="item.variations">
-            <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='left'"> 
-              {{util.currecny}}
-              {{item.orig_price}} </ion-label>
-            <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='right'">
-              {{item.orig_price}}
-              {{util.currecny}}
+          <div>
+            <ion-label class="pro_price" style="color: #c82180">
+              {{util.currecny}} {{ item.sell_price }}
             </ion-label>
-            <ion-label class="price_lbl">
-              <span class="original" *ngIf="item.discount > 0"> {{util.currecny}}{{item.orig_price}} </span>
-              <span class="sell" style="color: #c82180;" >{{util.currecny}} {{item.sell_price}} </span>
+            <ion-label *ngIf="item.discount_type !=='none' && item.discount > 0" class="pro_discount" style="font-size: 12px;">
+              <label style="text-decoration: line-through;;">
+                {{util.currecny}} {{ item.orig_price }}
+              </label> 
+              ({{ item.discount_type == 'percent' ? '' : util.currecny }} 
+              {{ item.discount_type == 'percent' ? item.discount : item.discount }}
+              {{ item.discount_type == 'percent' ? '%' : 'off' }})
             </ion-label>
           </div>
           <div *ngIf="item.variations" class="variant">
@@ -87,7 +87,7 @@
               <ion-ripple-effect type="bounded"></ion-ripple-effect>
             </ion-label>
           </div>
-          <div class="cartBtn" *ngIf="cart.checkProductInCart(item.uuid)">
+          <div class="cartBtn" style="margin-top: 12px;" *ngIf="cart.checkProductInCart(item.uuid)">
             <div class="abs_add">
               <img src="assets/imgs/remove.png" (click)="remove(item,i)">
               <ion-label>{{item.quantity}}</ion-label>
