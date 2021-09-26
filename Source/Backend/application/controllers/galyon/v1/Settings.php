@@ -13,7 +13,7 @@ require_once APPPATH.'/core/Galyon_controller.php';
 class Settings extends Galyon_controller {
 
     private $table_name = 'settings';
-    private $general_rows = ['phone', 'email','address','city','province','zipcode','country','minimum_order','free_delivery','tax','shipping','shippingPrice'];
+    private $general_rows = ['phone', 'email','address','city','province','zipcode','country','minimum_order','free_delivery','tax','shipping','shippingPrice','shippingBase'];
     private $setting_rows = ['currencySymbol', 'currencySide','appDirection','logo','delivery','reset_pwd','user_login','store_login','driver_login','web_login'];
     private $payment_methods = ['cod', 'gcash', 'paypal', 'paymongo', 'stripe'];
     private $featured_categories_key = "featured_categories";
@@ -188,9 +188,21 @@ class Settings extends Galyon_controller {
             if(empty($new_val)) {
                 $this->json_response(null, false, "Required field($row_key) cannot be empty.");
             }
-            $success = $this->Crud_model->update($this->table_name, array('opt_val'=>$new_val), "guard = '$group_name' AND opt_key = '$row_key'" );
-            if($success) {
-                $updated[] = $row_key;
+            $has_row_exist = $this->Crud_model->get($this->table_name, 'opt_key, opt_val', "guard = '$group_name' AND opt_key = '$row_key'", null, 'row' );
+            if($has_row_exist ) {
+                $success = $this->Crud_model->update($this->table_name, array('opt_val'=>$new_val), "guard = '$group_name' AND opt_key = '$row_key'" );
+                if($success) {
+                    $updated[] = $row_key;
+                }
+            } else {
+                $success = $this->Crud_model->insert($this->table_name, array( 
+                    "guard" => $group_name, 
+                    "opt_key" => $row_key, 
+                    "opt_val" => $new_val
+                ));
+                if($success) {
+                    $updated[] = $row_key;
+                }
             }
         }
         

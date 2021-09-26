@@ -62,6 +62,10 @@
 
                 <div class="form-group row">
                     <div class="col-sm-4">
+                        <label>Order Tax</label>
+                        <input type="number" [(ngModel)]="tax" class="form-control" placeholder="Order Tax">
+                    </div>
+                    <div class="col-sm-4">
                         <label>Minimum Order</label>
                         <input type="number" [(ngModel)]="min" class="form-control" placeholder="Minimum Order">
                     </div>
@@ -70,28 +74,27 @@
                         <input type="number" [(ngModel)]="free" class="form-control"
                             placeholder="Free Shipping on order price">
                     </div>
-                    <div class="col-sm-4">
-                        <label>Order Tax</label>
-                        <input type="number" [(ngModel)]="tax" class="form-control" placeholder="Order Tax">
-                    </div>
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
+                        <label>Base Delivery Fee</label>
+                        <input type="number" [(ngModel)]="shippingBase" class="form-control" placeholder="Base price">
+                    </div>
+                    <div class="col-sm-4">
                         <label>Shipping Fee </label>
                         <select name="select" [(ngModel)]="shipping" class="form-control">
                             <option value="fixed">Fixed Fee</option>
                             <option value="km">Per KM Fee</option>
                         </select>
                     </div>
-                    <div class="col-sm-6" *ngIf="shipping ==='fixed'">
+                    <div class="col-sm-4" *ngIf="shipping ==='fixed'">
                         <label>Per Delivery price</label>
                         <input type="number" [(ngModel)]="shippingPrice" class="form-control" placeholder="Fixed price">
                     </div>
-                    <div class="col-sm-6" *ngIf="shipping ==='km'">
+                    <div class="col-sm-4" *ngIf="shipping ==='km'">
                         <label>Per KM price</label>
-                        <input type="number" [(ngModel)]="shippingPrice" class="form-control"
-                            placeholder="Per KM price">
+                        <input type="number" [(ngModel)]="shippingPrice" class="form-control" placeholder="Per KM price">
                     </div>
                 </div>
 

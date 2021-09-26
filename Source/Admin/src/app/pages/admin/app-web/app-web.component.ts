@@ -31,6 +31,7 @@ export class AppWebComponent {
   free: any;
   tax: any;
   shippingPrice: any;
+  shippingBase: any;
   shipping: any = 'fixed';
 
   constructor(
@@ -59,6 +60,7 @@ export class AppWebComponent {
           this.free = info.free_delivery;
           this.min = info.minimum_order;
           this.mobile = info.phone;
+          this.shippingBase = info.shippingBase;
           this.shippingPrice = info.shippingPrice;
           this.shipping = info.shipping;
           this.state = info.province;
@@ -101,12 +103,13 @@ export class AppWebComponent {
       minimum_order: this.min,
       free_delivery: this.free,
       tax: this.tax,
+      shippingBase: this.shippingBase,
       shippingPrice: this.shippingPrice,
       shipping: this.shipping,
     }).then((response: any) => {
       this.spinner.hide();
       if (response && response.success && response.data) {
-        this.util.error('Updated successfully!');
+        this.util.success('Updated successfully!');
       } else {
         this.util.error(response.message);
       }
