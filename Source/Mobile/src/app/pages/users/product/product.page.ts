@@ -197,7 +197,6 @@ export class ProductPage implements OnInit {
           this.gallery.push(element);
         });
 
-        console.log(this.product.variations);
         this.getRelated();
       }        
     }, error => {

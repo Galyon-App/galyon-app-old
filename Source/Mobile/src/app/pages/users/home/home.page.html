@@ -134,11 +134,11 @@
                 <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
               </ion-label>
               <ion-label class="itemsKind">
-                <span class="quantity" *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
+                <span class="quantity" *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>
                 <span class="quantity" *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
                 <span class="quantity" *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
                 <span class="quantity" *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
-                <span class="quantity" *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
+                <span class="quantity" *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pc(s)')}} </span>
               </ion-label>
               <ion-label class="pro_price" (click)="goToSingleProduct(item)">
                 {{util.currecny}} {{ item.sell_price }}

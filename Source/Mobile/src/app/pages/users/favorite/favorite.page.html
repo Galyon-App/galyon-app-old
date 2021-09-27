@@ -122,12 +122,12 @@
                 <ion-ripple-effect type="bounded"></ion-ripple-effect>
               </ion-label>
             </div>
-            <ion-label class="itemsKind" *ngIf="!item.variations">
-              <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
+            <ion-label class="itemsKind">
+              <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>
               <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
               <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
               <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
-              <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
+              <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pc(s)')}} </span>
             </ion-label>
             <div *ngIf="!item.variations">
               <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='left'"> {{util.currecny}}
@@ -238,11 +238,11 @@
             </ion-label>
           </div>
           <ion-label class="itemsKind" *ngIf="!item.variations">
-            <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
+            <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>
             <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
             <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
             <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
-            <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
+            <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pc(s)')}} </span>
           </ion-label>
           <div *ngIf="!item.variations">
             <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='left'"> {{util.currecny}}

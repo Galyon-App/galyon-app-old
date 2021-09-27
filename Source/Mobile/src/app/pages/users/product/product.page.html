@@ -41,11 +41,11 @@
       <ion-label class="pro_name">{{name}}</ion-label>
 
       <ion-label class="itemsKind">
-        <span *ngIf="have_gram === '1'"> {{gram}} grams </span>
-        <span *ngIf="have_kg === '1'"> {{kg}} kg </span>
-        <span *ngIf="have_liter ==='1'"> {{liter}} ltr </span>
-        <span *ngIf="have_ml ==='1'"> {{ml}} ml</span>
-        <span *ngIf="have_pcs === '1'"> {{pcs}} pcs </span>
+        <span *ngIf="have_gram === '1'"> {{gram}} {{util.getString('g')}} </span>
+        <span *ngIf="have_kg === '1'"> {{kg}} {{util.getString('kg')}} </span>
+        <span *ngIf="have_liter ==='1'"> {{liter}} {{util.getString('ltr')}} </span>
+        <span *ngIf="have_ml ==='1'"> {{ml}} {{util.getString('ml')}} </span>
+        <span *ngIf="have_pcs === '1'"> {{pcs}} {{util.getString('pc(s)')}} </span>
       </ion-label>
 
       <div class="storeName ion-activatable" (click)="gotoStore()" *ngIf="storeName">
@@ -177,11 +177,11 @@
                   {{ (item.name.length>10)? (item.name | slice:0:10)+'..':(item.name) }}
                 </ion-label>
                 <ion-label class="itemsKind">
-                  <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('grams')}} </span>
+                  <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>
                   <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
                   <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
                   <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
-                  <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pcs')}} </span>
+                  <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pc(s)')}} </span>
                 </ion-label>
                 <!-- <ion-label class="desc" (click)="singleProduct(item)">
                   {{ (item.descriptions.length>40)? (item.descriptions | slice:0:40)+'..':(item.descriptions) }}
