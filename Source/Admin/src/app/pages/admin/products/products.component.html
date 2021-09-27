@@ -109,10 +109,14 @@
                             <tr
                                 *ngFor="let item of products | paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
                                 <td>
-                                    <a href="javascript:;"><img class="img-responsive" style="object-fit: cover; height: 75px; width: 75px;"
-                                        [src]="api.mediaURL+item.cover" onError="this.src='assets/images/product.png'" alt="chat-user"></a>
+                                    <a href="javascript:;">
+                                        <img class="img-responsive" style="object-fit: cover; height: 75px; width: 75px;"
+                                            [src]="api.mediaURL+item.cover" onError="this.src='assets/images/product.png'" alt="chat-user">
+                                    </a>
                                 </td>
-                                <td> {{item.store_name}}</td>
+                                <td>
+                                    <a href="javascript:;" (click)="goToStore(item)" style="color: #eb4291;">{{item.store_name}}</a>
+                                </td>
                                 <td> {{item.name}}</td>
                                 <td> {{getSellPrice(item)}} ({{item.discount_type == 'percent'?item.discount+'%':item.discount+'off'}})</td>
                                 <td> None</td>

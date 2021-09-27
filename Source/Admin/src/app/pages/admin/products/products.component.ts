@@ -178,4 +178,14 @@ export class ProductsComponent {
       }
     });
   }
+
+  goToStore(item) {
+    const navData: NavigationExtras = {
+      queryParams: {
+        uuid: item.store_id,
+        register: false
+      }
+    };
+    this.router.navigate(['admin/manage-stores'], navData);
+  }
 }
