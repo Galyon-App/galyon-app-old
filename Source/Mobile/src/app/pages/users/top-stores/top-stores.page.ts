@@ -67,7 +67,6 @@ export class TopStoresPage implements OnInit {
 
   getStoreFeatured(event) {
     this.api.post('galyon/v1/stores/getStoreFeatured', {
-      city_id: this.city.activeCity,
       limit_start: this.limit_start,
       limit_length: this.limit_length
     }).subscribe((response: any) => {

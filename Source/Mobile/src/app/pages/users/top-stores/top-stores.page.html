@@ -45,10 +45,10 @@
             </div>
           </div>
           <ion-label class="producttext" (click)="openStore(item)" style="padding: 5px 4px 0;">
-            {{ (item.name.length>25)? (item.name | slice:0:25)+'..':(item.name) }}
+            {{ util.safeText(item.name, 25, true, '') }}
           </ion-label>
           <ion-label class="itemsKind" style="padding: 5px 4px 0;">
-            <span>{{ (item.address.length>55)? (item.address | slice:0:55)+'..':(item.address) }}</span>
+            <span>{{ util.safeText(item.address, 55, true, 'Address not yet set...') }}</span>
           </ion-label>
           <div class="btnBtm" style="padding: 5px;">
             <div class="ion-activatable ripple-parent" (click)="openStore(item)">

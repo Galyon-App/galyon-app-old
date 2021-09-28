@@ -404,6 +404,19 @@ export class UtilService {
     return str;
   }
 
+  safeText(title: string = '', length: number = null, end: any = '...', empty: string = '') {
+    if(title && length) {
+      if(title.length > length) {
+        if(end === true) {
+          end = '...';
+        }
+        return title.substring(0, length)+end;
+      }
+      return title;
+    }
+    return empty;
+  }
+
   jwtDecode(token: string) {
     const jwt = new JwtHelperService();
     return jwt.decodeToken(token);

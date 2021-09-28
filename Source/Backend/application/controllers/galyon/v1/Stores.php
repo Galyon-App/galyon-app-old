@@ -231,7 +231,7 @@ class Stores extends Galyon_controller {
         $address = $this->Crud_model->get('address', '*', array( "store_id" => $store->uuid ), null, 'row', [], ["id","DESC"] );
         $store->address = null;
         if($address){
-            $store->address = $address->house.", ".$address->address;
+            $store->address = $address->house?$address->house.", ".$address->address:$address->address;
         }
 
         $owner = $this->Crud_model->get('users', 'first_name, last_name', array( "uuid" => $store->owner ), null, 'row' );
