@@ -67,45 +67,16 @@
                         <thead>
                             <tr class="text-uppercase">
                                 <th>Cover</th>
-                                <th>Store </th>
-                                <th (click)="sortByName()">Name <i class="ti-angle-down"></i> </th>
+                                <th (click)="sortByName()">Details <i class="ti-angle-down"></i> </th>
                                 <th>Price </th>
-                                <th (click)="sortByRating()">Rating <i class="ti-angle-down"></i> </th>
-                                <th (click)="sortByHome()">Homepage<i class="ti-angle-down"></i> </th>
-                                <th>Featured</th>
                                 <th>In Stock</th>
-                                <th>Verified</th>
+                                <th>Featured</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of dummy;">
-                                <td>
-                                    <ngx-skeleton-loader count="1"
-                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
-                                    </ngx-skeleton-loader>
-                                </td>
-                                <td>
-                                    <ngx-skeleton-loader count="1"
-                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
-                                    </ngx-skeleton-loader>
-                                </td>
-                                <td>
-                                    <ngx-skeleton-loader count="1"
-                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
-                                    </ngx-skeleton-loader>
-                                </td>
-                                <td>
-                                    <ngx-skeleton-loader count="1"
-                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
-                                    </ngx-skeleton-loader>
-                                </td>
-                                <td>
-                                    <ngx-skeleton-loader count="1"
-                                        [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
-                                    </ngx-skeleton-loader>
-                                </td>
                                 <td>
                                     <ngx-skeleton-loader count="1"
                                         [theme]="{ 'border-radius': '5px', height: '10px', border: '1px solid white' }">
@@ -151,27 +122,28 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="javascript:;" (click)="goToStore(item)" style="color: #eb4291;">
-                                        {{ (item.store_name.length>20)? (item.store_name | slice:0:20)+'...':(item.store_name) }}
-                                    </a>
+                                    <p style="display: block; margin: 0;">
+                                        <strong>Name: </strong>{{ (item.name.length>30)? (item.name | slice:0:30)+'...':(item.name) }}
+                                    </p>
+                                    <p style="display: block; margin: 0;">
+                                        <strong>Verified: </strong>{{item.verified_at !== null ? item.verified_at : 'In Progress'}}
+                                    </p>
+                                    <p style="display: block;">
+                                        <strong>Store: </strong>
+                                        <a href="javascript:;" (click)="goToStore(item)" style="color: #eb4291;">
+                                            {{ (item.store_name.length>25)? (item.store_name | slice:0:25)+'...':(item.store_name?item.store_name:'Not Assigned') }}
+                                        </a>
+                                    </p>
                                 </td>
-                                <td> {{item.name}}</td>
                                 <td> 
                                     {{this.util.currecny}}{{getSellPrice(item)}} 
                                     {{util.getDiscountText(item)==''?'':'('}} {{util.getDiscountText(item)}} {{util.getDiscountText(item)==''?'':')'}}
-                                </td>
-                                <td> None</td>
-                                <td>
-                                    <span [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</span>
-                                </td>
-                                <td>
-                                    <span [className]="getClass(item.is_featured)">{{item.is_featured === '1' ? 'Yes':'No'}}</span>
                                 </td>
                                 <td>
                                     <span [className]="getClass(item.in_stock)">{{item.in_stock === '1' ? 'Yes':'No'}}</span>
                                 </td>
                                 <td>
-                                    <span [className]="getClass(item.verified_at !== null ? '1' : '0')">{{item.verified_at !== null ? 'Yes':'No'}}</span>
+                                    <span [className]="getClass(item.is_featured)">{{item.is_featured === '1' ? 'Yes':'No'}}</span>
                                 </td>
                                 <td>
                                     <button type="button" (click)="changeStatus(item)" [className]="getClass(item.status)" 

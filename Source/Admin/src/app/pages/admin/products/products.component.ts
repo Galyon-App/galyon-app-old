@@ -151,11 +151,11 @@ export class ProductsComponent {
     });
   }
 
-  getClass(item) {
+  getClass(item, round = 'btn-round') {
     if (item === '1') {
-      return 'btn btn-success btn-round btn-outline_success';
+      return 'btn btn-success '+round+' btn-outline_success';
     } else {
-      return 'btn btn-danger btn-round btn-outline-danger';
+      return 'btn btn-danger '+round+' btn-outline-danger';
     }
   }
 
@@ -279,6 +279,9 @@ export class ProductsComponent {
   }
 
   goToStore(item) {
+    if(!item.store_id) {
+      return;
+    }
     const navData: NavigationExtras = {
       queryParams: {
         uuid: item.store_id,
