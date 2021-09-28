@@ -12,10 +12,12 @@ import { ApiService } from 'src/app/services/api.service';
 import { CartService } from 'src/app/services/cart.service';
 import * as moment from 'moment';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { CityService } from 'src/app/services/city.service';
 import { StoreService } from 'src/app/services/store.service';
 import { OptionService } from 'src/app/services/option.service';
+import { MainModalPage } from '../../modal/main-modal/main-modal.page';
+import { Option } from 'src/app/models/option.model';
 
 @Component({
   selector: 'app-home',
@@ -83,7 +85,8 @@ export class HomePage {
     public city: CityService,
     private storeServ: StoreService,
     public navCtrl: NavController,
-    private optServ: OptionService
+    private optServ: OptionService,
+    private modalCrtl: ModalController
   ) {
     this.route.queryParams.subscribe((data) => {
       if (data && data.action) {
@@ -143,12 +146,23 @@ export class HomePage {
   }
 
   async getPopup() {
-    const alertCtrl = await this.alertCtrl.create({
-      header: this.util.getString('Message'),
-      message: 'Welcome to our application!',
-      mode: 'ios',
-      buttons: [this.util.getString('Cancle'), this.util.getString('Ok')],
-    });
+    // this.optServ.observe.subscribe((option: Option)=> {
+    //   if(option.settings.) {
+    //      this.orderTax = this.optServ.current.general.tax;
+    //      this.calcuate();
+    //   }
+    // });
+    // const modal = await this.modalCrtl.create({
+    //   component: MainModalPage,
+    //   cssClass: 'main_modal'
+    // });
+    // return await modal.present();
+    // const alertCtrl = await this.alertCtrl.create({
+    //   header: this.util.getString('Message'),
+    //   message: 'Welcome to our application!',
+    //   mode: 'ios',
+    //   buttons: [this.util.getString('Cancle'), this.util.getString('Ok')],
+    // });
   }
 
   resetAllArrays(message) {

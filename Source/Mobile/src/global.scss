@@ -78,3 +78,31 @@ ion-modal.modalContact {
     }
     --height: 70vh;
 }
+
+ion-modal.custom_modal {
+    .modal-wrapper{
+        width: 100% !important;
+    }
+    &.bottom {
+        align-items: flex-end !important;
+    }
+
+    --height: 300px;
+    align-items: flex-end;
+}
+
+ion-modal.center_modal {
+    .modal-wrapper{
+        width: 80% !important;
+        border-radius: 10px;
+    }
+    --height: 480px;
+}
+
+ion-modal.main_modal {
+    .modal-wrapper{
+        width: 80% !important;
+        border-radius: 10px;
+    }
+    --height: 340px;
+}
