@@ -48,9 +48,6 @@
 
 <ion-content>
   <div class="main_content">
-    <p class="ion-text-center" *ngIf="!dummy?.length && !products?.length">
-      {{util.getString('No Products found')}}
-    </p>
     <ion-row>
       <ion-col size="6" *ngFor="let item of dummy">
         <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
@@ -242,13 +239,15 @@
         </div>
       </div>
     </div>
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" style="padding: 25px;">
+    <div *ngIf="products.length > 0 && no_stores_follows === true" style="display: flex; flex-direction: column; margin: 20px 0 20px;">
+      <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
+    </div>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [style.background-color]="red">
       <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </div>
-  <div *ngIf="no_stores_follows === true" style="display: flex; flex-direction: column; margin: 0 0 20px;">
-    <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
+  <div *ngIf="products.length == 0 && no_stores_follows === true" style="display: flex; flex-direction: column;">
+    <p class="ion-text-center"> {{util.getString('- No Products found -')}} </p>
   </div>
-
 </ion-content>
