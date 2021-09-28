@@ -36,10 +36,10 @@
         </div>
         <div class="desc_div">
           <ion-label style="font-weight: bold;color: var(--ion-color-primary);font-size: 12px;"> 
-             {{ (item.store_name.length>30)? (item.store_name | slice:0:30)+'..':(item.store_name) }}
+             {{ util.safeText(item.store_name, 20, true, '') }}
           </ion-label>
           <ion-label style="font-weight: bold; font-size: 12px;"> 
-            {{util.getString('Order ID')}}: #{{((item.uuid | slice:0:8)+'').toUpperCase()}} ( {{item.stage}} )
+            {{util.getString('Order ID')}}: #{{ util.safeText(item.uuid, 7, '', '').toUpperCase() }} ( {{item.stage}} )
           </ion-label>
           <div class="border_bottom">
             <p class="itemss">

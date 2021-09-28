@@ -31,12 +31,12 @@
       
       <div class="flex_div">
         <ion-label> {{util.getString('Order ID')}} </ion-label>
-        <ion-label class="values" style="font-weight: bold;">{{ ((order.uuid | slice:0:7)+'').toUpperCase() }}</ion-label>
+        <ion-label class="values" style="font-weight: bold;">{{ util.safeText(order.uuid, 7, '', '').toUpperCase() }}</ion-label>
       </div>
 
       <div class="flex_div">
         <ion-label> {{util.getString('Customer')}} </ion-label>
-        <ion-label class="values">{{ (order.user_name | slice:0:30) }}</ion-label>
+        <ion-label class="values">{{ util.safeText(order.user_name, 30, true, '') }}</ion-label>
       </div>
 
       <div class="flex_div">

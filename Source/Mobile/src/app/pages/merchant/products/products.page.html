@@ -54,7 +54,7 @@
         <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
         <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
         <ion-label class="desc">
-          {{ (item.descriptions.length>50)? (item.descriptions | slice:0:50)+'..':(item.descriptions) }} </ion-label>
+          {{ util.safeText(item.descriptions, 50, true, '') }} </ion-label>
         <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='left'"> {{util.currecny}}
           {{item.orig_price}} </ion-label>
         <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='right'">{{item.orig_price}}

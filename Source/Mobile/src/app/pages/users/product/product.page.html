@@ -49,7 +49,7 @@
       </ion-label>
 
       <div class="storeName ion-activatable" (click)="gotoStore()" *ngIf="storeName">
-        {{ (storeName.length>42)? (storeName | slice:0:42)+'..':(storeName) }}
+        {{ util.safeText(storeName, 42, true, '') }}
       </div>
 
       <div class="ratingItems ion-activatable" (click)="productRating()">
@@ -174,7 +174,7 @@
               </div>
               <div class="second_div">
                 <ion-label class="name_lbl" (click)="singleProduct(item)">
-                  {{ (item.name.length>10)? (item.name | slice:0:10)+'..':(item.name) }}
+                  {{ util.safeText(item.name, 25, true, '') }}
                 </ion-label>
                 <ion-label class="itemsKind">
                   <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>
@@ -183,9 +183,6 @@
                   <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
                   <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pc(s)')}} </span>
                 </ion-label>
-                <!-- <ion-label class="desc" (click)="singleProduct(item)">
-                  {{ (item.descriptions.length>40)? (item.descriptions | slice:0:40)+'..':(item.descriptions) }}
-                </ion-label> -->
                 <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='left'"> {{util.currecny}}
                   {{item.orig_price}} </ion-label>
                 <ion-label class="price_lbl" *ngIf="item.discount > 0 && util.cside ==='right'">

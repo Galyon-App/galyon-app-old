@@ -77,7 +77,7 @@
           </div>
           <div class="second_div">
             <ion-label class="name_lbl" (click)="singleProduct(item)">
-              {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+              {{ util.safeText(item.name, 35, true, '') }}
             </ion-label>
             <ion-label class="itemsKind" *ngIf="item.variations">
               <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>

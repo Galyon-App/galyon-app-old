@@ -61,7 +61,7 @@
     <div class="sliders">
       <div class="categoryIcon" *ngFor="let item of categories" (click)="viewSubCategories(item)">
         <div class="imgs" [ngStyle]="{'background-image':'url('+ api.mediaURL+item.cover+'),url(assets/imgs/category.png)'}"></div>
-        <ion-label class="name">{{ (item.name.length>15)? (item.name | slice:0:15)+'..':(item.name) }}</ion-label>
+        <ion-label class="name">{{ util.safeText(item.name, 15, true, '') }}</ion-label>
       </div>
       <div *ngFor="let item of dummyCates" class="categoryIcon" style="margin: 0px 10px;">
         <ion-skeleton-text animated style="width: 50px;height: 50px;border-radius: 50%;"></ion-skeleton-text>
@@ -129,7 +129,7 @@
             </div>
             <div class="details">
               <ion-label class="pro_name" (click)="goToSingleProduct(item)">
-                {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+                {{ util.safeText(item.name, 20, true, '') }}
                 <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
                 <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
               </ion-label>
@@ -260,9 +260,9 @@
               </div>
               <div class="desc_div" (click)="openStore(item)">
                 <ion-label class="pro_name">
-                  {{ (item.name.length>55)? (item.name | slice:0:55):(item.name) }}</ion-label>
+                  {{ util.safeText(item.name, 55, true, '') }}</ion-label>
                 <ion-label class="pro_detail">
-                  {{ (item.address.length>20)? (item.address | slice:0:40)+'..':(item.address) }}
+                  {{ util.safeText(item.address, 40, true, '') }}
                 </ion-label>
                 <ion-label class="price_lbl"> {{getTime(item.open_time)}} - {{getTime(item.close_time)}} </ion-label>
                 <div class="small_flex">
@@ -340,9 +340,9 @@
             </div>
             <div class="desc_div" (click)="openStore(item)">
               <ion-label class="pro_name">
-                {{ (item.name.length>12)? (item.name | slice:0:29):(item.name) }}</ion-label>
+                {{ util.safeText(item.name, 9, true, '') }}</ion-label>
               <ion-label class="pro_detail">
-                {{ (item.address.length>20)? (item.address | slice:0:40)+'..':(item.address) }}
+                {{ util.safeText(item.address, 40, true, '') }}
               </ion-label>
               <ion-label class="price_lbl"> {{getTime(item.open_time)}} - {{getTime(item.close_time)}} </ion-label>
               <div class="small_flex">

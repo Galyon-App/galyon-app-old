@@ -70,7 +70,7 @@
           </div>
           <div class="second_div">
             <ion-label class="name_lbl" (click)="singleProduct(item)">
-              {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+              {{ util.safeText(item.name, 20, true, '') }}
             </ion-label>
             <div *ngIf="item.variations" class="variant" (click)="variant(item,i)">
               <ion-label class="selecter ion-activatable">
@@ -182,7 +182,7 @@
         </div>
         <div class="second_div">
           <ion-label class="name_lbl">
-            {{ (item.name.length>20)? (item.name | slice:0:20)+'..':(item.name) }}
+            {{ util.safeText(item.name, 20, true, '') }}
           </ion-label>
           <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
           <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
