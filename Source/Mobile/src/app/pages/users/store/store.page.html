@@ -6,48 +6,60 @@
   Created : 01-Sep-2020
 
  -->
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-button (click)="back()">
-        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>{{name}}</ion-title>
-    <ion-buttons slot="end">
-      <!-- <ion-button (click)="search()">
-        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
-      </ion-button> -->
-      <!-- <ion-button (click)="onChat()">
-        <ion-icon slot="icon-only" name="chatbubbles-outline"></ion-icon>
-      </ion-button> -->
-    </ion-buttons>
-  </ion-toolbar>
-  <!-- *ngIf="haveSearch" showCancelButton="always" -->
-  <ion-searchbar mode="ios" (ionCancel)="search()" [placeholder]="util.getString('Search')"
-    type="text" (ionChange)="onSearchChange($event)" [debounce]="250" style="background-color: var(--ion-color-light);">
-  </ion-searchbar>
-  <div class="topHeader" *ngIf="products?.length">
-    <p class="itemsFound">
-      {{products.length}} {{util.getString('Items')}}
-    </p>
-    <div>
-      <ion-button (click)="changeMode()" color="light" size="small">
-        <ion-icon slot="icon-only" [name]="mode ==='list' ? 'apps' :'list'"></ion-icon>
-      </ion-button>
-      <ion-button (click)="filter($event)" color="light" size="small">
-        <ion-icon slot="start" name="options"></ion-icon>
-        {{util.getString('Filter')}} {{selectedFilter}}
-      </ion-button>
-      <ion-button (click)="priceFilter()" color="light" size="small">
-        <ion-icon slot="icon-only" name="filter"></ion-icon>
-      </ion-button>
-    </div>
-  </div>
-</ion-header>
 
 <ion-content>
   <div class="main_content">
+    <div class="header_image" [ngStyle]="{'background-image':'url('+api.mediaURL+(store!=null?store.cover:'')+'),url(assets/imgs/store.png)'}">
+      <div class="overlay_div">
+          <div class="icn_flex">
+            <button (click)="back()" style="background: none;">
+              <ion-icon name="arrow-back" style="margin-right: 12px; font-size: 30px; color: #c82180;"></ion-icon>
+            </button>
+          </div>
+          <!-- <div class="user_back" [style.backgroundImage]="'url(assets/imgs/user.png)'"></div>
+          <ion-label class="name_lbl">{{store.owner_name}}</ion-label>
+          <ion-label class="white_lbl">Lorem Ipsum is simply dummy text of the printing</ion-label> -->
+      </div>
+    </div>
+    <div class="content_div">
+      <div class="white_box" style="margin-top: -50px;">
+        <div class="item_div">
+          <ion-icon name="business" class="first_icn"></ion-icon>
+          <ion-label>{{ util.safeText(store!=null?store.name:'', 29, true, 'Unnamed Store') }}</ion-label>
+        </div>
+        <div class="item_div">
+            <ion-icon name="mail" class="first_icn"></ion-icon>
+            <ion-label>{{ util.safeText(store!=null?store.email:'', 29, true, 'No email address') }}</ion-label>
+        </div>
+        <div class="item_div" style="border: 0px;">
+            <ion-icon name="phone-portrait" class="first_icn"></ion-icon>
+            <ion-label>{{ util.safeText(store!=null?store.phone:'', 29, true, 'No phone number') }}</ion-label>
+        </div>
+      </div>
+      <div class="white_box" *ngIf="products?.length">
+        <ion-searchbar mode="ios" (ionCancel)="search()" [placeholder]="util.getString('Search')" type="text" [debounce]="250"
+           (ionChange)="onSearchChange($event)" class="item_div">
+        </ion-searchbar>
+        <div class="topHeader" style="background-color: #fff0;">
+          <p class="itemsFound">
+            {{products.length}} {{util.getString('Items')}}
+          </p>
+          <div class="filterContain">
+            <ion-button (click)="changeMode()" color="primary" size="small">
+              <ion-icon slot="icon-only" [name]="mode ==='list' ? 'apps' :'list'"></ion-icon>
+            </ion-button>
+            <ion-button (click)="filter($event)" color="primary" size="small">
+              <ion-icon slot="start" name="options"></ion-icon>
+              {{util.getString('Filter')}} {{selectedFilter}}
+            </ion-button>
+            <ion-button (click)="priceFilter()" color="primary" size="small">
+              <ion-icon slot="icon-only" name="filter"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <ion-row>
       <ion-col size="6" *ngFor="let item of dummy">
         <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
@@ -58,7 +70,7 @@
     </ion-row>
     <ion-row *ngIf="mode === 'grid'">
       <ion-col size="6" *ngFor="let item of products;let i = index;">
-        <div style="border: 1px solid lightgray;">
+        <div style="margin-bottom: 10px;">
           <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
             (click)="singleProduct(item)">
             <div class="percent" *ngIf="item.discount_type !== 'none' && item.discount > 0"> 

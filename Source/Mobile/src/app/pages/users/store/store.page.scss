@@ -4,6 +4,7 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
+
 .topHeader{
     display: flex;
     flex-direction: row;
@@ -12,12 +13,99 @@
     padding: 0px 5px;
     background-color: var(--ion-color-light);
     .itemsFound{
-        color: gray;
+        color: #c82180;
         font-weight: bold;
     }
 }
 .main_content{
     //padding-bottom: 80px;
+    .header_image {
+        width: 100%;
+        height: 300px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        .overlay_div {
+            width: 100%;
+            height: 100%;
+            //background: rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .icn_flex {
+                display: flex;
+                align-items: center;
+                margin-top: 15px;
+                margin-left: 15px;
+                width: 100%;
+                justify-content: flex-start;
+
+                ion-icon {
+                    margin-right: 16px;
+                    color: white;
+                    font-size: 20px;
+                }
+            }
+
+            .user_back {
+                height: 80px;
+                width: 80px;
+                border-radius: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                margin-top: 16px;
+            }
+            .name_lbl {
+                font-family: 'semi-bold';
+                color: white;
+                margin-top: 10px;
+            }
+            .white_lbl {
+                color: white;
+                width: 70%;
+                font-size: 14px;
+                text-align: center;
+            }
+        }
+    }
+    .content_div {
+        padding: 16px;
+
+        .white_box {
+            background: white;
+            border-radius: 5px;
+            padding-left: 16px;
+            padding-right: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #d4d4d4;
+            .item_div {
+                padding-top: 16px;
+                padding-bottom: 16px;
+                border-bottom: 1px solid #ededed;
+                display: flex;
+                align-items: center;
+                position: relative;
+    
+                .first_icn {
+                    font-size: 20px;
+                    color: #c82180;
+                }
+                ion-label {
+                    margin-left: 16px;
+                }
+                .last_icn {
+                    font-size: 20px;
+                    color: #c82180;
+                    position: absolute;
+                    right: 0;
+                }
+            }
+        }
+    }
+
     .back_image{
         width: 100%;
         height: 100px;
