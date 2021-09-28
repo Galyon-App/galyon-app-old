@@ -64,8 +64,10 @@ export class ProductsComponent {
         try {
           this.modalService.open(this.contentStore, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
             console.log(result);
-          }, (reason) => {
-            this.getAllProducts(this.searchText);
+          }, (refresh) => {
+            if(refresh) {
+              this.getAllProducts(this.searchText);
+            }
           });
         } catch (error) {
           this.util.showToast(this.toastyService, 'Something went wrong: '+error, 'error');
@@ -97,7 +99,7 @@ export class ProductsComponent {
     this.choosenId = '';
     this.storeId = '';
     this.storeName = '';
-    this.modalService.dismissAll(null);
+    this.modalService.dismissAll(true);
   }
   
   confirm() {
@@ -105,7 +107,7 @@ export class ProductsComponent {
       this.storeId = this.choosenId;
       const store = this.stores.filter(x => x.uuid === this.storeId);
       this.storeName = store[0].name;
-      this.modalService.dismissAll(store);
+      this.modalService.dismissAll(true);
     } else {
       this.modalService.dismissAll(null);
     }
