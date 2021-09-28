@@ -119,6 +119,7 @@ export class ProductsComponent {
     this.dummProducts = [];
 
     this.api.post('galyon/v1/products/getAllProducts', {
+      includes: this.template_term,
       store_id: this.storeId ? this.storeId:"",
       filter_term: filter ? filter:"",
       search: filter,
@@ -157,11 +158,6 @@ export class ProductsComponent {
     } else {
       return 'btn btn-danger '+round+' btn-outline-danger';
     }
-  }
-
-  getSellPrice(item) {
-    let discount = item.discount_type == 'percent' ? item.orig_price*(item.discount/100):item.discount;
-    return item.orig_price - discount;
   }
 
   getDates(date) {
@@ -290,4 +286,23 @@ export class ProductsComponent {
     };
     this.router.navigate(['admin/manage-stores'], navData);
   }
+
+  goToTemplate(item) {
+    if(!item.template_id) {
+      return;
+    }
+    const navData: NavigationExtras = {
+      queryParams: {
+        uuid: item.template_id,
+        register: false
+      }
+    };
+    this.router.navigate(['admin/manage-products'], navData);
+  }
+
+  template_term: any = '';
+  searchTemplate() {
+    this.getAllProducts(this.searchText);
+  }
+
 }

@@ -14,7 +14,7 @@ class Products extends Galyon_controller {
 
     private $table_name = 'products';
     private $edit_column = ['store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','status','timestamp'];
-    private $public_column = ['uuid','store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','verified_at','status','timestamp','updated_at','deleted_at'];
+    private $public_column = ['uuid','template','store_id','name','description','cover','images','orig_price','sell_price','discount_type','discount','category_id','subcategory_id','have_gram','gram','have_kg','kg','have_pcs','pcs','have_liter','liter','have_ml','ml','features','disclaimer','in_stock','is_featured','in_home','is_single','type_of','variations','pending_update','verified_at','status','timestamp','updated_at','deleted_at'];
     private $required = ['uuid'];
 
     function __construct(){
@@ -65,6 +65,14 @@ class Products extends Galyon_controller {
             }
         } else {
             $product->{"store_name"} = null;
+        }
+
+        if(isset($product->template) && $product->template != null && $product->template != '') {
+            $template = $this->Crud_model->get('products', 'uuid, name', "uuid = '$product->template'", NULL, 'row' );
+            if($store) {
+                $product->{"template_id"} = $template->uuid;
+                $product->{"template_name"} = $template->name;
+            }
         }
 
         if($with_pending) {
@@ -142,10 +150,10 @@ class Products extends Galyon_controller {
         $auth = $this->is_authorized(false);
 
         $filter_term = $this->input->post('filter_term');
-        $store_id = $this->input->post('store_id');
         $limit_start = (int)$this->input->post('limit_start');
         $limit_length = (int)$this->input->post('limit_length');
         $limit_length = $limit_length ? $limit_length : 10;
+        $params = array( $limit_start, $limit_length );
 
         $order_by = [];
         $order_column = $this->input->post('order_column');
@@ -154,26 +162,19 @@ class Products extends Galyon_controller {
             $order_by = [$order_column, $order_mode];
         }
 
-        if(empty($store_id)) {
-            $params = array(
-                $limit_start,
-                $limit_length
-            );
-        } else {
-            $params = array(
-                $store_id, 
-                $limit_start,
-                $limit_length
-            );
-        }
-        
         $query = " SELECT `id` ";
         foreach($this->public_column as $column) {
             $query .= ",`$column` ";
         }
         $query .= " FROM `products` ";
         $query .= " WHERE deleted_at IS NULL ";
-        $query .= empty($store_id) ? "" : " AND `store_id` = ? ";
+
+        $store_id = $this->input->post('store_id');
+        $store_query = empty($store_id) ? "":"AND `store_id`='$store_id'";
+        $includes = $this->input->post('includes');
+        $store_query = empty($store_query) ? "AND `store_id` IS NOT NULL" : $store_query ;
+
+        $query .= $includes == 'template' ? "AND `template` IS NULL AND `store_id` IS NULL":"$store_query";
         $query .= $auth->role == "user" || $auth->role == "store" ? " AND `status`='1' AND deleted_at IS NULL":"";
         $query .= empty($filter_term) ? "" : " AND name LIKE '%".$filter_term."%' ";
         $query .= count($order_by) == 2 ? " ORDER BY $order_by[0] $order_by[1]" : "";

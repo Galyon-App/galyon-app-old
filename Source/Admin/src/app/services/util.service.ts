@@ -144,6 +144,12 @@ export class UtilService {
     return jwt.decodeToken(token);
   }
 
+  getSellPrice(item) {
+    let discount: any = this.getDiscountText(item, true);
+    discount = discount?parseFloat(discount):0;
+    return (item.orig_price - discount).toFixed(2);
+  }
+
   getDiscountText(item, with_price = false) {
     if(item && item.discount_type && item.discount ) {
       let discount = parseFloat(item.discount);
@@ -155,7 +161,7 @@ export class UtilService {
             return discount +'%';
           }
         } else if(item.discount_type == 'fixed') {
-          return discount +'off';
+          return this.currecny+discount +'off';
         }
       }      
     }

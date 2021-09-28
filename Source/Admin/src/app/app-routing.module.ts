@@ -24,6 +24,8 @@ const routes: Routes = [
       component: AuthComponent,
       canActivate: [AuthGuard],
   },
+
+  //Admin
   {
       path: 'admin',
       component: AdminComponent,
@@ -199,6 +201,8 @@ const routes: Routes = [
       canActivate: [AuthGuard],
       data: { roles: [Role.Admin] }
   },
+
+  //Operator
   {
     path: 'operator',
     component: MerchantComponent,
@@ -212,6 +216,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.Operator] }
   },
+  
+  //Merchant
   {
     path: 'merchant',
     component: MerchantComponent,
@@ -261,6 +267,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.Merchant] }
   },
+
+  //External
   {
     path: 'login',
     component: LoginComponent,

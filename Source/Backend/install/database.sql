@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 23, 2021 at 01:13 PM
+-- Generation Time: Sep 28, 2021 at 12:00 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -360,6 +360,7 @@ CREATE TABLE `popups` (
 CREATE TABLE `products` (
   `id` bigint(20) NOT NULL,
   `uuid` varchar(36) DEFAULT NULL,
+  `template` varchar(36) DEFAULT NULL,
   `store_id` varchar(36) DEFAULT NULL,
   `cover` text NOT NULL,
   `images` text NOT NULL,
@@ -453,13 +454,13 @@ INSERT INTO `settings` (`id`, `guard`, `opt_key`, `opt_val`, `updated_at`) VALUE
 (15, 'general', 'address', '35 J. Sta. Catalina St., Sitio Caingin ', '2021-09-21 21:36:06'),
 (16, 'general', 'city', 'Morong', '2021-09-21 21:36:06'),
 (17, 'general', 'province', 'Rizal', '2021-09-21 21:36:06'),
-(18, 'general', 'zipcode', '1960', '2021-09-21 21:36:06'),
+(18, 'general', 'zipcode', '19600', '2021-09-26 10:38:04'),
 (19, 'general', 'country', 'Philippines', '2021-09-04 07:44:46'),
 (20, 'general', 'minimum_order', '500', '2021-09-04 07:44:25'),
 (21, 'general', 'free_delivery', '2500', '2021-09-04 07:44:25'),
 (22, 'general', 'tax', '12', '2021-09-15 19:25:29'),
-(23, 'general', 'shipping', 'km', '2021-09-19 15:48:55'),
-(24, 'general', 'shippingPrice', '120', '2021-09-15 19:25:29'),
+(23, 'general', 'shipping', 'km', '2021-09-26 10:46:00'),
+(24, 'general', 'shippingPrice', '5', '2021-09-26 10:10:24'),
 (25, 'app', 'app_close', '1', '2021-09-05 19:31:45'),
 (26, 'app', 'app_close_message', 'The is currently on Maintainance.', '2021-09-03 21:22:45'),
 (28, 'payment', 'cod_enable', '1', '2021-09-04 08:50:22'),
@@ -471,7 +472,8 @@ INSERT INTO `settings` (`id`, `guard`, `opt_key`, `opt_val`, `updated_at`) VALUE
 (34, 'payment', 'paymongo_enable', '0', '2021-09-10 18:31:46'),
 (35, 'payment', 'paymongo_data', '{\"env\":\"sandbox\",\"test\":\"test\",\"live\":\"test\",\"code\":\"USD\"}', '2021-09-04 10:22:29'),
 (36, 'payment', 'stripe_enable', '0', '2021-09-10 18:31:49'),
-(37, 'payment', 'stripe_data', '{\"env\":\"sandbox\",\"test\":\"test\",\"live\":\"test\",\"code\":\"USD\"}', '2021-09-04 10:22:31');
+(37, 'payment', 'stripe_data', '{\"env\":\"sandbox\",\"test\":\"test\",\"live\":\"test\",\"code\":\"USD\"}', '2021-09-04 10:22:31'),
+(38, 'general', 'shippingBase', '29', '2021-09-26 10:46:00');
 
 -- --------------------------------------------------------
 
@@ -828,7 +830,7 @@ ALTER TABLE `rating`
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `stores`
