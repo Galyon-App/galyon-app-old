@@ -60,7 +60,6 @@ export class OrderDetailPage implements OnInit {
     private iab: InAppBrowser
   ) {
     this.route.queryParams.subscribe((data) => {
-      console.log(data);
       if (data && data.uuid) {
         this.id = data.uuid;
         this.loaded = false;
@@ -514,49 +513,47 @@ export class OrderDetailPage implements OnInit {
   }
 
   changeStatus(value) {
-    console.log(value);
+    this.presentAlertConfirm(value);
+  }
 
-    this.orderStatus.forEach(element => {
-      //TODO: Verify code
-      // if (element.uuid === localStorage.getItem('uid')) {
-      //   element.status = value;
-      // }
-    });
-    console.log(this.orderDetail);
-    if (value === 'accepted' && this.orderAt === 'home') {
-      this.presentModal();
-    } else if (value === 'accepted' && this.orderAt !== 'home') {
-      this.util.show();
-      const newOrderNotes = {
-        status: 1,
-        value: 'Order ' + value + this.statusText,
-        time: moment().format('lll'),
-      };
-      this.orderDetail.push(newOrderNotes);
-      const param = {
-        uuid: this.id,
-        notes: JSON.stringify(this.orderDetail),
-        status: JSON.stringify(this.orderStatus),
-      };
-      this.api.post('orders/editList', param).subscribe((data: any) => {
-        console.log('order', data);
-        this.util.hide();
-        if (data && data.status === 200) {
-          this.sendNotification('accepted');
-          this.back();
-        } else {
-          this.util.errorToast(this.util.getString('Something went wrong'));
+  async presentAlertConfirm(method) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Do you really want to '+method+' this order?',
+      buttons: [
+        {
+          text: 'Go Back',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Cancel Press');
+          }
+        }, {
+          text: 'Continue',
+          handler: async () => {
+            console.log('Confirm Okay');
+
+            this.api.post('galyon/v1/orders/'+method+'Order', {
+              uuid: this.id,
+              store_id: this.order.store_id
+            }).subscribe((response: any) => {
+              if(response && response.success && response.data) {
+                this.order.progress = JSON.parse(response.data.progress);
+                this.order.stage = response.data.stage;
+              } else {
+                this.util.errorToast(response.message);
+              }
+            }, error => {
+              console.log(error);
+              this.util.hide();
+              this.util.errorToast(this.util.getString('Something went wrong'));
+            });
+          }
         }
-      }, error => {
-        console.log(error);
-        this.util.hide();
-        this.util.errorToast(this.util.getString('Something went wrong'));
-      });
-    } else {
-      this.updateStatus(value);
-    }
+      ]
+    });
 
-    // this.api
+    await alert.present();
   }
 
   sendNotification(value) {
@@ -571,81 +568,53 @@ export class OrderDetailPage implements OnInit {
   }
 
   changeOrderStatus() {
-    console.log(this.changeStatusOrder);
-    console.log(this.orderDetail);
-    if (this.changeStatusOrder) {
-      this.orderStatus.forEach(element => {
-        //TODO: Verify
-        // if (element.id === localStorage.getItem('uid')) {
-        //   element.status = this.changeStatusOrder;
-        // }
-      });
-      if (this.changeStatusOrder !== 'ongoing' && this.orderAt === 'home' && this.driverId !== '0') {
-        // release driver from this order
-        console.log('relase driver');
-
-        const newOrderNotes = {
-          status: 1,
-          value: 'Order ' + this.changeStatusOrder + this.statusText,
-          time: moment().format('lll'),
-        };
-        this.orderDetail.push(newOrderNotes);
-
-        this.util.show();
-        const param = {
-          uuid: this.id,
-          notes: JSON.stringify(this.orderDetail),
-          status: JSON.stringify(this.orderStatus),
-        };
-        this.api.post('orders/editList', param).subscribe((data: any) => {
-          console.log('order', data);
-          this.util.hide();
-          this.updateDriver(this.driverId, 'active');
-          if (data && data.status === 200) {
-            this.sendNotification(this.changeStatusOrder);
-            this.back();
-          } else {
-            this.util.errorToast(this.util.getString('Something went wrong'));
-          }
-        }, error => {
-          console.log(error);
-          this.util.hide();
-          this.util.errorToast(this.util.getString('Something went wrong'));
-        });
-
-
-
-      } else {
-        const newOrderNotes = {
-          status: 1,
-          value: 'Order ' + this.changeStatusOrder + this.statusText,
-          time: moment().format('lll'),
-        };
-        this.orderDetail.push(newOrderNotes);
-
-        this.util.show();
-        const param = {
-          uuid: this.id,
-          notes: JSON.stringify(this.orderDetail),
-          status: JSON.stringify(this.orderStatus),
-        };
-        this.api.post('orders/editList', param).subscribe((data: any) => {
-          console.log('order', data);
-          this.util.hide();
-          if (data && data.status === 200) {
-            this.sendNotification(this.changeStatusOrder);
-            this.back();
-          } else {
-            this.util.errorToast(this.util.getString('Something went wrong'));
-          }
-        }, error => {
-          console.log(error);
-          this.util.hide();
-          this.util.errorToast(this.util.getString('Something went wrong'));
-        });
-      }
-
+    if(this.changeStatusOrder == 'delivered') {
+      this.updateOrderStatus('delivered', 'deliver');
+    } else if(this.changeStatusOrder == 'shipping') {
+      this.updateOrderStatus('shipping', 'ship');
+    } else if(this.changeStatusOrder == 'cancelled') {
+      this.updateOrderStatus('cancelled', 'cancel');
     }
+  }
+
+  async updateOrderStatus(method, endpoint) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Do you really want to set the order status to '+method+'?',
+      buttons: [
+        {
+          text: 'Go Back',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Cancel Press');
+          }
+        }, {
+          text: 'Continue',
+          handler: async () => {
+            console.log('Confirm Okay');
+
+            this.api.post('galyon/v1/orders/'+endpoint+'Order', {
+              uuid: this.id,
+              store_id: this.order.store_id
+            }).subscribe((response: any) => {
+              if(response && response.success && response.data) {
+                this.order.progress = JSON.parse(response.data.progress);
+                this.order.stage = response.data.stage;
+              } else {
+                this.util.errorToast(response.message);
+              }
+            }, error => {
+              console.log(error);
+              this.util.hide();
+              this.util.errorToast(this.util.getString('Something went wrong'));
+            });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }

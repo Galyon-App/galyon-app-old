@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from 'src/app/services/app.service';
 import { UtilService } from 'src/app/services/util.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class TabsPage implements OnInit {
   isReady: boolean = false;
 
   constructor(
-    public util: UtilService
+    public util: UtilService,
+    private appServ: AppService
   ) { }
 
   ngOnInit() {
@@ -19,5 +21,6 @@ export class TabsPage implements OnInit {
 
   ionViewDidEnter() {
     this.isReady = true;
+    this.appServ.setAppReady();
   }
 }

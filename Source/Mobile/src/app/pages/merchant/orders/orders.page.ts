@@ -29,6 +29,7 @@ export class OrdersPage implements OnInit {
   dummy = Array(50);
   olders: any[] = [];
   limit: any;
+  storeId: any = '';
 
   constructor(
     public api: ApiService,
@@ -39,9 +40,8 @@ export class OrdersPage implements OnInit {
   ) {
     if(this.authServ.is_merchant) {
       this.merchant.request((stores: Store[]) => {
-        console.log("My Stores", stores);
-        let storeId = this.merchant.stores.length > 0 ? this.merchant.stores[0].uuid : ""
-        this.getOrders('', false, storeId);
+        this.storeId = this.merchant.stores.length > 0 ? this.merchant.stores[0].uuid : ""
+        this.getOrders('', false, this.storeId);
       })
     }
     // this.getOrder();
@@ -59,7 +59,7 @@ export class OrdersPage implements OnInit {
     this.onGoingOrders = [];
     this.oldOrders = [];
     this.dummy = Array(5);
-    this.getOrders('', false);
+    this.getOrders('', false, this.storeId);
   }
 
   onClick(val) {
@@ -67,7 +67,6 @@ export class OrdersPage implements OnInit {
   }
 
   goToOrder(order) {
-    console.log(order);
     const navData: NavigationExtras = {
       queryParams: {
         uuid: order.uuid
@@ -124,20 +123,20 @@ export class OrdersPage implements OnInit {
   }
 
   doRefresh(event) {
-    console.log(event);
-    this.getOrders(event, true);
+    this.getOrders(event, true, this.storeId);
   }
 
   async loadMore(event, value) {
 
+    this.getOrders(event, true, this.storeId);
     //TODO: Fetch new orders with last id and put it to this.olders.
 
-    await this.olders.forEach((element, index) => {
-      this.oldOrders.push(element);
-    });
+    // await this.olders.forEach((element, index) => {
+    //   this.oldOrders.push(element);
+    // });
 
-    if (event != null) {
-      event.target.complete();
-    }
+    // if (event != null) {
+    //   event.target.complete();
+    // }
   }
 }

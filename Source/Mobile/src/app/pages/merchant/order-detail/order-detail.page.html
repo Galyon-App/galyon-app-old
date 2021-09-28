@@ -192,21 +192,20 @@
     <ion-footer style="margin: 0 0 40px;">
       <ion-toolbar style="padding-top: 20px;">
         <div class="btn_div" *ngIf="order.stage == 'created'">
-          <ion-button (click)="changeStatus('rejected')" size="small" class="reject" color="danger" disabled>
+          <ion-button (click)="changeStatus('reject')" size="small" class="reject" color="danger">
             {{util.getString('Reject Order')}}
           </ion-button>
-          <ion-button (click)="changeStatus('accepted')" size="small" class="accept" color="primary" disabled>
+          <ion-button (click)="changeStatus('accept')" size="small" class="accept" color="success">
             {{util.getString('Accept Order')}}
           </ion-button>
         </div>
     
-        <div class="status_div" *ngIf="order.stage == 'accepted' || order.stage == 'ongoing' ">
+        <div class="status_div" *ngIf="order.stage == 'ongoing' || order.stage == 'shipping'">
           <div style="width: 200px;">
-            <ion-select placeholder="Choose Status" [(ngModel)]="changeStatusOrder">
-              <ion-select-option value="ongoing"> {{util.getString('Ongoing')}} </ion-select-option>
-              <ion-select-option value="cancelled"> {{util.getString('Cancel')}} </ion-select-option>
+            <ion-select placeholder="Update Status" [(ngModel)]="changeStatusOrder">
+              <ion-select-option value="cancelled"> {{util.getString('Cancelled')}} </ion-select-option>
+              <ion-select-option value="shipping"> {{util.getString('Shipping')}} </ion-select-option>
               <ion-select-option value="delivered"> {{util.getString('Delivered')}} </ion-select-option>
-              <ion-select-option value="rejected"> {{util.getString('Reject')}} </ion-select-option>
             </ion-select>
           </div>
     

@@ -21,6 +21,20 @@ class Orders extends Galyon_controller {
 		parent::__construct();
     }
 
+    protected function is_owner_of_store($user_id, $store_id) {
+        $params = array(
+            $user_id, 
+            $store_id
+        );
+
+        $query = " SELECT `uuid` 
+        FROM `stores` 
+        WHERE `owner` = ? AND `uuid` = ?
+        ";
+
+        return $this->Crud_model->custom($query, $params, 'row');
+    }
+
     protected function getOrderMetaItem($order) {
         if($this->input->post("has_user_name") == "1") {
             $user = $this->Crud_model->get("users", ['cover','first_name','last_name'], ["'uuid' = $order->uid"], NULL, 'row' );
@@ -182,6 +196,158 @@ class Orders extends Galyon_controller {
         }
     }
 
+    function deliverOrder() {
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+        $request = $this->request_validation($_POST, ["uuid", "store_id"], $this->edit_column);
+        $order_id = $request->data['uuid'];
+
+        $previous = $this->Crud_model->get(
+            $this->table_name, 
+            $this->edit_column, 
+            "uuid = '$order_id'", 
+            null, 'row' );
+
+        $progress = json_decode($previous->progress);
+        array_push($progress, array(
+            "status" => 1,
+            "current" => $progress[0]->latest,
+            "latest" => "delivered",
+            "timestamp" => get_current_utc_time()
+        ));
+        $changes = array(
+            "progress" => json_encode($progress),
+            "stage" => "delivered"
+        );
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this order belongs to this operation.
+        } else if($auth->role == "store") {
+            //TODO: Check if owner of the said store.
+            //TODO: Check if current user is an owner of the store involved!
+        }
+
+        $update = $this->Crud_model->update($this->table_name, $changes, array( "uuid" => $order_id ));
+        if($update) {
+            $this->json_response($changes);
+        } else {
+            $this->json_response(null, false, "No order or changes was found!");
+        }
+    }
+
+    function shipOrder() {
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+        $request = $this->request_validation($_POST, ["uuid", "store_id"], $this->edit_column);
+        $order_id = $request->data['uuid'];
+
+        $previous = $this->Crud_model->get(
+            $this->table_name, 
+            $this->edit_column, 
+            "uuid = '$order_id'", 
+            null, 'row' );
+
+        $progress = json_decode($previous->progress);
+        array_push($progress, array(
+            "status" => 1,
+            "current" => $progress[0]->latest,
+            "latest" => "shipping",
+            "timestamp" => get_current_utc_time()
+        ));
+        $changes = array(
+            "progress" => json_encode($progress),
+            "stage" => "shipping"
+        );
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this order belongs to this operation.
+        } else if($auth->role == "store") {
+            //TODO: Check if owner of the said store.
+            //TODO: Check if current user is an owner of the store involved!
+        }
+
+        $update = $this->Crud_model->update($this->table_name, $changes, array( "uuid" => $order_id ));
+        if($update) {
+            $this->json_response($changes);
+        } else {
+            $this->json_response(null, false, "No order or changes was found!");
+        }
+    }
+
+    function acceptOrder() {
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+        $request = $this->request_validation($_POST, ["uuid", "store_id"], $this->edit_column);
+        $order_id = $request->data['uuid'];
+
+        $previous = $this->Crud_model->get(
+            $this->table_name, 
+            $this->edit_column, 
+            "uuid = '$order_id'", 
+            null, 'row' );
+
+        $progress = json_decode($previous->progress);
+        array_push($progress, array(
+            "status" => 1,
+            "current" => $progress[0]->latest,
+            "latest" => "ongoing",
+            "timestamp" => get_current_utc_time()
+        ));
+        $changes = array(
+            "progress" => json_encode($progress),
+            "stage" => "ongoing"
+        );
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this order belongs to this operation.
+        } else if($auth->role == "store") {
+            //TODO: Check if owner of the said store.
+            //TODO: Check if current user is an owner of the store involved!
+        }
+
+        $update = $this->Crud_model->update($this->table_name, $changes, array( "uuid" => $order_id ));
+        if($update) {
+            $this->json_response($changes);
+        } else {
+            $this->json_response(null, false, "No order or changes was found!");
+        }
+    }
+
+    function rejectOrder() {
+        $auth = $this->is_authorized(true, ["admin","operator","store"]);
+        $request = $this->request_validation($_POST, ["uuid", "store_id"], $this->edit_column);
+        $order_id = $request->data['uuid'];
+
+        $previous = $this->Crud_model->get(
+            $this->table_name, 
+            $this->edit_column, 
+            "uuid = '$order_id'", 
+            null, 'row' );
+
+        $progress = json_decode($previous->progress);
+        array_push($progress, array(
+            "status" => 1,
+            "current" => $progress[0]->latest,
+            "latest" => "rejected",
+            "timestamp" => get_current_utc_time()
+        ));
+        $changes = array(
+            "progress" => json_encode($progress),
+            "stage" => "rejected"
+        );
+
+        if($auth->role == "operator") {
+            //TODO: Add check if operator and this order belongs to this operation.
+        } else if($auth->role == "store") {
+            //TODO: Check if owner of the said store.
+            //TODO: Check if current user is an owner of the store involved!
+        }
+
+        $update = $this->Crud_model->update($this->table_name, $changes, array( "uuid" => $order_id ));
+        if($update) {
+            $this->json_response($changes);
+        } else {
+            $this->json_response(null, false, "No order or changes was found!");
+        }
+    }
+
     function cancelOrder() {
         $auth = $this->is_authorized(true, ["admin","operator","store","user"]);
         $request = $this->request_validation($_POST, ["uuid", "store_id"], $this->edit_column);
@@ -193,7 +359,7 @@ class Orders extends Galyon_controller {
             "uuid = '$order_id'", 
             null, 'row' );
 
-        if($auth->uuid != $previous->uid) {
+        if($auth->uuid != $previous->uid && !$this->is_owner_of_store($auth->uuid, $request->data['store_id'])) {
             $this->json_response(null, false, "You dont have the permission to execute such action!");
         }
 
@@ -214,7 +380,7 @@ class Orders extends Galyon_controller {
         );
 
         if($auth->role == "operator") {
-            //TODO: Add check if operator and this product belongs to this operation.
+            //TODO: Add check if operator and this order belongs to this operation.
         } else if($auth->role == "store") {
             //TODO: Check if owner of the said store.
         }
@@ -223,7 +389,7 @@ class Orders extends Galyon_controller {
         if($update) {
             $this->json_response($changes);
         } else {
-            $this->json_response(null, false, "No product or changes was found!");
+            $this->json_response(null, false, "No order or changes was found!");
         }
     }
 
