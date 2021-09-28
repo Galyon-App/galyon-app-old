@@ -254,7 +254,7 @@
     <div *ngIf="products.length > 0 && no_stores_follows === true" style="display: flex; flex-direction: column; margin: 20px 0 20px;">
       <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
     </div>
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)" [style.background-color]="red">
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
       <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
