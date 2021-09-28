@@ -155,7 +155,8 @@
 
             <h4 class="sub-title" >Categorization</h4>
             <div class="form-group row">
-               <div class="col-sm-6" (click)="openStore()" style="margin-bottom: 12px;">
+               <div *ngIf="is_template" class="col-sm-6" ></div>
+               <div *ngIf="!is_template" class="col-sm-6" (click)="openStore()" style="margin-bottom: 12px;">
                   <label>{{util.getString('Select Store')}} </label>
                   <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="storeName"
                      class="form-control" [placeholder]="util.getString('Select Store')">

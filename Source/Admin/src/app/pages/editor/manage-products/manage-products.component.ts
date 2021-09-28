@@ -78,6 +78,14 @@ export class ManageProductsComponent {
   storeId: any = '';
   storeName: any= '';
 
+  template: any= '';
+  public get is_template(): boolean {
+    if(this.template == null && this.storeId == null) {
+      return true;
+    }
+    return false;
+  }
+
   variant_title: any = '';
   variant_price: any;
   variant_discount: any;
@@ -241,6 +249,8 @@ export class ManageProductsComponent {
     this.description = info.description;
     this.key_features = info.features;
     this.disclaimer = info.disclaimer;
+
+    this.template = info.template;
 
     //TODO
     this.storeId = info.store_id;
