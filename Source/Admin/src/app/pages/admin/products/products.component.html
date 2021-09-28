@@ -156,7 +156,10 @@
                                     </a>
                                 </td>
                                 <td> {{item.name}}</td>
-                                <td> {{getSellPrice(item)}} ({{item.discount_type == 'percent'?item.discount+'%':item.discount+'off'}})</td>
+                                <td> 
+                                    {{this.util.currecny}}{{getSellPrice(item)}} 
+                                    {{util.getDiscountText(item)==''?'':'('}} {{util.getDiscountText(item)}} {{util.getDiscountText(item)==''?'':')'}}
+                                </td>
                                 <td> None</td>
                                 <td>
                                     <span [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</span>

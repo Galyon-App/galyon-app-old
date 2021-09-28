@@ -144,6 +144,25 @@ export class UtilService {
     return jwt.decodeToken(token);
   }
 
+  getDiscountText(item, with_price = false) {
+    if(item && item.discount_type && item.discount ) {
+      let discount = parseFloat(item.discount);
+      if(discount > 0) {
+        if(item.discount_type == 'percent') {
+          if(with_price) {
+            return parseFloat(item.orig_price)*(discount/100)
+          } else {
+            return discount +'%';
+          }
+        } else if(item.discount_type == 'fixed') {
+          return discount +'off';
+        }
+      }      
+    }
+
+    return '';
+  }
+
   getString(str) {
     // if (this.translations[str]) {
     //   return this.translations[str];
