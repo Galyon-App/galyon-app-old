@@ -68,10 +68,10 @@ export class ProductsComponent {
             this.getAllProducts(this.searchText);
           });
         } catch (error) {
-          console.log(error);
+          this.util.showToast(this.toastyService, 'Something went wrong: '+error, 'error');
         }
       } else {
-        this.util.error('Something went wrong');
+        this.util.showToast(this.toastyService, 'Something went wrong', 'error');
       }
     });
   }
@@ -145,7 +145,7 @@ export class ProductsComponent {
       }
     }).catch(error => {
       console.log(error);
-      this.util.error('Something went wrong');
+      this.util.showToast(this.toastyService, 'Something went wrong', 'error');
     });
   }
 
@@ -253,12 +253,16 @@ export class ProductsComponent {
             let index = this.products.findIndex((x => x.uuid == item.uuid));
             this.products[index].status = response.data.status;
             if(response.success) {
-              this.util.success(null);
+              if(actions == 'activate') {
+                this.util.showToast(this.toastyService, 'The product was '+actions+'d', 'success');
+              } else {
+                this.util.showToast(this.toastyService, 'The product was '+actions+'d', 'warning');
+              }
             } else {
-              this.util.error(response.message);
+              this.util.showToast(this.toastyService, response.message, 'error');
             }
           } else {
-            this.util.error( response.message );
+            this.util.showToast(this.toastyService, 'Something went wrong', 'error');
           }
           this.spinner.hide();
         }, error => {

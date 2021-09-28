@@ -159,16 +159,16 @@
                                 <td> {{getSellPrice(item)}} ({{item.discount_type == 'percent'?item.discount+'%':item.discount+'off'}})</td>
                                 <td> None</td>
                                 <td>
-                                    <button disabled type="button" [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</button>
+                                    <span [className]="getClass(item.in_home)">{{item.in_home === '1' ? 'Yes':'No'}}</span>
                                 </td>
                                 <td>
-                                    <button disabled type="button" [className]="getClass(item.is_featured)">{{item.is_featured === '1' ? 'Yes':'No'}}</button>
+                                    <span [className]="getClass(item.is_featured)">{{item.is_featured === '1' ? 'Yes':'No'}}</span>
                                 </td>
                                 <td>
-                                    <button disabled type="button" [className]="getClass(item.in_stock)">{{item.in_stock === '1' ? 'Yes':'No'}}</button>
+                                    <span [className]="getClass(item.in_stock)">{{item.in_stock === '1' ? 'Yes':'No'}}</span>
                                 </td>
                                 <td>
-                                    <button disabled type="button" [className]="getClass(item.verified_at !== null ? '1' : '0')">{{item.verified_at !== null ? 'Yes':'No'}}</button>
+                                    <span [className]="getClass(item.verified_at !== null ? '1' : '0')">{{item.verified_at !== null ? 'Yes':'No'}}</span>
                                 </td>
                                 <td>
                                     <button type="button" (click)="changeStatus(item)" [className]="getClass(item.status)" 
