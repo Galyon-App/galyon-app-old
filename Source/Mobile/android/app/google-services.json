@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "101960398024",
+    "project_id": "spartan-figure-294709",
+    "storage_bucket": "spartan-figure-294709.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101960398024:android:c1fd3fef65811bcf6761fd",
+        "android_client_info": {
+          "package_name": "com.bytescrafter.bsei"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101960398024-2f8gc1198kmo3536urvnahsjb9em328p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSfgOOGeLGDgOJVftX1YgYuCZUPlEkHww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101960398024-2f8gc1198kmo3536urvnahsjb9em328p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "101960398024-qpfe55huvq2d9r4evdv9vs158nke0i1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bytescrafter.bsei"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101960398024:android:c9dde3c1ffb1899f6761fd",
+        "android_client_info": {
+          "package_name": "ph.brilliantskinessentials.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101960398024-2f8gc1198kmo3536urvnahsjb9em328p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSfgOOGeLGDgOJVftX1YgYuCZUPlEkHww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101960398024-2f8gc1198kmo3536urvnahsjb9em328p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "101960398024-qpfe55huvq2d9r4evdv9vs158nke0i1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bytescrafter.bsei"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
