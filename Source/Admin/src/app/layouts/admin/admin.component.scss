@@ -14,3 +14,7 @@ aside.pcoded-slider.ng-sidebar {
     display: none;
   }
 }
+
+.no-arrow:after {
+  content: none;
+}
