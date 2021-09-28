@@ -8,6 +8,38 @@
     <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
 </ngx-spinner>
 
+<ng-template #contentStore let-modal>
+    <div class="modal-header">
+       <h4 class="modal-title" id="modal-basic-title">{{util.getString('Select Store')}} </h4>
+       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+       </button>
+    </div>
+    <div class="modal-body">
+       <div class="form-group row">
+          <div class="col-sm-12">
+             <label>{{util.getString('Search a Store')}} </label>
+             <input type="text" class="form-control" style="background: transparent !important;" [(ngModel)]="storeString" 
+                placeholder="Search..." (ngModelChange)="filterStore($event)" (keydown.enter)="searchStore()">
+          </div>
+       </div>
+ 
+       <div class="form-group row">
+          <div class="col-sm-12">
+             <div *ngFor="let item of stores" (click)="choosenId = item.uuid" class="store-dropdown-items">
+                <i class="ti-check-box" *ngIf="item.uuid === choosenId"></i>
+                <p style="margin: 0px;"> {{item.name}}</p>
+             </div>
+          </div>
+       </div>
+ 
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" (click)="clear4()">{{util.getString('Clear')}} </button>
+       <button type="button" class="btn btn-outline-dark" (click)="confirm()">{{util.getString('Confirm')}} </button>
+    </div>
+ </ng-template>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -20,8 +52,12 @@
                         <button style="float: right;" type="button" (click)="createNew()"
                             class="btn btn-danger" style="float: left; padding: 5px 15px;">+ CREATE</button>
                     </div>
-                    <div class="col-sm-6"></div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-3" (click)="openStore()" style="margin-bottom: 12px;">
+                        <input style="background: transparent !important;" type="text" disabled="true" [(ngModel)]="storeName"
+                            class="form-control" [placeholder]="util.getString('Filter by Store')">
+                    </div>
+                    <div class="col-sm-3">
                         <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchText"
                             (input)="filter($event.target.value)" (keydown.enter)="search()">
                     </div>
@@ -115,7 +151,9 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="javascript:;" (click)="goToStore(item)" style="color: #eb4291;">{{item.store_name}}</a>
+                                    <a href="javascript:;" (click)="goToStore(item)" style="color: #eb4291;">
+                                        {{ (item.store_name.length>20)? (item.store_name | slice:0:20)+'...':(item.store_name) }}
+                                    </a>
                                 </td>
                                 <td> {{item.name}}</td>
                                 <td> {{getSellPrice(item)}} ({{item.discount_type == 'percent'?item.discount+'%':item.discount+'off'}})</td>

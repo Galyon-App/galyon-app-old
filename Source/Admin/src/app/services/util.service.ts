@@ -92,21 +92,6 @@ export class UtilService {
         callback();
       }
     });
-    // const toastOptions: ToastOptions = {
-    //   title: this.api.translate('Error'),
-    //   msg: this.api.translate(message),
-    //   showClose: true,
-    //   timeout: 2000,
-    //   theme: 'default',
-    //   onAdd: (toast: ToastData) => {
-    //     console.log('Toast ' + toast.id + ' has been added: '+message);
-    //   },
-    //   onRemove: () => {
-    //     console.log('Toast  has been removed!');
-    //   }
-    // };
-    // // Add see all possible types in one shot
-    // this.toastyService.error(toastOptions);
   }
 
   success(message, callback = null) {
@@ -119,21 +104,33 @@ export class UtilService {
         callback();
       }
     });
-    // const toastOptions: ToastOptions = {
-    //   title: this.api.translate('Success'),
-    //   msg: this.api.translate(message),
-    //   showClose: true,
-    //   timeout: 2000,
-    //   theme: 'default',
-    //   onAdd: (toast: ToastData) => {
-    //     console.log('Toast ' + toast.id + ' has been added: '+message);
-    //   },
-    //   onRemove: () => {
-    //     console.log('Toast  has been removed!');
-    //   }
-    // };
-    // // Add see all possible types in one shot
-    // this.toastyService.success(toastOptions);
+    
+  }
+
+  showToast(toastServ: ToastyService, message = '', type = 'info', title = '') {
+    const toastOptions: ToastOptions = {
+      title: this.api.translate(title),
+      msg: this.api.translate(message),
+      showClose: true,
+      timeout: 4000,
+      theme: 'default',
+      onAdd: (toast: ToastData) => {
+        //console.log('Toast ' + toast.id + ' has been added: '+message);
+      },
+      onRemove: () => {
+        //console.log('Toast  has been removed!');
+      }
+    };
+    
+    if(type == 'success') {
+      toastServ.success(toastOptions);
+    } else if(type == 'warning') {
+      toastServ.warning(toastOptions);
+    } else if(type == 'error') {
+      toastServ.error(toastOptions);
+    } else {
+      toastServ.info(toastOptions);
+    }
   }
 
   changeLng(item) {

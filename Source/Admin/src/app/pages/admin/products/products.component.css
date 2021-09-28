@@ -4,3 +4,45 @@
   Website : https://bytescrafter.net
   Created : 01-Jan-2021
 */
+.back_image{
+  height: 100px;
+  width: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  margin: 10px;
+}
+
+.var_whole {
+padding: 10px;
+border: 1px #b7b7b7 solid;
+}
+
+.var_title {
+font-size: 15px;
+display: block;
+flex-direction: row;
+align-items: center;
+justify-content: flex-start;
+font-weight: bold;
+padding: 0 0 5px;
+border-bottom: 1px #d0d0d0 solid;
+margin-bottom: 10px;
+}
+
+.sub-title {
+color: #eb4291 !important;
+}
+
+.store-dropdown-items {
+display: flex;
+align-items: center;
+margin-bottom: 5px;
+border-bottom: 1px solid lightgray;
+padding: 10px;
+}
+
+.ti-check-box {
+padding-right: 15px;
+}

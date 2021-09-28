@@ -5,7 +5,7 @@
   Created : 01-Jan-2021
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApisService } from 'src/app/services/apis.service';
 import { Router, NavigationExtras } from '@angular/router';
 import * as moment from 'moment';
@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastData, ToastOptions, ToastyService } from 'ng2-toasty';
 import { UtilService } from 'src/app/services/util.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StoresService } from 'src/app/services/stores.service';
 
 @Component({
   selector: 'app-products',
@@ -21,6 +23,7 @@ import { UtilService } from 'src/app/services/util.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
+  @ViewChild('contentStore', { static: false }) contentStore: any;
 
   searchText: string = '';
   products: any[] = [];
@@ -28,18 +31,93 @@ export class ProductsComponent {
   dummy = Array(5);
   page = 1;
 
+  storeName: any;
+
   constructor(
     public api: ApisService,
     private router: Router,
     private spinner: NgxSpinnerService,
     private toastyService: ToastyService,
-    private util: UtilService
+    public util: UtilService,
+    private modalService: NgbModal,
+    private storeServ: StoresService
   ) {
     this.getAllProducts(null);
   }
 
+  storeId: any;
+  choosenId: any;
+  storeString: any;
+  stores: any = [] = [];
+  dummyStores: any = [] = [];
+
+  openStore() {
+    this.stores = [];
+    this.choosenId = this.storeId;
+    this.storeServ.searchStore({ limit_length: 10 }, (stores) => {
+      if(stores) {
+        stores.forEach(element => {
+          this.stores.push(element);
+        });
+        this.dummyStores = this.stores;
+
+        try {
+          this.modalService.open(this.contentStore, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+            console.log(result);
+          }, (reason) => {
+            this.getAllProducts(this.searchText);
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        this.util.error('Something went wrong');
+      }
+    });
+  }
+
+  searchStore() {
+    this.storeServ.searchStore({
+      search: this.storeString,
+      limit_length: 10
+    }, (stores) => {
+      if(stores) {
+        this.stores = stores;
+      }
+    });
+  }
+
+  filterStore(str) {
+    this.stores = this.dummyStores.filter((ele: any) => {
+      return ele.name.toLowerCase().includes(str.toLowerCase());
+    });
+  }
+
+  clear4() {
+    this.choosenId = '';
+    this.storeId = '';
+    this.storeName = '';
+    this.modalService.dismissAll(null);
+  }
+  
+  confirm() {
+    if (this.choosenId) {
+      this.storeId = this.choosenId;
+      const store = this.stores.filter(x => x.uuid === this.storeId);
+      this.storeName = store[0].name;
+      this.modalService.dismissAll(store);
+    } else {
+      this.modalService.dismissAll(null);
+    }
+  }
+
   getAllProducts(filter) {
+    this.dummy = Array(5);
+    this.products = [];
+    this.dummProducts = [];
+
     this.api.post('galyon/v1/products/getAllProducts', {
+      store_id: this.storeId ? this.storeId:"",
       filter_term: filter ? filter:"",
       search: filter,
       limit_start: 0,
@@ -47,11 +125,23 @@ export class ProductsComponent {
       order_column: 'updated_at',
       order_mode: 'DESC',
     }).then((response: any) => {
+      this.dummy = [];
+
       if (response && response.success == true && response.data) {
-        let product_list = response.data;
-        this.dummy = [];
+        let product_list: [] = response.data;
+        product_list.forEach((item: any) => {
+          if(!item.store_name) {
+            item.store_name = '';
+          }
+        });
         this.products = product_list;
         this.dummProducts = product_list;
+      }
+      
+      if(!response.data) {
+        this.products = [];
+        this.dummProducts = [];
+        this.util.showToast(this.toastyService, "No products found!", 'warning');
       }
     }).catch(error => {
       console.log(error);
@@ -100,10 +190,13 @@ export class ProductsComponent {
 
   filterItems(searchTerm) {
     return this.products.filter((item) => {
-      if(item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
-      item.store_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
-        return true;
+      if(item.name && item.store_name) {
+        if(item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
+        item.store_name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+          return true;
+        }
       }
+      
       return false;
     });
   }
