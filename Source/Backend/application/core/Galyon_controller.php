@@ -323,4 +323,75 @@ class Galyon_controller extends CI_Controller{
     $timezone = $this->config->item('app_timezone');
     date_default_timezone_set($timezone);
   }
+
+  public function upload_image($name = null, $path = './uploads/') {
+    if(!$path) {
+      return false;
+    }
+
+    if( !is_dir($path) ) {
+        mkdir($path);
+    }
+
+    $config['upload_path']          = $path;
+    $config['allowed_types']        = 'gif|jpg|jpeg|png';
+    $config['file_ext_tolower']     = TRUE;
+    $config['encrypt_name']         = TRUE;
+    $config['max_size']             = 8192; //8MB
+    $config['max_width']            = 1920;
+    $config['max_height']           = 1080;
+    $config['min_width']            = 512;
+    $config['min_height']           = 256;
+    //$config['overwrite']          = TRUE;
+    //$config['max_filename_increment'] = 100;
+
+    $this->load->library('upload', $config);
+    $this->upload->initialize($config);
+    if (!$this->upload->do_upload($name))
+    {
+        $error = array('error' => $this->upload->display_errors());
+        return $this->json_response($error, false, "Failed", false);
+    }
+    
+    $data = $this->upload->data(); //Returns array of containing all of the data related to the file you uploaded.
+    return $this->json_response($data, true, "Success", false);
+  }
+
+  public function process_image($file = null, $sizes = [256], $path = './uploads/', $maintain_ratio = TRUE) {
+    if(!$file) {
+      return false;
+    }
+
+    $this->load->library('image_lib');
+
+    $errors = [];
+    foreach($sizes as $size)
+    { 
+      $config['image_library']    = 'gd2';
+      $config['upload_path']      = $path;
+      $config['source_image']     = $path . $file;
+      $config['new_image']        = $path . $file;
+      $config['thumb_marker']     = "_".$size."x".$size;
+      $config['allowed_types'] = 'gif|jpg|jpeg|png';
+      $config['create_thumb']     = TRUE;
+      $config['maintain_ratio']   = $maintain_ratio;
+      $config['width']            = $size;
+      $config['height']           = $size;   
+      $config['quality']           = '70%';   
+
+      // $config['max_size'] = '1000';
+      // $config['max_width'] = '1920';
+      // $config['max_height'] = '1280';   
+      //thumb_marker=_thumb
+      //rotation_angle=180 
+
+      $this->image_lib->clear();
+      $this->image_lib->initialize($config);
+      if(!$this->image_lib->resize()) {
+        array_push($errors, $this->image_lib->display_errors());
+      }
+    }
+
+    return count($errors)>0 ? false:true;
+  }
 }
