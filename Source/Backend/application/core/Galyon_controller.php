@@ -362,6 +362,11 @@ class Galyon_controller extends CI_Controller{
       return false;
     }
 
+    $subpath = "thumb/";
+    if( !is_dir($path.$subpath) ) {
+      mkdir($path.$subpath);
+    }
+
     $this->load->library('image_lib');
 
     $errors = [];
@@ -370,14 +375,14 @@ class Galyon_controller extends CI_Controller{
       $config['image_library']    = 'gd2';
       $config['upload_path']      = $path;
       $config['source_image']     = $path . $file;
-      $config['new_image']        = $path . $file;
-      $config['thumb_marker']     = "_".$size."x".$size;
+      $config['new_image']        = $path . $subpath . $file;
+      $config['thumb_marker']     = "";//"_".$size."x".$size;
       $config['allowed_types'] = 'gif|jpg|jpeg|png';
       $config['create_thumb']     = TRUE;
       $config['maintain_ratio']   = $maintain_ratio;
       $config['width']            = $size;
       $config['height']           = $size;   
-      $config['quality']           = '70%';   
+      $config['quality']          = '70%';   
 
       // $config['max_size'] = '1000';
       // $config['max_width'] = '1920';

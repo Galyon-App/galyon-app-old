@@ -23,7 +23,9 @@ class Images extends Galyon_controller {
         if($upload) {
             $resize = $this->process_image($upload['data']['file_name']);
             if($resize) {
-                $this->json_response($resize, true, "Success");
+                $this->json_response(array(
+                    "file"=>$upload['data']['file_name']
+                ), true, "Success");
             } else {
                 $this->json_response($upload, false, "Failed to Resize");
             }   
