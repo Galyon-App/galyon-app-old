@@ -22,12 +22,14 @@ class Maintainance extends Galyon_controller
         $store_uuid = $this->generate_store_uuid();
         $store_city_and_address = $this->fix_all_store_city_and_address();
         $product_uuid = $this->generate_product_uuid();
+        $generated_thumb = $this->generate_thumbnail();
 
         //TODO: save utc datetime on setting as last check and fix.
         $this->json_response(array(
             "store_uuid" => $store_uuid,
             "store_city_and_address" => $store_city_and_address,
-            "product_uuid" => $product_uuid
+            "product_uuid" => $product_uuid,
+            "generated_thumb" => $generated_thumb,
         ));
     }
 
@@ -133,7 +135,40 @@ class Maintainance extends Galyon_controller
         return 0;
     }
 
+    public function generate_thumbnail() {
+        $lists = [];
+        $directory = "uploads";
+        //$jfif = glob($directory . "/*.jfif");
 
+        $jpgs = glob($directory . "/*.jpg");
+        foreach($jpgs as $image) {
+            $filename = str_replace("uploads/", "", $image);
+            if(!file_exists("./uploads/thumb/".$filename)) {
+                array_push($lists, $filename);
+                $this->process_image($filename);
+            }
+            
+        }
+
+        $jpegs = glob($directory . "/*.jpeg");
+        foreach($jpegs as $image) {
+            $filename = str_replace("uploads/", "", $image);
+            if(!file_exists("./uploads/thumb/".$filename)) {
+                array_push($lists, $filename);
+                $this->process_image($filename);
+            }
+        }
+
+        $pngs = glob($directory . "/*.png");
+        foreach($pngs as $image) {
+            $filename = str_replace("uploads/", "", $image);
+            if(!file_exists("./uploads/thumb/".$filename)) {
+                array_push($lists, $filename);
+                $this->process_image($filename);
+            }
+        }
+        return count($lists);
+    }
 
 
 
