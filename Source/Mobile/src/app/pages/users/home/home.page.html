@@ -205,13 +205,13 @@
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of betweenDummy">
           <div class="card">
-            <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
           </div>
         </ion-slide>
         <ion-slide *ngFor="let item of betweenBanners">
           <div class="card">
             <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/banner.png)'}"
-              (click)="openLink(item)" style="height: 100px;">
+              (click)="openLink(item)" style="height: 24vw;">
               <!-- <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
               </div> -->
@@ -286,13 +286,13 @@
       <ion-slides [options]="slideOpts">
         <ion-slide *ngFor="let item of bottomDummy">
           <div class="card">
-            <ion-skeleton-text animated style="width: 100%;height: 120px;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
           </div>
         </ion-slide>
         <ion-slide *ngFor="let item of bottomBanners">
           <div class="card">
             <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/banner.png)'}"
-              (click)="openLink(item)" style="height: 100px;">
+              (click)="openLink(item)" style="height: 24vw;">
               <!-- <div class="overlay_div" *ngIf="item.message">
                 <ion-label> {{item.message}} </ion-label>
               </div> -->
