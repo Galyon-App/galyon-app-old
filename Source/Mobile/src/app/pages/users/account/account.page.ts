@@ -58,7 +58,6 @@ export class AccountPage implements OnInit {
   logout() {
     localStorage.clear();
     this.cart.clearCart();
-    this.util.clearKeys('cart');
     this.navCtrl.navigateRoot(['']);
   }
 

@@ -1,0 +1,267 @@
+<ion-header>
+  <ion-toolbar color="primary" style="background: var(--ion-color-light); padding: 5px 15px;">
+    <div slot="start">
+      <strong style="padding: 7px; font-weight: 500;" (click)="back()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Back
+      </strong>
+    </div>
+    <div slot="end" *ngIf="cart.cart?.length" style="width: 50vw; height: auto;">
+      <strong style="padding: 7px; font-weight: 500;" (click)="goToPayment()">
+        <!-- <ion-icon name="receipt" style="padding-right: 5px;"></ion-icon> -->
+        {{ util.currecny }}
+        {{ util.safeAmount(cart.totalPrice) }}
+        <ion-icon name="caret-forward"></ion-icon>
+      </strong>
+    </div>
+    <ion-title>
+      <img src="assets/imgs/icon.png" class="menu-logo">
+      <label style="-webkit-text-stroke: thin;">POS</label>
+    </ion-title>
+  </ion-toolbar>
+  <div class="content_div">
+    <div class="white_box" *ngIf="products?.length">
+      <ion-searchbar mode="ios" (ionCancel)="search()" [placeholder]="util.getString('Search')" type="text" [debounce]="250"
+         (ionChange)="onSearchChange($event)" class="item_div">
+      </ion-searchbar>
+      <div class="topHeader" style="background-color: #fff0;">
+        <p class="itemsFound">
+          {{products.length}} {{util.getString('Items')}}
+        </p>
+        <div class="filterContain">
+          <ion-button (click)="changeMode()" color="primary" size="small">
+            <ion-icon slot="icon-only" [name]="mode ==='list' ? 'apps' :'list'"></ion-icon>
+          </ion-button>
+          <ion-button (click)="filter($event)" color="primary" size="small">
+            <ion-icon slot="start" name="options"></ion-icon>
+            {{util.getString('Filter')}} {{selectedFilter}}
+          </ion-button>
+          <ion-button (click)="priceFilter()" color="primary" size="small">
+            <ion-icon slot="icon-only" name="filter"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content>
+  <div class="main_content">
+
+    <ion-row>
+      <ion-col size="4" *ngFor="let item of dummy">
+        <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 70%;height: 10px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 50%;height: 10px;"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 80%;height: 10px;"></ion-skeleton-text>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="mode === 'grid'">
+      <ion-col size="4" *ngFor="let item of products;let i = index;">
+        <div style="margin-bottom: 10px;">
+          <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
+            (click)="singleProduct(item)">
+            <!-- <div class="percent" *ngIf="item.discount_type !== 'none' && item.discount > 0"> 
+              <span style="display: flex;
+              font-weight: bold;
+              color: white;
+              top: 8px;
+              left: 22px;
+              position: absolute;
+              font-size: 15px;">{{+item.discount}}</span> 
+            </div> -->
+            <div *ngIf="item.in_stock === '0'" class="notInStock">
+              <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
+            </div>
+            <!-- <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
+            <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null"> -->
+          </div>
+          <div class="second_div">
+            <ion-label class="name_lbl" (click)="singleProduct(item)">
+              {{ util.safeText(item.name, 20, true, '') }}
+            </ion-label>
+            <ion-label class="itemsKind">
+              <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>
+              <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
+              <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
+              <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
+              <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pc(s)')}} </span>
+            </ion-label>
+            <div>
+              <ion-label class="pro_price" style="color: #c82180" (click)="singleProduct(item)">
+                {{util.currecny}} {{ item.sell_price }}
+              </ion-label>
+              <ion-label *ngIf="item.discount_type !=='none' && item.discount > 0" class="pro_discount" style="font-size: 12px;" (click)="singleProduct(item)">
+                <label style="text-decoration: line-through;;">
+                  {{util.currecny}} {{ item.orig_price }}
+                </label> 
+                ({{ item.discount_type == 'percent' ? '' : util.currecny }} 
+                {{ item.discount_type == 'percent' ? item.discount : item.discount }}
+                {{ item.discount_type == 'percent' ? '%' : 'off' }})
+              </ion-label>
+            </div>
+            <div *ngIf="item.variations" class="variant">
+              <ion-label *ngFor="let parent_var of item.variations;let pvar_id = index;" (click)="variant(item,pvar_id)" class="selecter ion-activatable">
+                <span style="width: -webkit-fill-available; padding: 2px 5px;">
+                  <span style="font-size: 14px;"> 
+                    {{ parent_var && parent_var.items[parent_var.current].title ? ' * ' + parent_var.items[parent_var.current].title : ''}} &nbsp;&nbsp; 
+                  </span>
+                  <span class="price_lbl" style="float: right; padding-right: 10px;"> 
+                    <span *ngIf="parent_var.items[parent_var.current].price == 0 && parent_var.items[parent_var.current].discount == 0">
+                      FREE
+                    </span>
+                    <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount == 0">
+                      {{util.cside ==='left' ? util.currecny : "" }}
+                      {{parent_var.items[parent_var.current].price.toFixed(2)}}
+                      <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
+                    </span>
+                    <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount > 0">
+                      {{util.cside ==='left' ? util.currecny : "" }}
+                      {{
+                        (parent_var.items[parent_var.current].price - (parent_var.items[parent_var.current].price*(parent_var.items[parent_var.current].discount/100))).toFixed(2)
+                      }}
+                      <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
+                    </span>
+                  </span>
+                </span>
+                <ion-icon slot="start" name="caret-down-outline"></ion-icon>
+                <ion-ripple-effect type="bounded"></ion-ripple-effect>
+              </ion-label>
+            </div>
+            <div class="btnBtm"
+              *ngIf="!cart.checkProductInCart(item.uuid) && item.quantity <= 0 && item.in_stock === '1'">
+              <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
+                {{util.getString('Add to Cart')}}
+                <ion-ripple-effect></ion-ripple-effect>
+              </div>
+            </div>
+            <div *ngIf="item.in_stock !== '1'" style="height:30px"></div>
+            <div class="cartBtn" *ngIf="cart.checkProductInCart(item.uuid)">
+              <div class="abs_add">
+                <img src="assets/imgs/remove.png" (click)="remove(item,i)">
+                <ion-label *ngIf="item.quantity !== 0">{{item.quantity}}</ion-label>
+                <ion-label *ngIf="item.quantity === 0">
+                  <ion-spinner name="circles" color="light"></ion-spinner>
+                </ion-label>
+                <img src="assets/imgs/add.png" (click)="add(item,i)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="mode ==='list'">
+      <div class="card_div" *ngFor="let item of products;let i = index">
+        <div class="back_image" [ngStyle]="{'background-image':'url('+api.mediaURL+item.cover+'),url(assets/imgs/product.png)'}"
+          (click)="singleProduct(item)">
+          <div class="percent" *ngIf="item.discount_type !== 'none' && item.discount > 0"> 
+            <span style="display: flex;
+            font-weight: bold;
+            color: white;
+            top: 5px;
+            left: 12px;
+            position: absolute;
+            font-size: 14px;">{{+item.discount}}</span> 
+          </div>
+          <div *ngIf="item.in_stock === '0'" class="notInStock">
+            <ion-label class="text"> {{util.getString('Out of Stock')}} </ion-label>
+          </div>
+        </div>
+        <div class="second_div">
+          <ion-label class="name_lbl">
+            {{ item.name }}
+          </ion-label>
+          <img src="assets/imgs/normal.png" class="kind" alt="Verified" *ngIf="item.verified_at == null">
+          <img src="assets/imgs/verified.png" class="kind" alt="Normal" *ngIf="item.verified_at != null">
+          <img src="assets/imgs/offer.png" class="offer" alt="Offer" *ngIf="item.in_offer ==='1'">
+          <ion-label class="itemsKind" *ngIf="item.variations">
+            <span *ngIf="item.have_gram === '1'"> {{item.gram}} {{util.getString('g')}} </span>
+            <span *ngIf="item.have_kg === '1'"> {{item.kg}} {{util.getString('kg')}} </span>
+            <span *ngIf="item.have_liter ==='1'"> {{item.liter}} {{util.getString('ltr')}} </span>
+            <span *ngIf="item.have_ml ==='1'"> {{item.ml}} {{util.getString('ml')}} </span>
+            <span *ngIf="item.have_pcs === '1'"> {{item.pcs}} {{util.getString('pc(s)')}} </span>
+          </ion-label>
+          <div *ngIf="item.variations">
+            <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='left'"> 
+              {{util.currecny}}
+              {{item.orig_price}} </ion-label>
+            <ion-label class="price_lbl" *ngIf="item.discount_type == 'none' || item.discount == '0' && util.cside ==='right'">
+              {{item.orig_price}}
+              {{util.currecny}}
+            </ion-label>
+            <ion-label class="price_lbl" (click)="singleProduct(item)">
+              <span class="original" *ngIf="item.discount > 0"> {{util.currecny}}{{item.orig_price}} </span>
+              <span class="sell" style="color: #c82180;" >{{util.currecny}} {{item.sell_price}} </span>
+            </ion-label>
+          </div>
+          <div *ngIf="item.variations" class="variant">
+            <ion-label *ngFor="let parent_var of item.variations;let pvar_id = index;" (click)="variant(item,pvar_id)" class="selecter ion-activatable">
+              <span style="width: -webkit-fill-available; padding: 2px 5px;">
+                <span style="font-size: 14px;"> 
+                  {{ parent_var && parent_var.items[parent_var.current].title ? ' * ' + parent_var.items[parent_var.current].title : ''}} &nbsp;&nbsp; 
+                </span>
+                <span class="price_lbl" style="float: right; padding-right: 10px;"> 
+                  <span *ngIf="parent_var.items[parent_var.current].price == 0 && parent_var.items[parent_var.current].discount == 0">
+                    FREE
+                  </span>
+                  <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount == 0">
+                    {{util.cside ==='left' ? util.currecny : "" }}
+                    {{parent_var.items[parent_var.current].price.toFixed(2)}}
+                    <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
+                  </span>
+                  <span *ngIf="parent_var.items[parent_var.current].price > 0 && parent_var.items[parent_var.current].discount > 0">
+                    {{util.cside ==='left' ? util.currecny : "" }}
+                    {{
+                      (parent_var.items[parent_var.current].price - (parent_var.items[parent_var.current].price*(parent_var.items[parent_var.current].discount/100))).toFixed(2)
+                    }}
+                    <!-- TODO: {{util.cside ==='right' ? "" : util.currecny }} -->
+                  </span>
+                </span>
+              </span>
+              <ion-icon slot="start" name="caret-down-outline"></ion-icon>
+              <ion-ripple-effect type="bounded"></ion-ripple-effect>
+            </ion-label>
+          </div>
+          <div class="btnBtm"
+            *ngIf="!cart.checkProductInCart(item.uuid) && item.quantity <= 0 && item.in_stock === '1'">
+            <div class="ion-activatable ripple-parent" (click)="addToCart(item,i)">
+              {{util.getString('Add to Cart')}}
+              <ion-ripple-effect></ion-ripple-effect>
+            </div>
+          </div>
+          <div class="cartBtn" *ngIf="cart.checkProductInCart(item.uuid)">
+            <div class="abs_add">
+              <img src="assets/imgs/remove.png" (click)="remove(item,i)">
+              <ion-label>{{item.quantity}}</ion-label>
+              <img src="assets/imgs/add.png" (click)="add(item,i)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="products.length > 0 && no_stores_follows === true" style="display: flex; flex-direction: column; margin: 20px 0 20px;">
+      <p class="ion-text-center"> {{util.getString('- Nothing Follows -')}} </p>
+    </div>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="circles" loadingText="Please wait...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+  <div *ngIf="products.length == 0 && no_stores_follows === true" style="display: flex; flex-direction: column;">
+    <p class="ion-text-center"> {{util.getString('- No Products found -')}} </p>
+  </div>
+</ion-content>
+
+<!-- <ion-footer>
+  <ion-toolbar>
+    <ion-title style="color: var(--ion-color-primary);">
+      {{ util.currecny }}
+      {{ util.safeAmount(cart.totalPrice) }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button onClick="toggleText()">
+        <ion-icon slot="start" name="receipt"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer> -->

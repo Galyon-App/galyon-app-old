@@ -1,0 +1,132 @@
+<!-- 
+
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  App Name : Galyon App
+  Created : 01-Sep-2020
+
+ -->
+ <ion-content class="ion-padding">
+
+  <ion-toolbar style="padding-bottom: 10px;">
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> {{util.getString('Payment')}} </ion-title>
+  </ion-toolbar>
+
+  <!-- <div class="header" style="margin-top: 0;">
+    <ion-label class="title"> {{util.getString('Customer')}} </ion-label>
+  </div>
+  <div>
+    
+  </div> -->
+
+  <div class="header" style="margin-top: 0;">
+    <ion-label class="title"> {{util.getString('Details')}} </ion-label>
+  </div>
+  <div class="desc_div">
+    <div *ngIf="cart.cart?.length" class="border_bottom">
+      
+      <div *ngFor="let item of cart.cart" >
+        <p class="items">
+          <span style="display: -webkit-inline-box; width: 70%; font-size: 14px;">
+            * {{item.name}} ( {{util.currecny}}{{getItemPrice(item)}} ) x{{item.quantity}}
+          </span>
+          <span style="float: right;">
+            {{util.currecny}} {{getItemPrice(item,item.quantity)}}
+          </span>
+        </p>
+      </div>
+
+    </div>
+  </div>   
+
+  <div class="header" style="margin-top: 0;">
+    <ion-label class="title"> {{util.getString('Summary')}} </ion-label>
+  </div>
+  <div class="billing">
+    <div class="singleRow">
+      <ion-label class="headerTitle"> {{util.getString('Item Total')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.totalPrice.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.totalPrice.toFixed(2)}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow" *ngIf="cart.coupon">
+      <ion-label class="headerTitle"> {{util.getString('Discount')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.discount}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.discount}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow">
+      <ion-label class="headerTitle"> {{util.getString('Taxes & Charges')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'">({{cart.orderTax}}%)&nbsp;{{util.currecny}}{{cart.orderTaxAmt}} </span>
+        <span *ngIf="util.cside ==='right'">({{cart.orderTax}}%)&nbsp;{{cart.orderTaxAmt}}{{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow" *ngIf="cart.deliveryPrice">
+      <ion-label class="headerTitle"> {{util.getString('Delivery Charges')}} </ion-label>
+      <ion-label class="price">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.deliveryPrice.toFixed(2)}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.deliveryPrice.toFixed(2)}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+    <div class="singleRow">
+      <ion-label class="headerTotal"> {{util.getString('Grand Total')}} </ion-label>
+      <ion-label class="priceTotal boldClass">
+        <span *ngIf="util.cside ==='left'"> {{util.currecny}} {{cart.grandTotal}}</span>
+        <span *ngIf="util.cside ==='right'">{{cart.grandTotal}} {{util.currecny}} </span>
+      </ion-label>
+    </div>
+  </div>
+  <div class="coupones" (click)="openCoupon()">
+    <img src="assets/imgs/discount.png" class="badge" />
+    <ion-label class="title">{{util.getString('Apply coupon code')}} <br>
+      <p *ngIf="cart.coupon">{{util.getString('Coupon Applied')}}: <strong>{{cart.coupon.name}}</strong> </p>
+    </ion-label>
+  </div>
+
+  <div class="header">
+    <ion-label class="title"> {{util.getString('Payment Method')}} </ion-label>
+  </div>
+  <ion-item (click)="createOrder()" lines="none" class="ion-activatable" *ngIf="havePayment && haveCOD">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/cod.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.getString('Cash')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item>
+  <ion-item (click)="paypalPayment()" lines="none" class="ion-activatable" *ngIf="havePayment && havePayPal">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/paypal.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.getString('Pay with PayPal')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item>
+  <ion-item (click)="openStripe()" lines="none" class="ion-activatable" *ngIf="havePayment && haveStripe">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/stripe.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.getString('Pay with Stripe')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item>
+  <ion-item (click)="createOrder()" lines="none" class="ion-activatable" *ngIf="havePayment && havePaymongo">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/paymongo.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.getString('Pay with Paymongo')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item>
+  <ion-item (click)="createOrder()" lines="none" class="ion-activatable"  *ngIf="havePayment && haveGCash">
+    <ion-thumbnail slot="start">
+      <img src="assets/imgs/gcash.png" />
+    </ion-thumbnail>
+    <ion-label> {{util.getString('Pay with GCash')}} </ion-label>
+    <ion-icon mode="ios" name="arrow-forward-outline" slot="end"></ion-icon>
+  </ion-item>
+  <div style="height: 25px;"></div>

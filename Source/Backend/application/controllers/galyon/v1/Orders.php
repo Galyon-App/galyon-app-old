@@ -37,10 +37,13 @@ class Orders extends Galyon_controller {
 
     protected function getOrderMetaItem($order) {
         if($this->input->post("has_user_name") == "1") {
-            $user = $this->Crud_model->get("users", ['cover','first_name','last_name'], ["'uuid' = $order->uid"], NULL, 'row' );
+            $user = $this->Crud_model->get("users", ['cover','first_name','last_name'], array("uuid" => $order->uid), NULL, 'row' );
             if($user) {
                 $order->user_cover = $user->cover;
                 $order->user_name = $user->first_name." ".$user->last_name ;
+            } else {
+                $order->user_cover = null;
+                $order->user_name = "Guest";
             }
         }
         if($this->input->post("has_store_name") == "1" && isset($order->store_id) && !empty($order->store_id)) {
@@ -404,22 +407,33 @@ class Orders extends Galyon_controller {
 
         $factor = json_decode($request->data['factor']);
 
-        if($factor->delivered && empty($request->data['matrix'])) {
+        if($this->is_owner_of_store($auth->uuid, $request->data['store_id'])) {
             $request->data['progress'] = json_encode([array(
                 "status" => 1,
                 "current" => "created",
-                "latest" => "draft",
+                "latest" => "delivered",
                 "timestamp" => get_current_utc_time()
             )]);
-            $request->data['stage'] = "draft";
+            $request->data['stage'] = "delivered";
         } else {
-            $request->data['progress'] = json_encode([array(
-                "status" => 1,
-                "current" => "created",
-                "latest" => "created",
-                "timestamp" => get_current_utc_time()
-            )]);            
-        }        
+            if($factor->delivered && empty($request->data['matrix'])) {
+                $request->data['progress'] = json_encode([array(
+                    "status" => 1,
+                    "current" => "created",
+                    "latest" => "draft",
+                    "timestamp" => get_current_utc_time()
+                )]);
+                $request->data['stage'] = "draft";
+            } else {
+                $request->data['progress'] = json_encode([array(
+                    "status" => 1,
+                    "current" => "created",
+                    "latest" => "created",
+                    "timestamp" => get_current_utc_time()
+                )]);            
+            } 
+        }
+               
 
         //Start the computation.
         $total = 0;

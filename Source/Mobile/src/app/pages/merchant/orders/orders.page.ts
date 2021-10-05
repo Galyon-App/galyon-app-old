@@ -14,6 +14,9 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/services/auth.service';
 import { MerchantService } from 'src/app/services/merchant.service';
 import { Store } from 'src/app/models/store.model';
+import { ModalController } from '@ionic/angular';
+import { StorePage } from '../../users/store/store.page';
+import { PosPage } from '../pos/pos.page';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -21,26 +24,30 @@ import { Store } from 'src/app/models/store.model';
 })
 export class OrdersPage implements OnInit {
 
-  segment = 1;
+  segment: string = 'new';
 
   newOrders: any[] = [];
   onGoingOrders: any[] = [];
+  draftOrders: any[] = [];
   oldOrders: any[] = [];
   dummy = Array(50);
   olders: any[] = [];
   limit: any;
   storeId: any = '';
+  storeName: any = '';
 
   constructor(
     public api: ApiService,
     public util: UtilService,
     private router: Router,
     private authServ: AuthService,
-    private merchant: MerchantService
+    private merchant: MerchantService,
+    private modalController: ModalController
   ) {
     if(this.authServ.is_merchant) {
       this.merchant.request((stores: Store[]) => {
         this.storeId = this.merchant.stores.length > 0 ? this.merchant.stores[0].uuid : ""
+        this.storeName = this.merchant.stores.length > 0 ? this.merchant.stores[0].name : ""
         this.getOrders('', false, this.storeId);
       })
     }
@@ -54,16 +61,17 @@ export class OrdersPage implements OnInit {
   }
 
   getOrder() {
-    this.segment = 1;
     this.newOrders = [];
     this.onGoingOrders = [];
+    this.draftOrders = [];
     this.oldOrders = [];
     this.dummy = Array(5);
     this.getOrders('', false, this.storeId);
   }
 
-  onClick(val) {
-    this.segment = val;
+  onSegmentChange(event) {
+    //console.log(event.detail.value);
+    this.segment = event.detail.value;
   }
 
   goToOrder(order) {
@@ -82,12 +90,14 @@ export class OrdersPage implements OnInit {
 
     this.newOrders = [];
     this.onGoingOrders = [];
+    this.draftOrders = [];
     this.oldOrders = [];
 
     this.api.post('galyon/v1/orders/getOrdersByStore', {
       store_id: store_id,
       has_store_name: "1",
-      has_user_name: "1"
+      has_user_name: "1",
+      limit_length: 100
     }).subscribe((response: any) => {
       
       if (response && response.success && response.data) {
@@ -95,11 +105,13 @@ export class OrdersPage implements OnInit {
 
         response.data.forEach(async (element, index) => {
             if (element.stage === 'created') {
-              this.newOrders.push(element);
+              this.newOrders.unshift(element);
             } else if (element.stage === 'ongoing' || element.stage === 'shipping') {
-              this.onGoingOrders.push(element);
+              this.onGoingOrders.unshift(element);
+            } else if(element.stage === 'draft') {
+              this.draftOrders.unshift(element);
             } else if (element.stage === 'rejected' || element.stage === 'cancelled' || element.stage === 'delivered' || element.stage === 'refund') {
-              this.oldOrders.push(element);
+              this.oldOrders.unshift(element);
             }
         });
 
@@ -138,5 +150,21 @@ export class OrdersPage implements OnInit {
     // if (event != null) {
     //   event.target.complete();
     // }
+  }
+
+  changeStore() {
+
+  }
+
+  async openPosWindow() {
+    const modal = await this.modalController.create({
+      component: PosPage,
+      componentProps: { uuid: this.storeId }
+    });
+
+    modal.onDidDismiss().then((data) => {
+      console.log(data);
+    });
+    return await modal.present();
   }
 }

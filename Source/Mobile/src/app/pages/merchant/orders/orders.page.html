@@ -6,38 +6,58 @@
  -->
 
  <ion-header>
-  
-  <div class="segment_div">
-    <ion-label style="margin: 11px 2px 0; width: auto; height: 45px;">
-      <img src="assets/imgs/icon.png" alt="" 
-        style="max-height: -webkit-fill-available; width: fit-content; padding: 0 15px;">
-    </ion-label>
-    <ion-label [class.active]="segment == 1" (click)="onClick(1)"> {{util.getString('New')}} </ion-label>
-    <ion-label [class.active]="segment == 2" (click)="onClick(2)"> {{util.getString('Ongoing')}} </ion-label>
-    <ion-label [class.active]="segment == 3" (click)="onClick(3)"> {{util.getString('Done')}} </ion-label>
-  </div>
+
+  <ion-toolbar color="primary" style="background: var(--ion-color-light); padding: 5px 15px;">
+    <div slot="start">
+      <img src="assets/imgs/icon.png" class="menu-logo">
+    </div>
+    <div slot="end" *ngIf="storeId" style="width: 50vw; height: auto;">
+      <strong style="padding: 7px;" (click)="changeStore()">
+        <ion-icon  name="business" style="font-size: 1em;" ></ion-icon>
+        {{ util.safeText(storeName, 30, true, '..') }}
+      </strong>
+    </div>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-segment (ionChange)="onSegmentChange($event)" value="new">
+      <ion-segment-button value="new">
+        {{util.getString('New')}}
+      </ion-segment-button>
+      <ion-segment-button value="ongoing">
+        {{util.getString('Ongoing')}}
+      </ion-segment-button>
+      <ion-segment-button value="draft">
+        {{util.getString('Draft')}}
+      </ion-segment-button>
+      <ion-segment-button value="archives">
+        {{util.getString('Archives')}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
+
   <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-item *ngFor="let item of dummy">
-    <ion-thumbnail slot="start">
-      <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
-    </ion-thumbnail>
-    <ion-label>
-      <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-      <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-    </ion-label>
-
-  </ion-item>
-
   <div class="main_content_div">
 
-    <div class="content_div" *ngIf="segment === 1">
+    <ion-item *ngFor="let item of dummy">
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated style="width: 100%;height: 100px;"></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+      </ion-label>
+    </ion-item>
+
+    <div class="content_div" *ngIf="segment == 'new'">
       <p *ngIf="!dummy?.length && !newOrders?.length" class="ion-text-center"> {{util.getString('No Orders Found')}}
       </p>
       <div class="card_div" *ngFor="let item of newOrders" (click)="goToOrder(item)">
@@ -75,7 +95,7 @@
       </div>
     </div>
 
-    <div class="content_div" *ngIf="segment === 2">
+    <div class="content_div" *ngIf="segment == 'ongoing'">
       <p *ngIf="!dummy?.length && !onGoingOrders?.length" class="ion-text-center"> {{util.getString('No Orders Found')}}
       </p>
       <div class="card_div" *ngFor="let item of onGoingOrders" (click)="goToOrder(item)">
@@ -105,7 +125,45 @@
       </div>
     </div>
 
-    <div class="content_div" *ngIf="segment === 3">
+    <div class="content_div" *ngIf="segment == 'draft'">
+      <p *ngIf="!dummy?.length && !draftOrders?.length" class="ion-text-center"> {{util.getString('No Orders Found')}}
+      </p>
+      <div class="card_div" *ngFor="let item of draftOrders" (click)="goToOrder(item)">
+        <div class="image_div">
+          <img [src]="api.mediaURL+item.store_cover" onError="this.src='assets/imgs/store.png'">
+        </div>
+        <div class="desc_div">
+          <ion-label style="font-weight: bold; color: var(--ion-color-primary); font-size: 12px; padding-bottom: 7px;">
+            {{ item.user_name }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Order ID') }}: {{ util.safeText(item.uuid, 7, '', '').toUpperCase() }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Number of Items') }}: {{ item.items.length }} item(s)
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Grand Total') }}: {{ util.currecny }}{{ item.grand_total }}
+          </ion-label>
+          <ion-label style="font-size: 10px;">
+            {{ util.getString('Date') }}: {{ item.timestamp }}
+          </ion-label>
+          <!-- <div *ngIf="item.orders?.length" class="border_bottom">
+            <p *ngFor="let order of item.orders;let ol = index" class="items">
+              <span>{{order.name}} <span *ngIf="order.size ==='1'"> - {{order.variations[0].items[order.variant].title}}
+                </span> </span>
+              <span>X {{order.quantity}}</span>
+            </p>
+          </div> -->
+          <!-- <ion-label class="datetime">{{ item.timestamp}}</ion-label> -->
+        </div>
+        <div class="status">
+          {{item.stage}}
+        </div>
+      </div>
+    </div>
+
+    <div class="content_div" *ngIf="segment == 'archives'">
       <p *ngIf="!dummy?.length && !oldOrders?.length" class="ion-text-center"> {{util.getString('No Orders Found')}}
       </p>
       <div class="card_div" *ngFor="let item of oldOrders" (click)="goToOrder(item)">
@@ -139,5 +197,13 @@
       <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
+
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="padding: 10px;">
+    <ion-fab-button (click)="openPosWindow()">
+      <ion-icon name="basket" style="font-size: 2em;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

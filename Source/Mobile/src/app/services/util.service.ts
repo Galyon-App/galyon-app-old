@@ -212,6 +212,7 @@ export class UtilService {
   publishCoupon(data: any) {
     this.coupon.next(data);
   }
+  
   getCouponObservable(): Subject<any> {
     return this.coupon;
   }
@@ -402,6 +403,10 @@ export class UtilService {
       return this.translations[str];
     }
     return str;
+  }
+
+  safeAmount(amount: any = '') {
+    return parseFloat(amount).toFixed(2);
   }
 
   safeText(title: string = '', length: number = null, end: any = '...', empty: string = '') {
