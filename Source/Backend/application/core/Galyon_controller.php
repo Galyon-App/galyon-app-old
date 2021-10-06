@@ -399,4 +399,13 @@ class Galyon_controller extends CI_Controller{
 
     return count($errors)>0 ? false:true;
   }
+
+  public function checkIfOrderedResult() {
+    $order_column = $this->input->post('order_column');
+    $order_mode = $this->input->post('order_mode');
+    if(isset($order_column) && isset($order_mode)) {
+      return [$order_column, $order_mode];
+    }
+    return [];
+  }
 }

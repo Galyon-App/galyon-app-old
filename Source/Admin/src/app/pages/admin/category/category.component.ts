@@ -37,7 +37,9 @@ export class CategoryComponent {
     //deleted: true
     this.api.post('galyon/v1/category/getAllCategorys', {
       limit_start: 0,
-      limit_length: 1000
+      limit_length: 1000,
+      order_column: 'updated_at',
+      order_mode: 'DESC'
     }).then((response: any) => {
       if (response && response.success && response.data) {
         this.dummy = [];

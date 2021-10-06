@@ -83,7 +83,7 @@ class Category extends Galyon_controller {
         $auth = $this->is_authorized(false);
 
         $categorys = $this->Crud_model->get($this->table_name, $this->public_column, 
-            $this->compileWhereClause($auth->where, [], true), NULL, 'result' );
+            $this->compileWhereClause($auth->where, [], true), NULL, 'result', null, $this->checkIfOrderedResult());
         if($categorys) {
             $categorys = $this->getCategoryMeta($categorys);
             $this->json_response($categorys);
