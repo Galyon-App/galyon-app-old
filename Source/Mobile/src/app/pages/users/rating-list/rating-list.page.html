@@ -8,19 +8,39 @@
  -->
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
+    <ion-title> {{name}}'s {{util.getString('Rating')}} </ion-title>
+    <ion-buttons slot="end">
       <ion-button (click)="back()">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+        <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> {{name}} 's {{util.getString('Rating')}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-button (click)="addNew()" expand="full">
+  <div class="main_content_div" *ngIf="userHasReview == false">
+    <div class="main_div">
+      <div class="info_div">
+        <div class="rattingBtns">
+          <rating [(ngModel)]="rate" readOnly="false" max="5" emptyStarIconName="star-outline"
+            halfStarIconName="star-half" starIconName="star" nullable="false" (ngModelChange)="onRatingChange($event)">
+          </rating>
+        </div>
+        <div class="name">
+          <div class="content_div">
+            <ion-textarea row="8" type="text" autoGrow="true" maxlength="240" [placeholder]="util.getString('Comment')" [(ngModel)]="comment">
+            </ion-textarea>
+          </div>
+        </div>
+        <ion-button (click)="submit()" expand="block" fill="clear" shape="round" style="float: right;">
+          {{util.getString('Submit')}}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+  <!-- <ion-button (click)="addNew()" expand="full">
     {{util.getString('Add New Rating')}}
-  </ion-button>
+  </ion-button> -->
   <div class="mainItems">
     <ion-item *ngFor="let item of dummy" lines="none">
       <ion-thumbnail slot="start">
@@ -34,7 +54,7 @@
 
     <ion-item *ngFor="let item of ratings" lines="none">
       <ion-thumbnail slot="start">
-        <img [src]="api.mediaURL+ item.cover" alt="image" onError="this.src='assets/imgs/user.png'">
+        <img [src]="api.mediaURL+ item.cover" alt="image" onError="this.src='assets/imgs/user.png'" style="border-radius: 50%;">
       </ion-thumbnail>
       <ion-label>
         <span class="name"> {{item.fname}} {{item.lname}}</span> <br>

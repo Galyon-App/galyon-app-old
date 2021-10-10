@@ -13,6 +13,7 @@ import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 import { CartService } from 'src/app/services/cart.service';
 import { CityService } from 'src/app/services/city.service';
 import { Product } from 'src/app/models/product.model';
+import { RatingListPage } from '../rating-list/rating-list.page';
 
 @Component({
   selector: 'app-product',
@@ -60,7 +61,7 @@ export class ProductPage implements OnInit {
   };
   related: any[] = [];
   quantity: any = 0;
-  totalRating: any;
+  totalRating: any = 0;
   storeId: any;
   storeName: any;
   variations: any;
@@ -77,7 +78,6 @@ export class ProductPage implements OnInit {
     public cart: CartService,
     private modalController: ModalController,
     private alertCtrl: AlertController,
-    private city: CityService
   ) {
     this.route.queryParams.subscribe((data: any) => {
       if (data && data.uuid) {
@@ -342,16 +342,32 @@ export class ProductPage implements OnInit {
     this.router.navigate(['user/home/product'], param);
   }
 
-  productRating() {
-    const param: NavigationExtras = {
-      queryParams: {
+  async productRating() {
+    const modal = await this.modalController.create({
+      component: RatingListPage,
+      componentProps: {
         uuid: this.id,
         name: this.name,
         type: 'product'
       }
-    }
+    });
 
-    this.router.navigate(['user/home/ratings'], param);
+    modal.onDidDismiss().then((data) => {
+      if(data.role == "submit") {
+        //Do something if submit.
+      }
+    });
+    return await modal.present();
+
+    // const param: NavigationExtras = {
+    //   queryParams: {
+    //     uuid: this.id,
+    //     name: this.name,
+    //     type: 'product'
+    //   }
+    // }
+
+    // this.router.navigate(['user/home/ratings'], param);
   }
 
   async variant(var_id) {

@@ -13,12 +13,14 @@ import { IonicModule } from '@ionic/angular';
 import { RatingListPageRoutingModule } from './rating-list-routing.module';
 
 import { RatingListPage } from './rating-list.page';
+import { IonicRatingModule } from 'ionic4-rating';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    IonicRatingModule,
     RatingListPageRoutingModule
   ],
   declarations: [RatingListPage]
