@@ -47,5 +47,8 @@ export class Product {
     verified_at: string;
     updated_at: string;
 
+    avg_rating: number = 0;
+    total_rating: number = 0;
+
     quantity: number = 0;
 }

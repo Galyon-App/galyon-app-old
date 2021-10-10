@@ -158,8 +158,8 @@ export class ProductPage implements OnInit {
         this.realPrice = parseFloat(this.product.orig_price+'');
         this.sellPrice = parseFloat(this.product.sell_price+'');
         this.status = this.product.status;
-        // this.rate = this.product.rating;
-        // this.totalRating = this.product.total_rating;
+        this.rate = this.product.avg_rating;
+        this.totalRating = this.product.total_rating;
         this.storeId = this.product.store_id;
         this.storeName = this.product.store_name;
         this.storeIsActive = this.product.status == 'true';

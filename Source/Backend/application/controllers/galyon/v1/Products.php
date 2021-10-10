@@ -93,6 +93,14 @@ class Products extends Galyon_controller {
             }
         }
 
+        $query = "SELECT FORMAT(AVG(rate), 1) as 'avg', COUNT(rate) as 'total' FROM `rating` WHERE `pid`=?";
+        $rating = $this->Crud_model->custom($query, array($product->uuid), 'row');
+        if($rating) {
+            $product->{"a_test"} = json_encode($rating);
+            $product->{"avg_rating"} = $rating->avg;
+            $product->{"total_rating"} = $rating->total;;
+        }
+
         return $product;
     }
 
