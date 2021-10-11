@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 import { UtilService } from 'src/app/services/util.service';
 import { ApiService } from 'src/app/services/api.service';
 import { NavController } from '@ionic/angular';
+import { AppService } from 'src/app/services/app.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-about',
@@ -15,23 +17,41 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./about.page.scss'],
 })
 export class AboutPage implements OnInit {
-  content: any;
-  loaded: boolean;
+
+  loaded: boolean = false;
+  title: any = '';
+  content: any = '';
+  last_update: string;
+
   constructor(
     public util: UtilService,
     private api: ApiService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private appServ: AppService,
+    private route: ActivatedRoute
   ) {
-    const param = {
-      id: 1
-    };
+    this.route.params.subscribe( params => {
+      if(params.key && params.key != '') {
+        this.getPage(params.key);
+      } else {
+        this.getPage('about');
+      }
+    });
+  }
+
+  getPage(key: string='') {
     this.loaded = false;
-    this.api.post('pages/getById', param).subscribe((data: any) => {
-      console.log(data);
+    this.api.post('galyon/v1/pages/getPageByID', {
+      ukey: key
+    }).subscribe((response: any) => {
       this.loaded = true;
-      if (data && data.status === 200 && data.data.length > 0) {
-        const info = data.data[0];
+      if (response && response.success && response.data) {
+        const info = response.data;
+        this.title = info.name;
         this.content = info.content;
+        this.last_update = 'Last Updated: '+this.util.getDate(info.updated_at);
+      } else {
+        this.util.errorToast(this.util.getString(response.message));
       }
     }, error => {
       console.log(error);
@@ -41,6 +61,10 @@ export class AboutPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.appServ.setAppReady();
   }
 
   getContent() {

@@ -13,7 +13,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">{{util.getString('About')}} </ion-title>
+    <ion-title class="ion-text-center">{{title}} </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -29,10 +29,12 @@
       <p>
         <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
       </p>
-      <h3>
-        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-      </h3>
     </div>
   </div>
-  <p [innerHTML]="getContent()" *ngIf="loaded"></p>
+  <div *ngIf="loaded">
+    <p [innerHTML]="getContent()"></p>
+    <ion-label style="padding-bottom: 40px; font-style: italic;">
+      {{last_update}}
+    </ion-label>
+  </div>
 </ion-content>
