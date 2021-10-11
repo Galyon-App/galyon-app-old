@@ -21,28 +21,27 @@ class Pages extends Galyon_controller {
     }
 
     function getPageByID() {
-        $user = $this->is_authorized();
+        $user = $this->is_authorized(false);
 
         //TODO: Filter by search using the post key of search.
         $pages_id = $this->input->post('ukey');
         $where = "ukey = '$pages_id'";
         if($user) {
             if($user->role !== "admin") {
-                $where = "status = '1' AND deleted_at IS NULL"; 
+                $where .= "AND status = '1' AND deleted_at IS NULL"; 
             }
         }
         
-        $pages = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'row' );
-
-        if($pages) {
-            $this->json_response($pages);
+        $page = $this->Crud_model->get($this->table_name, $this->public_column, $where, null, 'row' );
+        if($page) {
+            $this->json_response($page);
         } else {
             $this->json_response(null, false, "No pages was found!");
         }
     }
 
     function getAllPages() {
-        $user = $this->is_authorized();
+        $user = $this->is_authorized(false);
 
         //TODO: Filter by search using the post key of search.
         $where = null;
@@ -61,12 +60,7 @@ class Pages extends Galyon_controller {
     }
 
     function createNewPage() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $user = $this->is_authorized(true, ['admin']);
 
         $ukey = $this->input->post('ukey');
         $name = $this->input->post('name');
@@ -92,12 +86,7 @@ class Pages extends Galyon_controller {
     }
 
     function editPageCurrent() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $user = $this->is_authorized(true, ['admin']);
 
         $ukey = $this->input->post('ukey');
         $name = $this->input->post('name');
@@ -122,12 +111,7 @@ class Pages extends Galyon_controller {
     }
 
     function activate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $user = $this->is_authorized(true, ['admin']);
 
         $pages_id = $this->input->post('ukey');
         $pages = $this->Crud_model->update($this->table_name, array( "status" => "1" ), array( "ukey" => $pages_id ));
@@ -141,12 +125,7 @@ class Pages extends Galyon_controller {
     }
 
     function deactivate() {
-        $user = $this->is_authorized();
-        if($user) {
-            if($user->role !== "admin") {
-                $this->json_response(null, false, "You are not authorized.");
-            }
-        }
+        $user = $this->is_authorized(true, ['admin']);
 
         $pages_id = $this->input->post('ukey');
         $pages = $this->Crud_model->update($this->table_name, array( "status" => "0" ), array( "ukey" => $pages_id ));
@@ -160,10 +139,7 @@ class Pages extends Galyon_controller {
     }
 
     function deletePageCurrent() {
-        $cur_user = $this->is_authorized();
-        if($cur_user->role !== "admin") {
-            $this->json_response(null, false, "You are not authorized.");
-        }
+        $cur_user = $this->is_authorized(true, ['admin']);
 
         $found = $this->validate_request($_POST, $this->required);
         if(count($found)) {
