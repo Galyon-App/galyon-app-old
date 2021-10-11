@@ -118,17 +118,6 @@ const routes: Routes = [
             canActivate: [CartGuard]
           },
           {
-            path: 'stripe-payments',
-            loadChildren: () =>
-              import('../stripe-payments/stripe-payments.module').then(m => m.StripePaymentsPageModule),
-            canActivate: [CartGuard]
-          },
-          {
-            path: 'add-card',
-            loadChildren: () =>
-              import('../add-card/add-card.module').then(m => m.AddCardPageModule)
-          },
-          {
             path: 'offers',
             loadChildren: () =>
               import('../offers/offers.module').then(m => m.OffersPageModule)
