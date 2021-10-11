@@ -101,10 +101,10 @@ export class AccountPage implements OnInit {
   }
 
   goFaqs() {
-    this.router.navigate(['faqs']);
+    this.router.navigate(['about/faqs']);
   }
 
   goHelp() {
-    this.router.navigate(['help']);
+    this.router.navigate(['about/help']);
   }
 }

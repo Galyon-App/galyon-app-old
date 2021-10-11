@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { JwtHelperService } from "@auth0/angular-jwt";
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -425,5 +426,9 @@ export class UtilService {
   jwtDecode(token: string) {
     const jwt = new JwtHelperService();
     return jwt.decodeToken(token);
+  }
+
+  getDate(date, format: string = 'll') {
+    return moment(date).format(format);
   }
 }

@@ -80,20 +80,12 @@ const routes: Routes = [
     loadChildren: () => import('./pages/external/contacts/contacts.module').then(m => m.ContactsPageModule)
   },
   {
-    path: 'faqs',
-    loadChildren: () => import('./pages/external/faqs/faqs.module').then(m => m.FaqsPageModule)
-  },
-  {
     path: 'about',
     loadChildren: () => import('./pages/external/about/about.module').then(m => m.AboutPageModule)
   },
   {
-    path: 'privacy',
-    loadChildren: () => import('./pages/external/privacy/privacy.module').then(m => m.PrivacyPageModule)
-  },
-  {
-    path: 'help',
-    loadChildren: () => import('./pages/external/help/help.module').then(m => m.HelpPageModule)
+    path: 'about/:key',
+    loadChildren: () => import('./pages/external/about/about.module').then(m => m.AboutPageModule)
   },
   {
     path: 'notfound',

@@ -185,16 +185,6 @@ const routes: Routes = [
             path: 'about',
             loadChildren: () =>
               import('../../external/about/about.module').then(m => m.AboutPageModule)
-          },
-          {
-            path: 'faqs',
-            loadChildren: () =>
-              import('../../external/faqs/faqs.module').then(m => m.FaqsPageModule)
-          },
-          {
-            path: 'help',
-            loadChildren: () =>
-              import('../../external/help/help.module').then(m => m.HelpPageModule)
           }
         ],
         canActivate: [AuthGuard]

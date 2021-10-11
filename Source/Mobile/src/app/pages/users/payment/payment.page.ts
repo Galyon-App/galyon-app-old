@@ -19,7 +19,6 @@ import { GmapService } from 'src/app/services/gmap.service';
 import { StoreService } from 'src/app/services/store.service';
 import { AddressService } from 'src/app/services/address.service';
 import { OrderService } from 'src/app/services/order.service';
-import { FaqsPage } from '../../external/faqs/faqs.page';
 import { General } from 'src/app/models/option.model';
 
 @Component({

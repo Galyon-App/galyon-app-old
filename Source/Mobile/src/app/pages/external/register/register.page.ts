@@ -217,7 +217,7 @@ export class RegisterPage implements OnInit {
   }
 
   open(type) {
-    this.router.navigate(['privacy']);
+    this.router.navigate(['about/privacy']);
     // this.iab.create('https://bytescrafter.net/privacy-policy');
   }
 
