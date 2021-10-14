@@ -305,6 +305,7 @@ export class PaymentPage implements OnInit {
 
               if((index+1) == store_ids.length) {
                 this.cart.clearCart();
+                //TODO: Redirect to the order details with this orderStatus.uuid
                 this.router.navigate(['user/orders']);
               }
             });  

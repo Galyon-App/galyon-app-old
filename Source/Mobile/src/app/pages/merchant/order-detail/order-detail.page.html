@@ -78,19 +78,19 @@
             <span style="float: right;">{{util.currecny}} {{order.total}}</span>
           </p>
         </div>
-        <div style="padding: 2px 10px 0;">
+        <div style="padding: 2px 10px 0;" *ngIf="order.discount != '0.00'">
           <p class="footer">
             <span style="width: 80%;">{{util.getString('Discount')}}</span>
             <span style="float: right;">{{util.currecny}} {{order.discount}}</span>
           </p>
         </div>
-        <div style="padding: 2px 10px 0;">
+        <div style="padding: 2px 10px 0;" *ngIf="order.tax">
           <p class="footer">
             <span style="width: 80%;">{{util.getString('Tax')}}</span>
             <span style="float: right;">{{util.currecny}} {{order.tax}}</span>
           </p>
         </div>
-        <div style="padding: 2px 10px 0;">
+        <div style="padding: 2px 10px 0;" *ngIf="order.delivery != '0.00'">
           <p class="footer">
             <span style="width: 80%;">{{util.getString('Delivery Charge')}}</span>
             <span style="float: right;">{{util.currecny}} {{order.delivery}}</span>
@@ -217,9 +217,15 @@
           </div>
         </div>
     
-        <ion-label class="green" *ngIf="order.stage == 'delivered'">{{util.getString('Order Status')}} :
-          {{util.getString('Order Delivered')}}</ion-label>
-        <ion-label class="red" *ngIf="order.stage == 'cancel'"> {{util.getString('Order Cancelled by user')}} </ion-label>
+        <ion-label class="green" *ngIf="order.stage == 'delivered'">
+          {{util.getString('Order Completed')}}
+        </ion-label>
+        <ion-label class="red" *ngIf="order.stage == 'cancelled'">
+          {{util.getString('Order Cancelled')}}
+        </ion-label>
+        <ion-label class="red" *ngIf="order.stage == 'rejected'">
+          {{util.getString('Order Rejected')}}
+        </ion-label>
       </ion-toolbar>
     </ion-footer>
 
