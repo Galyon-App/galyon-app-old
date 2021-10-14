@@ -52,7 +52,7 @@ export class TopStoresPage implements OnInit {
   openStore(item) {
     const param: NavigationExtras = {
       queryParams: {
-        id: item.uid
+        uuid: item.uuid
       }
     };
     this.router.navigate(['user/home/store'], param);

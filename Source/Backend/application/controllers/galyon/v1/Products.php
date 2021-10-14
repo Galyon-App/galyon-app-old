@@ -183,7 +183,7 @@ class Products extends Galyon_controller {
         $store_query = empty($store_query) ? "AND `store_id` IS NOT NULL" : $store_query ;
 
         $query .= $includes == 'template' ? "AND `template` IS NULL AND `store_id` IS NULL":"$store_query";
-        $query .= $auth->role == "user" || $auth->role == "store" ? " AND `status`='1' AND deleted_at IS NULL":"";
+        $query .= $auth->role == "user" || $auth->role == "store" ? " AND `status`='1' ":"";
         $query .= empty($filter_term) ? "" : " AND name LIKE '%".$filter_term."%' ";
         $query .= count($order_by) == 2 ? " ORDER BY $order_by[0] $order_by[1]" : "";
         $query .= " LIMIT ?, ?";   
