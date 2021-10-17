@@ -6,11 +6,13 @@ use CodeIgniter\Model;
 
 class AppModel extends Model
 {
+	protected $request;
 	protected $dbgroup;
 	protected $mysql;
 	public $db;
 
     function __construct($table = null, $dbgroup = 'default') {
+		$this->request = \Config\Services::request();
 		$this->dbgroup = $dbgroup;
         $this->mysql = db_connect($this->dbgroup);
 		
@@ -18,6 +20,11 @@ class AppModel extends Model
         // $this->db->query("SET sql_mode = ''");
         // $this->table = $this->db->getPrefix() . $table;
     }
+
+	public function sanitize_param($params) {
+		//TODO: VERY IMPORTANT
+		return $params;
+	}
 
     /**
 	 * TEMP: Get a row based on where condition and if row or result.
@@ -32,14 +39,14 @@ class AppModel extends Model
 
 		$this->db->select($field);
 		if(count($order) == 2) {
-			$this->db->order_by($order[0],$order[1]);
+			$this->db->orderBy($order[0],$order[1]);
 		}
 
 		if($where != NULL) {
 			$this->db->where($where);
 
 			if($whereOr != NULL) {
-				$this->db->or_where($whereOr);
+				$this->db->orWhere($whereOr);
 			}
 		}		
 
@@ -47,13 +54,15 @@ class AppModel extends Model
 			$result = "result";
 		}
 
-		// $limit_start = $this->request->getVar('limit_start');
-		// $limit_length = $this->request->getVar('limit_length');
-		// $limit_length = $limit_length ? (int)$limit_length : 10;
-		// $limit_length = $limits != null && (int)$limits > 0 ? $limits : $limit_length;
-		// $this->db->limit($limit_length, $limit_start);
+		$limit_start = $this->request->getVar('limit_start');
+		$limit_length = $this->request->getVar('limit_length');
+		$limit_length = $limit_length ? (int)$limit_length : 10;
+		$limit_length = $limits != null && (int)$limits > 0 ? $limits : $limit_length;
+		$this->db->limit($limit_length, $limit_start);
 
-		return $result == "row" ? $this->db->get()->getRow() : $this->db->get()->getResult();
+		$results = $this->db->get();
+
+		return $result == "row" ? $results->getRow() : $results->getResult();
 	}
 	
 	/**
@@ -68,9 +77,9 @@ class AppModel extends Model
 		$this->db = $this->mysql->table($table);
 
 		$this->db->select('*');
-		$this->db->order_by($column, 'RANDOM');
+		$this->db->orderBy($column, 'RANDOM');
 		$this->db->limit($limit);
-		return $this->db->get()->result();
+		return $this->db->get()->getResult();
 	}
 	
 	/**
@@ -83,7 +92,7 @@ class AppModel extends Model
 	public function sql_insert($table, $values) {
 		$this->db = $this->mysql->table($table);
 		$this->db->insert($values);
-		if($this->db->affected_rows() == '1') {
+		if($this->db->affectedRows() == '1') {
 			return $this->db->insert_id();
 		} else {
 			return false;
@@ -101,8 +110,7 @@ class AppModel extends Model
 	public function sql_update($table, $values, $where) {
 		$this->db = $this->mysql->table($table);
 		$this->db->where($where);
-		$this->db->update($values);
-		if($this->db->affected_rows() == '1') {
+		if($this->db->update($values)) {
 			return true;
 		} else {
 			return false;
@@ -119,8 +127,7 @@ class AppModel extends Model
 	public function sql_delete($table, $where) {
 		$this->db = $this->mysql->table($table);
 		$this->db->where($where);
-		$this->db->delete();
-		if($this->db->affected_rows() == '1') {
+		if( $this->db->delete() ) {
 			return true;
 		} else {
 			return false;
@@ -133,20 +140,17 @@ class AppModel extends Model
 	public function sql_custom($sql_query, $params = array(), $result = 'row') {
 		// $sql = "SELECT * FROM some_table WHERE id = ? AND status = ? AND author = ?";
 		// $this->db->query($sql, array(3, 'live', 'Rick'));
-		
+		$this->db = $this->mysql;
+
 		$active_query = $this->db->query($sql_query, $params);
 		if( !$active_query  ) {
-			return $this->db->error();
-		}
-
-		if($this->db->affected_rows() > 0) {
-			if($result == 'row') {
-				return $active_query->row();
-			} else {
-				return $active_query->result();
-			}
-		} else {
 			return false;
 		}
+
+		if($this->db->affectedRows() == 0) {
+			return false;
+		}
+
+		return $result == "row" ? $active_query->getRow() : $active_query->getResult();
 	}
 }

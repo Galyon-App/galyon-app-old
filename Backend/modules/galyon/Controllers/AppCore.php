@@ -14,22 +14,11 @@ class AppCore extends BaseController
 
     public $Crud_model;
 
-    public function __construct() {        
-        //TODO: Start Remove! Finalized the header returned. This is temporary!
-        // header('Access-Control-Allow-Origin: *');
-        // header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, Basic");
-        // header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-        header('Content-Type: application/json');
-
-        // $method = $_SERVER['REQUEST_METHOD'];
-        // if ($method == "OPTIONS") {
-        //     die();
-        // }
-
-        $this->uuid = new Uuid();
-        $encrypt = config('Encryption');
-        $this->jwt = new Jwt( $encrypt->key );
-        $this->Crud_model = new CrudModel();
+    public function __construct() { 
+      $this->uuid = new Uuid();
+      $encrypt = config('Encryption');
+      $this->jwt = new Jwt( $encrypt->key );
+      $this->Crud_model = new CrudModel();
     }
 
     /**
@@ -39,8 +28,9 @@ class AppCore extends BaseController
    * @return void | jwt token
    */
   public function is_authorized($failexit = TRUE, $roles_req = [], $role_special = [], $access_special = []) {
-    $bearer = $_SERVER['HTTP_AUTHORIZATION'];
+    $bearer = get_header_auth();
     $token = str_replace("Bearer ", "", $bearer);
+    log_message('info', $token);
     $user = $this->jwt->decode($token);
 
     if($user == false) {
@@ -71,34 +61,38 @@ class AppCore extends BaseController
       $reponse = $this->json_response(null, false, $message, $failexit);
     }
 
-    if($current->verified_at == null) {
+    if( !isset($current->verified_at) ) {
       $message = "You're account is not yet verified!";
       $user->{"message"} = $message;
       $this->json_response(null, false, $message, $failexit);
     }
 
-    if($current->status == "0") {
-      $message = "You're account is deactivated!";
-      $user->{"message"} = $message;
-      $this->json_response(null, false, $message, $failexit);
+    if( isset($current->status) ) {
+      if( $current->status == "0" ) {
+        $message = "You're account is deactivated!";
+        $user->{"message"} = $message;
+        $this->json_response(null, false, $message, $failexit);
+      }
     }
 
-    $roles_req = is_array($roles_req) ? $roles_req : [];
-    if(count($roles_req) && !in_array($current->role, $roles_req)) {
-      $message = "You're not authorized for this action!";
-      $user->{"message"} = $message;
-      $this->json_response(null, false, $message, $failexit);
-    }
-    
-    $role_special = is_array($role_special) ? $role_special : [];
-    $access_special = is_array($access_special) ? $access_special : [];
-    $basic = $_SERVER['HTTP_BASIC'];
-    if((in_array($current->role, $role_special) && in_array($basic, $access_special)) || in_array($basic, ["admin"])) {
-      $user->where = null;
-      if(isset($_POST['status'])) {
-        $status = $this->request->getVar('status');
-        $active = $status === "1" ? "1" : "0";
-        $user->where = "status = '$active'";
+    if( isset($current->role) ) {
+      $roles_req = is_array($roles_req) ? $roles_req : [];
+      if(count($roles_req) && !in_array($current->role, $roles_req)) {
+        $message = "You're not authorized for this action!";
+        $user->{"message"} = $message;
+        $this->json_response(null, false, $message, $failexit);
+      }
+      
+      $role_special = is_array($role_special) ? $role_special : [];
+      $access_special = is_array($access_special) ? $access_special : [];
+      $basic = get_header_basic();
+      if((in_array($current->role, $role_special) && in_array($basic, $access_special)) || in_array($basic, ["admin"])) {
+        $user->where = null;
+        if(isset($_POST['status'])) {
+          $status = $this->request->getVar('status');
+          $active = $status === "1" ? "1" : "0";
+          $user->where = "status = '$active'";
+        }
       }
     }
 
@@ -147,7 +141,7 @@ class AppCore extends BaseController
    * @return boolean
    */
   public function is_basic_header($query) {
-    $platform = $_SERVER['HTTP_BASIC'];
+    $platform = get_header_basic();
     if($platform && $platform == $query) {
       return true;
     }
@@ -286,38 +280,41 @@ class AppCore extends BaseController
 
   public function send_mail($to_email, $subject, $content) {
 
-    $email_config = Array(
-      'charset' => 'utf-8',
-      'mailtype' => 'html'
-    );
+    //TODO: Migrate to CodeIgniter 4 EMAIL
+    return false;
 
-    $email_config["protocol"] = "smtp";
-    $email_config["smtp_host"] = $this->config->item('smtp_host');
-    $email_config["smtp_port"] = $this->config->item('smtp_port');
-    $email_config["smtp_user"] = $this->config->item('smtp_user');
-    $email_config["smtp_pass"] = $this->config->item('smtp_pass');
-    $email_config["smtp_crypto"] = $this->config->item('smtp_crypto');
-    if ($email_config["smtp_crypto"] === "none") {
-        $email_config["smtp_crypto"] = "";
-    }
+    // $email_config = Array(
+    //   'charset' => 'utf-8',
+    //   'mailtype' => 'html'
+    // );
 
-    $this->load->library('email', $email_config);
-    $this->email->set_newline("\r\n");
-    $this->email->set_crlf("\r\n");
-    $this->email->from(
-      $this->config->item('smtp_reply_email'), 
-      $this->config->item('smtp_reply_name')
-    );
+    // $email_config["protocol"] = "smtp";
+    // $email_config["smtp_host"] = $this->config->item('smtp_host');
+    // $email_config["smtp_port"] = $this->config->item('smtp_port');
+    // $email_config["smtp_user"] = $this->config->item('smtp_user');
+    // $email_config["smtp_pass"] = $this->config->item('smtp_pass');
+    // $email_config["smtp_crypto"] = $this->config->item('smtp_crypto');
+    // if ($email_config["smtp_crypto"] === "none") {
+    //     $email_config["smtp_crypto"] = "";
+    // }
 
-    $this->email->to($to_email);
-    $this->email->subject($subject);
-    $this->email->message($content);
+    // $this->load->library('email', $email_config);
+    // $this->email->set_newline("\r\n");
+    // $this->email->set_crlf("\r\n");
+    // $this->email->from(
+    //   $this->config->item('smtp_reply_email'), 
+    //   $this->config->item('smtp_reply_name')
+    // );
 
-    if ($this->email->send()) {
-      return array("success" => true, 'message' => "Email sent to recepient!");
-    } else {
-      return array("success" => false, 'message' => $this->email->print_debugger());
-    }
+    // $this->email->to($to_email);
+    // $this->email->subject($subject);
+    // $this->email->message($content);
+
+    // if ($this->email->send()) {
+    //   return array("success" => true, 'message' => "Email sent to recepient!");
+    // } else {
+    //   return array("success" => false, 'message' => $this->email->print_debugger());
+    // }
   }
 
   public function upload_image($name = null, $path = './uploads/') {

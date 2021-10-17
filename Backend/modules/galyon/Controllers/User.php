@@ -72,10 +72,9 @@ class User extends AppCore
                     'email' => $user->email,
                     'role' => $user->type,
                     'status' => $user->status,
-                    'logged_in' => true,
                     'expiry' => strtotime(get_current_utc_time())
                 );
-                $token = $this->jwt->encode($user_object, $this->config->item('jwt_secret_phrase'));
+                $token = $this->jwt->encode($user_object);
                 $this->json_response($token);
             } else {
                 $this->json_response(null, false, "Invalid credential!");
@@ -185,10 +184,9 @@ class User extends AppCore
                         'email' => $user->email,
                         'role' => $user->type,
                         'status' => $user->status,
-                        'logged_in' => true,
                         'expiry' => strtotime(get_current_utc_time())
                     );
-                    $token = $this->jwt->encode($user_object, $this->config->item('jwt_secret_phrase'));
+                    $token = $this->jwt->encode($user_object);
                     $this->json_response($token);
                 } else {
                     $this->json_response(null, false, "Failed to verify account! Reset password");
@@ -225,10 +223,9 @@ class User extends AppCore
                         'email' => $user->email,
                         'role' => $user->type,
                         'status' => $user->status,
-                        'logged_in' => true,
                         'expiry' => strtotime(get_current_utc_time())
                     );
-                    $token = $this->jwt->encode($user_object, $this->config->item('jwt_secret_phrase'));
+                    $token = $this->jwt->encode($user_object);
                     $this->json_response($token);
                 } else {
                     $this->json_response(null, false, "Failed to activate account! Reset password");
@@ -259,7 +256,7 @@ class User extends AppCore
         $user = $this->is_authorized(false);
         $where = "status = '1' AND deleted_at IS NULL";
         if($user) {
-            $basic  = $_SERVER['HTTP_BASIC'];
+            $basic  = get_header_basic();
             if($user->role === "admin" &&  $basic == "admin") {
                 $where = null; 
             }

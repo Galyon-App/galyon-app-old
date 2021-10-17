@@ -10,3 +10,15 @@ if (!function_exists('get_random_string')) {
         return $randomString;
     }
 }
+
+if (!function_exists('get_header_basic')) {
+    function get_header_basic() {
+        return isset($_SERVER['HTTP_BASIC']) ? $_SERVER['HTTP_BASIC']:false;
+    }
+}
+
+if (!function_exists('get_header_auth')) {
+    function get_header_auth() {
+        return isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION']:false;
+    }
+}
