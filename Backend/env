@@ -34,6 +34,18 @@
 # app.CSPEnabled = false
 
 #--------------------------------------------------------------------
+# EMAIL
+#--------------------------------------------------------------------
+
+email.fromEmail = 'noreply@gmail.com'
+email.fromName = 'Demoguy'
+email.SMTPHost = 'smtp.gmail.com'
+email.SMTPPort = 587
+email.SMTPUser = 'username@gmail.com'
+email.SMTPPass = 'password'
+email.SMTPCrypto = 'tls'
+
+#--------------------------------------------------------------------
 # DATABASE
 #--------------------------------------------------------------------
 
@@ -91,7 +103,7 @@
 # ENCRYPTION
 #--------------------------------------------------------------------
 
-# encryption.key =
+# encryption.key = {php spark key:generate}
 # encryption.driver = OpenSSL
 # encryption.blockSize = 16
 # encryption.digest = SHA512
