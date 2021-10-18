@@ -163,7 +163,7 @@ export class ManageUsersComponent {
       this.spinner.show();
       this.api.uploadFile(files).subscribe((response: any) => {
         this.spinner.hide();
-        if (response && response.status === 200 && response.data) {
+        if (response && response.success && response.data) {
           this.cover = response.data;
           this.photo = this.api.mediaURL + response.data;
         }

@@ -232,12 +232,10 @@ export class ManageDriversComponent implements OnInit {
     if (files) {
       console.log('ok');
       this.spinner.show();
-      this.api.uploadFile(files).subscribe((data: any) => {
-        console.log('==>>', data);
+      this.api.uploadFile(files).subscribe((response: any) => {
         this.spinner.hide();
-        if (data && data.status === 200 && data.data) {
-          // this.fileURL = data.data;
-          this.coverImage = data.data;
+        if (response && response.success && response.data) {
+          this.coverImage = response.data;
           this.imageUrl = this.api.mediaURL + this.coverImage;
         }
       }, err => {

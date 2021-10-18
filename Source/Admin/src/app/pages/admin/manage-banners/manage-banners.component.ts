@@ -169,10 +169,10 @@ export class ManageBannersComponent {
     this.banner_to_upload = files;
     if (this.banner_to_upload) {
       this.spinner.show();
-      this.api.uploadFile(this.banner_to_upload).subscribe((data: any) => {
+      this.api.uploadFile(this.banner_to_upload).subscribe((response: any) => {
         this.spinner.hide();
-        if (data && data.status === 200 && data.data) {
-          this.coverImage = data.data;
+        if (response && response.success && response.data) {
+          this.coverImage = response.data;
         }
       }, err => {
         console.log(err);

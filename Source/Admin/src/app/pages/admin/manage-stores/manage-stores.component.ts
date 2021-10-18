@@ -471,14 +471,12 @@ export class ManageStoresComponent {
     }
     this.banner_to_upload = files;
     if (this.banner_to_upload) {
-      console.log('ok');
       this.spinner.show();
-      this.api.uploadFile(this.banner_to_upload).subscribe((data: any) => {
-        console.log('==>>', data);
+      this.api.uploadFile(this.banner_to_upload).subscribe((response: any) => {
         this.spinner.hide();
-        if (data && data.status === 200 && data.data) {
-          this.fileURL = data.data;
-          this.coverImage = environment.mediaURL + data.data;
+        if (response && response.success && response.data) {
+          this.fileURL = response.data;
+          this.coverImage = environment.mediaURL + response.data;
         }
       }, err => {
         console.log(err);

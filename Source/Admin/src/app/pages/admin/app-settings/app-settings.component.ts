@@ -124,10 +124,10 @@ export class AppSettingsComponent {
     }
     if (files) {
       this.spinner.show();
-      this.api.uploadFile(files).subscribe((data: any) => {
+      this.api.uploadFile(files).subscribe((response: any) => {
         this.spinner.hide();
-        if (data && data.status === 200 && data.data) {
-          this.logo = data.data;
+        if (response && response.success && response.data) {
+          this.logo = response.data;
         }
       }, err => {
         console.log(err);

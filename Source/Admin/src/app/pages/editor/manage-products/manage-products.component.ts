@@ -136,12 +136,12 @@ export class ManageProductsComponent {
       this.spinner.show();
       this.api.uploadFile(files).subscribe((response: any) => {
         this.spinner.hide();
-        if (response && response.status === 200 && response.data) {
-          if(num !== null) {
-            this.images[num] = response.data;
-          } else {
-            this.coverImage = response.data;
-          }
+        if (response && response.success && response.data) {
+            if(num !== null) {
+              this.images[num] = response.data;
+            } else {
+              this.coverImage = response.data;
+            }
         }
       }, err => {
         console.log(err);
