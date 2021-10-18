@@ -228,29 +228,29 @@ const MERCHANT_ITEMS = [
         type: 'link',
         icon: 'ti-envelope'
       },
-      {
-        state: 'reviews',
-        name: 'Reviews',
-        type: 'link',
-        icon: 'ti-face-smile'
-      }
+      // {
+      //   state: 'reviews',
+      //   name: 'Reviews',
+      //   type: 'link',
+      //   icon: 'ti-face-smile'
+      // }
     ],
   },
   {
     label: 'Manage',
     main: [
-      {
-        state: 'stats',
-        name: 'Reports',
-        type: 'link',
-        icon: 'ti-stats-up'
-      },
-      {
-        state: 'contacts',
-        name: 'Support',
-        type: 'link',
-        icon: 'ti-comments-smiley'
-      },
+      // {
+      //   state: 'stats',
+      //   name: 'Reports',
+      //   type: 'link',
+      //   icon: 'ti-stats-up'
+      // },
+      // {
+      //   state: 'contacts',
+      //   name: 'Support',
+      //   type: 'link',
+      //   icon: 'ti-comments-smiley'
+      // },
       {
         state: 'store',
         name: 'Settings',
