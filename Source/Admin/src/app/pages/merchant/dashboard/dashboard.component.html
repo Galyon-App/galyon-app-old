@@ -78,3 +78,52 @@
     </div>
     <!-- counter-card-4 end -->
 </div>
+
+<div class="row">
+    <div class="col-md-8">
+        <app-card [blockClass]="'card-body-big'">
+            <h4>Annual Sales Report</h4>
+            <div style="display: block;">
+                <canvas baseChart height="120"
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="'bar'">
+                </canvas>
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-4">
+        <app-card [blockClass]="'card-body-big'">
+            <h4>Top 10 Customers</h4>
+            <div style="display: block;">
+                <canvas baseChart width="85" height="85"
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [options]="pieChartOptions"
+                    [colors]="pieChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="'pie'">
+                </canvas>
+            </div>
+        </app-card>
+    </div>
+</div>
+
+<div class="flex">
+    <app-card [cardClass]="'counter-card-12'" [blockClass]="'card-body-big'">
+        <h4>Montly Sales Report</h4>
+        <div style="display: block;">
+            <canvas baseChart height="120"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="'line'">
+            </canvas>
+        </div>
+    </app-card>
+</div>
