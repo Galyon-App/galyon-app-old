@@ -25,6 +25,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 import { AgmCoreModule } from '@agm/core';
+import { ChartsModule, ThemeService } from 'ng2-charts';
 
 // 1. Import the libs you need
 // import { AngularFireModule } from '@angular/fire';
@@ -63,6 +64,7 @@ import { AgmCoreModule } from '@agm/core';
     //LeaveGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    ThemeService
   ],
   bootstrap: [AppComponent]
 })

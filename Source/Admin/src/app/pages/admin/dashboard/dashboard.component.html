@@ -79,3 +79,112 @@
     <!-- counter-card-4 end -->
 
 </div>
+
+<div class="row">
+    <div class="col-md-8">
+        <app-card [blockClass]="'card-body-big'">
+            <h4>Annual Sales Report</h4>
+            <div style="display: block;">
+                <canvas baseChart height="120"
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="'bar'">
+                </canvas>
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-4">
+        <app-card [blockClass]="'card-body-big'">
+            <h4>Top 10 Products</h4>
+            <div style="display: block;">
+                <canvas baseChart width="85" height="85"
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [options]="pieChartOptions"
+                    [colors]="pieChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="'pie'">
+                </canvas>
+            </div>
+        </app-card>
+    </div>
+</div>
+
+<div class="flex">
+    <app-card [cardClass]="'counter-card-12'" [blockClass]="'card-body-big'">
+        <h4>Colab's Sales Report</h4>
+        <div style="display: block;">
+            <canvas baseChart height="120"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="'line'">
+            </canvas>
+        </div>
+    </app-card>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <app-card [cardClass]="'counter-card-1'" [blockClass]="'card-body-big'">
+            <h4>Top Merchants</h4>
+            <div style="display: block;">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Merchant</th>
+                      <th scope="col">Daily Sales</th>
+                      <th scope="col">Customers</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let merchant of merchants; index as i">
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>
+                        <img [src]="'https://i.pravatar.cc/50?u=' + merchant.flag" class="mr-2" style="width: 20px; border-radius: 50%;">
+                        {{ merchant.name }}
+                      </td>
+                      <td>{{ merchant.area | number }}</td>
+                      <td>{{ merchant.population | number }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+    <div class="col-md-6">
+        <app-card [cardClass]="'counter-card-2'" [blockClass]="'card-body-big'">
+            <h4>Newest Members</h4>
+            <div style="display: block;">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">City</th>
+                      <th scope="col">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let user of users; index as i">
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>
+                        <img [src]="'https://i.pravatar.cc/50?u=' + user.flag" class="mr-2" style="width: 20px; border-radius: 50%;">
+                        {{ user.name }}
+                      </td>
+                      <td>{{ user.area }}</td>
+                      <td>{{ user.population }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </app-card>
+    </div>
+</div>
+
