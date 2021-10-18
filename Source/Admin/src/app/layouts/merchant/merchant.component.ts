@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Users } from 'src/app/models/users.model';
 
 @Component({
-  selector: 'app-admin',
+  selector: 'app-merchant',
   templateUrl: './merchant.component.html',
   styleUrls: ['./merchant.component.scss'],
   encapsulation: ViewEncapsulation.None,

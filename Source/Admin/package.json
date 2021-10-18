@@ -50,6 +50,7 @@
     "ng2-toasty": "^4.0.3",
     "ng2-validation": "^4.2.0",
     "ngx-google-places-autocomplete": "^2.0.5",
+    "ngx-image-cropper": "^3.1.5",
     "ngx-pagination": "^5.1.0",
     "ngx-perfect-scrollbar": "^5.3.5",
     "ngx-print": "^1.2.1",

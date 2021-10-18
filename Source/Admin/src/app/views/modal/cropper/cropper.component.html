@@ -1,0 +1,33 @@
+<ng-template #contentCrop let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Crop Image</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+     <input type="file" (change)="fileChangeEvent($event)" />
+     <!-- <button (click)="zoomOut()">Zoom -</button> <button (click)="zoomIn()">Zoom +</button> -->
+
+     <!-- [backgroundColor]="'white'" [transform]="transform" -->
+     <image-cropper
+         [hideResizeSquares]="false"
+         [imageChangedEvent]="imageChangedEvent"
+         [maintainAspectRatio]="true"
+         [aspectRatio]="1/1"
+         [resizeToWidth]="1080"
+         [imageQuality]="95"
+         [roundCropper]="false"
+         [format]="'png'"
+         (imageCropped)="imageCropped($event)"
+         (imageLoaded)="imageLoaded()"
+         (cropperReady)="cropperReady()"
+         (loadImageFailed)="loadImageFailed()"
+     ></image-cropper>
+     
+     <!-- <img [src]="croppedImage" /> -->
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Confirm</button>
+  </div>
+</ng-template>
