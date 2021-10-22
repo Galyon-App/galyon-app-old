@@ -118,57 +118,57 @@ const ADMIN_ITEMS = [
       }   
     ]
   },
-  {
-    label: 'Support',
-    main: [ 
-      {
-        state: 'emails',
-        name: 'Contacts',
-        type: 'link',
-        icon: 'ti-email'
-      },
-      {
-        state: 'contacts',
-        name: 'Chat Support',
-        type: 'link',
-        icon: 'ti-comments-smiley'
-      }, 
-    ]
-  },
-  {
-    label: 'Marketing',
-    main: [  
-      {
-        state: 'notifications',
-        name: 'Notification',
-        type: 'link',
-        icon: 'ti-bell'
-      }, 
-      {
-        state: 'send-mail',
-        name: 'Send Emails',
-        type: 'link',
-        icon: 'ti-email'
-      },
-    ]
-  },
-  {
-    label: 'Reports',
-    main: [
-      {
-        state: 'stats',
-        name: 'Store Stats',
-        type: 'link',
-        icon: 'ti-stats-up'
-      },
-      {
-        state: 'driver-stats',
-        name: 'Drivers Stats',
-        type: 'link',
-        icon: 'ti-stats-up'
-      },
-    ]
-  },
+  // {
+  //   label: 'Support',
+  //   main: [ 
+  //     {
+  //       state: 'emails',
+  //       name: 'Contacts',
+  //       type: 'link',
+  //       icon: 'ti-email'
+  //     },
+  //     {
+  //       state: 'contacts',
+  //       name: 'Chat Support',
+  //       type: 'link',
+  //       icon: 'ti-comments-smiley'
+  //     }, 
+  //   ]
+  // },
+  // {
+  //   label: 'Marketing',
+  //   main: [  
+  //     {
+  //       state: 'notifications',
+  //       name: 'Notification',
+  //       type: 'link',
+  //       icon: 'ti-bell'
+  //     }, 
+  //     {
+  //       state: 'send-mail',
+  //       name: 'Send Emails',
+  //       type: 'link',
+  //       icon: 'ti-email'
+  //     },
+  //   ]
+  // },
+  // {
+  //   label: 'Reports',
+  //   main: [
+  //     {
+  //       state: 'stats',
+  //       name: 'Store Stats',
+  //       type: 'link',
+  //       icon: 'ti-stats-up'
+  //     },
+  //     {
+  //       state: 'driver-stats',
+  //       name: 'Drivers Stats',
+  //       type: 'link',
+  //       icon: 'ti-stats-up'
+  //     },
+  //   ]
+  // },
   {
     label: 'System',
     main: [
