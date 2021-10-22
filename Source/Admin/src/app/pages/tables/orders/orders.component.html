@@ -44,11 +44,12 @@
             <div class="card-body reset-table p-t-0">
                 <div class="form-group row">
                     <label class="col-sm-6 col-form-label"></label>
-                    
+
                     <div class="col-sm-3">
                         <select name="select" [(ngModel)]="stage_term" (ngModelChange)="searchFilter()"
                             class="form-control">
                             <option value='all'> {{util.getString('All Orders')}} </option>
+                            <option value='draft'> {{util.getString('Draft')}} </option>
                             <option value='created'> {{util.getString('Created')}} </option>
                             <option value='rejected'> {{util.getString('Rejected')}} </option>
                             <option value='ongoing'> {{util.getString('Ongoing')}} </option>
@@ -135,6 +136,7 @@
                                 <td>
                                     <select name="select" [(ngModel)]="item.stage"
                                         (ngModelChange)="changeStatus(item)" class="form-control">
+                                        <option value='draft'> {{util.getString('Draft')}} </option>
                                         <option value='created'> {{util.getString('Created')}} </option>
                                         <option value='rejected'>{{util.getString('Rejected')}} </option>
                                         <option value='ongoing'>{{util.getString('Ongoing')}} </option>
