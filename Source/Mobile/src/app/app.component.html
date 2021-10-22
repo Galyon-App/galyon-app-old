@@ -97,4 +97,4 @@
 
 <app-closed *ngIf="util.appClosed"></app-closed>
 
-<app-splash *ngIf="!appServ.isReady"></app-splash>
+<app-splash *ngIf="!appServ.isReady && !util.appClosed"></app-splash>
