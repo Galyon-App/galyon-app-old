@@ -43,10 +43,8 @@ export class ManagePopupComponent {
         this.id = info.uuid;
         this.name = info.message;
         this.status = info.status;
-      } else {
-        this.navCtrl.back();
-        this.util.error(response.message);
       }
+      this.util.error(response.message);
     }, error => {
       console.log(error);
       this.spinner.hide();

@@ -98,24 +98,24 @@ const ADMIN_ITEMS = [
         type: 'link',
         icon: 'ti-medall'
       },      
-      {
-        state: 'manage-popup',
-        name: 'Popups',
-        type: 'link',
-        icon: 'ti-quote-right'
-      },
+      // {
+      //   state: 'manage-popup',
+      //   name: 'Popups',
+      //   type: 'link',
+      //   icon: 'ti-quote-right'
+      // },
       {
         state: 'pages',
         name: 'Pages',
         type: 'link',
         icon: 'ti-blackboard'
       },
-      {
-        state: 'manage-website',
-        name: 'Featured',
-        type: 'link',
-        icon: 'ti-layout-width-default'
-      }   
+      // {
+      //   state: 'manage-website',
+      //   name: 'Featured',
+      //   type: 'link',
+      //   icon: 'ti-layout-width-default'
+      // }   
     ]
   },
   // {
