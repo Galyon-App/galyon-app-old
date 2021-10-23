@@ -26,7 +26,7 @@ export class ManageOffersComponent {
   off: any;
   type: any = 'fixed';
   min: any;
-  expired_at: any;
+  expired_at: any = '';
   descriptions: any = '';
   coverImage: any;
   upto: any;
@@ -75,7 +75,7 @@ export class ManageOffersComponent {
   }
 
   getDate(item) {
-    return moment(item).format('lll');
+    return moment(item).format("dd/mm/yyyy");
   }
 
   manage() {
