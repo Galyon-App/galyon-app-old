@@ -81,12 +81,13 @@ export class AppWebComponent {
   }
 
   submit() {
-    if (!this.email || this.email === '' || !this.mobile || this.mobile === '' || 
-    !this.address || this.address === '' || !this.state || this.state === '' || 
-    !this.zip || this.zip === '' || !this.city || this.city === '' || 
-    !this.country || this.country === '' || !this.min || this.min === '' ||
-    !this.free || this.free === '' || !this.tax || this.tax === '' || 
-    !this.shippingPrice || this.shippingPrice === '' || !this.shipping || this.shipping === '') {
+    if (!this.email || this.email === '' || 
+    !this.mobile || this.mobile === '' || 
+    !this.address || this.address === '' || 
+    !this.state || this.state === '' || 
+    !this.zip || this.zip === '' || 
+    !this.city || this.city === '' || 
+    !this.country || this.country === '' ) {
       this.util.error('All Fields are required');
       return false;
     }
