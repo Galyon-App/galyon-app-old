@@ -202,8 +202,11 @@
                                     <ng-template ngbTabContent>
                                         <div class="address">
                                             <div class="list" *ngFor="let item of myaddress">
-                                                <p class="title">{{item.type}}</p>
-                                                <p class="name">{{item.house}} {{item.landmark}} {{item.address}}</p>
+                                                <p class="name"><strong>Address:</strong> {{item.house}} | {{item.address}} {{item.zipcode}}</p>
+                                                <p class="name" *ngIf="item.landmark"><strong>Landmark:</strong> {{item.landmark}}</p>
+                                                <p class="name"><strong>Status:</strong> {{item.type | titlecase }} - {{item.status=='1'?'Active':'Inactive'}}</p>
+                                                <p class="name"><strong>Last Update:</strong> {{item.updated_at}}</p>
+                                                <p class="name" *ngIf="item.deleted_at"><strong>Deleted:</strong> {{item.deleted_at==null?'':item.deleted_at}}</p>
                                             </div>
                                         </div>
                                     </ng-template>
