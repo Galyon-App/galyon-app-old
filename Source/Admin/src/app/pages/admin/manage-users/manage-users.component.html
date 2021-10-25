@@ -96,7 +96,7 @@
                                         </div>
                                     </ng-template>
                                 </ngb-tab>
-                                <ngb-tab title="Orders">
+                                <ngb-tab title="Orders" *ngIf="myOrders?.length">
                                     <ng-template ngbTabContent>
                                         <div class="orders">
                                             <div class="card_div" *ngFor="let item of myOrders">
@@ -198,20 +198,20 @@
                                         </div>
                                     </ng-template>
                                 </ngb-tab>
-                                <ngb-tab title="Address">
+                                <ngb-tab title="Address" *ngIf="myaddress?.length">
                                     <ng-template ngbTabContent>
                                         <div class="address">
                                             <div class="list" *ngFor="let item of myaddress">
                                                 <p class="name"><strong>Address:</strong> {{item.house}} | {{item.address}} {{item.zipcode}}</p>
                                                 <p class="name" *ngIf="item.landmark"><strong>Landmark:</strong> {{item.landmark}}</p>
                                                 <p class="name"><strong>Status:</strong> {{item.type | titlecase }} - {{item.status=='1'?'Active':'Inactive'}}</p>
-                                                <p class="name"><strong>Last Update:</strong> {{item.updated_at}}</p>
+                                                <p class="name" *ngIf="item.deleted_at == null"><strong>Last Update:</strong> {{item.updated_at}}</p>
                                                 <p class="name" *ngIf="item.deleted_at"><strong>Deleted:</strong> {{item.deleted_at==null?'':item.deleted_at}}</p>
                                             </div>
                                         </div>
                                     </ng-template>
                                 </ngb-tab>
-                                <ngb-tab title="Reviews">
+                                <ngb-tab title="Reviews" *ngIf="reviews?.length">
                                     <ng-template ngbTabContent>
                                         <div class="review">
                                             <div class="row" *ngFor="let item of reviews"

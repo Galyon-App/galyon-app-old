@@ -62,9 +62,9 @@ export class ManageUsersComponent {
         this.uuid = data.uuid;
         this.getProfile();
         this.getCity();
-        this.getReviews();
-        this.getAddress();
         // this.getMyOrders();
+        this.getAddress();
+        //this.getReviews();
       }
     });
   }
