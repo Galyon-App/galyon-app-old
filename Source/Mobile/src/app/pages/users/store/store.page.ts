@@ -46,7 +46,7 @@ export class StorePage implements OnInit {
   haveSortFilter: boolean;
   storeIsActive: boolean = false;
 
-  store: Store;
+  store: Store = new Store();
   limit_start: number = 0;
   limit_length: number = 10;
   no_stores_follows: boolean = false;
