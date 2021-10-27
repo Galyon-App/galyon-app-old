@@ -69,8 +69,12 @@ export class ManageStoresComponent {
   orders: any[] = [];
   mobileCcode: any = '91';
 
+  vcode: any = '';
   store_email: any = '';
   store_phone: any = '';
+
+  lazada: any = '';
+  shopee: any = '';
   
   searching = false;
   searchFailed = false;
@@ -135,6 +139,10 @@ export class ManageStoresComponent {
   pending_email: any = '';
   pending_cover: any = '';
 
+  pending_vcode: any = '';
+  pending_lazada: any = '';
+  pending_shopee: any = '';
+
   constructor(
     private route: ActivatedRoute,
     public api: ApisService,
@@ -170,6 +178,10 @@ export class ManageStoresComponent {
             this.store_email = response.email;
             this.store_phone = response.phone;
 
+            this.vcode = response.vcode;
+            this.lazada = response.lazada;
+            this.shopee = response.shopee;
+
             this.is_featured = response.is_featured;
             this.isClosed = response.isClosed;
             this.status = response.status;
@@ -203,7 +215,15 @@ export class ManageStoresComponent {
               if(key == "cover") {
                 this.pending_cover = api.mediaURL + this.pending.cover;
               }
-              console.log(this.pending[key]);
+              if(key == "vcode") {
+                this.pending_vcode = this.pending.vcode;
+              }
+              if(key == "lazada") {
+                this.pending_lazada = this.pending.lazada;
+              }
+              if(key == "shopee") {
+                this.pending_shopee = this.pending.shopee;
+              }
             }
             //this.getOrders();
           }
@@ -387,7 +407,11 @@ export class ManageStoresComponent {
       commission: this.commission,
       is_featured: this.is_featured,
       isClosed: this.isClosed,
-      status: this.status
+      status: this.status,
+
+      vcode: this.vcode,
+      lazada: this.lazada,
+      shopee: this.shopee
     };
 
     this.spinner.show();
@@ -432,7 +456,11 @@ export class ManageStoresComponent {
       commission: this.commission,
       is_featured: this.is_featured,
       isClosed: this.isClosed,
-      status: this.status
+      status: this.status,
+
+      vcode: this.vcode,
+      lazada: this.lazada,
+      shopee: this.shopee
     };
 
     this.spinner.show();
