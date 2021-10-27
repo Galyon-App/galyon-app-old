@@ -11,9 +11,12 @@
   <div class="main_content">
     <div class="header_image" [ngStyle]="{'background-image':'url('+api.mediaURL+(store!=null?store.cover:'')+'),url(assets/imgs/store.png)'}">
       <div class="overlay_div">
-          <div class="icn_flex">
-            <button (click)="back()" style="background: none;">
+          <div class="icn_flex" style="background-image: linear-gradient(180deg, #ffffffc4, #ffffff21);">
+            <button (click)="back()" style="background: none; display: flex;">
               <ion-icon name="arrow-back" style="margin-right: 12px; font-size: 30px; color: #c82180;"></ion-icon>
+              <ion-label style="color:#c82180; font-size: medium; font-weight: bold; align-self: center; text-align: left;">
+                {{ util.safeText(store!=null?store.name:'', 40, true, 'Unnamed Store') }}
+              </ion-label>
             </button>
           </div>
           <!-- <div class="user_back" [style.backgroundImage]="'url(assets/imgs/user.png)'"></div>
@@ -24,18 +27,34 @@
     <div class="content_div">
       <div class="white_box" style="margin-top: -50px;">
         <div class="item_div">
-          <ion-icon name="business" class="first_icn"></ion-icon>
-          <ion-label>{{ util.safeText(store!=null?store.name:'', 29, true, 'Unnamed Store') }}</ion-label>
+          <ion-icon name="location" class="first_icn"></ion-icon>
+          <ion-label>{{ util.safeText(store!=null?store.address:'', 75, true, 'No Address found!') }}</ion-label>
         </div>
-        <div class="item_div">
-            <ion-icon name="mail" class="first_icn"></ion-icon>
-            <ion-label>{{ util.safeText(store!=null?store.email:'', 29, true, 'No email address') }}</ion-label>
+        <div class="item_div" style="border: 0px; padding-bottom: 0px;" *ngIf="store.vcode">
+            <ion-icon name="barcode" class="first_icn"></ion-icon>
+            <ion-label>Brilliant Code: {{ util.safeText(store!=null?store.vcode:'', 20, true, 'Not yet set...') }}</ion-label>
         </div>
-        <div class="item_div" style="border: 0px;">
-            <ion-icon name="phone-portrait" class="first_icn"></ion-icon>
-            <ion-label>{{ util.safeText(store!=null?store.phone:'', 29, true, 'No phone number') }}</ion-label>
-        </div>
+        <div class="item_div" style="border: 0px; padding-top: 10px; padding-bottom: 0px;">
+          <ion-icon name="mail" class="first_icn"></ion-icon>
+          <ion-label>{{ util.safeText(store!=null?store.email:'', 40, true, 'No email address') }}</ion-label>
       </div>
+        <div class="item_div" style="padding-top: 10px;">
+            <ion-icon name="phone-portrait" class="first_icn"></ion-icon>
+            <ion-label>{{ util.safeText(store!=null?store.phone:'', 40, true, 'No phone number') }}</ion-label>
+        </div>
+        <div class="item_div" style="border: 0px; display: flex; justify-content: center;" *ngIf="store.lazada || store.shopee">
+          <img class="icon" src="assets/icon/lazada.png" alt="lazada-banner" *ngIf="store.lazada" (click)="openUrl(store.lazada)">
+          <img class="icon" src="assets/icon/shopee.png" alt="shopee-banner" *ngIf="store.shopee" (click)="openUrl(store.shopee)">
+        </div>
+        <!-- <div class="item_div" style="border: 0px;">
+          <ion-icon name="logo-facebook" class="first_icn"></ion-icon>
+          <ion-icon name="logo-instagram" class="first_icn"></ion-icon>
+          <ion-icon name="logo-twitter" class="first_icn"></ion-icon>
+          <ion-icon name="logo-youtube" class="first_icn"></ion-icon>
+          <ion-icon name="logo-tiktok" class="first_icn"></ion-icon>
+        </div> -->
+      </div>
+
       <div class="white_box" *ngIf="products?.length">
         <ion-searchbar mode="ios" (ionCancel)="search()" [placeholder]="util.getString('Search')" type="text" [debounce]="250"
            (ionChange)="onSearchChange($event)" class="item_div">

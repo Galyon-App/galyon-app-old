@@ -16,6 +16,7 @@ import { Store } from 'src/app/models/store.model';
 import { StoreService } from 'src/app/services/store.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { Product } from 'src/app/models/product.model';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-store',
@@ -61,7 +62,8 @@ export class StorePage implements OnInit {
     private modalController: ModalController,
     private alertCtrl: AlertController,
     private storeServ: StoreService,
-    private productServ: ProductsService
+    private productServ: ProductsService,
+    private iab: InAppBrowser
   ) {
     this.haveSearch = false;
     this.route.queryParams.subscribe((data) => {
@@ -421,6 +423,14 @@ export class StorePage implements OnInit {
       await alert.present();
     } else {
       console.log('none');
+    }
+  }
+
+  openUrl(url, action: string = '') { //tel: 
+    if (url) {
+      this.iab.create(action + url, '_system');
+    } else {
+      this.util.errorToast(this.util.getString('Url not found'));
     }
   }
 }

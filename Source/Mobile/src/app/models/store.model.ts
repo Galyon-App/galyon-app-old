@@ -7,6 +7,18 @@ export class Store {
     images: string;
     phone: string;
     email: string;
+
+    vcode: string;
+    address: string;
+
+    shopee: string;
+    lazada: string;
+    facebook: string;
+    instagram: string;
+    twitter: string;
+    youtube: string;
+    tiktok: string;
+
     certificates: string;
     commisions: string;
     open_time: string;
