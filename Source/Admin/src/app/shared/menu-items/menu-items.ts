@@ -228,6 +228,12 @@ const MERCHANT_ITEMS = [
         type: 'link',
         icon: 'ti-envelope'
       },
+      {
+        state: 'stores',
+        name: 'Stores',
+        type: 'link',
+        icon: 'ti-notepad'
+      }
       // {
       //   state: 'reviews',
       //   name: 'Reviews',
@@ -236,29 +242,29 @@ const MERCHANT_ITEMS = [
       // }
     ],
   },
-  {
-    label: 'Manage',
-    main: [
-      // {
-      //   state: 'stats',
-      //   name: 'Reports',
-      //   type: 'link',
-      //   icon: 'ti-stats-up'
-      // },
-      // {
-      //   state: 'contacts',
-      //   name: 'Support',
-      //   type: 'link',
-      //   icon: 'ti-comments-smiley'
-      // },
-      {
-        state: 'store',
-        name: 'Settings',
-        type: 'link',
-        icon: 'ti-panel'
-      },
-    ]
-  },
+  // {
+  //   label: 'Manage',
+  //   main: [
+  //     // {
+  //     //   state: 'stats',
+  //     //   name: 'Reports',
+  //     //   type: 'link',
+  //     //   icon: 'ti-stats-up'
+  //     // },
+  //     // {
+  //     //   state: 'contacts',
+  //     //   name: 'Support',
+  //     //   type: 'link',
+  //     //   icon: 'ti-comments-smiley'
+  //     // },
+  //     {
+  //       state: 'store',
+  //       name: 'Settings',
+  //       type: 'link',
+  //       icon: 'ti-panel'
+  //     },
+  //   ]
+  // },
 
 ];
 

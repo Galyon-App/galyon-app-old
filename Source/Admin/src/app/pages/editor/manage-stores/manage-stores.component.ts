@@ -17,6 +17,7 @@ import { Observable, of, OperatorFunction } from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, switchMap, catchError, tap} from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
 import { Users } from 'src/app/models/users.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 declare var google: any;
 @Component({
@@ -35,22 +36,32 @@ export class ManageStoresComponent {
   latitude: any;
   longitude: any;
 
+  haveData: boolean = false;
+
   coverImage: any;
   gender: any = 1;
 
   name: any = '';
   descritions: any = '';
-  haveData: boolean = false;
-  time: any = '';
+
+  is_featured: any = '0';
+  isClosed: any = '0';
+  status: any = '0';
+ 
   commission: any;
+  city: any = '';
+  openTime: any = '08:00';
+  closeTime: any = '17:00';
+  time: any = '';
+
   email: any = '';
-  openTime;
-  closeTime;
+  phone: any = '';
+
+
   fname: any = '';
   lname: any = '';
   password: any = '';
-  phone: any = '';
-  city: any = '';
+  
   totalSales: any = 0;
   totalOrders: any = 0;
   reviews: any[] = [];
@@ -59,17 +70,18 @@ export class ManageStoresComponent {
   orders: any[] = [];
   mobileCcode: any = '91';
 
+  vcode: any = '';
   store_email: any = '';
   store_phone: any = '';
+
+  lazada: any = '';
+  shopee: any = '';
   
   searching = false;
   searchFailed = false;
+
   public searchTerm: any = '';
   private selectedUserId: any = '';
-
-  is_featured: any = '';
-  isClosed: any = '';
-  status: any = '';
 
   search: OperatorFunction<string, readonly {first_name, cover}[]> = (text$: Observable<string>) =>
     text$.pipe(
@@ -128,6 +140,10 @@ export class ManageStoresComponent {
   pending_email: any = '';
   pending_cover: any = '';
 
+  pending_vcode: any = '';
+  pending_lazada: any = '';
+  pending_shopee: any = '';
+
   constructor(
     private route: ActivatedRoute,
     public api: ApisService,
@@ -139,67 +155,143 @@ export class ManageStoresComponent {
     public util: UtilService,
     private cityServ: CityService,
     private storeServ: StoresService,
-    private userServ: UserService,
+    public auth: AuthService,
   ) {
-    this.id = this.storeServ.storeValue.uuid;
-    this.storeServ.getStoreById(this.id, (response: any) => {
-      if(response) {
-        this.storeAddress = response.address;
-        this.name = response.name;
-        this.city = response.city_id;
-        this.latitude = response.lat;
-        this.longitude = response.lng;
-        this.fileURL = response.cover;
-        this.coverImage = environment.mediaURL + response.cover;
-        this.descritions = response.descriptions;
-        this.openTime = response.open_time;
-        this.closeTime = response.close_time;
-        this.commission = response.commission;
-        this.store_email = response.email;
-        this.store_phone = response.phone;
+    this.route.queryParams.subscribe(data => {
+      this.new = data.register === 'true' ? true : false;
+      
+      if (data && data.uuid && data.register) {
+        this.id = data.uuid;
+        this.storeServ.getStoreById(data.uuid, (response: any) => {
+          if(response) {
+            this.storeAddress = response.address;
+            this.name = response.name;
+            this.city = response.city_id;
+            this.searchCityTerm = response.city_name;
+            this.latitude = response.lat;
+            this.longitude = response.lng;
+            this.fileURL = response.cover;
+            this.coverImage = environment.mediaURL + response.cover;
+            this.descritions = response.descriptions;
+            this.openTime = response.open_time;
+            this.closeTime = response.close_time;
+            this.commission = response.commission;
+            this.store_email = response.email;
+            this.store_phone = response.phone;
 
-        this.is_featured = response.is_featured;
-        this.isClosed = response.isClosed;
-        this.status = response.status;
+            this.vcode = response.vcode;
+            this.lazada = response.lazada;
+            this.shopee = response.shopee;
 
-        localStorage.setItem('store-owner', response.owner)
-        this.searchTerm = response.owner_name;
+            this.is_featured = response.is_featured;
+            this.isClosed = response.isClosed;
+            this.status = response.status;
 
-        this.pending = response.pending_update;
-        for (var key in this.pending) {
-          if(key == "name") {
-            this.pending_name = this.pending.name;
+            localStorage.setItem('store-owner', response.owner)
+            this.searchTerm = response.owner_name;
+
+            this.pending = response.pending_update;
+            for (var key in this.pending) {
+              if(key == "name") {
+                this.pending_name = this.pending.name;
+              }
+              if(key == "isClosed") {
+                this.pending_serving = this.pending.isClosed == "1" ? "Closed" : "Open";
+              }
+              if(key == "open_time") {
+                this.pending_open = this.pending.open_time;
+              }
+              if(key == "close_time") {
+                this.pending_close = this.pending.close_time;
+              }
+              if(key == "phone") {
+                this.pending_phone = this.pending.phone;
+              }
+              if(key == "email") {
+                this.pending_email = this.pending.email;
+              }
+              if(key == "descriptions") {
+                this.pending_description = this.pending.descriptions;
+              }
+              if(key == "cover") {
+                this.pending_cover = api.mediaURL + this.pending.cover;
+              }
+              if(key == "vcode") {
+                this.pending_vcode = this.pending.vcode;
+              }
+              if(key == "lazada") {
+                this.pending_lazada = this.pending.lazada;
+              }
+              if(key == "shopee") {
+                this.pending_shopee = this.pending.shopee;
+              }
+            }
+            //this.getOrders();
           }
-          if(key == "isClosed") {
-            this.pending_serving = this.pending.isClosed == "1" ? "Closed" : "Open";
-          }
-          if(key == "open_time") {
-            this.pending_open = this.pending.open_time;
-          }
-          if(key == "close_time") {
-            this.pending_close = this.pending.close_time;
-          }
-          if(key == "phone") {
-            this.pending_phone = this.pending.phone;
-          }
-          if(key == "email") {
-            this.pending_email = this.pending.email;
-          }
-          if(key == "descriptions") {
-            this.pending_description = this.pending.descriptions;
-          }
-          if(key == "cover") {
-            this.pending_cover = api.mediaURL + this.pending.cover;
-          }
-          console.log(this.pending[key]);
-        }
-        //this.getOrders();
+        });
+        //this.getVenue();
+        //this.getReviews();
       }
     });
-    //this.getVenue();
-    //this.getReviews();
-    this.cityServ.request(activeCities => {
-      this.cities = activeCities;
+  }
+
+  
+  public searchCityTerm: any = '';
+  private selectedCityId: any = '';
+
+  searchingCity = false;
+  searchCityFailed = false;
+
+  searchCity: OperatorFunction<string, readonly {name, province}[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      tap(() => this.searchingCity = true),
+      switchMap(term =>
+        this.api.search(term, 'galyon/v1/cities/searchCity').pipe(
+          tap(() => this.searchCityFailed = false),
+          catchError(() => {
+            this.searchCityFailed = true;
+            return of([]);
+          }))
+      ),
+      tap(() => this.searchingCity = false)
+    )
+
+  checkCity() {
+    if(typeof this.searchCityTerm === 'undefined') {
+      this.searchCityTerm = '';
+    }
+  }
+
+  resultFormatBandListValueCity(value: any) {            
+    return value.name + ', ' + value.province;
+  } 
+
+  inputFormatBandListValueCity(value: any)   {
+    if(value.name || value.province) {
+      return value.name + ', ' + value.province;
+    }
+    return value;
+  }
+
+  decideRequest(action) {
+    this.spinner.show();
+    this.api.post('galyon/v1/stores/decidePending', { 
+      uuid: this.id,
+      action: action
+    }).then((response: any) => {
+      this.spinner.hide();
+      if (response && response.success && response.data) {
+        this.pending = null;
+        this.util.success(null);
+      } else {
+        this.util.error(response.message);
+      }
+    }, error => {
+      this.spinner.hide();
+      this.util.error(this.util.getString('Something went wrong'));
+      console.log('error', error);
     });
   }
 
@@ -296,26 +388,12 @@ export class ManageStoresComponent {
     this.longitude = address.geometry.location.lng();
   }
 
-  updateVenue() {
+  updateStore() {
 
     if (this.name === '' || this.openTime === '' || this.closeTime === '' || !this.openTime || !this.closeTime) {
       this.util.error(this.api.translate('All Fields are required'));
       return false;
     }
-
-    //TODO: Add Geocoder
-    // const geocoder = new google.maps.Geocoder;
-    // geocoder.geocode({ address: this.address }, (results, status) => {
-    //   console.log(results, status);
-    //   if (status === 'OK' && results && results.length) {
-    //     this.latitude = results[0].geometry.location.lat();
-    //     this.longitude = results[0].geometry.location.lng();
-    //     console.log('----->', this.latitude, this.longitude);
-    //   } else {
-    //     alert('Geocode was not successful for the following reason: ' + status);
-    //     return false;
-    //   }
-    // });
 
     const param = {
       uuid: this.id,
@@ -324,14 +402,18 @@ export class ManageStoresComponent {
       cover: this.fileURL,
       open_time: this.openTime,
       close_time: this.closeTime,
-      //city_id: this.city,
-      owner: localStorage.getItem('store-owner'),
+      city_id: this.searchCityTerm.uuid ? this.searchCityTerm.uuid : "",
+      owner: this.searchTerm.uuid ? this.searchTerm.uuid : "",
       email: this.store_email,
       phone: this.store_phone,
-      //commission: this.commission,
-      //is_featured: this.is_featured,
+      commission: this.commission,
+      is_featured: this.is_featured,
       isClosed: this.isClosed,
-      //status: this.status
+      status: this.status,
+
+      vcode: this.vcode,
+      lazada: this.lazada,
+      shopee: this.shopee
     };
 
     this.spinner.show();
@@ -349,118 +431,60 @@ export class ManageStoresComponent {
     });
   }
 
-  create() {
-    console.log('mobile code', this.mobileCcode);
-    console.log(this.email, this.fname, this.lname, this.phone, this.password, this.name, this.address, this.descritions, this.time)
-    if (this.email === '' || this.fname === '' || this.lname === '' || this.phone === '' || this.password === ''
-      || this.name === '' || this.address === '' || this.descritions === ''
-      || this.city === '' || !this.city || this.openTime === '' || this.closeTime === '' ||
-      !this.openTime || !this.closeTime || !this.commission || this.commission === '') {
+  createStore() {
+    if (this.name === '' || this.openTime === '' || this.closeTime === '' || !this.openTime || !this.closeTime) {
       this.util.error(this.api.translate('All Fields are required'));
       return false;
     }
 
-    const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
-    if (!(emailfilter.test(this.email))) {
-      this.util.error(this.api.translate('Please enter valid email'));
-      return false;
-    }
-
-    if (!this.coverImage || this.coverImage === '') {
-      this.util.error(this.api.translate('Please add your cover image'));
-      return false;
-    }
-
-    const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({ address: this.address }, (results, status) => {
-      console.log(results, status);
-      if (status === 'OK' && results && results.length) {
-        this.latitude = results[0].geometry.location.lat();
-        this.longitude = results[0].geometry.location.lng();
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+    if(this.email && this.email != '') {
+      const emailfilter = /^[\w._-]+[+]?[\w._-]+@[\w.-]+\.[a-zA-Z]{2,6}$/;
+      if (!(emailfilter.test(this.email))) {
+        this.util.error(this.api.translate('Please enter valid email'));
         return false;
       }
-    });
+    }
 
-    const userParam = {
-      first_name: this.fname,
-      last_name: this.lname,
-      email: this.email,
-      password: this.password,
-      gender: this.gender,
-      fcm_token: 'NA',
-      type: 'store',
-      lat: this.latitude,
-      lng: this.longitude,
+    const param = {
+      name: this.name,
+      descriptions: this.descritions,
       cover: this.fileURL,
-      mobile: this.phone,
-      status: 1,
-      verified: 1,
-      others: 1,
-      date: moment().format('YYYY-MM-DD'),
-      stripe_key: '',
-      country_code: '+' + this.mobileCcode
+      open_time: this.openTime,
+      close_time: this.closeTime,
+      city_id: this.searchCityTerm.uuid ? this.searchCityTerm.uuid : "",
+      owner: this.searchTerm.uuid ? this.searchTerm.uuid : "",
+      email: this.store_email,
+      phone: this.store_phone,
+      commission: this.commission,
+      is_featured: this.is_featured,
+      isClosed: this.isClosed,
+      status: this.status,
+
+      vcode: this.vcode,
+      lazada: this.lazada,
+      shopee: this.shopee
     };
 
-    console.log('user param', userParam);
-
     this.spinner.show();
-    this.api.post('users/registerUser', userParam).then((data: any) => {
-      console.log('datatatrat=a=ta=t=at=', data);
-      if (data && data.data && data.status === 200) {
-        const storeParam = {
-          uid: data.data.id,
-          name: this.name,
-          mobile: this.phone,
-          lat: this.latitude,
-          lng: this.longitude,
-          verified: 1,
-          address: this.address,
-          descriptions: this.descritions,
-          images: '[]',
-          cover: this.fileURL,
-          status: 1,
-          open_time: this.openTime,
-          close_time: this.closeTime,
-          isClosed: 1,
-          certificate_url: '',
-          certificate_type: '',
-          rating: 0,
-          total_rating: 0,
-          cid: this.city,
-          commission: this.commission
-        };
-        console.log('****', storeParam);
-        this.api.post('stores/save', storeParam).then((salons: any) => {
-          this.spinner.hide();
-          this.util.success(null);
-        }, error => {
-          this.spinner.hide();
-          console.log(error);
-          this.util.error(this.api.translate('Something went wrong'));
-        }).catch(error => {
-          this.spinner.hide();
-          console.log(error);
-          this.util.error(this.api.translate('Something went wrong'));
+    this.api.post('galyon/v1/stores/createNewStore', param).then((response: any) => {
+      this.spinner.hide();
+      if (response && response.success && response.data) {
+        this.util.success(null, () => {
+          const navData: NavigationExtras = {
+            queryParams: {
+              uuid: response.data.uuid,
+              register: false
+            }
+          };
+          this.router.navigate([this.getRolePath()+'/manage-stores'], navData);
         });
       } else {
-        this.spinner.hide();
-        if (data && data.data && data.data.message) {
-          this.util.error(data.data.message);
-          return false;
-        }
-        this.util.error(data.message);
-        return false;
+        this.util.error(response.message);
       }
     }, error => {
       this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
-    }).catch(error => {
-      this.spinner.hide();
-      console.log(error);
-      this.util.error(this.api.translate('Something went wrong'));
+      this.util.error(this.util.getString('Something went wrong'));
+      console.log('error', error);
     });
   }
 
@@ -477,7 +501,6 @@ export class ManageStoresComponent {
     }
     this.banner_to_upload = files;
     if (this.banner_to_upload) {
-      console.log('ok');
       this.spinner.show();
       this.api.uploadFile(this.banner_to_upload).subscribe((response: any) => {
         this.spinner.hide();
@@ -506,10 +529,14 @@ export class ManageStoresComponent {
         address_id: address ? address.uuid : null
       }
     };
-    this.router.navigate(['admin/manage-address'], navData);
+    this.router.navigate([this.getRolePath()+'/manage-address'], navData);
   }
 
   goBack() {
     this.navCtrl.back();
+  }
+
+  getRolePath() {
+    return this.auth.userValue.role == "store" ? "merchant":this.auth.userValue.role;;
   }
 }

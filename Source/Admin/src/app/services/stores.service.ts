@@ -98,6 +98,7 @@ export class StoresService {
   searchStore(query, callback = null) {
     this.api.post('galyon/v1/stores/getAllStores', {
       filter_term: query.search ? query.search : "",
+      owner_id: query.owner ? query.owner : "",
       limit_start: query.limit_start ? query.limit_start : 0,
       limit_length: query.limit_length ? query.limit_length : 100,
       order_column: query.order_column ? query.order_column : 'updated_at',

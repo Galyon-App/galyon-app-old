@@ -10,10 +10,10 @@ import { Router, NavigationExtras } from '@angular/router';
 import Swal from 'sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApisService } from 'src/app/services/apis.service';
-import { ToastData, ToastOptions, ToastyService } from 'ng2-toasty';
 import * as moment from 'moment';
 import { UtilService } from 'src/app/services/util.service';
 import { StoresService } from 'src/app/services/stores.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-stores',
@@ -30,6 +30,7 @@ export class StoresComponent {
 
   constructor(
     public api: ApisService,
+    private auth: AuthService,
     private router: Router,
     private spinner: NgxSpinnerService,
     private util: UtilService,
@@ -40,7 +41,8 @@ export class StoresComponent {
 
   getAllStores(search) {
     this.storeServ.searchStore({
-      search: search ? this.searchText : ""
+      search: search ? this.searchText : "",
+      owner: this.auth.userValue.uuid ? this.auth.userValue.uuid : "",
     }, (stores) => {
       if(stores) {
         this.dummy = [];
@@ -99,7 +101,7 @@ export class StoresComponent {
         register: false
       }
     };
-    this.router.navigate(['admin/manage-stores'], navData);
+    this.router.navigate([this.getRolePath()+'/manage-stores'], navData);
   }
 
   /**
@@ -150,7 +152,7 @@ export class StoresComponent {
         register: true
       }
     };
-    this.router.navigate(['admin/manage-stores'], navData);
+    this.router.navigate([this.getRolePath()+'/manage-stores'], navData);
   }
 
   getCurrency() {
@@ -159,6 +161,10 @@ export class StoresComponent {
 
   getTime(time) {
     return moment('2020-12-05 ' + time).format('hh:mm a');
+  }
+
+  getRolePath() {
+    return this.auth.userValue.role == "store" ? "merchant":this.auth.userValue.role;;
   }
 }
 

@@ -53,11 +53,11 @@ const routes: Routes = [
         },
         {
           path: 'stores',
-          loadChildren: () => import('./pages/admin/stores/stores.module').then(m => m.StoresModule)
+          loadChildren: () => import('./pages/tables/stores/stores.module').then(m => m.StoresModule)
         },
         {
           path: 'manage-stores',
-          loadChildren: () => import('./pages/admin/manage-stores/manage-stores.module').then(m => m.ManageStoresModule)
+          loadChildren: () => import('./pages/editor/manage-stores/manage-stores.module').then(m => m.ManageStoresModule)
         },
         {
           path: 'banners',
@@ -252,17 +252,22 @@ const routes: Routes = [
         loadChildren: () => import('./pages/editor/manage-products/manage-products.module').then(m => m.ManageProductsModule)
       },
       {
+        path: 'stores',
+        loadChildren: () => import('./pages/tables/stores/stores.module').then(m => m.StoresModule)
+      },
+      {
+        path: 'manage-stores',
+        loadChildren: () => import('./pages/editor/manage-stores/manage-stores.module').then(m => m.ManageStoresModule)
+      },
+
+      {
         path: 'reviews',
         loadChildren: () => import('./pages/merchant/reviews/reviews.module').then(m => m.ReviewsModule)
       },
       {
         path: 'contacts',
         loadChildren: () => import('./pages/merchant/contacts/contacts.module').then(m => m.ContactsModule)
-      },
-      {
-        path: 'store',
-        loadChildren: () => import('./pages/merchant/manage-stores/manage-stores.module').then(m => m.ManageStoresModule)
-      },
+      }
     ],
     canActivate: [AuthGuard],
     data: { roles: [Role.Merchant] }
