@@ -19,7 +19,7 @@ ion-label {
     display: block;
 }
 
-.desc_div{
+    .desc_div{
     width: 100%;
     .border_bottom{
         padding-bottom: 10px;
@@ -60,15 +60,6 @@ ion-label {
     }
     
     
-}
-.btn_div{
-    // display: flex;
-    // flex-direction: row;
-    // justify-content: center;
-    // align-items: center;
-    // button{
-    //     width: 50%;
-    // }
 }
 
 .flex_div{
@@ -173,6 +164,45 @@ ion-label {
             width: 100%;
             // color: #C8C7CE;
             color: gray;
+        }
+    }
+}
+
+.desc_div{
+    width: 100%;
+    .border_bottom{
+        padding-bottom: 10px;
+        width: 100%;
+        .storeName{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border-bottom: 1px solid lightgray;
+            padding-bottom: 10px;
+            .name{
+                font-weight: bold;
+            }
+            .status{
+                font-weight: bold;
+            }
+        }
+        .items{
+            margin: 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 12px;
+            padding-bottom: 5px;
+            border-bottom: .5px dashed lightgray;
+            margin: 15px;
+        }
+        .footer{
+            margin: 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 5px;
         }
     }
 }

@@ -39,7 +39,7 @@ export class OrdersComponent implements OnInit {
   selectedDriver: any = '';
 
   public get isStore(): boolean {
-    return this.authServ.userValue.role == Role.Merchant;
+    return this.auth.userValue.role == Role.Merchant;
   }
 
   constructor(
@@ -48,7 +48,7 @@ export class OrdersComponent implements OnInit {
     public util: UtilService,
     private storeServ: StoresService,
     private modalService: NgbModal,
-    private authServ: AuthService
+    private auth: AuthService
   ) {
     this.getOrdersRecently();
   }
@@ -59,12 +59,11 @@ export class OrdersComponent implements OnInit {
       limit_start: 0,
       limit_length: 100,
       has_user_name: "1",
-      has_store_name: "0",
-      store_id: null,
+      has_store_name: "1",
+      owner: null,
     };
     if(this.isStore) {
-      param.store_id = this.storeServ.storeValue.uuid;
-      param.has_store_name = "1";
+      param.owner = this.auth.userValue.uuid;
     }
 
     this.api.post('galyon/v1/orders/getOrdersRecently', param).then((response: any) => {
@@ -116,7 +115,7 @@ export class OrdersComponent implements OnInit {
         uuid: item.uuid
       }
     };
-    this.router.navigate(['merchant/manage-orders'], navData);
+    this.router.navigate([this.getRolePath()+'/manage-orders'], navData);
   }
 
   async open(status) {
@@ -157,5 +156,22 @@ export class OrdersComponent implements OnInit {
   }
 
   close() {
+  }
+
+  goToStore(item) {
+    if(!item.store_id) {
+      return;
+    }
+    const navData: NavigationExtras = {
+      queryParams: {
+        uuid: item.store_id,
+        register: false
+      }
+    };
+    this.router.navigate([this.getRolePath()+'/manage-stores'], navData);
+  }
+
+  getRolePath() {
+    return this.auth.userValue.role == "store" ? "merchant":this.auth.userValue.role;
   }
 }

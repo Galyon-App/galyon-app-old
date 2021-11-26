@@ -1,0 +1,165 @@
+<!--
+  Name: Galyon App
+  Authors : Bytes Crafter
+  Website : https://bytescrafter.net
+  Created : 01-Jan-2021
+ -->
+<ngx-spinner type="ball-pulse-sync" color="#e74c3c">
+    <p style="font-size: 20px; color: #e74c3c">{{api.translate('Please wait...')}} </p>
+</ngx-spinner>
+
+<div class="row">
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <h5>Order Details</h5>
+            </div>
+            <div class="card-block p-t-0">
+                <div class="flex_div">
+                    <p>Order ID</p>
+                    <p class="values">{{ util.safeText(this.current.uuid, 7, '', '').toUpperCase() }}</p>
+                </div>
+                <div class="flex_div">
+                    <p>Merchant</p>
+                    <p>{{ util.safeText(this.current.store_name, 24, '', '') }}</p>
+                </div>
+                <div class="flex_div">
+                    <p>Payment Method</p>
+                    <p>{{ util.safeText(this.current.paid_method, 24, '', '').toUpperCase() }}</p>
+                </div>
+                <div class="flex_div">
+                    <p>Schedule</p>
+                    <p>{{ util.safeText(this.current.timestamp, 24, '', '') }}</p>
+                </div>
+
+                <p class="titles">Order Details</p>
+                <div class="desc_div">
+                    <div class="border_bottom" *ngIf="this.current.items?.length" style="padding: 10px 10px 0;">
+                        <div *ngFor="let item of this.current.items">
+                            <p class="items">
+                                <span style="width: 80%;">
+                                  {{item.name}} ( {{util.currecny}}{{getItemPrice(item)}} ) x{{item.quantity}}
+                                </span>
+                                <span style="float: right;">
+                                  {{util.currecny}} {{getItemPrice(item, item.quantity)}}
+                                </span>
+                            </p>
+                        </div>
+                        <div style="padding: 10px 10px 0;">
+                            <p class="footer" style="position: initial;">
+                            <span style="width: 50%;">{{util.getString('Sub Total')}}</span>
+                            <span style="float: right;">{{util.currecny}} {{current.total}}</span>
+                            </p>
+                        </div>
+                        <div style="padding: 10px 10px 0;" *ngIf="current.discount">
+                            <p class="footer" style="position: initial;">
+                            <span style="width: 50%;">{{util.getString('Discount')}}</span>
+                            <span style="float: right;">{{util.currecny}} {{current.discount}}</span>
+                            </p>
+                        </div>
+                        <div style="padding: 10px 10px 0;" *ngIf="current.tax">
+                            <p class="footer" style="position: initial;">
+                            <span style="width: 50%;">{{util.getString('Tax')}}</span>
+                            <span style="float: right;">{{util.currecny}} {{current.tax}}</span>
+                            </p>
+                        </div>
+                        <div style="padding: 10px 10px 0;" *ngIf="current.delivery">
+                            <p class="footer" style="position: initial;">
+                            <span style="width: 50%;">{{util.getString('Delivery Charge')}}</span>
+                            <span style="float: right;">{{util.currecny}} {{current.delivery}}</span>
+                            </p>
+                        </div>
+                        <div style="padding: 10px 10px 0;">
+                            <p class="footer" style="position: initial; font-size: 14px; font-weight: bold;">
+                            <span style="width: 50%;">{{util.getString('Grand Total')}}</span>
+                            <span style="float: right;">{{util.currecny}} {{current.grand_total}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="tracking_div"> -->
+
+                    <!-- <div class="left">
+                        <span *ngFor="let item of orderDetail"
+                            style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                            <div class="line_div" [class.line_div_darkgray]="item.status === 1"></div>
+                            <ion-icon *ngIf="item.status === 1" name="checkmark-sharp"></ion-icon>
+                            <i class="ti-check-box" *ngIf="item.status === 1"></i>
+                        </span>
+
+                    </div> -->
+
+                    <!-- <div class="right">
+                        <span *ngFor="let item of orderDetail">
+                            <div class="line_div">
+                                <p [class.round_div_red]="item.status === 1"
+                                    [class.round_div_darkgray]="item.status === 1">
+                                    {{item.time}}</p>
+                            </div>
+                            <div class="round_div_gray" [class.round_div_red]="item.status === 1"
+                                [class.round_div_darkgray]="item.status === 1">
+                                {{item.value}}
+                            </div>
+                        </span>
+                    </div> -->
+
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- <div class="col-lg-6" *ngIf="stores && stores?.length">
+        <div class="card">
+            <div class="card-block">
+                <h5>Stores</h5>
+            </div>
+            <div class="card-block p-t-0">
+                <div class="card-msg b-b-default p-b-10" *ngFor="let item of stores">
+                    <div class="card-msg-img">
+                        <a>
+                            <img class="img-circle" [src]="api.mediaURL+item.cover"
+                                onError="this.src='assets/images/user.png'" alt="chat-user">
+                        </a>
+                    </div>
+                    <div class="card-msg-contain">
+                        <h6> {{item.name}} </h6>
+                        <p class="text-muted">{{item.email}}.</p>
+                        <span>{{item.mobile}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="col-lg-6" *ngIf="driverInfo && driverInfo.length">
+        <div class="card">
+            <div class="card-block">
+                <h5>Drivers</h5>
+            </div>
+
+
+            <div class="card-block p-t-0">
+                <div class="card-msg b-b-default p-b-10" *ngFor="let item of driverInfo">
+                    <div class="card-msg-img">
+                        <a>
+                            <img class="img-circle" [src]="api.mediaURL+item.cover"
+                                onError="this.src='assets/images/user.png'" alt="chat-user">
+                        </a>
+                    </div>
+                    <div class="card-msg-contain">
+                        <h6> {{item.first_name}} {{item.last_name}} </h6>
+                        <p class="text-muted">{{item.email}}.</p>
+                        <span>{{item.mobile}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+</div>
+
+
+<ng2-toasty></ng2-toasty>

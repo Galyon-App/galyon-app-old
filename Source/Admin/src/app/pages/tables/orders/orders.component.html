@@ -68,7 +68,7 @@
                         <thead>
                             <tr class="text-uppercase">
                                 <th>{{util.getString('Order ID')}} </th>
-                                <th *ngIf="isStore">{{util.getString('Store')}} </th>
+                                <th>{{util.getString('Store')}} </th>
                                 <th>{{util.getString('User')}} </th>
                                 <th>{{util.getString('Items')}} </th>
                                 <th>{{util.getString('Sub Total')}} </th>
@@ -125,7 +125,11 @@
                             </tr>
                             <tr *ngFor="let item of orders| paginate: {id:'pagin1', itemsPerPage: 10, currentPage: page };let i = index;">
                                 <td>{{((item.uuid | slice:0:8)+'').toUpperCase()}} </td>
-                                <td *ngIf="isStore">{{(item.store_name | slice:0:20)}}</td>
+                                <td>
+                                    <a href="javascript:;" (click)="goToStore(item)" style="color: #eb4291;">
+                                    {{ (item.store_name.length>25)? (item.store_name | slice:0:25)+'...':(item.store_name?item.store_name:'Not Assigned') }}
+                                    </a>
+                                </td>
                                 <td>{{(item.user_name | slice:0:20)}}</td>
                                 <td>{{item.items.length}} item(s)</td>
                                 <td>{{util.currecny}}{{item.total}} </td>

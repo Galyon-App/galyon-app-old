@@ -143,7 +143,7 @@ const routes: Routes = [
         },
         {
           path: 'manage-orders',
-          loadChildren: () => import('./pages/admin/manage-orders/manage-orders.module').then(m => m.ManageOrdersModule)
+          loadChildren: () => import('./pages/editor/manage-orders/manage-orders.module').then(m => m.ManageOrdersModule)
         },
         {
           path: 'dashboard',
@@ -236,12 +236,12 @@ const routes: Routes = [
         loadChildren: () => import('./pages/merchant/stats/stats.module').then(m => m.StatsModule)
       },
       {
-        path: 'manage-orders',
-        loadChildren: () => import('./pages/merchant/manage-orders/manage-orders.module').then(m => m.ManageOrdersModule)
-      },
-      {
         path: 'orders',
         loadChildren: () => import('./pages/tables/orders/orders.module').then(m => m.OrdersModule)
+      },
+      {
+        path: 'manage-orders',
+        loadChildren: () => import('./pages/editor/manage-orders/manage-orders.module').then(m => m.ManageOrdersModule)
       },
       {
         path: 'products',
