@@ -54,7 +54,7 @@
                     </div>
                     <div *ngIf="template_term!=''" class="col-sm-3"></div>
                     <div class="col-sm-3">
-                        <select name="select" [(ngModel)]="template_term" (ngModelChange)="searchTemplate()" class="form-control">
+                        <select name="select" [(ngModel)]="template_term" (ngModelChange)="searchTemplate()" *ngIf="auth.userValue.role == 'admin'" class="form-control">
                             <option value=''> {{util.getString('Regular')}} </option>
                             <option value='template'> {{util.getString('Template')}} </option>
                         </select>

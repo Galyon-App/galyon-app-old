@@ -125,7 +125,7 @@ const routes: Routes = [
         },
         {
           path: 'products',
-          loadChildren: () => import('./pages/admin/products/products.module').then(m => m.ProductsModule)
+          loadChildren: () => import('./pages/tables/products/products.module').then(m => m.ProductsModule)
         },
         {
           path: 'manage-products',
@@ -245,7 +245,7 @@ const routes: Routes = [
       },
       {
         path: 'products',
-        loadChildren: () => import('./pages/merchant/products/products.module').then(m => m.ProductsModule)
+        loadChildren: () => import('./pages/tables/products/products.module').then(m => m.ProductsModule)
       },
       {
         path: 'manage-products',

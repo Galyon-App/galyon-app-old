@@ -104,7 +104,7 @@ export class ManageProductsComponent {
     private spinner: NgxSpinnerService,
     private router: Router,
     private modalService: NgbModal,
-    public authServ: AuthService,
+    public auth: AuthService,
     private storeServ: StoresService
   ) {
     this.route.queryParams.subscribe((data: any) => {
@@ -153,7 +153,7 @@ export class ManageProductsComponent {
   }
 
   public get canHighManage(): boolean {
-    if(this.authServ.userValue.role == Role.Admin || this.authServ.userValue.role == Role.Operator) {
+    if(this.auth.userValue.role == Role.Admin || this.auth.userValue.role == Role.Operator || this.auth.userValue.role == Role.Merchant) {
       return true;
     }
     return false;
@@ -562,7 +562,10 @@ export class ManageProductsComponent {
             this.dummyStores = this.stores;
           }
         });
-        this.storeServ.searchStore({ limit_length: 10 }, (stores) => {
+        this.storeServ.searchStore({ 
+          owner: this.auth.userValue.uuid ? this.auth.userValue.uuid : "", 
+          limit_length: 10 
+        }, (stores) => {
           if(stores) {
             stores.forEach(element => {
               this.stores.push(element);
@@ -571,7 +574,10 @@ export class ManageProductsComponent {
           }
         });
       } else {
-        this.storeServ.searchStore({ limit_length: 10 }, (stores) => {
+        this.storeServ.searchStore({ 
+          owner: this.auth.userValue.uuid ? this.auth.userValue.uuid : "", 
+          limit_length: 10 
+        }, (stores) => {
           if(stores) {
             this.stores = stores;
           }
@@ -605,6 +611,7 @@ export class ManageProductsComponent {
     if(this.canHighManage) {
       this.storeServ.searchStore({
         search: this.storeString,
+        owner: this.auth.userValue.uuid ? this.auth.userValue.uuid : "", 
         limit_length: 10
       }, (stores) => {
         if(stores) {
@@ -810,7 +817,7 @@ export class ManageProductsComponent {
               uuid: response.data.uuid
             }
           };
-          this.router.navigate(['admin/manage-products'], navData);
+          this.router.navigate([this.getRolePath()+'/manage-products'], navData);
         });
       } else {
         this.util.error(response.message);
@@ -838,5 +845,9 @@ export class ManageProductsComponent {
       this.util.error(this.util.getString('Something went wrong'));
       console.log('error', error);
     });
+  }
+
+  getRolePath() {
+    return this.auth.userValue.role == "store" ? "merchant":this.auth.userValue.role;
   }
 }

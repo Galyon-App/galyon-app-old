@@ -16,6 +16,7 @@ import { ToastData, ToastOptions, ToastyService } from 'ng2-toasty';
 import { UtilService } from 'src/app/services/util.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StoresService } from 'src/app/services/stores.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-products',
@@ -40,7 +41,8 @@ export class ProductsComponent {
     private toastyService: ToastyService,
     public util: UtilService,
     private modalService: NgbModal,
-    private storeServ: StoresService
+    private storeServ: StoresService,
+    public auth: AuthService
   ) {
     this.getAllProducts(null);
   }
@@ -54,7 +56,10 @@ export class ProductsComponent {
   openStore() {
     this.stores = [];
     this.choosenId = this.storeId;
-    this.storeServ.searchStore({ limit_length: 10 }, (stores) => {
+    this.storeServ.searchStore({
+      owner: this.auth.userValue.uuid ? this.auth.userValue.uuid : "", 
+      limit_length: 10 
+    },(stores) => {
       if(stores) {
         stores.forEach(element => {
           this.stores.push(element);
@@ -81,6 +86,7 @@ export class ProductsComponent {
   searchStore() {
     this.storeServ.searchStore({
       search: this.storeString,
+      owner: this.auth.userValue.uuid ? this.auth.userValue.uuid : "",
       limit_length: 10
     }, (stores) => {
       if(stores) {
@@ -217,11 +223,11 @@ export class ProductsComponent {
         uuid: item.uuid
       }
     };
-    this.router.navigate(['admin/manage-products'], navData);
+    this.router.navigate([this.getRolePath()+'/manage-products'], navData);
   }
 
   createNew() {
-    this.router.navigate(['admin/manage-products']);
+    this.router.navigate([this.getRolePath()+'/manage-products']);
   }
 
   /**
@@ -284,7 +290,7 @@ export class ProductsComponent {
         register: false
       }
     };
-    this.router.navigate(['admin/manage-stores'], navData);
+    this.router.navigate([this.getRolePath()+'/manage-stores'], navData);
   }
 
   goToTemplate(item) {
@@ -297,7 +303,7 @@ export class ProductsComponent {
         register: false
       }
     };
-    this.router.navigate(['admin/manage-products'], navData);
+    this.router.navigate([this.getRolePath()+'/manage-products'], navData);
   }
 
   template_term: any = '';
@@ -305,4 +311,7 @@ export class ProductsComponent {
     this.getAllProducts(this.searchText);
   }
 
+  getRolePath() {
+    return this.auth.userValue.role == "store" ? "merchant":this.auth.userValue.role;
+  }
 }
