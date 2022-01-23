@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "spartan-figure-294709"
+  },
+  "targets": {
+    "spartan-figure-294709": {
+      "hosting": {
+        "galyon-user-app": [
+          "spartan-figure-294709"
+        ]
+      }
+    }
   }
 }

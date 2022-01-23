@@ -48,10 +48,10 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
-// 1. Import the libs you need
-// import { AngularFireModule } from '@angular/fire';
-// import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
-// import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -78,10 +78,10 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     SelectCountryPageModule,
     ComponentsModule,
 
-    // 3. Initialize
-    // AngularFireModule.initializeApp(environment.firebase),
-    // AngularFireAuthModule, // auth
-    // AngularFireAnalyticsModule // analytics
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule, // auth
+    AngularFireAnalyticsModule, // analytics,
+    AngularFirestoreModule // firestore
   ],
   providers: [
     StatusBar,
