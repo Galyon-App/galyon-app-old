@@ -7,12 +7,15 @@ import { Store } from '../models/store.model';
 import { UserService } from './user.service';
 import { Token } from '../models/token.model';
 import { Role } from '../models/role.model';
+import firebase from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  public static collectionName: string = 'users';
   private subject: BehaviorSubject<Token>;
   private observable: Observable<Token>;
 
@@ -20,7 +23,9 @@ export class AuthService {
     private router: Router,
     private api: ApiService,
     private util: UtilService,
-    private userServ: UserService
+    private userServ: UserService,
+    private ngAuth: AngularFireAuth,
+    private ngStore: AngularFirestore
   ) {
     const _token = localStorage.getItem(this.userServ.localKey);
     let token = new Token();
@@ -30,6 +35,19 @@ export class AuthService {
     }
     this.subject = new BehaviorSubject<Token>(token);
     this.observable = this.subject.asObservable();
+
+    ngAuth.onAuthStateChanged(user => {
+      if(user) {
+        const curUser = {
+          uid: user.uid,
+          email: user.email
+        };
+
+        ngStore.doc(
+          `users/${curUser.uid}`
+        ).set(curUser);
+      }
+    });
   }
 
   public get is_authenticated(): boolean {
@@ -90,5 +108,13 @@ export class AuthService {
       localStorage.removeItem(this.userServ.localKey);
       this.subject.next(null);
       this.router.navigate(['/login']);
+  }
+
+  firebaseSignIn() {
+    this.ngAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  }
+
+  firebaseLogout() {
+    this.ngAuth.signOut();
   }
 }

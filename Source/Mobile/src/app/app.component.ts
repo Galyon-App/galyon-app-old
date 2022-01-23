@@ -19,6 +19,10 @@ import { OptionService } from './services/option.service';
 import { MerchantService } from './services/merchant.service';
 import { Store } from './models/store.model';
 import { AppService } from './services/app.service';
+import firebase from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { ChatService } from './services/chat.service';
+import { Chat } from './models/chat';
 
 @Component({
   selector: 'app-root',
@@ -53,11 +57,24 @@ export class AppComponent implements OnInit {
     private optServ: OptionService,
     public loadCtrl: LoadingController,
     private merchant: MerchantService,
-    public appServ: AppService
+    public appServ: AppService,
+    private ngAuth: AngularFireAuth,
+    private chatServ: ChatService,
   ) {
     this.selectedIndex = 0;
     this.initialize();
     this.menuCtrl.enable(false, 'menu1');
+
+    ngAuth.onAuthStateChanged(user => {
+      if(user) { 
+        // chatServ.getMessages().subscribe( (chats: Chat[]) => {
+        //   console.log('All Chats: ', chats);
+        // });
+      } else {
+        //auth.firebaseSignIn(); //Temporary
+        //console.log('signin');
+      }
+    });
   }
 
   async presentLoading() {
@@ -90,7 +107,7 @@ export class AppComponent implements OnInit {
 
   async initialize() {
     this.platform.ready().then(() => {
-      console.log('%c Copyright 2021 © BytesCrafter', 'background: #222; color: #bada55');
+      console.log('%c Copyright 2022 © BytesCrafter', 'background: #222; color: #bada55');
       this.statusBar.show();
       this.appServ.setTheme('light');
       this.appPages = this.util.appPage;
