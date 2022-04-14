@@ -26,11 +26,14 @@ export class UsersComponent {
   page: number = 1;
   users: any[] = [];
 
+  searchFilter: any = '';
+  activeRoleFilter: any = '';
+
   constructor(
     public api: ApisService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private util: UtilService,
+    public util: UtilService,
   ) {    
     this.getUsers();
   }
@@ -42,10 +45,10 @@ export class UsersComponent {
   getUsers(filter = '') {
     this.api.post('galyon/v1/users/getAll', {
       search: filter,
+      role: this.activeRoleFilter,
       limit_start: 0,
       limit_length: 1000
     }).then((response: any) => {
-      console.log(response);
       if (response && response.success == true && response.data) {
         let user_list = response.data;
         user_list.forEach(item => {
@@ -166,5 +169,12 @@ export class UsersComponent {
       }
     };
     this.router.navigate(['admin/manage-users'], navData);
+  }
+
+  /**
+   * Call to filter by Role.
+   */
+  filterByRole() {
+    this.getUsers(this.searchFilter);
   }
 }

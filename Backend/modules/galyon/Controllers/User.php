@@ -272,12 +272,18 @@ class User extends AppCore
             }
         }
 
-        $users = $this->Crud_model->sql_get($this->table_name, $this->public_column, $where, NULL, 'result' );
-        if($users) {
-            $this->json_response($users);
-        } else {
-            $this->json_response(null, false, "No user was found!");
+        $role = $this->request->getVar('role');
+        if(!empty($role)) {
+            $filter_role = "type = '$role'";
+            if($where == null) {
+                $where = $filter_role;
+            } else {
+                $where .= " AND ".$filter_role;
+            }
         }
+
+        $users = $this->Crud_model->sql_get($this->table_name, $this->public_column, $where, NULL, 'result' );
+        $this->json_response($users);
     }
 
     function activate() {
