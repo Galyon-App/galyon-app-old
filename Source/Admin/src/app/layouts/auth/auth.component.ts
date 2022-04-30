@@ -20,7 +20,7 @@ export class AuthComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {
-    const role = authService.userValue.role;
+    const role = this.authService.userValue.role;
     if(role == Role.Admin) {
       this.router.navigate(['/admin']);
     } else if(role == Role.Merchant) {

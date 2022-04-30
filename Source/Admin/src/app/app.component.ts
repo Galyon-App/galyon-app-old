@@ -28,8 +28,12 @@ export class AppComponent implements OnInit {
     public util: UtilService,
     private auth: AuthService
   ) {
-    this.auth.user.subscribe(x => this.user = x);
-    this.initialize();
+    this.auth.user.subscribe(curUser => {
+      if(curUser) {
+        this.user = curUser;
+        this.initialize();
+      }
+    });
   }
 
   get isAdmin() {

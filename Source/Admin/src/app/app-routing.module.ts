@@ -10,13 +10,12 @@ import { AdminComponent } from './layouts/admin/admin.component';
 import { AuthComponent } from './layouts/auth/auth.component';
 import { AuthGuard } from './guard/auth.guard';
 import { SetupGuard } from './guard/setup.guard';
-import { LeaveGuard } from './guard/leaved.guard';
 import { Role } from './models/role.model';
 import { LoginComponent } from './pages/admin/login/login.component';
 import { SetupComponent } from './pages/admin/setup/setup.component';
 import { MerchantComponent } from './layouts/merchant/merchant.component';
 import { ResetComponent } from './pages/merchant/reset/reset.component';
-import { ManageAddressModule } from './pages/editor/manage-address/manage-address.module';
+import { InitGuard } from './guard/init.guard';
 
 const routes: Routes = [
   {
@@ -277,16 +276,17 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [SetupGuard],
+    canActivate: [InitGuard],
   },
   {
     path: 'reset',
     component: ResetComponent,
-    canActivate: [SetupGuard],
+    canActivate: [InitGuard],
   },
   {
     path: 'setup',
     component: SetupComponent,
+    canActivate: [SetupGuard],
   },
 
   // otherwise redirect to home
