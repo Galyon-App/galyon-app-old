@@ -11,7 +11,7 @@ import { AuthComponent } from './layouts/auth/auth.component';
 import { AuthGuard } from './guard/auth.guard';
 import { SetupGuard } from './guard/setup.guard';
 import { Role } from './models/role.model';
-import { LoginComponent } from './pages/admin/login/login.component';
+import { LoginComponent } from './pages/external/login/login.component';
 import { SetupComponent } from './pages/admin/setup/setup.component';
 import { MerchantComponent } from './layouts/merchant/merchant.component';
 import { ResetComponent } from './pages/merchant/reset/reset.component';
