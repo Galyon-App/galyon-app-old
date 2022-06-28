@@ -29,6 +29,8 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/merchant']);
       } else if( role == Role.Operator ) {
         this.router.navigate(['/operator']);
+      } else {
+        this.router.navigate(['/forbidden']);
       }
     }
   }

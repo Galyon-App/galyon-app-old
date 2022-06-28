@@ -6,6 +6,7 @@ import { ApisService } from './apis.service';
 import { UtilService } from './util.service';
 import { Store } from '../models/store.model';
 import { StoresService } from './stores.service';
+import { Role } from '../models/role.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,15 +42,26 @@ export class AuthService {
   }
 
   login(username: string, password: string, callback) {
-    this.api.post('galyon/v1/users/login', {
-      uname: username,
+    this.api.post('api/v1/users/login', {
+      email: username,
       pword: password
     }).then((res: any) => {
       if(res && res.success == true && res.data) {
+
         localStorage.setItem('access-token', res.data);
         let decoded = this.util.jwtDecode(res.data);
+        if(res.user.is_admin) {
+          decoded.role = Role.Admin;
+        } else if(res.user.user_type === 'client') {
+          decoded.role = Role.Operator;
+        } else if(res.user.user_type === 'store') {
+          decoded.role = Role.Merchant;
+        } else {
+          decoded.role = Role.User;
+          this.logout();
+        }
+        
         this.userSubject.next(decoded);
-        this.user
         callback({ success: res.success, data: decoded });
       } else {
         callback({ success: res.success, message: res.message });

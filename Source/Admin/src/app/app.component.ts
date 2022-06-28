@@ -53,21 +53,17 @@ export class AppComponent implements OnInit {
   }
 
   setup() {
-    this.api.get('galyon/v1/settings/initialize').then((response: any) => {
+    this.api.post('api/v1/erpat/setup', {}).then((response: any) => {
       if (response && response.success == true && response.data) {
         //const manage = response.data.manage;
-        this.api.translations = response.data.lang;
-        localStorage.setItem('language', response.data.file);
-
-        const settings = response.data.settings;
-        this.util.currecny = settings.currencySymbol;
-        this.util.cside = settings.currencySide;
-          
-        const general = response.data.general;
-        this.util.general = general;
+        // this.api.translations = response.data.lang;
+        // localStorage.setItem('language', response.data.file);
+        // const settings = response.data.settings;
+        // const general = response.data.general;
+        // this.util.general = general;
       }
-    }, error => {
-      console.log('app init error', error);
+    }).catch(error => {
+      console.log('error', error);
     });
   }
 }

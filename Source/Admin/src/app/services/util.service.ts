@@ -27,7 +27,7 @@ export class UtilService {
 
   public direction: any;
   public currecny: any = '₱';
-  public cside: any = 'right';
+  public cside: any = 'left';
 
   public appPages: any[] = [];
 
