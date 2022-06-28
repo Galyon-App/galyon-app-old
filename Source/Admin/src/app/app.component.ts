@@ -11,7 +11,6 @@ import { UtilService } from './services/util.service';
 import { AuthService } from './services/auth.service';
 import { Role } from './models/role.model';
 import { User } from './models/user.model';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +30,7 @@ export class AppComponent implements OnInit {
     this.auth.user.subscribe(curUser => {
       if(curUser) {
         this.user = curUser;
-        this.initialize();
+        this.setup();
       }
     });
   }
@@ -53,7 +52,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  initialize() {
+  setup() {
     this.api.get('galyon/v1/settings/initialize').then((response: any) => {
       if (response && response.success == true && response.data) {
         //const manage = response.data.manage;

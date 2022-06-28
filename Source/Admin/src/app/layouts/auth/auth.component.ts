@@ -6,6 +6,7 @@
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Role } from 'src/app/models/role.model';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -20,14 +21,15 @@ export class AuthComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {
-    const role = this.authService.userValue.role;
-    if(role == Role.Admin) {
-      this.router.navigate(['/admin']);
-    } else if(role == Role.Merchant) {
-      this.router.navigate(['/merchant']);
-    } else {
-      localStorage.clear();
-      this.router.navigate(['/login']);
+    if( this.authService.IsAuthenticated ) {
+      const role = this.authService.userValue.role;
+      if( role == Role.Admin ) {
+        this.router.navigate(['/admin']);
+      } else if( role == Role.Merchant ) {
+        this.router.navigate(['/merchant']);
+      } else if( role == Role.Operator ) {
+        this.router.navigate(['/operator']);
+      }
     }
   }
 

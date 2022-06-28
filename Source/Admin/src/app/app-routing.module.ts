@@ -9,19 +9,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './layouts/admin/admin.component';
 import { AuthComponent } from './layouts/auth/auth.component';
 import { AuthGuard } from './guard/auth.guard';
-import { SetupGuard } from './guard/setup.guard';
 import { Role } from './models/role.model';
 import { LoginComponent } from './pages/external/login/login.component';
-import { SetupComponent } from './pages/admin/setup/setup.component';
 import { MerchantComponent } from './layouts/merchant/merchant.component';
 import { ResetComponent } from './pages/merchant/reset/reset.component';
-import { InitGuard } from './guard/init.guard';
+import { MaintainanceComponent } from './pages/external/maintainance/maintainance.component';
 
 const routes: Routes = [
   {
-      path: '',
-      component: AuthComponent,
-      canActivate: [AuthGuard],
+    path: '',
+    component: AuthComponent,
+    canActivate: [AuthGuard],
   },
 
   //Admin
@@ -276,17 +274,16 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [InitGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'reset',
     component: ResetComponent,
-    canActivate: [InitGuard],
+    canActivate: [AuthGuard],
   },
   {
-    path: 'setup',
-    component: SetupComponent,
-    canActivate: [SetupGuard],
+    path: 'maintainance',
+    component: MaintainanceComponent,
   },
 
   // otherwise redirect to home

@@ -36,6 +36,10 @@ export class AuthService {
     return this.userSubject.value;
   }
 
+  public get IsAuthenticated(): boolean {
+    return this.userSubject.value ? true:false;
+  }
+
   login(username: string, password: string, callback) {
     this.api.post('galyon/v1/users/login', {
       uname: username,
@@ -64,10 +68,6 @@ export class AuthService {
       this.router.navigate(['/login']);
   }
   
-  // isAuthenticated() {
-  //   return this.authState.value;
-  // }
-
   // login(uname, pword, cback) {
   //   this.api.post('galyon/v1/users/login', {
   //     uname: uname,
