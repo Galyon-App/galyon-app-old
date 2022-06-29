@@ -47,17 +47,16 @@ export class AuthService {
       pword: password
     }).then((res: any) => {
       if(res && res.success == true && res.data) {
-
+        
         localStorage.setItem('access-token', res.data);
         let decoded = this.util.jwtDecode(res.data);
-        if(res.user.is_admin) {
+        if( decoded.role == 'admin' ) {
           decoded.role = Role.Admin;
-        } else if(res.user.user_type === 'client') {
+        } else if( decoded.role == 'operator' ) {
           decoded.role = Role.Operator;
-        } else if(res.user.user_type === 'store') {
+        } else if( decoded.role == 'merchant' ) {
           decoded.role = Role.Merchant;
         } else {
-          decoded.role = Role.User;
           this.logout();
         }
         

@@ -26,6 +26,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 import { AgmCoreModule } from '@agm/core';
 import { ChartsModule, ThemeService } from 'ng2-charts';
+import { OperatorComponent } from './layouts/operator/operator.component';
 
 // 1. Import the libs you need
 // import { AngularFireModule } from '@angular/fire';
@@ -39,6 +40,7 @@ import { ChartsModule, ThemeService } from 'ng2-charts';
   declarations: [
     AppComponent,
     AdminComponent,
+    OperatorComponent,
     MerchantComponent,
     AuthComponent,
     TitleComponent,

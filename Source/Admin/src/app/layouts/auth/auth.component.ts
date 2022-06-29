@@ -23,14 +23,15 @@ export class AuthComponent implements OnInit {
   ) {
     if( this.authService.IsAuthenticated ) {
       const role = this.authService.userValue.role;
+      
       if( role == Role.Admin ) {
         this.router.navigate(['/admin']);
-      } else if( role == Role.Merchant ) {
-        this.router.navigate(['/merchant']);
       } else if( role == Role.Operator ) {
         this.router.navigate(['/operator']);
+      } else if( role == Role.Merchant ) {
+        this.router.navigate(['/merchant']);
       } else {
-        this.router.navigate(['/forbidden']);
+        this.authService.logout();
       }
     }
   }
