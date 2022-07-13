@@ -44,6 +44,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    setInterval(()=>{
+      const token = localStorage.getItem('access-token');
+      if( !token ) {
+        this.auth.logout();
+      }
+    }, 10000);
+
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
