@@ -556,4 +556,21 @@ export class HomePage {
   ionViewWillLeave() {
     console.log("Looks like I'm about to leave :(");
   }
+
+  goToPartnerDetails() {
+
+  }
+
+  openInMap() {
+    this.util.showToast('Not yet implemented', 'primary', 'bottom');
+  }
+
+  openListShops() {
+    this.util.showToast('Not yet implemented', 'primary', 'bottom');
+  }
+
+  openContactInfo() {
+    this.util.showToast('Not yet implemented', 'primary', 'bottom');
+  }
+
 }
