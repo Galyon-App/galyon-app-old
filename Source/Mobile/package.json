@@ -1,8 +1,8 @@
 {
-  "name": "grocery",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "name": "BSEI eShop",
+  "version": "0.7.0",
+  "author": "BytesCrafter",
+  "homepage": "https://bytescrafter.net/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
