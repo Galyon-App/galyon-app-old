@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar style="--border-width: 0;">
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Referral Program</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="main_content">
+    <div class="cover">
+      <div class="user_image bg_image" [ngStyle]="{'background-image':'url(assets/imgs/referral.png)'}">
+      </div>
+    </div>
+    <p class="share-text">Please Share the code below for your friends <br>to earn reward points.</p>
+
+    <ion-item style="margin-top: 30px;">
+      <ion-label color="primary"> {{referralCode}} </ion-label>
+      <ion-button (click)="copyCodeToCB()" expand="block" size="small" shape="round" slot="end">
+        Copy
+      </ion-button>
+    </ion-item>
+
+    <ion-item detail="" lines="none" style="margin-top: 25px;">
+      <ion-icon name="barcode" slot="start"></ion-icon>
+      <ion-label>QR Code</ion-label>
+    </ion-item>
+
+    <ion-item detail="" lines="none" style="margin-top: 10px;">
+      <ion-icon name="logo-facebook" slot="start"></ion-icon>
+      <ion-label>Facebook</ion-label>
+    </ion-item>
+
+    <ion-item detail="" lines="none" style="margin-top: 10px;">
+      <ion-icon name="logo-instagram" slot="start"></ion-icon>
+      <ion-label>Instagram</ion-label>
+    </ion-item>
+
+    <ion-item detail="" lines="none" style="margin-top: 10px;">
+      <ion-icon name="logo-twitter" slot="start"></ion-icon>
+      <ion-label>Twitter</ion-label>
+    </ion-item>
+
+  </div>
+</ion-content>

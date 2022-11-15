@@ -1,0 +1,23 @@
+
+.main_content {
+    margin: auto;
+    max-width: 720px;
+    
+    .cover {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        .user_image {
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+        }
+    }
+    .share-text {
+        text-align: center;
+        font-size: 14px;
+        margin-top: 24px;
+        color: gray;
+    }
+}

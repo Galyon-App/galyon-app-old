@@ -61,4 +61,8 @@ export class TabsPage {
   ionViewDidEnter() {
     this.appServ.setAppReady();
   }
+
+  checkVersion() {
+    this.util.showToast("BSEI eShop app version is v"+this.appServ.version+".", "primary", "bottom")
+  }
 }

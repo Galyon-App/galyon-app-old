@@ -1,0 +1,52 @@
+.main_content_div {
+    padding: 16px;
+    padding-top: 30px;
+
+    ion-label {
+        display: block;
+    }
+
+    .welcome_lbl {
+        font-size: 26px;
+        font-family: 'semi-bold';
+    }
+
+    .user_back {
+        width: 100px;
+        height: 105px;
+        background-position: top;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border: 5px solid #f3f3f3;
+        border-radius: 5px;
+        display: block;
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .title_lbl {
+        font-family: 'semi-bold';
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    ion-select {
+        --padding-start: 0px;
+        margin-top: 10px;
+    }
+
+    ion-item {
+        --padding-start: 0px;
+        margin-top: 16px;
+    }
+
+    ion-button {
+        --border-radius: 3px;
+        font-family: 'semi-bold';
+        width: 200px;
+        display: block;
+        margin: auto;
+        margin-top: 30px;
+    }
+}

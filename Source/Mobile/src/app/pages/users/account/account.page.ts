@@ -74,6 +74,10 @@ export class AccountPage implements OnInit {
     this.router.navigate(['user/account/address'], param);
   }
 
+  goToMyOrders() {
+    this.router.navigate(['user/orders']);
+  }
+
   goToFav() {
     this.router.navigate(['user/account/favorite']);
   }

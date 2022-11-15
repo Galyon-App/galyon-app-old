@@ -82,18 +82,38 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'message',
+        path: 'shops',
         children: [
           {
             path: '',
             loadChildren: () =>
-              import('../chats/chats.module').then(m => m.ChatsPageModule)
+              import('../shops/shops.module').then(m => m.ShopsPageModule)
+          }
+        ],
+      },
+      {
+        path: 'rewards',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../rewards/rewards.module').then(m => m.RewardsPageModule)
           },
           {
-            path: 'chat',
+            path: 'raffle',
             loadChildren: () =>
-              import('../inbox/inbox.module').then(m => m.InboxPageModule)
+              import('../rewards/raffle/raffle.module').then(m => m.RafflePageModule)
           },
+          {
+            path: 'games',
+            loadChildren: () =>
+              import('../rewards/games/games.module').then(m => m.GamesPageModule)
+          },
+          {
+            path: 'referral',
+            loadChildren: () =>
+              import('../rewards/referral/referral.module').then(m => m.ReferralPageModule)
+          }
         ],
         canActivate: [AuthGuard]
       },

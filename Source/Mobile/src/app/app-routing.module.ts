@@ -94,7 +94,15 @@ const routes: Routes = [
   { 
     path: '**', 
     redirectTo: 'notfound'
+  },  {
+    path: 'rewards',
+    loadChildren: () => import('./pages/users/rewards/rewards.module').then( m => m.RewardsPageModule)
+  },
+  {
+    path: 'shops',
+    loadChildren: () => import('./pages/users/shops/shops.module').then( m => m.ShopsPageModule)
   }
+
 ];
 @NgModule({
   imports: [

@@ -48,17 +48,23 @@
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
     </ion-item>
 
+    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToMyOrders()">
+      <ion-icon name="receipt-outline" slot="start"></ion-icon>
+      <ion-label> {{util.getString('Order History')}} </ion-label>
+      <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+    </ion-item>
+
     <!-- <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToFav()">
       <ion-icon name="heart-outline" slot="start"></ion-icon>
       <ion-label> {{util.getString('My Favourites')}} </ion-label>
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
     </ion-item> -->
 
-    <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToSupport()">
+    <!-- <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToSupport()">
       <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
       <ion-label> {{util.getString('Technical Support')}} </ion-label>
       <ion-ripple-effect type="unbounded"></ion-ripple-effect>
-    </ion-item>
+    </ion-item> -->
 
     <ion-item lines="none" detail="" class="ion-activatable ripple-parent" (click)="goToContact()">
       <ion-icon name="mail-outline" slot="start"></ion-icon>

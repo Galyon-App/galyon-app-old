@@ -1,0 +1,127 @@
+<ion-content>
+  <div class="main_content_div" *ngIf="cards.length">
+
+      <div class="gradient_div">
+          <div class="abs_round"></div>
+          <div class="flex_header">
+              <ion-label class="main-title">Welcome!</ion-label>
+              <ion-label class="add-card" (click)="btnAddNewCard()"><ion-icon name="add"></ion-icon> Add Card</ion-label>
+          </div>
+      </div>
+      <div class="container_div">
+
+          <div class="white_box" [ngStyle]="{'background-image':'url(assets/imgs/reward-card.png)'}">
+              <!-- <div class="flex_div">
+                  <ion-label class="span_lbl">for <span>BSEI Reward</span> Card</ion-label>
+                  <ion-label class="bold_lbl" (click)="btnAddNewCard()">Add new Card</ion-label>
+              </div> -->
+
+              <ion-slides mode="ios" pager="ios" scrollbar="ios">
+                  <ion-slide *ngFor="let item of [1]">
+                    <div class="card_div">
+                          <div class="half-circle">
+                              <div class="inner_circle">
+                                  <!-- <ion-icon name="wallet"></ion-icon> -->
+                                  <ion-label class="span_lbl"><span>BSEI Reward</span> Card</ion-label>
+                                  <ion-label class="price_lbl">1,234</ion-label>
+                                  <ion-label class="grey_lbl">Balance</ion-label>
+                              </div>
+                          </div>
+                          <div class="abs_div">
+                              <!-- <ion-label>0%</ion-label>
+                              <ion-label>100%</ion-label> -->
+                          </div>
+                          <div class="side_abs"></div>
+                        <div class="bottom_abs"></div>
+                      </div>   
+                  </ion-slide>
+              </ion-slides>
+
+              <!-- <div class="half-circle">
+                  <div class="inner_circle">
+                      <img src="assets/imgs/card_2.png">
+                      <ion-label class="#77869E_lbl">You Are Spent</ion-label>
+                      <ion-label class="price_lbl">$6,390</ion-label>
+                      <ion-label class="#77869E_lbl">of $3,248</ion-label>
+                  </div>
+              </div>
+              <div class="abs_div">
+                  <ion-label>0%</ion-label>
+                  <ion-label>100%</ion-label>
+              </div> -->
+
+          </div>
+
+          <ion-grid fixed>
+              <ion-row>
+                  
+                  <ion-col size="3">
+                      <div expand="block" (click)="btnShopNow()" class="reward-src ion-text-center">
+                        <ion-icon name="cart"></ion-icon>
+                        <ion-label>Shop Now</ion-label>
+                      </div>
+                  </ion-col>
+
+                  <ion-col size="3">
+                      <div expand="block" (click)="btnJoinRaffle()" class="reward-src ion-text-center">
+                        <ion-icon name="ribbon"></ion-icon>
+                        <ion-label>Join Raffle</ion-label>
+                        <ion-label>(Soon)</ion-label>
+                      </div>
+                  </ion-col>
+
+                  <ion-col size="3">
+                    <div (click)="btnPlayGames()" class="reward-src ion-text-center">
+                        <ion-icon name="basketball"></ion-icon>
+                      <ion-label>Play Games</ion-label>
+                      <ion-label>(Soon)</ion-label>
+                    </div>
+                </ion-col>
+
+                <ion-col size="3">
+                    <div expand="block" (click)="btnReferAFriend()" class="reward-src ion-text-center">
+                      <ion-icon name="star"></ion-icon>
+                      <ion-label>Refer a Friend</ion-label>
+                    </div>
+                </ion-col>
+                  
+              </ion-row>
+          </ion-grid>
+
+          <ion-label class="title_lbl" style="margin-bottom: 10px;">Transactions</ion-label>
+          <!-- <div class="btn_flex">
+              <div class="small_btn" [class.active]="tabID == 1" (click)="tabID = 1">
+                  <ion-label>Day</ion-label>
+              </div>
+              <div class="small_btn" [class.active]="tabID == 2" (click)="tabID = 2">
+                  <ion-label>Week</ion-label>
+              </div>
+              <div class="small_btn" [class.active]="tabID == 3" (click)="tabID = 3">
+                  <ion-label>Month</ion-label>
+              </div>
+              <div class="small_btn" [class.active]="tabID == 4" (click)="tabID = 4">
+                  <ion-label>Year</ion-label>
+              </div>
+          </div> -->
+
+          <div class="shopping_div" *ngFor="let item of activity">
+              <!-- <div class="color_box" [ngStyle]="{'backgroundColor' : item.color}">
+                  <img src="{{item.image}}">
+              </div> -->
+              <div class="content_div">
+                  <ion-label class="name">{{item.name}}</ion-label>
+                  <ion-label class="date">{{item.date}}</ion-label>
+              </div>
+              <ion-label class="price">{{item.amount}}</ion-label>
+          </div>
+
+      </div>
+
+  </div>
+
+  <div class="main_content_div" *ngIf="!cards.length">
+    <img src="assets/imgs/reward.png" alt="" srcset="" style="margin-top: 100px; padding: 20px 20px 5px;">
+    <p class="ion-text-center"> You dont have any Reward <br> or Loyalty Card yet.</p>
+    <ion-label class="ion-text-center" style="color: var(--ion-color-primary); margin-top: 20px;" (click)="btnAddNewCard()"><ion-icon name="add"></ion-icon> Add New Card</ion-label>
+  </div>
+</ion-content>

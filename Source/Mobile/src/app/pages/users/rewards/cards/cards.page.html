@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Add New Card</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main_content_div">
+
+      <!-- <div [style.backgroundImage]="'url(assets/imgs/users/user12.jpg)'" class="user_back"></div> -->
+
+      <ion-label class="title_lbl">REWARD CURRENCY</ion-label>
+      <ion-select value="peperoni" multiple="true" placeholder="Select Currency">
+          <ion-select-option value="bsei">BSEI Reward Card</ion-select-option>
+      </ion-select>
+
+      <ion-label class="title_lbl">REWARD CARD DETAIL</ion-label>
+     
+      <ion-item>
+          <ion-label position="floating">Enter Card Number</ion-label>
+          <ion-input [(ngModel)]="enterCardNum"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label position="floating">Confirm Card Number</ion-label>
+          <ion-input [(ngModel)]="confirmCardNum"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label position="floating">Card Security Key</ion-label>
+          <ion-input [(ngModel)]="securityKey"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" (click)="saveCard()">
+          Save Card
+      </ion-button>
+
+  </div>
+</ion-content>

@@ -12,7 +12,7 @@
   <ion-header class="ion-no-border">
     <ion-toolbar color="primary" style="background: var(--ion-color-light); padding: 5px 15px;">
         <div slot="start">
-          <img src="assets/imgs/logo.png" class="menu-logo">
+          <img src="assets/imgs/logo.png" class="menu-logo" (click)="checkVersion()">
         </div>
         <div slot="end" *ngIf="currentCity" style="width: 50vw;height: auto;">
           <strong style="padding: 7px;" (click)="changeCity()">
@@ -23,31 +23,36 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-tab-bar slot="top" class="ion-no-border">
+  <ion-tab-bar slot="top" class="ion-no-border" style="padding-top: 5px;">
     <ion-tab-button tab="home">
       <ion-icon name="home"></ion-icon>
-      <!-- <ion-label> {{util.getString('Home')}} </ion-label> -->
+      <ion-label> Home </ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="message">
-      <ion-icon name="chatbubble"></ion-icon>
-      <!-- <ion-label> {{util.getString('Message')}} </ion-label> -->
+    <ion-tab-button tab="rewards">
+      <ion-icon name="trophy"></ion-icon>
+      <ion-label> Rewards </ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="shops">
+      <ion-icon name="business"></ion-icon>
+      <ion-label> Shops </ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="cart">
       <ion-icon name="basket"></ion-icon>
-      <!-- <ion-label> {{util.getString('Cart')}} </ion-label> -->
+      <ion-label> Cart </ion-label>
       <ion-badge color="danger" *ngIf="cart.cart?.length"> {{cart.cart.length}} </ion-badge>
     </ion-tab-button>
 
-    <ion-tab-button tab="orders">
+    <!-- <ion-tab-button tab="orders">
       <ion-icon name="receipt"></ion-icon>
-      <!-- <ion-label> {{util.getString('Orders')}} </ion-label> -->
-    </ion-tab-button>
+      <ion-label> Orders </ion-label>
+    </ion-tab-button> -->
 
     <ion-tab-button tab="account">
       <ion-icon name="person"></ion-icon>
-      <!-- <ion-label> {{util.getString('Account')}} </ion-label> -->
+      <ion-label> Account </ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>
